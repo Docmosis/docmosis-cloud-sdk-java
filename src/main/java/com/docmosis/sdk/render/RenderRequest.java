@@ -1,0 +1,962 @@
+/*
+ *   Copyright 2012 Docmosis.com or its affiliates.  All Rights Reserved.
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *   or in the LICENSE file accompanying this file.
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+package com.docmosis.sdk.render;
+
+import java.io.Serializable;
+
+/**
+ * The object holds the instructions and data for the render request.
+ * 
+ * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * for details about the settings for the Render request.  The properties set in this class 
+ * are parameters for the Render request.
+ * 
+ * Typically, you would use the request factory to get an instance of this class, then
+ * set the specifics you require:
+ * 
+ * <pre>
+ *   RenderRequest request = RenderRequestFactory.getRequest(accessKey);
+ *   
+ *   request.setTemplateName("samples/WelcomeTemplate.doc");
+ *   request.setOutputName("result.pdf");
+ *   
+ *   // stream is the default - which means send the result back to the caller
+ *   request.setstoreTo("stream");
+ *   
+ *   RenderResponse response = request.execute();
+ *   
+ *   // process response
+ *   ...
+ * </pre>
+ */
+public class RenderRequest implements Serializable {
+
+    private static final long serialVersionUID = 4338222626030786768L;
+    
+    // rarely changed settings
+    private String renderUrl;
+    private String accessKey;
+    private RenderProxy renderProxy;
+    private int maxTries;
+    private int retryDelayMS;
+    
+    // settings that change more frequently.
+    private String templateName;
+    private String isSystemTemplate;
+    private String outputName;
+    private String outputFormat;
+    private String compressSingleFormat;
+    private String storeTo;
+    private String billingKey;
+    private String devMode;
+    private String data;
+    private String requestId;
+    private String mailSubject;
+    private String mailBodyHtml;
+    private String mailBodyText;
+    private String mailNoZipAttachments;
+    private String sourceId;
+    private String stylesInText;
+    private String passwordProtect;
+    private String pdfArchiveMode;
+    private String pdfWatermark;
+    private String pdfTagged;
+    
+    public RenderRequest() {}
+    
+    /**
+     * Construct a new request with the specified render end point url.
+     * 
+     * @param renderUrl the url to the render service.
+     */
+    public RenderRequest(String renderUrl)
+    {
+    	this.renderUrl = renderUrl;
+    }
+    
+    /**
+     * Construct a new request with the specified render end point url.
+     * 
+     * @param renderUrl the url to the render service.
+     * @param accessKey the access key to use for the render
+     */
+    public RenderRequest(String renderUrl, String accessKey)
+    {
+    	this.renderUrl = renderUrl;
+    	this.accessKey = accessKey;
+    }    
+    
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    /**
+     * The name of the template to use. Template must have been uploaded previously 
+     * with the template upload request or via the web console.
+     * 
+     * @param templateName the template to use for the render
+     */
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+    
+    /**
+     * The name of the template to use. Template must have been uploaded previously 
+     * with the template upload request or via the web console.
+     * 
+     * @param templateName the template to use for the render
+     */
+    public RenderRequest templateName(String templateName) {
+        this.templateName = templateName;
+        return this;
+    }
+
+    public String getIsSystemTemplate() {
+        return isSystemTemplate;
+    }
+
+    /**
+     * Indicate the template to use is a "system" template, meaning it is not 
+     * one of the developer's templates.  Set this if advised by Docmosis support.
+     * 
+     * @param isSystemTemplate "true" to indicate a system template.
+     */
+    public void setIsSystemTemplate(String isSystemTemplate) {
+        this.isSystemTemplate = isSystemTemplate;
+    }
+    
+    /**
+     * Indicate the template to use is a "system" template, meaning it is not 
+     * one of the developer's templates.  Set this if advised by Docmosis support.
+     * 
+     * @param isSystemTemplate "true" to indicate a system template.
+     */
+    public RenderRequest isSystemTemplate(String isSystemTemplate) {
+        this.isSystemTemplate = isSystemTemplate;
+        return this;
+    }
+
+    public String getOutputName() {
+        return outputName;
+    }
+
+    /**
+     * Set the name to give the rendered document. If no format is specified (@see #outputFormat), 
+     * the format of the resulting document is derived from the extension of this name. 
+     * For example "resume1.pdf" implies a PDF format document. 
+     * 
+     * The name may be supplied without an extension (eg "resume1") and the outputFormat parameter 
+     * will specify the format(s) to return.  In this case, the output name is really only used to name
+     * the files inside a zip file result.
+     * 
+     * @param outputName the name of the result
+     */
+    public void setOutputName(String outputName) {
+        this.outputName = outputName;
+    }
+    
+    /**
+     * Set the name to give the rendered document. If no format is specified (@see #outputFormat), 
+     * the format of the resulting document is derived from the extension of this name. 
+     * For example "resume1.pdf" implies a PDF format document. 
+     * 
+     * The name may be supplied without an extension (eg "resume1") and the outputFormat parameter 
+     * will specify the format(s) to return.  In this case, the output name is really only used to name
+     * the files inside a zip file result.
+     * 
+     * @param outputName the name of the result
+     */
+    public RenderRequest outputName(String outputName) {
+        this.outputName = outputName;
+        return this;
+    }
+
+    public String getOutputFormat() {
+        return outputFormat;
+    }
+
+    /**
+     * Set the format(s) of the rendered document. ; delimited. 
+     * Multiple formats imply a zip file and ouputName will have .zip appended as required. 
+     * Files inside zip will be named using outputName and will have the format-specific extension 
+     * appended as required. Valid options are pdf, doc, odt, rtf, html, txt.
+     * 
+     * @param outputFormat the output format specifier
+     */
+    public void setOutputFormat(String outputFormat) {
+        this.outputFormat = outputFormat;
+    }
+    
+    /**
+     * Set the format(s) of the rendered document. ; delimited. 
+     * Multiple formats imply a zip file and ouputName will have .zip appended as required. 
+     * Files inside zip will be named using outputName and will have the format-specific extension 
+     * appended as required. Valid options are pdf, doc, odt, rtf, html, txt.
+     * 
+     * @param outputFormat the output format specifier
+     */
+    public RenderRequest outputFormat(String outputFormat) {
+        this.outputFormat = outputFormat;
+        return this;
+    }
+
+    public String getCompressSingleFormat() {
+        return compressSingleFormat;
+    }
+
+    /**
+     * Optionally choose to zip the result when a single output document is produced. The zip archive 
+     * will contain a document in the specified format with a name based on 
+     * outputName + outputFormat. The resulting zip file name will be the outputName with the .zip 
+     * extension appended as required. This option is ignored if more than one outputFormat is 
+     * specified. 
+     * 
+     * @param compressSingleFormat set to "y", "yes" and "true" (case-insensitive) to compress 
+     */
+    public void setCompressSingleFormat(String compressSingleFormat) {
+        this.compressSingleFormat = compressSingleFormat;
+    }
+    
+    /**
+     * Optionally choose to zip the result when a single output document is produced. The zip archive 
+     * will contain a document in the specified format with a name based on 
+     * outputName + outputFormat. The resulting zip file name will be the outputName with the .zip 
+     * extension appended as required. This option is ignored if more than one outputFormat is 
+     * specified. 
+     * 
+     * @param compressSingleFormat set to "y", "yes" and "true" (case-insensitive) to compress 
+     */
+    public RenderRequest compressSingleFormat(String compressSingleFormat) {
+        this.compressSingleFormat = compressSingleFormat;
+        return this;
+    }
+
+    public String getStoreTo() {
+        return storeTo;
+    }
+
+    /**
+     * Specify where to send the resulting document(s). If no specification is given, 
+     * "stream" is assumed and the result will be streamed back to the requester, 
+     * otherwise the ; delimited list of destinations will receive the result.
+     * Valid options are "stream", "mailto", "storage", "s3".
+     * 
+     * <pre>
+     * Examples:
+     *    stream  (stream back the result)
+     *    mailto:me@abc.com  (email the result)
+     *    stream;mailto:me@abc.com  (stream and email the result)
+     *    stream:pdf;mailto:me@abc.com:doc  (stream the result in PDF format and email in DOC format)
+     *    s3:my.amazon.bucket,mydocument.pdf  (store the result in the given bucket and key)
+     * </pre>
+     *  
+     * @param storeTo the list of destinations.
+     */
+    public void setStoreTo(String storeTo) {
+        this.storeTo = storeTo;
+    }
+    
+    /**
+     * Specify where to send the resulting document(s). If no specification is given, 
+     * "stream" is assumed and the result will be streamed back to the requester, 
+     * otherwise the ; delimited list of destinations will receive the result.
+     * Valid options are "stream", "mailto", "storage", "s3".
+     * 
+     * <pre>
+     * Examples:
+     *    stream  (stream back the result)
+     *    mailto:me@abc.com  (email the result)
+     *    stream;mailto:me@abc.com  (stream and email the result)
+     *    stream:pdf;mailto:me@abc.com:doc  (stream the result in PDF format and email in DOC format)
+     *    s3:my.amazon.bucket,mydocument.pdf  (store the result in the given bucket and key)
+     * </pre>
+     *  
+     * @param storeTo the list of destinations.
+     */
+    public RenderRequest storeTo(String storeTo) {
+        this.storeTo = storeTo;
+        return this;
+    }
+
+    public String getBillingKey() {
+        return billingKey;
+    }
+
+    /**
+     * Set the billingKey string.  This is simply a user-defined token string
+     * that can be later reported against.  @see sourceId for an alternative
+     * equivalent which is linked to available statistics.
+     *  
+     * @param billingKey the key to apply with some association with billing.
+     */
+    public void setBillingKey(String billingKey) {
+        this.billingKey = billingKey;
+    }
+    
+    /**
+     * Set the billingKey string.  This is simply a user-defined token string
+     * that can be later reported against.  @see sourceId for an alternative
+     * equivalent which is linked to available statistics.
+     *  
+     * @param billingKey the key to apply with some association with billing.
+     */
+    public RenderRequest billingKey(String billingKey) {
+        this.billingKey = billingKey;
+        return this;
+    }
+
+    public String getDevMode() {
+        return devMode;
+    }
+
+    /**
+     * Document production can run in development and production respectively. If set 
+     * to "y", "yes" or "true" this operation will work in "dev" mode, meaning that if 
+     * something is incorrect in the template, data or instructions Docmosis will do 
+     * it's best to produce a document. Such a document may contain errors such as 
+     * missing images and data, and wherever possible, Docmosis will highlight problems 
+     * to indicate the failure. In production mode errors in document rendering will 
+     * result in a failure result only and no document will be produced. The production 
+     * mode is to ensure that a bad document is never produced/delivered to a recipient. 
+     * The default mode is production (that is, dev mode is off).
+     * 
+     * @param devMode specify the dev/prod mode
+     */
+    public void setDevMode(String devMode) {
+        this.devMode = devMode;
+    }
+    
+    /**
+     * Document production can run in development and production respectively. If set 
+     * to "y", "yes" or "true" this operation will work in "dev" mode, meaning that if 
+     * something is incorrect in the template, data or instructions Docmosis will do 
+     * it's best to produce a document. Such a document may contain errors such as 
+     * missing images and data, and wherever possible, Docmosis will highlight problems 
+     * to indicate the failure. In production mode errors in document rendering will 
+     * result in a failure result only and no document will be produced. The production 
+     * mode is to ensure that a bad document is never produced/delivered to a recipient. 
+     * The default mode is production (that is, dev mode is off).
+     * 
+     * @param devMode specify the dev/prod mode
+     */
+    public RenderRequest devMode(String devMode) {
+        this.devMode = devMode;
+        return this;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    /**
+     * Set the data for the render. The format of the string is either JSON 
+     * and the structure of your data should match the template you are using.
+     * 
+     * @param data JSON or XML data.
+     */
+    public void setData(String data) 
+    {
+        this.data = data;
+    }
+    
+    /**
+     * Set the data for the render. The format of the string is either JSON 
+     * and the structure of your data should match the template you are using.
+     * 
+     * @param data JSON or XML data.
+     */
+    public RenderRequest data(String data) 
+    {
+        this.data = data;
+        return this;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    /**
+     * Any string you would like to use to identify this job. This string will be returned in responses
+     * which can be useful when many documents are being rendered in parallel.
+     * 
+     * @param requestId a token to identify this job.
+     */
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+    
+    /**
+     * Any string you would like to use to identify this job. This string will be returned in responses
+     * which can be useful when many documents are being rendered in parallel.
+     * 
+     * @param requestId a token to identify this job.
+     */
+    public RenderRequest requestId(String requestId) {
+        this.requestId = requestId;
+        return this;
+    }
+
+    public String getMailSubject() {
+        return mailSubject;
+    }
+
+    /**
+     * Set the subject when sending email.
+     * 
+     * @param mailSubject the subject text
+     */
+    public void setMailSubject(String mailSubject) {
+        this.mailSubject = mailSubject;
+    }
+    
+    /**
+     * Set the subject when sending email.
+     * 
+     * @param mailSubject the subject text
+     */
+    public RenderRequest mailSubject(String mailSubject) {
+        this.mailSubject = mailSubject;
+        return this;
+    }
+
+    public String getMailBodyHtml() {
+        return mailBodyHtml;
+    }
+
+    /**
+     * Set the email body in HTML.  This will deliver a html-content 
+     * message.
+     * 
+     * @param mailBodyHtml the html version of the email.
+     */
+    public void setMailBodyHtml(String mailBodyHtml) {
+        this.mailBodyHtml = mailBodyHtml;
+    }
+    
+    /**
+     * Set the email body in HTML.  This will deliver a html-content 
+     * message.
+     * 
+     * @param mailBodyHtml the html version of the email.
+     */
+    public RenderRequest mailBodyHtml(String mailBodyHtml) {
+        this.mailBodyHtml = mailBodyHtml;
+        return this;
+    }
+
+    public String getMailBodyText() {
+        return mailBodyText;
+    }
+
+    /**
+     * Set the email body in plain text.
+     * 
+     * @param mailBodyText the plain text message body.
+     */
+    public void setMailBodyText(String mailBodyText) {
+        this.mailBodyText = mailBodyText;
+    }
+
+    public String getMailNoZipAttachments() {
+        return mailNoZipAttachments;
+    }
+
+    /**
+     * If this is set to true, any email attachments will be attached 
+     * as individual files rather than as a single zip (when multiple formats are being used).
+     * 
+     * @param mailNoZipAttachments set to "true" to attach results as separate 
+     * files when mutltiple files are being created.
+     */
+    public void setMailNoZipAttachments(String mailNoZipAttachments) {
+        this.mailNoZipAttachments = mailNoZipAttachments;
+    }
+    
+    /**
+     * If this is set to true, any email attachments will be attached 
+     * as individual files rather than as a single zip (when multiple formats are being used).
+     * 
+     * @param mailNoZipAttachments set to "true" to attach results as separate 
+     * files when mutltiple files are being created.
+     */
+    public RenderRequest mailNoZipAttachments(String mailNoZipAttachments) {
+    	this.mailNoZipAttachments = mailNoZipAttachments;
+        return this;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    /**
+     * Any ID you would like to associate with this render. This could be a 
+     * device id, a project code or any meaningful piece of data you associate 
+     * with this render. 
+     * This value can be reported later with associated monthly counts. Limited to 150 characters.
+     * 
+     * @param sourceId a token to identify the render for statistics purposes.
+     */
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+    
+    /**
+     * Any ID you would like to associate with this render. This could be a 
+     * device id, a project code or any meaningful piece of data you associate 
+     * with this render. 
+     * This value can be reported later with associated monthly counts. Limited to 150 characters.
+     * 
+     * @param sourceId a token to identify the render for statistics purposes.
+     */
+    public RenderRequest sourceId(String sourceId) {
+        this.sourceId = sourceId;
+        return this;
+    }
+
+    public String getStylesInText() {
+        return stylesInText;
+    }
+
+    /**
+     * If set to "y","yes" or "true", your data will be parsed looking for html-like mark-up. The following mark-up is supported:
+     * <ul>
+     * <li>
+     * Bold eg "this is <b>bold</b>"
+     * </li><li>
+     * Italics eg "this is <i>italics</i>"
+     * </li><li>
+     * Underline eg "this is <i>underline</i>"
+     * </li><li>
+     * Cell Colouring eg "<bgcolor="#ff0000"/>This cell is now red.
+     * </li></ul>
+     * The bgcolor tag must be at the beginning of your field data and the template field must 
+     * be inside a table-cell to take effect. 
+     * More information is available in the Docmosis Developer Guide.
+     * 
+     * @param stylesInText "y" or "true" to enable this style of processing.
+     */
+    public void setStylesInText(String stylesInText) {
+        this.stylesInText = stylesInText;
+    }
+    
+    /**
+     * If set to "y","yes" or "true", your data will be parsed looking for html-like mark-up. The following mark-up is supported:
+     * <ul>
+     * <li>
+     * Bold eg "this is <b>bold</b>"
+     * </li><li>
+     * Italics eg "this is <i>italics</i>"
+     * </li><li>
+     * Underline eg "this is <i>underline</i>"
+     * </li><li>
+     * Cell Colouring eg "<bgcolor="#ff0000"/>This cell is now red.
+     * </li></ul>
+     * The bgcolor tag must be at the beginning of your field data and the template field must 
+     * be inside a table-cell to take effect. 
+     * More information is available in the Docmosis Developer Guide.
+     * 
+     * @param stylesInText "y" or "true" to enable this style of processing.
+     */
+    public RenderRequest stylesInText(String stylesInText) {
+        this.stylesInText = stylesInText;
+        return this;
+    }
+
+    public String getUrl()
+	{
+		return renderUrl;
+	}
+
+    /**
+     * Set the URL for the web service end point for rendering.
+     * This is defaulted to the public cloud end-point for Docmosis Cloud Services. 
+     * 
+     * @param url
+     */
+	public void setUrl(String url)
+	{
+		this.renderUrl = url;
+	}
+	
+    /**
+     * Set the URL for the web service end point for rendering.
+     * This is defaulted to the public cloud end-point for Docmosis Cloud Services. 
+     * 
+     * @param url
+     */
+	public RenderRequest url(String url)
+	{
+		this.renderUrl = url;
+		return this;
+	}
+
+	public String getAccessKey()
+	{
+		return accessKey;
+	}
+
+	/**
+	 * Set the access key for using the end point.  If using the public Docmosis Cloud Services
+	 * you must sign up (at least for a trial period) to obtain your access key.
+	 * 
+	 * @param accessKey
+	 */
+	public void setAccessKey(String accessKey)
+	{
+		this.accessKey = accessKey;
+	}
+	
+	/**
+	 * Set the access key for using the end point.  If using the public Docmosis Cloud Services
+	 * you must sign up (at least for a trial period) to obtain your access key.
+	 * 
+	 * @param accessKey
+	 */
+	public RenderRequest accessKey(String accessKey)
+	{
+		this.accessKey = accessKey;
+		return this;
+	}
+
+	public RenderProxy getRenderProxy()
+	{
+		return renderProxy;
+	}
+
+	/**
+	 * Set the RenderProxy via which this request should be routed.
+	 * 
+	 * @see RenderProxy
+	 * @param renderProxy
+	 */
+	public void setRenderProxy(RenderProxy renderProxy)
+	{
+		this.renderProxy = renderProxy;
+	}
+	
+	/**
+	 * Set the RenderProxy via which this request should be routed.
+	 * 
+	 * @see RenderProxy
+	 * @param renderProxy
+	 */
+	public RenderRequest renderProxy(RenderProxy renderProxy)
+	{
+		this.renderProxy = renderProxy;
+		return this;
+	}
+	
+	
+	public String getPasswordProtect()
+	{
+		return passwordProtect;
+	}
+
+	/**
+	 * If specified, this parameter will set the password for PDF and DOC files 
+	 * created by the render. The password is used when opening the document. 
+	 * Use with care as setting the password means the recipient must know the 
+	 * password to read the document.<br/> 
+	 * <b>Note</b>: pdfArchiveMode will disable any password setting for PDF documents.
+	 * 
+	 * @param passwordProtect the open-password for the output documents
+	 */
+	public void setPasswordProtect(String passwordProtect)
+	{
+		this.passwordProtect = passwordProtect;
+	}
+	
+	/**
+	 * If specified, this parameter will set the password for PDF and DOC files 
+	 * created by the render. The password is used when opening the document. 
+	 * Use with care as setting the password means the recipient must know the 
+	 * password to read the document.<br/> 
+	 * <b>Note</b>: pdfArchiveMode will disable any password setting for PDF documents.
+	 * 
+	 * @param passwordProtect the open-password for the output documents
+	 */
+	public RenderRequest passwordProtect(String passwordProtect)
+	{
+		this.passwordProtect = passwordProtect;
+		return this;
+	}
+
+	public String getPdfArchiveMode()
+	{
+		return pdfArchiveMode;
+	}
+
+	/**
+	 * Create pdf documents in PDF-A mode for long term storage. Note this setting 
+	 * disables certain PDF features such as password protection and external hyperlinks.
+	 * 
+	 * @param pdfArchiveMode "true" will enable pdf archive mode.
+	 */
+	public void setPdfArchiveMode(String pdfArchiveMode)
+	{
+		this.pdfArchiveMode = pdfArchiveMode;
+	}
+	
+	/**
+	 * Create pdf documents in PDF-A mode for long term storage. Note this setting 
+	 * disables certain PDF features such as password protection and external hyperlinks.
+	 * 
+	 * @param pdfArchiveMode "true" will enable pdf archive mode.
+	 */
+	public RenderRequest pdfArchiveMode(String pdfArchiveMode)
+	{
+		this.pdfArchiveMode = pdfArchiveMode;
+		return this;
+	}
+
+	public String getPdfWatermark()
+	{
+		return pdfWatermark;
+	}
+
+	/**
+	 * If specified, PDF documents will have the specified text added as a watermark across the document.
+	 * 
+	 * @param pdfWatermark the text to apply as a watermark
+	 */
+	public void setPdfWatermark(String pdfWatermark)
+	{
+		this.pdfWatermark = pdfWatermark;
+	}
+	
+	/**
+	 * If specified, PDF documents will have the specified text added as a watermark across the document.
+	 * 
+	 * @param pdfWatermark the text to apply as a watermark
+	 */
+	public RenderRequest pdfWatermark(String pdfWatermark)
+	{
+		this.pdfWatermark = pdfWatermark;
+		return this;
+	}
+
+	public String getPdfTagged()
+	{
+		return pdfTagged;
+	}
+
+	/**
+	 * If specified, the PDF documents will have extra information inserted to 
+	 * assist with low-vision readability tools. For example, alt-text for images 
+	 * in becomes "readable" by reader programs.
+	 * 
+	 * @param pdfTagged "true" to enable pdf-tagging
+	 */
+	public void setPdfTagged(String pdfTagged)
+	{
+		this.pdfTagged = pdfTagged;
+	}
+	
+	/**
+	 * If specified, the PDF documents will have extra information inserted to 
+	 * assist with low-vision readability tools. For example, alt-text for images 
+	 * in becomes "readable" by reader programs.
+	 * 
+	 * @param pdfTagged "true" to enable pdf-tagging
+	 */
+	public RenderRequest pdfTagged(String pdfTagged)
+	{
+		this.pdfTagged = pdfTagged;
+		return this;
+	}
+
+	/**
+	 * Get the maximum number of tries that should be attempted to service
+	 * this request when a server/network error occurs.
+	 * 
+	 * @return the number of tries configured.
+	 */
+	public int getMaxTries()
+	{
+		return maxTries;
+	}
+
+	/**
+	 * Set the maximum number of tries that should be made to service this request 
+	 * when a communications / server error occurs. 
+	 * 
+	 * @param maxTries the max tries.
+	 */
+	public void setMaxTries(int maxTries)
+	{
+		this.maxTries = maxTries;
+	}
+	
+	/**
+	 * Set the maximum number of tries that should be made to service this request 
+	 * when a communications / server error occurs. 
+	 * 
+	 * @param maxTries the max tries.
+	 */
+	public RenderRequest maxTries(int maxTries)
+	{
+		this.maxTries = maxTries;
+		return this;
+	}
+
+	/**
+	 * Get the retry delay (milliseconds) to apply when
+	 * a retry is required.
+	 * 
+	 * @return the configured retry delay
+	 */
+	public int getRetryDelay()
+	{
+		return retryDelayMS;
+	}
+
+	/**
+	 * Set the retry delay in milliseconds.
+	 * 
+	 * @param retryDelayMS in milliseconds
+	 */
+	public void setRetryDelay(int retryDelayMS)
+	{
+		this.retryDelayMS = retryDelayMS;
+	}
+	
+	/**
+	 * Set the retry delay in milliseconds.
+	 * 
+	 * @param retryDelayMS in milliseconds
+	 */
+	public RenderRequest retryDelay(int retryDelayMS)
+	{
+		this.retryDelayMS = retryDelayMS;
+		return this;
+	}
+
+	/**
+	 * Execute a render based on contained settings.
+     * <p>
+     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
+     *       to cleanup resources  
+	 * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws RendererException if a problem occurs invoking the service 
+	 */
+	public RenderResponse execute() throws RendererException
+	{
+		return Renderer.executeRender(this);
+	}
+	
+	/**
+	 * Execute a render based on contained settings.
+     * <p>
+     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
+     *       to cleanup resources  
+	 * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws RendererException if a problem occurs invoking the service 
+	 */
+	public RenderResponse execute(String url, String accessKey) throws RendererException
+	{
+		setUrl(url);
+		setAccessKey(accessKey);
+		return Renderer.executeRender(this);
+	}
+	
+	/**
+	 * Execute a render based on contained settings.
+     * <p>
+     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
+     *       to cleanup resources  
+	 * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws RendererException if a problem occurs invoking the service 
+	 */
+	public RenderResponse execute(String accessKey) throws RendererException
+	{
+		setAccessKey(accessKey);
+		return Renderer.executeRender(this);
+	}
+
+    /**
+     * Execute a render using current defaults (for url, accessKey and proxy) and specifying 
+     * a common set of parameters.
+     * This is a convenience method equivalent to:
+     * <pre>
+     *   setTemplateName(templateName);
+     *   setOutputName(outputName);
+     *   setData(data);
+     *   return execute();
+     * </pre>
+     * 
+     * <p>
+     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
+     *       to cleanup resources  
+     * 
+     * @param templateName
+     *            the location and name of the template within Docmosis Tornado.
+     * @param outputName
+     *            the output location and file name; this is relative to the
+     *            path of the current project.
+     * @param data
+     *            the data to inject into the Docmosis document; may be in JSON
+     *            or XML format.
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * @throws RendererException if a problem occurs invoking the service
+     */
+    public RenderResponse execute(final String templateName, final String outputName, final String data)
+            throws RendererException {
+        setTemplateName(templateName);
+        setOutputName(outputName);
+        setData(data);
+        
+        return execute();
+    }
+
+	@Override
+	public String toString()
+	{
+		return toString(false);
+	}
+    
+	public String toString(boolean includeData)
+	{
+		return "RenderRequest [renderUrl=" + renderUrl + ", accessKey="
+				+ accessKey + ", renderProxy=" + renderProxy
+				+ ", maxTries=" + maxTries + ", retryDelayMS=" + retryDelayMS
+				+ ", templateName=" + templateName + ", isSystemTemplate="
+				+ isSystemTemplate + ", outputName=" + outputName
+				+ ", outputFormat=" + outputFormat + ", compressSingleFormat="
+				+ compressSingleFormat + ", storeTo=" + storeTo
+				+ ", billingKey=" + billingKey + ", devMode=" + devMode
+				+ ", requestId=" + requestId
+				+ ", mailSubject=" + mailSubject + ", mailBodyHtml="
+				+ mailBodyHtml + ", mailBodyText=" + mailBodyText
+				+ ", mailNoZipAttachments=" + mailNoZipAttachments
+				+ ", sourceId=" + sourceId + ", stylesInText=" + stylesInText
+				+ ", passwordProtect=" + passwordProtect
+				+ ", pdfArchiveMode=" + pdfArchiveMode + ", pdfWatermark="
+				+ pdfWatermark + ", pdfTagged=" + pdfTagged 
+				+ (includeData ? ", data=" + data : "") 
+				+ "]";
+	}
+
+
+}
