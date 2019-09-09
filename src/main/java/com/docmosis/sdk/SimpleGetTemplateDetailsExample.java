@@ -18,6 +18,8 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetTemplateDetailsResponse;
 import com.docmosis.sdk.template.Template;
@@ -26,8 +28,8 @@ import com.docmosis.sdk.template.TemplateDetails;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * returns details about a template stored on the Docmosis cloud server
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about a template stored on the server.
  * 
  * How to use:
  * 
@@ -43,12 +45,8 @@ import com.docmosis.sdk.template.TemplateDetails;
 public class SimpleGetTemplateDetailsExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://dws2.docmosis.com/services/rs/getTemplateDetails";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String TEMPLATE_FILE = "samples/WelcomeTemplate.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -57,36 +55,29 @@ public class SimpleGetTemplateDetailsExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
+		
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetTemplateDetailsResponse templateDetails = null; //The response to the Get Template Details request.
+		GetTemplateDetailsResponse templateDetails =  Template
+														.getDetails()
+														.templateName(TEMPLATE_FILE)
+														.execute();
 
-		try {
-			
-			templateDetails = Template.getDetails()
-									.templateName("samples/WelcomeTemplate.docx")
-									.execute(URL, ACCESS_KEY);
-
-			if (templateDetails.hasSucceeded()) {
-				TemplateDetails template = templateDetails.getDetails();
-				System.out.println("Template Details:");
-				System.out.println("Template Name: " + template.getName());
-				System.out.println("Last Modified: " + template.getLastModifiedISO8601());
-				System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
-				//System.out.println(templateDetails.getAsJson());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Get Template Details failed: status="
-						+ templateDetails.getStatus()
-						+ " shortMsg="
-						+ templateDetails.getShortMsg()
-						+ ((templateDetails.getLongMsg() == null) ? "" : " longMsg="
-								+ templateDetails.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			templateDetails.cleanup();
+		if (templateDetails.hasSucceeded()) {
+			TemplateDetails template = templateDetails.getDetails();
+			System.out.println("Template Details:");
+			System.out.println("Template Name: " + template.getName());
+			System.out.println("Last Modified: " + template.getLastModifiedISO8601());
+			System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
+			//System.out.println(templateDetails.getAsJson());
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Get Template Details failed: status="
+					+ templateDetails.getStatus()
+					+ " shortMsg="
+					+ templateDetails.getShortMsg()
+					+ ((templateDetails.getLongMsg() == null) ? "" : " longMsg="
+							+ templateDetails.getLongMsg()));
 		}
 	}
 }

@@ -26,7 +26,11 @@ public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 	public GetTemplateStructureResponse() {
 		super();
 	}
-	
+
+	/**
+	 * 
+	 * @return Json representation of the templates structure
+	 */
 	public JsonObject getStructure() {
 		return templateStructure;
 	}

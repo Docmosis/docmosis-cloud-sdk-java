@@ -16,9 +16,12 @@
 package com.docmosis.sdk;
 
 
+import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.file.File;
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.PutFileResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
 
@@ -26,7 +29,10 @@ import com.docmosis.sdk.handlers.DocmosisException;
 /**
  * 
  * This example connects to the public Docmosis cloud server and 
- * uploads a file to store on the Docmosis cloud server
+ * uploads a file to store on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -42,15 +48,9 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimplePutFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	//private static final String URL = "https://dws2.docmosis.com/services/rs/putFile";
-	private static final String URL = "https://au.dws.docmosis.com/v3/api/putFile";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 	//Full path of File to be uploaded
-	private static final String FILE_TO_UPLOAD = "C:/example/myFile1.pdf";
+	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -59,35 +59,27 @@ public class SimplePutFileExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-
-		PutFileResponse uploadedFile = null; //The response to the Upload File request.
 		
-		try {
-			
-			java.io.File uploadFile = new java.io.File(FILE_TO_UPLOAD);
-			
-			uploadedFile = File.put()
-								.file(uploadFile)
-								.metaData("Test")
-								.execute(URL, ACCESS_KEY);
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
+		
+		File uploadFile = new File(FILE_TO_UPLOAD);
+		PutFileResponse uploadedFile = FileStorage
+										.put()
+										.file(uploadFile)
+										.metaData("Test")
+										.execute();
 
-			if (uploadedFile.hasSucceeded()) {
-				System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Put File failed: status="
-						+ uploadedFile.getStatus()
-						+ " shortMsg="
-						+ uploadedFile.getShortMsg()
-						+ ((uploadedFile.getLongMsg() == null) ? "" : " longMsg="
-								+ uploadedFile.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			//Close off http client and http response
-			uploadedFile.cleanup();
-		}		
+		if (uploadedFile.hasSucceeded()) {
+			System.out.println(uploadedFile.getShortMsg());
+			//System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Put File failed: status="
+					+ uploadedFile.getStatus()
+					+ " shortMsg="
+					+ uploadedFile.getShortMsg()
+					+ ((uploadedFile.getLongMsg() == null) ? "" : " longMsg="
+							+ uploadedFile.getLongMsg()));
+		}
 	}
 }

@@ -12,7 +12,6 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
 package com.docmosis.sdk;
 
 import java.io.File;
@@ -21,13 +20,14 @@ import java.io.IOException;
 import com.docmosis.sdk.convert.Converter;
 import com.docmosis.sdk.convert.ConverterException;
 import com.docmosis.sdk.convert.ConverterResponse;
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * converts the given document into a PDF which is then 
- * saved to the local file system.  
+ * This example connects to the public Docmosis cloud server and converts the 
+ * given document into a PDF which is then saved to the local file system.  
  * 
  * How to use:
  * 
@@ -44,16 +44,11 @@ public class SimpleCloudConvertExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 	// Set the name of the output file to create
 	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
 	// Set the path to the file you want to convert
-	private static final String FILE_TO_CONVERT = "C:\\Users\\Michelle\\Documents\\Support\\Smart Recruiters\\2019072510000164 SmartRecruiters Offer Letter Preview - FireEye\\OL-Saudi-Regular-MASTER_SMC_JM (1) Updated.docx";
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://dws2.docmosis.com/services/rs/convert";
+	private static final String FILE_TO_CONVERT = "C:/example/myTemplateFile.docx";
 
 	public static void main(String args[]) throws ConverterException,
 			IOException
@@ -63,39 +58,31 @@ public class SimpleCloudConvertExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
+		
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
 		//Set the file to be converted
 		File convertFile = new File(FILE_TO_CONVERT);
+		File outputFile = new File(OUTPUT_FILE_NAME);
+		ConverterResponse response = Converter
+									.convert()
+									.fileToConvert(convertFile)
+									.outputName(OUTPUT_FILE_NAME)
+									.sendTo(outputFile) //Or OutputStream
+									.execute();
 
-		ConverterResponse response = null; //The response to the Convert request.
+		if (response.hasSucceeded()) {
+			// great - convert succeeded.
+			System.out.println("Written:" + outputFile.getAbsolutePath());
 
-		try {
-			response = Converter.convert()
-							.fileToConvert(convertFile)
-							.outputName(OUTPUT_FILE_NAME)
-							.execute(URL, ACCESS_KEY);
-
-			if (response.hasSucceeded()) {
-				// great - convert succeeded.
-
-				// lets get the document out and put it in a file
-				File f = new File(OUTPUT_FILE_NAME);
-				response.sendDocumentTo(f);
-				System.out.println("Written:" + f.getAbsolutePath());
-
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Convert failed: status="
-						+ response.getStatus()
-						+ " shortMsg="
-						+ response.getShortMsg()
-						+ ((response.getLongMsg() == null) ? "" : " longMsg="
-								+ response.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			response.cleanup();
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Convert failed: status="
+					+ response.getStatus()
+					+ " shortMsg="
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

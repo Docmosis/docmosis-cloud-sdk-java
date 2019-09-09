@@ -15,6 +15,9 @@
 package com.docmosis.sdk.file;
 
 
+import java.io.File;
+
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -22,46 +25,43 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * The object holds the instructions and data for a request to the Put File service.
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the List request.
+ * are parameters for the Put File request.
  * 
- * Typically, you would use the File class to get an instance of this class, then
- * set the specifics you require using method chaining:
+ * Typically, you would use the FileStorage class to get an instance of this class, 
+ * then set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   PutFileResponse uploadedFile = File.put()
+ *   PutFileResponse uploadedFile = FileStorage
+ *   									.put()
  *   									.file(uploadFile)
- *   									.execute(URL, ACCESS_KEY);
- *   uploadedFile.toString();
+ *   									.execute();
+ *   if (uploadedFile.hasSucceeded()) {
+ *   	uploadedFile.toString();
+ *   }
  * </pre>
  */
 public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
-	
-	private static final long serialVersionUID = 4338222626030786768L;
-	
-	private java.io.File file = null;
+
+	private static final String SERVICE_PATH = "putFile";
+	private File file = null;
 	private String fileName;
 	private String contentType;
 	private String metaData;
 
 	public PutFileRequest() {
-		super(PutFileRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs" + "/putFile"); //Default url
-	}
-	
-	public PutFileRequest(String url) {
-		super(PutFileRequest.class, url);
+		super(SERVICE_PATH);
 	}
 
-	public PutFileRequest(String url, String accessKey) {
-		super(PutFileRequest.class, url, accessKey);
+	public PutFileRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
 	 * The file stream to upload.
 	 * @param file
 	 */
-	public java.io.File getFile() {
+	public File getFile() {
 		return file;
 	}
 
@@ -69,7 +69,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 * Set the file stream to upload.
 	 * @param file
 	 */
-	public void setFile(java.io.File file) {
+	public void setFile(File file) {
 		this.file = file;
 	}
 
@@ -77,9 +77,9 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 * Set the file stream to upload.
 	 * @param file
 	 */
-	public PutFileRequest file(java.io.File file) {
+	public PutFileRequest file(File file) {
 		this.file = file;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 */
 	public PutFileRequest fileName(String fileName) {
 		this.fileName = fileName;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 */
 	public PutFileRequest contentType(String contentType) {
 		this.contentType = contentType;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -160,31 +160,41 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 */
 	public PutFileRequest metaData(String metaData) {
 		this.metaData = metaData;
-		return self;
+		return getThis();
 	}
 
 	@Override
-	public String toString() {
-		return "PutFileRequest [" + super.toString() + ", file=" + file + ", fileName=" + fileName + ", contentType=" + contentType
-				+ ", metaData=" + metaData + "]";
-	}
-	
-	@Override
 	public PutFileResponse execute() throws DocmosisException {
-		return File.executePutFile(self);
+		return FileStorage.executePutFile(getThis());
 	}
 	
 	@Override
 	public PutFileResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return File.executePutFile(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executePutFile(getThis());
 	}
 	
 	@Override
 	public PutFileResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return File.executePutFile(self);
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executePutFile(getThis());
 	}
 
+	@Override
+	public PutFileResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return FileStorage.executePutFile(getThis());
+	}
+
+	@Override
+	protected PutFileRequest getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "PutFileRequest [file=" + file + ", fileName=" + fileName + ", contentType=" + contentType
+				+ ", metaData=" + metaData + ", " + super.toString() + "]";
+	}
 }

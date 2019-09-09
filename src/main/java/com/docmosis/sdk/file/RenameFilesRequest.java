@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.file;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -23,38 +24,33 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
- * Typically, you would use the File class to get an instance of this class, then
- * set the specifics you require using method chaining:
+ * Typically, you would use the FileStorage class to get an instance of this class, 
+ * then set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   RenameFileResponse renameFile = File.rename()
- *   									.fromPath(oldName)
- *   									.toPath(newName)
- *   									.execute(URL, ACCESS_KEY);
+ *  RenameFileResponse renameFile = FileStorage
+ *   								.rename()
+ *   								.fromPath(oldName)
+ *   								.toPath(newName)
+ *   								.execute();
  *   if (renameFile.hasSucceeded()) {
  *  	System.out.println(oldName + " renamed to " + newName);
  *  }
  * </pre>
  */
 public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest> {
-	
-	private static final long serialVersionUID = 4338222626030786768L;
-	
+
+	private static final String SERVICE_PATH = "renameFiles";
 	private String fromPath;
 	private String toPath;
 
 	public RenameFilesRequest() {
-		super(RenameFilesRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs" + "/renameFiles"); //Default url
-	}
-	
-	public RenameFilesRequest(String url) {
-		super(RenameFilesRequest.class, url);
+		super(SERVICE_PATH);
 	}
 
-	public RenameFilesRequest(String url, String accessKey) {
-		super(RenameFilesRequest.class, url, accessKey);
+	public RenameFilesRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -80,7 +76,7 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 */
 	public RenameFilesRequest fromPath(String fromPath) {
 		this.fromPath = fromPath;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -106,29 +102,40 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 */
 	public RenameFilesRequest toPath(String toPath) {
 		this.toPath = toPath;
-		return self;
-	}
-
-	@Override
-	public String toString() {
-		return "RenameFileRequest [" + super.toString() + ", fromPath=" + fromPath + ", toPath=" + toPath + "]";
+		return getThis();
 	}
 
 	@Override
 	public RenameFilesResponse execute() throws DocmosisException {
-		return File.executeRenameFiles(self);
+		return FileStorage.executeRenameFiles(getThis());
 	}
 	
 	@Override
 	public RenameFilesResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return File.executeRenameFiles(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executeRenameFiles(getThis());
 	}
 	
 	@Override
 	public RenameFilesResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return File.executeRenameFiles(self);
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executeRenameFiles(getThis());
+	}
+
+	@Override
+	public RenameFilesResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return FileStorage.executeRenameFiles(getThis());
+	}
+
+	@Override
+	protected RenameFilesRequest getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "RenameFileRequest [fromPath=" + fromPath + ", toPath=" + toPath + ", " + super.toString() + "]";
 	}
 }

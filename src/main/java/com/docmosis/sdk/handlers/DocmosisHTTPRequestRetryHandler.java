@@ -47,7 +47,7 @@ public class DocmosisHTTPRequestRetryHandler implements HttpRequestRetryHandler
 	@Override
     public boolean retryRequest(IOException exception, int executionCount, HttpContext context)
     {
-    	log.log(Level.FINE, "IOException. Try request: " + executionCount);
+    	log.log(Level.WARNING, "IOException. Try request: " + executionCount);
 
         if (executionCount >= maxRetrys) {
             // Do not retry if over max retry count

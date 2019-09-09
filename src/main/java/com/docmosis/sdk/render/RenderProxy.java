@@ -13,12 +13,14 @@
  *   limitations under the License.
  */
 package com.docmosis.sdk.render;
-
+//TODO: Delete
 import java.io.Serializable;
 
 /**
  * A simple class holding web-proxy information that can be used
  * when reaching the web services.
+ * 
+ * TODO - make this proxy class part of basic connectivity - not render specific.  Should be part of Envrionment.  
  */
 public class RenderProxy implements Serializable {
 

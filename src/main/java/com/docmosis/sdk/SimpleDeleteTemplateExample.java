@@ -17,15 +17,17 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.DeleteTemplateResponse;
 import com.docmosis.sdk.template.Template;
 
-
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * returns details about a template stored on the Docmosis cloud server
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about a template stored on the server. Note that multiple images 
+ * can be specified and deleted in one call.
  * 
  * How to use:
  * 
@@ -41,15 +43,10 @@ import com.docmosis.sdk.template.Template;
 public class SimpleDeleteTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://dws2.docmosis.com/services/rs/deleteTemplate";
+	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!!
 	//Full path of File(s) to be deleted
 	private static final String FIRST_FILE_TO_DELETE = "myTemplateFile.docx";
-	private static final String SECOND_FILE_TO_DELETE = "myOtherTemplateFile.docx";
+	//private static final String SECOND_FILE_TO_DELETE = "myOtherTemplateFile.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -58,34 +55,28 @@ public class SimpleDeleteTemplateExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
+		
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		DeleteTemplateResponse deleteTemplate = null; //The response to the Delete Template request.
+		DeleteTemplateResponse deleteTemplate = Template
+												.delete()
+												.addTemplateName(FIRST_FILE_TO_DELETE)
+												//.addTemplateName(SECOND_FILE_TO_DELETE)
+												.execute();
 
-		try {
-			
-			deleteTemplate = Template.delete()
-									.addTemplateName(FIRST_FILE_TO_DELETE)
-									.addTemplateName(SECOND_FILE_TO_DELETE)
-									.execute(URL, ACCESS_KEY);
-
-			if (deleteTemplate.hasSucceeded()) {
-				System.out.println(deleteTemplate.getShortMsg());
-				System.out.println("Successfully deleted " + FIRST_FILE_TO_DELETE);
-				System.out.println("Successfully deleted " + SECOND_FILE_TO_DELETE);
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Delete Template failed: status="
-						+ deleteTemplate.getStatus()
-						+ " shortMsg="
-						+ deleteTemplate.getShortMsg()
-						+ ((deleteTemplate.getLongMsg() == null) ? "" : " longMsg="
-								+ deleteTemplate.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			deleteTemplate.cleanup();
+		if (deleteTemplate.hasSucceeded()) {
+			System.out.println(deleteTemplate.getShortMsg());
+			System.out.println("Successfully deleted " + FIRST_FILE_TO_DELETE);
+			//System.out.println("Successfully deleted " + SECOND_FILE_TO_DELETE);
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Delete Template failed: status="
+					+ deleteTemplate.getStatus()
+					+ " shortMsg="
+					+ deleteTemplate.getShortMsg()
+					+ ((deleteTemplate.getLongMsg() == null) ? "" : " longMsg="
+							+ deleteTemplate.getLongMsg()));
 		}
+
 	}
 }

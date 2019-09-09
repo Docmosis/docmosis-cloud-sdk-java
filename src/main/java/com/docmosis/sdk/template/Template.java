@@ -18,7 +18,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,11 +26,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -59,7 +55,9 @@ public class Template {
 	 */
 	public static ListTemplatesRequest list()
 	{
-		return new ListTemplatesRequest();
+		final ListTemplatesRequest req = new ListTemplatesRequest();
+		
+		return req;
 	}
 
 	/**
@@ -68,7 +66,9 @@ public class Template {
 	 */
 	public static GetTemplateDetailsRequest getDetails()
 	{
-		return new GetTemplateDetailsRequest();
+		final GetTemplateDetailsRequest req = new GetTemplateDetailsRequest();
+		
+		return req;
 	}
 
 	/**
@@ -77,7 +77,9 @@ public class Template {
 	 */
 	public static GetTemplateStructureRequest getStructure()
 	{
-		return new GetTemplateStructureRequest();
+		final GetTemplateStructureRequest req = new GetTemplateStructureRequest();
+		
+		return req;
 	}
 
 	/**
@@ -86,7 +88,9 @@ public class Template {
 	 */
 	public static GetTemplateRequest get()
 	{
-		return new GetTemplateRequest();
+		final GetTemplateRequest req = new GetTemplateRequest();
+		
+		return req;
 	}
 
 	/**
@@ -95,7 +99,9 @@ public class Template {
 	 */
 	public static UploadTemplateRequest upload()
 	{
-		return new UploadTemplateRequest();
+		final UploadTemplateRequest req = new UploadTemplateRequest();
+		
+		return req;
 	}
 
 	/**
@@ -104,7 +110,9 @@ public class Template {
 	 */
 	public static DeleteTemplateRequest delete()
 	{
-		return new DeleteTemplateRequest();
+		final DeleteTemplateRequest req = new DeleteTemplateRequest();
+		
+		return req;
 	}
 
 	/**
@@ -113,73 +121,59 @@ public class Template {
 	 */
 	public static GetSampleDataRequest getSampleData()
 	{
-		return new GetSampleDataRequest();
+		final GetSampleDataRequest req = new GetSampleDataRequest();
+		
+		return req;
 	}
 
 	/**
 	 * Execute a listTemplates request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static ListTemplatesResponse executelist(ListTemplatesRequest request) throws DocmosisException
+	public static ListTemplatesResponse executelist(ListTemplatesRequest request) throws TemplateException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new TemplateException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "listTemplates(" + request.toString() + ")");
-		
+
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
-	    HttpEntity payload = builder.build();
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    ListTemplatesResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+
+		HttpEntity payload = builder.build();
+	    ListTemplatesResponse response = new ListTemplatesResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractListTemplatesResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+	
+			    	response.setTemplateListStale(Boolean.parseBoolean(jsonObject.get("templateListStale").getAsString()));
+					Type listType = new TypeToken<List<TemplateDetails>>() {}.getType();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					List<TemplateDetails> templates = gson.fromJson(jsonObject.get("templateList"), listType);
+					response.setTemplates(templates);
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+	    	}
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new TemplateException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in ListTemplatesResponse object.
-	 */
-	private static ListTemplatesResponse extractListTemplatesResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		ListTemplatesResponse response = new ListTemplatesResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Template Details from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-
-			response.setTemplateListStale(Boolean.parseBoolean(jsonObject.get("templateListStale").getAsString()));
-			
-			Type listType = new TypeToken<List<TemplateDetails>>() {}.getType();
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
-			List<TemplateDetails> templates = gson.fromJson(jsonObject.get("templateList"), listType);
-			response.setTemplates(templates);
-    	}
-    	
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-    	
 		return response;
 	}
 
@@ -187,10 +181,17 @@ public class Template {
 	 * Execute a getTemplateDetails request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws DocmosisException
+	public static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws TemplateException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new TemplateException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getTemplateDetails(" + request.toString() + ")");
 		
 		//Build request
@@ -198,60 +199,37 @@ public class Template {
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
 		if (request.getTemplateName() != null) {
 			builder.addTextBody("templateName", request.getTemplateName());
 		}
 		else {
-			throw new DocmosisException("No Template Name specified.");
+			throw new TemplateException("No Template Name specified.");
 		}
 		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
+
 	    HttpEntity payload = builder.build();
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    GetTemplateDetailsResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    GetTemplateDetailsResponse response = new GetTemplateDetailsResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractGetTemplateDetailsResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					TemplateDetails template = gson.fromJson(jsonObject.get("templateDetails"), TemplateDetails.class);
+					response.setTemplateDetails(template);
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+		    }
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new TemplateException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in GetTemplateDetailsResponse object.
-	 */
-	private static GetTemplateDetailsResponse extractGetTemplateDetailsResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		GetTemplateDetailsResponse response = new GetTemplateDetailsResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Template Details from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-			
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
-			TemplateDetails template = gson.fromJson(jsonObject.get("templateDetails"), TemplateDetails.class);
-			response.setTemplateDetails(template);
-			
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
 		return response;
 	}
 
@@ -259,69 +237,53 @@ public class Template {
 	 * Execute a getTemplateStructure request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws DocmosisException
+	public static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws TemplateException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new TemplateException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getTemplateStructure(" + request.toString() + ")");
-		
+    	
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
 		if (request.getTemplateName() != null) {
 			builder.addTextBody("templateName", request.getTemplateName());
 		}
 		else {
-			throw new DocmosisException("No Template Name specified.");
+			throw new TemplateException("No Template Name specified.");
 		}
+
 	    HttpEntity payload = builder.build();
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    GetTemplateStructureResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    GetTemplateStructureResponse response = new GetTemplateStructureResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractGetTemplateStructureResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					JsonObject template = jsonObject.getAsJsonObject("templateStructure");
+					response.setTemplateStructure(template);
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+		    }
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new TemplateException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in GetTemplateStructureResponse object.
-	 */
-	private static GetTemplateStructureResponse extractGetTemplateStructureResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		GetTemplateStructureResponse response = new GetTemplateStructureResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Template Structure from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-			
-			JsonObject template = jsonObject.getAsJsonObject("templateStructure");
-			response.setTemplateStructure(template);
-			
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
 		return response;
 	}
 	
@@ -329,26 +291,33 @@ public class Template {
 	 * Execute an uploadTemplate request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */	
-	public static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws DocmosisException
+	public static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws TemplateException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new TemplateException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "uploadTemplate(" + request.toString() + ")");
-		
+    	
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
-
 		if (request.getTemplateFile() != null) {
-			builder.addBinaryBody("templateFile", request.getTemplateFile(), ContentType.APPLICATION_OCTET_STREAM, request.getTemplateFile().getName());
-		}
-		else {
-			throw new DocmosisException("No Template File specified.");
+			if (request.getTemplateFile().canRead()) {
+				builder.addBinaryBody("templateFile", request.getTemplateFile(), ContentType.APPLICATION_OCTET_STREAM, request.getTemplateFile().getName());
+			} else {
+				throw new TemplateException("cannot read template: ["
+	                    + request.getTemplateFile() + "]");
+			}
+		} else {
+			throw new TemplateException("No template selected");
 		}
 		if (request.getTemplateName() != null) {
 			builder.addTextBody("templateName", request.getTemplateName());
@@ -362,49 +331,28 @@ public class Template {
 		builder.addTextBody("normalizeTemplateName", String.valueOf(request.getNormalizeTemplateName()));
 
 		HttpEntity payload = builder.build();
-
-	    CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    UploadTemplateResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    UploadTemplateResponse response = new UploadTemplateResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractUploadTemplateResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					TemplateDetails template = gson.fromJson(jsonObject.get("templateDetails"), TemplateDetails.class);
+					response.setTemplateDetails(template);
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+		    }
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new TemplateException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in UploadTemplateResponse object.
-	 */
-	private static UploadTemplateResponse extractUploadTemplateResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		UploadTemplateResponse response = new UploadTemplateResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Template Details from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-			
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
-			TemplateDetails template = gson.fromJson(jsonObject.get("templateDetails"), TemplateDetails.class);
-			response.setTemplateDetails(template);
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
 		return response;
 	}
 
@@ -412,10 +360,17 @@ public class Template {
 	 * Execute a deleteTemplate request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws DocmosisException
+	public static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws TemplateException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new TemplateException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "deleteTemplate(" + request.toString() + ")");
 		
 		//Build request
@@ -423,9 +378,6 @@ public class Template {
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
 		if (request.getTemplateNames() != null) {
 			List<String> templateNames = request.getTemplateNames();
 			for(String templateName : templateNames) {
@@ -433,53 +385,32 @@ public class Template {
 			}
 		}
 		else {
-			throw new DocmosisException("No Template Name specified.");
+			throw new TemplateException("No Template Name specified.");
 		}
 		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
 	    
 		HttpEntity payload = builder.build();
-		
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    DeleteTemplateResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    DeleteTemplateResponse response = new DeleteTemplateResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractDeleteTemplateResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					JsonElement shortMsg = jsonObject.get("shortMsg");
+					response.setShortMsg(shortMsg.getAsString());
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+	    	}
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new TemplateException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in DeleteTemplateResponse object.
-	 */
-	private static DeleteTemplateResponse extractDeleteTemplateResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		DeleteTemplateResponse response = new DeleteTemplateResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Template Details from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-			
-			JsonElement shortMsg = jsonObject.get("shortMsg");
-			response.setShortMsg(shortMsg.getAsString());
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
 		return response;
 	}
 
@@ -487,10 +418,17 @@ public class Template {
 	 * Execute a getTemplate request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws DocmosisException
+	public static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws TemplateException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new TemplateException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getTemplate(" + request.toString() + ")");
 		
 		//Build request
@@ -498,9 +436,6 @@ public class Template {
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
 		if (request.getTemplateNames() != null) {
 			List<String> templateNames = request.getTemplateNames();
 			for(String templateName : templateNames) {
@@ -508,48 +443,20 @@ public class Template {
 			}
 		}
 		else {
-			throw new DocmosisException("No Template Name specified.");
+			throw new TemplateException("No Template Name specified.");
 		}
 		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
 	    
 		HttpEntity payload = builder.build();
-		
-	    CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    GetTemplateResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    GetTemplateResponse response = new GetTemplateResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractGetTemplateResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new TemplateException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in GetTemplateResponse object.
-	 */
-	private static GetTemplateResponse extractGetTemplateResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		GetTemplateResponse response = new GetTemplateResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			response.setDocument(chResponse.getEntity().getContent());
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
 		return response;
 	}
 
@@ -557,10 +464,17 @@ public class Template {
 	 * Execute a getSampleData request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws DocmosisException
+	public static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws TemplateException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new TemplateException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getSampleData(" + request.toString() + ")");
 		
 		//Build request
@@ -568,14 +482,11 @@ public class Template {
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
 		if (request.getTemplateName() != null) {
 			builder.addTextBody("templateName", request.getTemplateName());
 		}
 		else {
-			throw new DocmosisException("No Template Name specified.");
+			throw new TemplateException("No Template Name specified.");
 		}
 		if (request.getFormat() != null) {
 			builder.addTextBody("format", request.getFormat());
@@ -585,78 +496,58 @@ public class Template {
 		}
 	    HttpEntity payload = builder.build();
 
-	    CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    GetSampleDataResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    GetSampleDataResponse response = new GetSampleDataResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractGetSampleDataResponse(chResponse, request.getUrl(), request.isFormatJson(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+		    	if (responseString != null && responseString.length() > 0) {
+		    		JsonElement jsonElement = new JsonParser().parse(responseString).getAsJsonObject().get("templateSampleData");
+					
+					//Remove escape characters
+					String templateSampleDataStr = jsonElement.toString();
+					templateSampleDataStr = templateSampleDataStr.replace("\\n", "").replace("\\r", "").replace("\\", "").replace(" ", "");
+					templateSampleDataStr = templateSampleDataStr.substring(1, templateSampleDataStr.length()-1);
+					
+					if (request.isFormatJson()) { //Convert String to JsonObject
+						JsonObject templateSampleData = new JsonParser().parse(templateSampleDataStr).getAsJsonObject();
+						response.setSampleDataJson(templateSampleData);
+					}
+					else { //Convert String to XMLObject
+						try {
+					        // Turn xml string into a document
+					        Document document = DocumentBuilderFactory.newInstance()
+					                .newDocumentBuilder()
+					                .parse(new InputSource(new ByteArrayInputStream(templateSampleDataStr.getBytes("utf-8"))));
+					        
+					        // Remove whitespaces outside tags
+					        document.normalize();
+					        XPath xPath = XPathFactory.newInstance().newXPath();
+					        NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
+					                                                      document,
+					                                                      XPathConstants.NODESET);
+	
+					        for (int i = 0; i < nodeList.getLength(); ++i) {
+					            Node node = nodeList.item(i);
+					            node.getParentNode().removeChild(node);
+					        }
+					        response.setSampleDataXml(document);
+						} catch (Exception e) {
+					        throw new RuntimeException(e);
+					    }
+					}
+					response.setJson(request.isFormatJson()); //Set isJson boolean
+		    	} else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+	    	}
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new TemplateException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in GetSampleDataResponse object.
-	 */
-	private static GetSampleDataResponse extractGetSampleDataResponse(CloseableHttpResponse chResponse, String url, boolean isJson, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException, RuntimeException
-	{
-		GetSampleDataResponse response = new GetSampleDataResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Template Data from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonElement jsonElement = new JsonParser().parse(jsonString).getAsJsonObject().get("templateSampleData");
-			
-			//Remove escape characters
-			String templateSampleDataStr = jsonElement.toString();
-			templateSampleDataStr = templateSampleDataStr.replace("\\n", "").replace("\\", "").replace(" ", "");
-			templateSampleDataStr = templateSampleDataStr.substring(1, templateSampleDataStr.length()-1);
-			
-			if (isJson) { //Convert String to JsonObject
-				JsonObject templateSampleData = new JsonParser().parse(templateSampleDataStr).getAsJsonObject();
-				response.setSampleDataJson(templateSampleData);
-			}
-			else { //Convert String to XMLObject
-				try {
-			        // Turn xml string into a document
-			        Document document = DocumentBuilderFactory.newInstance()
-			                .newDocumentBuilder()
-			                .parse(new InputSource(new ByteArrayInputStream(templateSampleDataStr.getBytes("utf-8"))));
-			        
-			        // Remove whitespaces outside tags
-			        document.normalize();
-			        XPath xPath = XPathFactory.newInstance().newXPath();
-			        NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
-			                                                      document,
-			                                                      XPathConstants.NODESET);
-
-			        for (int i = 0; i < nodeList.getLength(); ++i) {
-			            Node node = nodeList.item(i);
-			            node.getParentNode().removeChild(node);
-			        }
-			        response.setSampleDataXml(document);
-				} catch (Exception e) {
-			        throw new RuntimeException(e);
-			    }
-			}
-			response.setJson(isJson); //Set isJson boolean
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
 		return response;
 	}
 }

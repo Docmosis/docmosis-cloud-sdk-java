@@ -31,6 +31,10 @@ public class GetSampleDataResponse extends DocmosisCloudResponse {
 		super();
 	}
 
+	/**
+	 * 
+	 * @return Sample Data in Json format
+	 */
 	public JsonObject getSampleDataJson() {
 		return sampleDataJson;
 	}
@@ -39,6 +43,10 @@ public class GetSampleDataResponse extends DocmosisCloudResponse {
 		this.sampleDataJson = sampleDataJson;
 	}
 
+	/**
+	 * 
+	 * @return Sample Data in XML format
+	 */
 	public Document getSampleDataXml() {
 		return sampleDataXml;
 	}
@@ -53,6 +61,14 @@ public class GetSampleDataResponse extends DocmosisCloudResponse {
 
 	public void setJson(boolean isJson) {
 		this.isJson = isJson;
+	}
+
+	/**
+	 * Returns the Json / XML data as a formatted String for display
+	 * @return Formatted String of the Sample Data
+	 */
+	public String getSampleDataString() {
+		return toString();
 	}
 
 	@Override

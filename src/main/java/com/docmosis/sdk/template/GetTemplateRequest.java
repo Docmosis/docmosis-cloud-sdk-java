@@ -14,65 +14,154 @@
  */
 package com.docmosis.sdk.template;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Template service.
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Render request.
+ * are parameters for the Get Template request.
  * 
  * Typically, you would use the Template class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   GetTemplateResponse getTemplate = Template.get()
- *											.addTemplateName(fileToGet)
- *											.execute(URL, ACCESS_KEY);
+ *   GetTemplateResponse getTemplate = Template
+ *   									.get()
+ *										.addTemplateName(fileToGet)
+ *										.sendTo(outputFileOrStream)
+ *										.execute();
  *  if (getTemplate.hasSucceeded()) {
- *  		File f = new File(fileToGet);
- *			getTemplate.sendDocumentTo(f);
+ *  	//File saved to outputFileOrStream
  *  }
  * </pre>
  */
-public class GetTemplateRequest extends AbstractTemplateListRequest<GetTemplateRequest> {
-
-	private static final long serialVersionUID = 4338222626030786768L;
+public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequest> {
+	
+	private static final String SERVICE_PATH = "getTemplate";
+	private boolean isSystemTemplate = false;
+	private List<String> templateNames = null;
 	
 	public GetTemplateRequest() {
-		super(GetTemplateRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/getTemplate"); //Default url
+		super(SERVICE_PATH);
+		templateNames = new ArrayList<String>();
 	}
 	
-	public GetTemplateRequest(String url) {
-		super(GetTemplateRequest.class, url);
+	public GetTemplateRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
+		templateNames = new ArrayList<String>();
 	}
 
-	public GetTemplateRequest(String url, String accessKey) {
-		super(GetTemplateRequest.class, url, accessKey);
+	/**
+	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @return isSystemTemplate flag
+	 */
+	public boolean getIsSystemTemplate() {
+		return isSystemTemplate;
 	}
 
-	@Override
-	public String toString() {
-		return "GetTemplateRequest [" + super.toString() + "]";
+	/**
+	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 */
+	public void setSystemTemplate(boolean isSystemTemplate) {
+		this.isSystemTemplate = isSystemTemplate;
+	}
+	
+	/**
+	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 */
+	public GetTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
+		this.isSystemTemplate = isSystemTemplate;
+		return getThis();
+	}
+	
+	/**
+	 * Get the currently set templateNames.
+	 * 
+	 * @return List of the name of the Templates on the docmosis server.
+	 */
+	public List<String> getTemplateNames() {
+		return templateNames;
+	}
+	
+	/**
+	 * Set the Template Names.
+	 * 
+	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 */
+	public void setTemplateNames(List<String> templateNames) {
+		this.templateNames = templateNames;
+	}
+	
+	/**
+	 * Set the Template Names.
+	 * 
+	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 */
+	public GetTemplateRequest templateNames(List<String> templateNames) {
+		this.templateNames = templateNames;
+		return getThis();
 	}
 
+	/**
+	 * Add a Template Name.
+	 * 
+	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 */
+	public GetTemplateRequest addTemplateName(String templateName) {
+		this.templateNames.add(templateName);
+		return getThis();
+	}
+	
 	@Override
 	public GetTemplateResponse execute() throws DocmosisException {
-		return Template.executeGetTemplate(self);
+		return Template.executeGetTemplate(getThis());
 	}
 	
 	@Override
 	public GetTemplateResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Template.executeGetTemplate(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeGetTemplate(getThis());
 	}
 	
 	@Override
 	public GetTemplateResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Template.executeGetTemplate(self);
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeGetTemplate(getThis());
+	}
+	
+	@Override
+	public GetTemplateResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Template.executeGetTemplate(getThis());
+	}
+	
+	@Override
+	protected GetTemplateRequest getThis()
+	{
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		String names = "(";
+		if (templateNames != null) {
+			for (String tn: templateNames) {
+				names += tn + "; ";
+			}
+			names = names.substring(0, names.length()-2) + ")";
+		}
+		return "GetTemplateRequest [isSystemTemplate=" + isSystemTemplate + ", templateNames=" + names +  ", " + super.toString() +  "]";
 	}
 }

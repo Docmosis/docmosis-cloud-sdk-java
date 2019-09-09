@@ -14,20 +14,18 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.localserver.LocalServerTestBase;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpRequestHandler;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.render.RenderRequest;
-import com.docmosis.sdk.render.RenderRequestFactory;
 import com.docmosis.sdk.render.RenderResponse;
-import com.google.gson.Gson;
+import com.docmosis.sdk.render.Renderer;
 
 import junit.framework.TestCase;
 
 public class RendererTest extends TestCase {
 
-	private static final String ACCESS_KEY = "NTEyNjUyNTktN2QxYy00ZDRmLWE3ZjAtOTZkODFlODI0NmZhOjk2NTY2MTg";
+	private static final String ACCESS_KEY = "XXX"; //TODO Delete
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 	private static final String OUTPUT_FORMAT = "pdf";
 	private static final String OUTPUT_FILE = "output_cloud." + OUTPUT_FORMAT;
@@ -43,10 +41,11 @@ public class RendererTest extends TestCase {
     {
 		TestServer ts = new TestServer();
 		try {
-			String url = ts.build(HttpStatus.SC_OK, "Test");
-			RenderRequest req = RenderRequestFactory.getRequest(ACCESS_KEY, url);
+			String url = ts.build(HttpStatus.SC_NOT_FOUND, "Test");
+			Environment.setDefaults(url, ACCESS_KEY);
+			RenderRequest req = Renderer.render();
 			RenderResponse response = req.execute(TEMPLATE_NAME, OUTPUT_FILE,"test Data");
-			assert(response.hasSucceeded());
+			assertFalse(response.hasSucceeded());
 		}
 		catch (Exception e){
 			System.out.println("Error: " + e.getMessage());
@@ -69,7 +68,7 @@ public class RendererTest extends TestCase {
 		}
     }
 	public static class TestServer extends LocalServerTestBase {
-		
+		 HttpHost httpHost;
 	    private String startServer(String urlSuffix, HttpRequestHandler handler) throws Exception{
 	    	this.start();
 	        this.serverBootstrap.registerHandler(urlSuffix, handler);
@@ -81,8 +80,8 @@ public class RendererTest extends TestCase {
 	    public String build(int status, String responseContent) throws Exception{
 	    	this.setUp();
 	        String baseURL = startServer("/api", new myHttpRequestHandler(status, responseContent));
-	        HttpClient httpClient;
-	        httpClient = HttpClients.custom().build();
+	        HttpClient httpClient = HttpClients.custom().build();
+	        httpHost = start();
 	        return baseURL + "/api";
 	    }
 	    public static class myHttpRequestHandler implements HttpRequestHandler
@@ -99,6 +98,7 @@ public class RendererTest extends TestCase {
             public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
                 response.setStatusCode(status);
                 response.setEntity(new StringEntity(responseContent));
+                response.setHeader("Server", "Docmosis");
             }
         }
 	}

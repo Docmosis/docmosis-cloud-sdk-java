@@ -12,8 +12,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.docmosis.sdk.render;
+package com.docmosis.sdk.rendertags;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -28,12 +29,13 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   GetRenderTagsResponse renderTags = Renderer.getRenderTags()
- *   											.tags("list;of;tags;")
- *   											.year(2019)
- *   											.month(6)
- *   											.nMonths(2)
- *   											.execute(URL, ACCESS_KEY);
+ *   GetRenderTagsResponse renderTags = RenderTags
+ *   									.get()
+ *   									.tags("list;of;tags;")
+ *   									.year(2019)
+ *   									.month(6)
+ *   									.nMonths(2)
+ *   									.execute();
  *   List<RenderTags> list = renderTags.list();
  *   for(RenderTags rt : list) {
  *    ...
@@ -41,9 +43,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * </pre>
  */
 public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequest> {
-
-	private static final long serialVersionUID = 4338222626030786768L;
 	
+	private static final String SERVICE_PATH = "getRenderTags";
 	private String tags;
 	private int year;
 	private int month;
@@ -52,16 +53,11 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	
 	
 	public GetRenderTagsRequest() {
-		super(GetRenderTagsRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs" + "/getRenderTags"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public GetRenderTagsRequest(String url) {
-		super(GetRenderTagsRequest.class, url);
-	}
-
-	public GetRenderTagsRequest(String url, String accessKey) {
-		super(GetRenderTagsRequest.class, url, accessKey);
+	public GetRenderTagsRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -86,7 +82,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 */
 	public GetRenderTagsRequest tags(String tags) {
 		this.tags = tags;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -115,7 +111,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 		if (year > 2000 && year < 2050) {
 			this.year = year;
 		}
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -144,7 +140,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 		if (month > 0 && month < 13) {
 			this.month = month;
 		}
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -175,7 +171,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 */
 	public GetRenderTagsRequest nMonths(int nMonths) {
 		this.nMonths = nMonths;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -208,30 +204,41 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 */
 	public GetRenderTagsRequest padBlanks(boolean padBlanks) {
 		this.padBlanks = padBlanks;
-		return self;
+		return getThis();
 	}
 
 	@Override
-	public String toString() {
-		return "GetRenderTagsRequest [" + super.toString() + ", tags=" + tags + ", year=" + year + ", month=" + month + ", nMonths=" + nMonths
-				+ ", padBlanks=" + padBlanks + "]";
-	}
-	
-	@Override
 	public GetRenderTagsResponse execute() throws DocmosisException {
-		return Renderer.executeGetRenderTags(self);
+		return RenderTags.executeGetRenderTags(getThis());
 	}
 	
 	@Override
 	public GetRenderTagsResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Renderer.executeGetRenderTags(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return RenderTags.executeGetRenderTags(getThis());
 	}
 	
 	@Override
 	public GetRenderTagsResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Renderer.executeGetRenderTags(self);
+		getEnvironment().setAccessKey(accessKey);
+		return RenderTags.executeGetRenderTags(getThis());
+	}
+
+	@Override
+	public GetRenderTagsResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return RenderTags.executeGetRenderTags(getThis());
+	}
+
+	@Override
+	protected GetRenderTagsRequest getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "GetRenderTagsRequest [tags=" + tags + ", year=" + year + ", month=" + month + ", nMonths=" + nMonths
+				+ ", padBlanks=" + padBlanks + ", " + super.toString() + "]";
 	}
 }

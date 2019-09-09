@@ -15,68 +15,52 @@
 package com.docmosis.sdk.convert;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
 
-import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.image.Image;
-import com.docmosis.sdk.image.ListImagesRequest;
-import com.docmosis.sdk.image.ListImagesResponse;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.render.RenderResponse;
-import com.docmosis.sdk.request.DocmosisCloudRequest;
+import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
- * The object holds the instructions and data for the convert request.
+ * The object holds the instructions and data for a request to the Convert service.
+ * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * for details about the settings for the request.  The properties set in this class 
+ * are parameters for the Convert request.
+ * 
+ * Typically, you would use the Converter class to get an instance of this class, then
+ * set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   RenderRequest request = RenderRequestFactory.getRequest(accessKey);
- *   
- *   request.setTemplateName("samples/WelcomeTemplate.doc");
- *   request.setOutputName("result.pdf");
- *   
- *   // stream is the default - which means send the result back to the caller
- *   request.setstoreTo("stream");
- *   
- *   RenderResponse response = request.execute();
- *   
- *   // process response
+ *   ConverterResponse response = Converter
+ *									.convert()
+ *									.fileToConvert(convertFile)
+ *									.outputName(outputFileName)
+ *									.sendTo(outputFileOrStream)
+ *									.execute();
+ *   if (response.hasSucceeded()) {
+ *		//File converted and saved to outputFileOrStream
+ *	 }
  *   ...
  * </pre>
  */
-//TODO Update Java Doc Above
-public class ConverterRequest extends DocmosisCloudRequest<ConverterRequest> {
-
-    private static final long serialVersionUID = 4338222626030786768L;
+public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest> {
     
-    // settings that change more frequently.
-    private File fileToConvert;
+	private static final String SERVICE_PATH = "convert";
+	private File fileToConvert;
     private String outputName;
     
     public ConverterRequest() {
-    	super(ConverterRequest.class);
-    	setUrl("https://dws2.docmosis.com/services/rs/convert"); //Default url
+    	super(SERVICE_PATH);
     }
     
     /**
-     * Construct a new request with the specified end point url.
+     * Construct a new request with the specified environment.
      * 
-     * @param converterUrl the url to the converter service.
+     * @param Environment environment object specifying the Cloud/Tornado service url and accesskey
      */
-    public ConverterRequest(String converterUrl)
+    public ConverterRequest(final Environment environment)
     {
-    	super(ConverterRequest.class, converterUrl);
-    }
-    
-    /**
-     * Construct a new request with the specified end point url and access key.
-     * 
-     * @param converterUrl the url to the converter service.
-     * @param accessKey the access key to use for the render
-     */
-    public ConverterRequest(String converterUrl, String accessKey)
-    {
-    	super(ConverterRequest.class, converterUrl, accessKey);
+    	super(SERVICE_PATH, environment);
     }    
 
     public String getOutputName() {
@@ -101,7 +85,7 @@ public class ConverterRequest extends DocmosisCloudRequest<ConverterRequest> {
      */
     public ConverterRequest outputName(String outputName) {
         this.outputName = outputName;
-        return self;
+        return getThis();
     }
 
     
@@ -118,7 +102,7 @@ public class ConverterRequest extends DocmosisCloudRequest<ConverterRequest> {
 	public ConverterRequest fileToConvert(File fileToConvert)
 	{
 		this.fileToConvert = fileToConvert;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -135,26 +119,37 @@ public class ConverterRequest extends DocmosisCloudRequest<ConverterRequest> {
 	@Override
 	public ConverterResponse execute() throws ConverterException
 	{
-		return Converter.executeConvert(self);
+		return Converter.executeConvert(getThis());
 	}
 
 	@Override
 	public ConverterResponse execute(String url, String accessKey) throws ConverterException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Converter.executeConvert(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Converter.executeConvert(getThis());
 	}
 	
 	@Override
 	public ConverterResponse execute(String accessKey) throws ConverterException {
-		self.setAccessKey(accessKey);
-		return Converter.executeConvert(self);
+		getEnvironment().setAccessKey(accessKey);
+		return Converter.executeConvert(getThis());
+	}
+	
+	@Override
+	public ConverterResponse execute(Environment environment) throws ConverterException {
+		super.setEnvironment(environment);
+		return Converter.executeConvert(getThis());
+	}
+
+	@Override
+	protected ConverterRequest getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "ConverterRequest [" + super.toString() + ", fileToConvert="
-				+ fileToConvert + ", outputName=" + outputName + "]";
+		return "ConverterRequest [fileToConvert="
+				+ fileToConvert + ", outputName=" + outputName + ", " + super.toString() + "]";
 	}
 }

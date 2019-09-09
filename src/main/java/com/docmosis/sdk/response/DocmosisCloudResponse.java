@@ -15,7 +15,6 @@
 package com.docmosis.sdk.response;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,8 +27,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -54,8 +51,6 @@ public class DocmosisCloudResponse
 	private String serverId;
 	private int tries;
 	private PreviousFailureInformation prevFailureInfo;
-	private CloseableHttpClient clientHTTP = null;
-	private CloseableHttpResponse responseHttp = null;
 	
 	/**
 	 * Determine if convert request succeeded.
@@ -157,43 +152,6 @@ public class DocmosisCloudResponse
 	public void setPreviousFailureInformation(PreviousFailureInformation failureInfo)
 	{
 		this.prevFailureInfo = failureInfo;
-	}
-
-	public void setClientHTTP(CloseableHttpClient clientHTTP) {
-		this.clientHTTP = clientHTTP;
-	}
-
-	public void setResponseHttp(CloseableHttpResponse responseHttp) {
-		this.responseHttp = responseHttp;
-	}
-
-	@Override
-	protected void finalize() throws Throwable
-	{
-		super.finalize();
-	}
-	
-	/**
-	 * Free/close client and response objects.
-	 */
-	public void cleanup()
-	{
-		if (clientHTTP != null) {
-			try {
-				clientHTTP.close();
-			} catch(IOException e) {
-				// quietly ignore 
-			}
-			clientHTTP = null;
-		}
-		if (responseHttp != null) {
-			try {
-				responseHttp.close();
-			} catch(IOException e) {
-				// quietly ignore 
-			}
-			responseHttp = null;
-		}
 	}
 
 	/**

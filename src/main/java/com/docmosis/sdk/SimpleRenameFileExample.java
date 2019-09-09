@@ -18,7 +18,9 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
-import com.docmosis.sdk.file.File;
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.RenameFilesResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
 
@@ -26,7 +28,10 @@ import com.docmosis.sdk.handlers.DocmosisException;
 /**
  * 
  * This example connects to the public Docmosis cloud server and 
- * renames a file stored on the Docmosis cloud server
+ * renames a file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -42,16 +47,11 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimpleRenameFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://au.dws.docmosis.com/v3/api/renameFiles";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 	//Full path of File/Folder to be renamed
 	private static final String FILE_TO_RENAME = "myFile1.pdf";
 	//Full path of new name for File/Folder
-	private static final String NEW_NAME = "myOtherFile1.pdf";
+	private static final String NEW_NAME = "myOtherFile2.pdf";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -60,32 +60,26 @@ public class SimpleRenameFileExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-
-		RenameFilesResponse renamedFile = null; //The response to the Rename File request.
 		
-		try {
-			
-			renamedFile = File.rename()
-							.fromPath(FILE_TO_RENAME)
-							.toPath(NEW_NAME)
-							.execute(URL, ACCESS_KEY);
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-			if (renamedFile.hasSucceeded()) {
-				System.out.println("Successfully renamed \"" + FILE_TO_RENAME + "\" to \"" + NEW_NAME + "\"");
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Rename File failed: status="
-						+ renamedFile.getStatus()
-						+ " shortMsg="
-						+ renamedFile.getShortMsg()
-						+ ((renamedFile.getLongMsg() == null) ? "" : " longMsg="
-								+ renamedFile.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			renamedFile.cleanup();
-		}		
+		RenameFilesResponse renamedFile = FileStorage
+											.rename()
+											.fromPath(FILE_TO_RENAME)
+											.toPath(NEW_NAME)
+											.execute();
+
+		if (renamedFile.hasSucceeded()) {
+			//System.out.println(renamedFile.getShortMsg());
+			System.out.println("Successfully renamed \"" + FILE_TO_RENAME + "\" to \"" + NEW_NAME + "\"");
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Rename File failed: status="
+					+ renamedFile.getStatus()
+					+ " shortMsg="
+					+ renamedFile.getShortMsg()
+					+ ((renamedFile.getLongMsg() == null) ? "" : " longMsg="
+							+ renamedFile.getLongMsg()));
+		}
 	}
 }

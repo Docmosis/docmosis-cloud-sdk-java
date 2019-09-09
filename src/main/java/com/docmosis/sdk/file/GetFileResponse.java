@@ -1,8 +1,8 @@
 package com.docmosis.sdk.file;
 
-import com.docmosis.sdk.response.DocmosisFileResponse;
+import com.docmosis.sdk.response.DocmosisCloudResponse;
 
-public class GetFileResponse extends DocmosisFileResponse {
+public class GetFileResponse extends DocmosisCloudResponse {
 
 	public GetFileResponse() {
 		super();

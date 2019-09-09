@@ -15,17 +15,23 @@
 
 package com.docmosis.sdk;
 
+import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.file.File;
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.GetFileResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * returns a file stored on the Docmosis cloud server
+ * This example connects to the public Docmosis cloud server and returns a 
+ * file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -41,12 +47,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimpleGetFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://au.dws.docmosis.com/v3/api/getFile";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 	//Full path of File to get
 	private static final String FILE_TO_GET = "myFile1.pdf";
 
@@ -57,18 +58,17 @@ public class SimpleGetFileExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
+		
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetFileResponse file = null; //The response to the Get File request.
-
-		try {
-			
-			file = File.get()
-					.fileName(FILE_TO_GET)
-					.execute(URL, ACCESS_KEY);
+		File outputFile = new File(FILE_TO_GET);
+		GetFileResponse file = FileStorage
+								.get()
+								.fileName(FILE_TO_GET)
+								.sendTo(outputFile) //Or OutputStream
+								.execute();
 
 			if (file.hasSucceeded()) {
-				java.io.File outputFile = new java.io.File(FILE_TO_GET);
-				file.sendDocumentTo(outputFile);
 				System.out.println("Output File to: " + outputFile.getAbsolutePath());
 			} else {
 				// something went wrong, tell the user
@@ -79,11 +79,5 @@ public class SimpleGetFileExample
 						+ ((file.getLongMsg() == null) ? "" : " longMsg="
 								+ file.getLongMsg()));
 			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off document inputStream, http client and http response
-			file.cleanup();
-		}
 	}
 }

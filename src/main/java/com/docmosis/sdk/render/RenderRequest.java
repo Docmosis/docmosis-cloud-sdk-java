@@ -1,5 +1,5 @@
 /*
- *   Copyright 2012 Docmosis.com or its affiliates.  All Rights Reserved.
+ *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,45 +14,37 @@
  */
 package com.docmosis.sdk.render;
 
-import java.io.Serializable;
+import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
- * The object holds the instructions and data for the render request.
+ * This object holds the instructions and data for the render request.
  * 
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the Render request.  The properties set in this class 
  * are parameters for the Render request.
  * 
- * Typically, you would use the request factory to get an instance of this class, then
- * set the specifics you require:
+ * Typically, you would use the Renderer class to get an instance of this class, then
+ * set the specifics you require using method chaining:
  * 
  * <pre>
- *   RenderRequest request = RenderRequestFactory.getRequest(accessKey);
- *   
- *   request.setTemplateName("samples/WelcomeTemplate.doc");
- *   request.setOutputName("result.pdf");
- *   
- *   // stream is the default - which means send the result back to the caller
- *   request.setstoreTo("stream");
- *   
- *   RenderResponse response = request.execute();
- *   
- *   // process response
+ *   RenderResponse response = Renderer
+ *								.render()
+ *								.templateName(TemplateName)
+ *								.outputName(outputFileName)
+ *								.sendTo(outputFileOrStream)
+ *								.data(dataString)
+ *								.execute();
+ *   if (response.hasSucceeded()) {
+ *		//File rendered and saved to outputFileOrStream
+ *	 }
  *   ...
  * </pre>
  */
-public class RenderRequest implements Serializable {
+public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 
-    private static final long serialVersionUID = 4338222626030786768L;
+	private static final String SERVICE_PATH = "render";
     
-    // rarely changed settings
-    private String renderUrl;
-    private String accessKey;
-    private RenderProxy renderProxy;
-    private int maxTries;
-    private int retryDelayMS;
-    
-    // settings that change more frequently.
     private String templateName;
     private String isSystemTemplate;
     private String outputName;
@@ -74,29 +66,14 @@ public class RenderRequest implements Serializable {
     private String pdfWatermark;
     private String pdfTagged;
     
-    public RenderRequest() {}
-    
-    /**
-     * Construct a new request with the specified render end point url.
-     * 
-     * @param renderUrl the url to the render service.
-     */
-    public RenderRequest(String renderUrl)
-    {
-    	this.renderUrl = renderUrl;
+    public RenderRequest() {
+    	super(SERVICE_PATH);
     }
+
+    public RenderRequest(final Environment environment) {
+    	super(SERVICE_PATH, environment);
+    } 
     
-    /**
-     * Construct a new request with the specified render end point url.
-     * 
-     * @param renderUrl the url to the render service.
-     * @param accessKey the access key to use for the render
-     */
-    public RenderRequest(String renderUrl, String accessKey)
-    {
-    	this.renderUrl = renderUrl;
-    	this.accessKey = accessKey;
-    }    
     
     public String getTemplateName() {
         return templateName;
@@ -574,91 +551,6 @@ public class RenderRequest implements Serializable {
         return this;
     }
 
-    public String getUrl()
-	{
-		return renderUrl;
-	}
-
-    /**
-     * Set the URL for the web service end point for rendering.
-     * This is defaulted to the public cloud end-point for Docmosis Cloud Services. 
-     * 
-     * @param url
-     */
-	public void setUrl(String url)
-	{
-		this.renderUrl = url;
-	}
-	
-    /**
-     * Set the URL for the web service end point for rendering.
-     * This is defaulted to the public cloud end-point for Docmosis Cloud Services. 
-     * 
-     * @param url
-     */
-	public RenderRequest url(String url)
-	{
-		this.renderUrl = url;
-		return this;
-	}
-
-	public String getAccessKey()
-	{
-		return accessKey;
-	}
-
-	/**
-	 * Set the access key for using the end point.  If using the public Docmosis Cloud Services
-	 * you must sign up (at least for a trial period) to obtain your access key.
-	 * 
-	 * @param accessKey
-	 */
-	public void setAccessKey(String accessKey)
-	{
-		this.accessKey = accessKey;
-	}
-	
-	/**
-	 * Set the access key for using the end point.  If using the public Docmosis Cloud Services
-	 * you must sign up (at least for a trial period) to obtain your access key.
-	 * 
-	 * @param accessKey
-	 */
-	public RenderRequest accessKey(String accessKey)
-	{
-		this.accessKey = accessKey;
-		return this;
-	}
-
-	public RenderProxy getRenderProxy()
-	{
-		return renderProxy;
-	}
-
-	/**
-	 * Set the RenderProxy via which this request should be routed.
-	 * 
-	 * @see RenderProxy
-	 * @param renderProxy
-	 */
-	public void setRenderProxy(RenderProxy renderProxy)
-	{
-		this.renderProxy = renderProxy;
-	}
-	
-	/**
-	 * Set the RenderProxy via which this request should be routed.
-	 * 
-	 * @see RenderProxy
-	 * @param renderProxy
-	 */
-	public RenderRequest renderProxy(RenderProxy renderProxy)
-	{
-		this.renderProxy = renderProxy;
-		return this;
-	}
-	
-	
 	public String getPasswordProtect()
 	{
 		return passwordProtect;
@@ -778,120 +670,44 @@ public class RenderRequest implements Serializable {
 	}
 
 	/**
-	 * Get the maximum number of tries that should be attempted to service
-	 * this request when a server/network error occurs.
-	 * 
-	 * @return the number of tries configured.
-	 */
-	public int getMaxTries()
-	{
-		return maxTries;
-	}
-
-	/**
-	 * Set the maximum number of tries that should be made to service this request 
-	 * when a communications / server error occurs. 
-	 * 
-	 * @param maxTries the max tries.
-	 */
-	public void setMaxTries(int maxTries)
-	{
-		this.maxTries = maxTries;
-	}
-	
-	/**
-	 * Set the maximum number of tries that should be made to service this request 
-	 * when a communications / server error occurs. 
-	 * 
-	 * @param maxTries the max tries.
-	 */
-	public RenderRequest maxTries(int maxTries)
-	{
-		this.maxTries = maxTries;
-		return this;
-	}
-
-	/**
-	 * Get the retry delay (milliseconds) to apply when
-	 * a retry is required.
-	 * 
-	 * @return the configured retry delay
-	 */
-	public int getRetryDelay()
-	{
-		return retryDelayMS;
-	}
-
-	/**
-	 * Set the retry delay in milliseconds.
-	 * 
-	 * @param retryDelayMS in milliseconds
-	 */
-	public void setRetryDelay(int retryDelayMS)
-	{
-		this.retryDelayMS = retryDelayMS;
-	}
-	
-	/**
-	 * Set the retry delay in milliseconds.
-	 * 
-	 * @param retryDelayMS in milliseconds
-	 */
-	public RenderRequest retryDelay(int retryDelayMS)
-	{
-		this.retryDelayMS = retryDelayMS;
-		return this;
-	}
-
-	/**
-	 * Execute a render based on contained settings.
+	 * Execute a render based on current settings in this instance and using the default Environment.
      * <p>
-     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
-     *       to cleanup resources  
 	 * 
-	 * @return a response object giving status, possible error messages and optional
-	 * document payload.
+	 * @return a response object giving status and possible error messages
 	 * 
 	 * @throws RendererException if a problem occurs invoking the service 
 	 */
 	public RenderResponse execute() throws RendererException
 	{
-		return Renderer.executeRender(this);
+		return Renderer.executeRender(getThis());
+	}
+
+	@Override
+	public RenderResponse execute(String url, String accessKey) throws RendererException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Renderer.executeRender(getThis());
+	}
+	
+	@Override
+	public RenderResponse execute(String accessKey) throws RendererException {
+		getEnvironment().setAccessKey(accessKey);
+		return Renderer.executeRender(getThis());
 	}
 	
 	/**
 	 * Execute a render based on contained settings.
      * <p>
-     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
-     *       to cleanup resources  
+     *       
+     * @param environment the Environment to use instead of the default configured. 
 	 * 
-	 * @return a response object giving status, possible error messages and optional
-	 * document payload.
-	 * 
-	 * @throws RendererException if a problem occurs invoking the service 
-	 */
-	public RenderResponse execute(String url, String accessKey) throws RendererException
-	{
-		setUrl(url);
-		setAccessKey(accessKey);
-		return Renderer.executeRender(this);
-	}
-	
-	/**
-	 * Execute a render based on contained settings.
-     * <p>
-     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
-     *       to cleanup resources  
-	 * 
-	 * @return a response object giving status, possible error messages and optional
-	 * document payload.
+	 * @return a response object giving status and possible error messages
 	 * 
 	 * @throws RendererException if a problem occurs invoking the service 
 	 */
-	public RenderResponse execute(String accessKey) throws RendererException
+	public RenderResponse execute(Environment environment) throws RendererException
 	{
-		setAccessKey(accessKey);
-		return Renderer.executeRender(this);
+		super.setEnvironment(environment);
+		return Renderer.executeRender(getThis());
 	}
 
     /**
@@ -899,26 +715,24 @@ public class RenderRequest implements Serializable {
      * a common set of parameters.
      * This is a convenience method equivalent to:
      * <pre>
-     *   setTemplateName(templateName);
-     *   setOutputName(outputName);
-     *   setData(data);
-     *   return execute();
+     *   renderRequest.TemplateName(templateName)
+     *   			.outputName(outputName);
+     *   			.data(data);
+     *   			.execute();
      * </pre>
      * 
      * <p>
-     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
-     *       to cleanup resources  
      * 
      * @param templateName
-     *            the location and name of the template within Docmosis Tornado.
+     *            the location and name of the template within the Docmosis
+     *            Template Store.
      * @param outputName
      *            the output location and file name; this is relative to the
      *            path of the current project.
      * @param data
      *            the data to inject into the Docmosis document; may be in JSON
      *            or XML format.
-	 * @return a response object giving status, possible error messages and optional
-	 * document payload.
+	 * @return a response object giving status and possible error messages
 	 * @throws RendererException if a problem occurs invoking the service
      */
     public RenderResponse execute(final String templateName, final String outputName, final String data)
@@ -929,6 +743,12 @@ public class RenderRequest implements Serializable {
         
         return execute();
     }
+    
+	@Override
+	protected RenderRequest getThis()
+	{
+		return this;
+	}
 
 	@Override
 	public String toString()
@@ -938,10 +758,7 @@ public class RenderRequest implements Serializable {
     
 	public String toString(boolean includeData)
 	{
-		return "RenderRequest [renderUrl=" + renderUrl + ", accessKey="
-				+ accessKey + ", renderProxy=" + renderProxy
-				+ ", maxTries=" + maxTries + ", retryDelayMS=" + retryDelayMS
-				+ ", templateName=" + templateName + ", isSystemTemplate="
+		return "RenderRequest [templateName=" + templateName + ", isSystemTemplate="
 				+ isSystemTemplate + ", outputName=" + outputName
 				+ ", outputFormat=" + outputFormat + ", compressSingleFormat="
 				+ compressSingleFormat + ", storeTo=" + storeTo
@@ -953,10 +770,8 @@ public class RenderRequest implements Serializable {
 				+ ", sourceId=" + sourceId + ", stylesInText=" + stylesInText
 				+ ", passwordProtect=" + passwordProtect
 				+ ", pdfArchiveMode=" + pdfArchiveMode + ", pdfWatermark="
-				+ pdfWatermark + ", pdfTagged=" + pdfTagged 
+				+ pdfWatermark + ", pdfTagged=" + pdfTagged + ", " + super.toString() 
 				+ (includeData ? ", data=" + data : "") 
 				+ "]";
 	}
-
-
 }

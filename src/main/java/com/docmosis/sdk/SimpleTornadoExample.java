@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;
@@ -46,7 +47,7 @@ import com.google.gson.Gson;
  */public class SimpleTornadoExample 
 {
    
-	private static final String TORNADO_RENDER_URL = "http://localhost:8080/rs/render";	
+	private static final String TORNADO_URL = "http://localhost:8080/rs/";	
 	
 	private static final String TEMPLATE_NAME = "WelcomeTemplate.doc";
 	
@@ -59,40 +60,35 @@ import com.google.gson.Gson;
 	
 	public static void main(String args[]) throws IOException, RendererException {
 	    
-        //Create data to send
+		Environment.setDefaults(TORNADO_URL, "");
+		
+		//Create data to send
 		final Data data = new Data();
 		data.setMessage("Hello at:" + new Date());
 
 		String dataString = new Gson().toJson(data); //Data String to send.
 
-		RenderResponse response = null; //The response to the Render request.
+		File outputFile = new File(OUTPUT_FILE);
+		RenderResponse response = Renderer
+									.render()
+									.templateName(TEMPLATE_NAME)
+									.outputName(OUTPUT_FILE)
+									.data(dataString)
+									.sendTo(outputFile) //Or OutputStream
+									.execute();
 
-		try {
-			response = Renderer.render()
-					.templateName(TEMPLATE_NAME)
-					.outputName(OUTPUT_FILE)
-					.data(dataString)
-					.execute(TORNADO_RENDER_URL, "");
+		if (response.hasSucceeded()) {
+			// great - render succeeded.
+			System.out.println("Written:" + outputFile.getAbsolutePath());
 
-			if (response.hasSucceeded()) {
-				// great - render succeeded.
-
-				// lets get the document out and put it in a file
-				File f = new File("testDocument." + OUTPUT_FORMAT);
-				response.sendDocumentTo(f);
-				System.out.println("Written:" + f.getAbsolutePath());
-
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Render failed: status="
-						+ response.getStatus()
-						+ " shortMsg="
-						+ response.getShortMsg()
-						+ ((response.getLongMsg() == null) ? "" : " longMsg="
-								+ response.getLongMsg()));
-			}
-		} finally {
-			response.cleanup();
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Render failed: status="
+					+ response.getStatus()
+					+ " shortMsg="
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 	

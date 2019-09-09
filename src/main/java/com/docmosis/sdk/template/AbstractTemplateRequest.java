@@ -14,27 +14,23 @@
  */
 package com.docmosis.sdk.template;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * 
  */
 public abstract class AbstractTemplateRequest<T extends DocmosisCloudRequest<?>> extends DocmosisCloudRequest<T> {
-
-	private static final long serialVersionUID = 4338222626030786768L;
 	
 	private boolean isSystemTemplate = false;
+	private String templateName;
 
-	public AbstractTemplateRequest(final Class<T> selfClass) {
-		super(selfClass);
+	public AbstractTemplateRequest(final String servicePath) {
+		super(servicePath);
 	}
 	
-	public AbstractTemplateRequest(final Class<T> selfClass, String url) {
-		super(selfClass, url);
-	}
-
-	public AbstractTemplateRequest(final Class<T> selfClass, String url, String accessKey) {
-		super(selfClass, url, accessKey);
+	public AbstractTemplateRequest(final String servicePath, final Environment environment) {
+		super(servicePath, environment);
 	}
 
 	/**
@@ -62,11 +58,39 @@ public abstract class AbstractTemplateRequest<T extends DocmosisCloudRequest<?>>
 	 */
 	public T isSystemTemplate(boolean isSystemTemplate) {
 		this.isSystemTemplate = isSystemTemplate;
-		return self;
+		return getThis();
+	}
+	
+	/**
+	 * Get the currently set templateName.
+	 * 
+	 * @return The name of the Template on the Docmosis server.
+	 */
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	/**
+	 * Set the Template Name.
+	 * 
+	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 */
+	public void setTemplateNam(String templateName) {
+		this.templateName = templateName;
+	}
+
+	/**
+	 * Set the Template Name.
+	 * 
+	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 */
+	public T templateName(String templateName) {
+		this.templateName = templateName;
+		return getThis();
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + ", isSystemTemplate=" + isSystemTemplate;
+		return "isSystemTemplate=" + isSystemTemplate + ", templateName=" + templateName + ", " + super.toString();
 	}
 }
