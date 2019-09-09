@@ -17,14 +17,16 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetTemplateStructureResponse;
 import com.docmosis.sdk.template.Template;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * returns the structure of a template stored on the Docmosis cloud server
+ * This example connects to the public Docmosis cloud server and returns the 
+ * structure of a template stored on the server.
  * 
  * How to use:
  * 
@@ -40,12 +42,7 @@ import com.docmosis.sdk.template.Template;
 public class SimpleGetTemplateStructureExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://dws2.docmosis.com/services/rs/getTemplateStructure";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
@@ -58,30 +55,23 @@ public class SimpleGetTemplateStructureExample
 			System.exit(1);
 		}
 
-		GetTemplateStructureResponse templateStructure = null; //The response to the get Template Structure request.
-		
-		try {
-			
-			templateStructure = Template.getStructure()
-									.templateName(TEMPLATE_NAME)
-									.execute(URL, ACCESS_KEY);
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-			if (templateStructure.hasSucceeded()) {
-				System.out.println(templateStructure.toString());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Get Template Structure failed: status="
-						+ templateStructure.getStatus()
-						+ " shortMsg="
-						+ templateStructure.getShortMsg()
-						+ ((templateStructure.getLongMsg() == null) ? "" : " longMsg="
-								+ templateStructure.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			templateStructure.cleanup();
+		GetTemplateStructureResponse templateStructure = Template
+															.getStructure()
+															.templateName(TEMPLATE_NAME)
+															.execute();
+
+		if (templateStructure.hasSucceeded()) {
+			System.out.println(templateStructure.toString());
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Get Template Structure failed: status="
+					+ templateStructure.getStatus()
+					+ " shortMsg="
+					+ templateStructure.getShortMsg()
+					+ ((templateStructure.getLongMsg() == null) ? "" : " longMsg="
+							+ templateStructure.getLongMsg()));
 		}
 	}
 }

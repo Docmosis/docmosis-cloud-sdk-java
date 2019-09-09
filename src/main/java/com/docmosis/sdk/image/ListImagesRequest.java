@@ -14,47 +14,71 @@
  */
 package com.docmosis.sdk.image;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
+/**
+ * The object holds the instructions and data for a request to the List Images service.
+ * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * for details about the settings for the request.  The properties set in this class 
+ * are parameters for the List request.
+ * 
+ * Typically, you would use the Image class to get an instance of this class, then
+ * set the specifics you require using method chaining:
+ * 
+ * 
+ * <pre>
+ *   ListImagesRequest images = Image.list().execute();
+ *   List<ImageDetails> list = images.list();
+ *   for(ImageDetails id : list) {
+ *    	id.toString();
+ *   }
+ * </pre>
+ */
 public class ListImagesRequest extends DocmosisCloudRequest<ListImagesRequest> {
-	
-	private static final long serialVersionUID = 4338222626030786768L;
-	
+
+	private static final String SERVICE_PATH = "listImages";
+
 	public ListImagesRequest() {
-		super(ListImagesRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/listImages"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public ListImagesRequest(String url) {
-		super(ListImagesRequest.class, url);
+	public ListImagesRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
-	public ListImagesRequest(String url, String accessKey) {
-		super(ListImagesRequest.class, url, accessKey);
+	@Override
+	public ListImagesResponse execute() throws DocmosisException {
+		return Image.executelist(getThis());
+	}
+	
+	@Override
+	public ListImagesResponse execute(String url, String accessKey) throws DocmosisException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Image.executelist(getThis());
+	}
+	
+	@Override
+	public ListImagesResponse execute(String accessKey) throws DocmosisException {
+		getEnvironment().setAccessKey(accessKey);
+		return Image.executelist(getThis());
+	}
+
+	@Override
+	public ListImagesResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Image.executelist(getThis());
+	}
+
+	@Override
+	protected ListImagesRequest getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "ListImagesRequest [" + super.toString() + "]";
 	}
-
-	@Override
-	public ListImagesResponse execute() throws DocmosisException {
-		return Image.executelist(self);
-	}
-	
-	@Override
-	public ListImagesResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Image.executelist(self);
-	}
-	
-	@Override
-	public ListImagesResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Image.executelist(self);
-	}
-
 }

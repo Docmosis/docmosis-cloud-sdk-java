@@ -1,5 +1,5 @@
 /*
- *   Copyright 2012 Docmosis.com or its affiliates.  All Rights Reserved.
+ *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  */
 package com.docmosis.sdk.convert;
 
-import com.docmosis.sdk.response.DocmosisFileResponse;
+import com.docmosis.sdk.response.DocmosisCloudResponse;
 
 /**
  * This class encapsulates a response to a convert request.
@@ -22,40 +22,22 @@ import com.docmosis.sdk.response.DocmosisFileResponse;
  * Typically you would use this response to check for success, then decide what action to take.  For example:
  * 
  * <pre>
- * 
- *   RenderResponse response = rr.execute();
- *   try {  
- *     if (response.hasSucceeded()) {
- *       InputStream doc = response.getDocument();
- *       // do something with the doc
- *     } else {
- *       // read the error messages and status code to 
- *       // decide what to do - check error messages/tell user
- *     }
- *   } finally {
- *     response.cleanup();
- *   }
+ *   ConverterResponse response = Converter
+ *									.convert()
+ *									.fileToConvert(convertFile)
+ *									.outputName(outputFileName)
+ *									.sendTo(outputFileOrStream)
+ *									.execute();
+ *   if (response.hasSucceeded()) {
+ *		//File saved to outputFileOrStream
+ *	 }
+ *   ...
  * </pre>
- *
- * Since the response may contain an InputStream from the request, it is important that you 
- * have the finally block to cleanup.
  */
-//TODO FIX JAVADOC above
-public class ConverterResponse extends DocmosisFileResponse
+public class ConverterResponse extends DocmosisCloudResponse
 {
-	public static final String FIELD_HEADER_X_DOCMOSIS_BYTES_OUTPUT  = "X-Docmosis-BytesOutput";
-
 	private int pagesConverted;
 	private long length;
-	
-	
-	@Override
-	protected void finalize() throws Throwable
-	{
-		super.finalize();
-		
-		cleanup();
-	}
 	
 	/**
 	 * Get the number of pages converted on success.
@@ -71,7 +53,12 @@ public class ConverterResponse extends DocmosisFileResponse
 	{
 		this.pagesConverted = pagesConverted;
 	}
-	
+
+	/**
+	 * Get the length of the returned File in bytes
+	 *
+	 * @return
+	 */
 	public long getLength()
 	{
 		return length;
@@ -84,9 +71,7 @@ public class ConverterResponse extends DocmosisFileResponse
 
 	@Override
 	public String toString() {
-		return "ConverterResponse [" + super.toString() + "pagesConverted=" + pagesConverted + 
-				", length=" + length + "]";
+		return "ConverterResponse [pagesConverted=" + pagesConverted + 
+				", length=" + length + ", " + super.toString() + "]";
 	}
-	
-	
 }

@@ -15,46 +15,42 @@
 package com.docmosis.sdk.file;
 
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.request.DocmosisCloudRequest;
+import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get File service.
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the List request.
+ * are parameters for the Get File request.
  * 
- * Typically, you would use the File class to get an instance of this class, then
- * set the specifics you require using method chaining:
+ * Typically, you would use the FileStorage class to get an instance of this class, 
+ * then set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   GetFileResponse getFile = File.get()
- *   							.fileName(fileToGet)
- *   							.execute(URL, ACCESS_KEY);
- *   if (getFile.hasSucceeded()) {
- *  		File f = new File(fileToGet);
- *			getFile.sendDocumentTo(f);
+ *  GetFileResponse getFile = FileStorage
+ *  							.get()
+ *  							.fileName(fileToGet)
+ *  							.sendTo(outputFileOrStream)
+ *   							.execute();
+ *  if (getFile.hasSucceeded()) {
+ *  	//File saved to outputFileOrStream
  *  }
  * </pre>
  */
-public class GetFileRequest extends DocmosisCloudRequest<GetFileRequest> {
+public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	
-	private static final long serialVersionUID = 4338222626030786768L;
-	
+	private static final String SERVICE_PATH = "getFile";
 	private String fileName;
 
 	public GetFileRequest() {
-		super(GetFileRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs" + "/getFile"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public GetFileRequest(String url) {
-		super(GetFileRequest.class, url);
-	}
-
-	public GetFileRequest(String url, String accessKey) {
-		super(GetFileRequest.class, url, accessKey);
+	public GetFileRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -79,29 +75,41 @@ public class GetFileRequest extends DocmosisCloudRequest<GetFileRequest> {
 	 */
 	public GetFileRequest fileName(String fileName) {
 		this.fileName = fileName;
-		return self;
-	}
-
-	@Override
-	public String toString() {
-		return "GetFileRequest [" + super.toString() + ", fileName=" + fileName + "]";
+		return getThis();
 	}
 
 	@Override
 	public GetFileResponse execute() throws DocmosisException {
-		return File.executeGetFile(self);
+		return FileStorage.executeGetFile(getThis());
 	}
 	
 	@Override
 	public GetFileResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return File.executeGetFile(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executeGetFile(getThis());
 	}
 	
 	@Override
 	public GetFileResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return File.executeGetFile(self);
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executeGetFile(getThis());
+	}
+
+	
+	@Override
+	public GetFileResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return FileStorage.executeGetFile(getThis());
+	}
+
+	@Override
+	protected GetFileRequest getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "GetFileRequest [fileName=" + fileName + ", " + super.toString() + "]";
 	}
 }

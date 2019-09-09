@@ -17,15 +17,11 @@ package com.docmosis.sdk.image;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
@@ -49,7 +45,9 @@ public class Image {
 	 */
 	public static ListImagesRequest list()
 	{
-		return new ListImagesRequest();
+		final ListImagesRequest req = new ListImagesRequest();
+		
+		return req;
 	}
 
 	/**
@@ -58,7 +56,9 @@ public class Image {
 	 */
 	public static GetImageRequest get()
 	{
-		return new GetImageRequest();
+		final GetImageRequest req = new GetImageRequest();
+		
+		return req;
 	}
 
 	/**
@@ -67,7 +67,9 @@ public class Image {
 	 */
 	public static UploadImageRequest upload()
 	{
-		return new UploadImageRequest();
+		final UploadImageRequest req = new UploadImageRequest();
+		
+		return req;
 	}
 
 	/**
@@ -76,7 +78,9 @@ public class Image {
 	 */
 	public static DeleteImageRequest delete()
 	{
-		return new DeleteImageRequest();
+		final DeleteImageRequest req = new DeleteImageRequest();
+		
+		return req;
 	}
 
 	/**
@@ -85,64 +89,48 @@ public class Image {
 	 * @return Response Object
 	 * @throws DocmosisException if execution fails or cannot extract data from response
 	 */
-	public static ListImagesResponse executelist(ListImagesRequest request) throws DocmosisException
+	public static ListImagesResponse executelist(ListImagesRequest request) throws ImageException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new ImageException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "listImages(" + request.toString() + ")");
-		
+
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
-	    HttpEntity payload = builder.build();
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    ListImagesResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+
+		HttpEntity payload = builder.build();
+	    ListImagesResponse response = new ListImagesResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractListImagesResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+	
+					response.setImageListStale(Boolean.parseBoolean(jsonObject.get("imageListStale").getAsString()));
+					Type listType = new TypeToken<List<ImageDetails>>() {}.getType();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					List<ImageDetails> images = gson.fromJson(jsonObject.get("imageList"), listType);
+					response.setImages(images);
+			    } else {
+			    	throw new ImageException("Cannot extract data from response.");
+			    }
+	    	}
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new ImageException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in ListImagesResponse object.
-	 */
-	private static ListImagesResponse extractListImagesResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		ListImagesResponse response = new ListImagesResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Details from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-
-			response.setImageListStale(Boolean.parseBoolean(jsonObject.get("imageListStale").getAsString()));
-			
-			Type listType = new TypeToken<List<ImageDetails>>() {}.getType();
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
-			List<ImageDetails> images = gson.fromJson(jsonObject.get("imageList"), listType);
-			response.setImages(images);
-    	}
-    	
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-    	
 		return response;
 	}
 	
@@ -150,26 +138,33 @@ public class Image {
 	 * Execute an uploadImage request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws ImageException if execution fails or cannot extract data from response
 	 */	
-	public static UploadImageResponse executeUploadImage(UploadImageRequest request) throws DocmosisException
+	public static UploadImageResponse executeUploadImage(UploadImageRequest request) throws ImageException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new ImageException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "uploadImage(" + request.toString() + ")");
-		
+
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
-
 		if (request.getImageFile() != null) {
-			builder.addBinaryBody("imageFile", request.getImageFile(), ContentType.APPLICATION_OCTET_STREAM, request.getImageFile().getName());
-		}
-		else {
-			throw new DocmosisException("No Image File specified.");
+			if (request.getImageFile().canRead()) {
+				builder.addBinaryBody("imageFile", request.getImageFile(), ContentType.APPLICATION_OCTET_STREAM, request.getImageFile().getName());
+			} else {
+				throw new ImageException("cannot read image: ["
+	                    + request.getImageFile() + "]");
+			}
+		} else {
+			throw new ImageException("No Image File specified.");
 		}
 		if (request.getImageName() != null) {
 			builder.addTextBody("imageName", request.getImageName());
@@ -179,48 +174,28 @@ public class Image {
 		builder.addTextBody("normalizeImageName", String.valueOf(request.getNormalizeImageName()));
 
 	    HttpEntity payload = builder.build();
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    UploadImageResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    UploadImageResponse response = new UploadImageResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractUploadImageResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
-	    }
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					ImageDetails image = gson.fromJson(jsonObject.get("imageDetails"), ImageDetails.class);
+					response.setImageDetails(image);
+			    } else {
+			    	throw new ImageException("Cannot extract data from response.");
+			    }
+	    	}
+	    } 
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new ImageException(e);
 	    }
-		return response;
-	}
-
-	/**
-	 * Extract data from response object and store in UploadImageResponse object.
-	 */
-	private static UploadImageResponse extractUploadImageResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		UploadImageResponse response = new UploadImageResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Details from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-			
-			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
-			ImageDetails image = gson.fromJson(jsonObject.get("imageDetails"), ImageDetails.class);
-			response.setImageDetails(image);
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
 		return response;
 	}
 	
@@ -228,20 +203,24 @@ public class Image {
 	 * Execute a deleteImage request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws ImageException if execution fails or cannot extract data from response
 	 */
-	public static DeleteImageResponse executeDeleteImage(DeleteImageRequest request) throws DocmosisException
+	public static DeleteImageResponse executeDeleteImage(DeleteImageRequest request) throws ImageException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new ImageException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "deleteImage(" + request.toString() + ")");
-		
+
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
 		if (request.getImageNames() != null) {
 			List<String> imageNames = request.getImageNames();
 			for(String imageName : imageNames) {
@@ -249,73 +228,57 @@ public class Image {
 			}
 		}
 		else {
-			throw new DocmosisException("No Image Name specified.");
+			throw new ImageException("No Image Name specified.");
 		}
 		builder.addTextBody("isSystemImage", String.valueOf(request.getIsSystemImage()));
+		
 	    HttpEntity payload = builder.build();
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    DeleteImageResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
+	    DeleteImageResponse response = new DeleteImageResponse();
 	    
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractDeleteImageResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					JsonElement shortMsg = jsonObject.get("shortMsg");
+					response.setShortMsg(shortMsg.getAsString());
+			    } else {
+			    	throw new ImageException("Cannot extract data from response.");
+			    }
+	    	}
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new ImageException(e);
 	    }
 		return response;
 	}
-
-	/**
-	 * Extract data from response object and store in DeleteImageResponse object.
-	 */
-	private static DeleteImageResponse extractDeleteImageResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		DeleteImageResponse response = new DeleteImageResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			//Extract Details from Json
-			String jsonString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-			JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-			
-			JsonElement shortMsg = jsonObject.get("shortMsg");
-			response.setShortMsg(shortMsg.getAsString());
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
-		return response;
-	}
-	
 
 	/**
 	 * Execute a getImage request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws ImageException if execution fails or cannot extract data from response
 	 */
-	public static GetImageResponse executeGetImage(GetImageRequest request) throws DocmosisException
+	public static GetImageResponse executeGetImage(GetImageRequest request) throws ImageException
 	{
+		//Initialize logger with environment settings.
+    	try {
+			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
+		} catch (IOException e1) {
+			throw new ImageException(e1);
+		}
+
 		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getImage(" + request.toString() + ")");
-		
+
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
 			builder.addTextBody("accessKey", request.getAccessKey());
 		}
-//		else {
-//			throw new DocmosisException("No Access Key specified.");
-//		}
 		if (request.getImageNames() != null) {
 			List<String> imageNames = request.getImageNames();
 			for(String imageName : imageNames) {
@@ -323,46 +286,28 @@ public class Image {
 			}
 		}
 		else {
-			throw new DocmosisException("No Image Name specified.");
+			throw new ImageException("No Image Name specified.");
 		}
 		builder.addTextBody("isSystemImage", String.valueOf(request.getIsSystemImage()));
+
 	    HttpEntity payload = builder.build();
-		CloseableHttpClient client = null;
-	    CloseableHttpResponse chResponse = null;
-	    GetImageResponse response = null;
-	    DocmosisHTTPRequestExecutionHandler executionHandler = new DocmosisHTTPRequestExecutionHandler();
-	    
+	    GetImageResponse response = new GetImageResponse();
+
 	    try {
 	    	//Execute request
-	    	chResponse = executionHandler.executeHttpPost(request.getUrl(), request.getMaxTries(), request.getRetryDelay(), payload, client, log);
-	    	//Extract Response
-		    response = extractGetImageResponse(chResponse, request.getUrl(), executionHandler);
-	    }
-	    catch (IOException e) {
-	    	log.log(Level.FINE, "IOException. Cannot extract data from response.", e);
-            throw new DocmosisException("Cannot extract data from response.", e);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
 	    }
 	    catch (DocmosisException e) {
-	    	throw e;
+	    	throw new ImageException(e);
 	    }
 		return response;
 	}
 
-	/**
-	 * Extract data from response object and store in GetImageResponse object.
-	 */
-	private static GetImageResponse extractGetImageResponse(CloseableHttpResponse chResponse, String url, DocmosisHTTPRequestExecutionHandler executionHandler) throws IOException
-	{
-		GetImageResponse response = new GetImageResponse();
-		int status = chResponse.getStatusLine().getStatusCode();
-
-		if (status == 200) { // succeeded
-
-			response.setDocument(chResponse.getEntity().getContent());
-    	}
-		
-		executionHandler.setFailureResponse(response, chResponse, url, status);
-		
-		return response;
-	}
+//	private static void setEnvironment(DocmosisCloudRequest<?> request) throws ImageException {
+//		try {
+//    		EnvironmentBuilder.validate(request.getEnvironment());
+//		} catch (InvalidEnvironmentException e1) {
+//			throw new ImageException(e1);
+//		}
+//	}
 }

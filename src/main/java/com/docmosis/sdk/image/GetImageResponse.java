@@ -14,9 +14,9 @@
  */
 package com.docmosis.sdk.image;
 
-import com.docmosis.sdk.response.DocmosisFileResponse;
+import com.docmosis.sdk.response.DocmosisCloudResponse;
 
-public class GetImageResponse extends DocmosisFileResponse {
+public class GetImageResponse extends DocmosisCloudResponse {
 
 	public GetImageResponse() {
 		super();

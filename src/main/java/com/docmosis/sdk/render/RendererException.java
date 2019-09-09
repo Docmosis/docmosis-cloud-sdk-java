@@ -14,7 +14,9 @@
  */
 package com.docmosis.sdk.render;
 
-public class RendererException extends Exception {
+import com.docmosis.sdk.handlers.DocmosisException;
+
+public class RendererException extends DocmosisException {
 
 	private static final long serialVersionUID = 2243119014554293600L;
 

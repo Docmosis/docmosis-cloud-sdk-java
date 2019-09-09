@@ -18,6 +18,8 @@ package com.docmosis.sdk;
 import java.io.File;
 import java.io.IOException;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.Template;
 import com.docmosis.sdk.template.TemplateDetails;
@@ -27,7 +29,7 @@ import com.docmosis.sdk.template.UploadTemplateResponse;
 /**
  * 
  * This example connects to the public Docmosis cloud server and 
- * uploads a template to store on the Docmosis cloud server
+ * uploads a template to store on the server.
  * 
  * How to use:
  * 
@@ -43,12 +45,7 @@ import com.docmosis.sdk.template.UploadTemplateResponse;
 public class SimpleUploadTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://dws2.docmosis.com/services/rs/uploadTemplate";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 	//Full path of File to be uploaded
 	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
 
@@ -59,40 +56,32 @@ public class SimpleUploadTemplateExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-
-		UploadTemplateResponse uploadedTemplate = null; //The response to the Upload Template request.
 		
-		try {
-			
-			File uploadFile = new File(FILE_TO_UPLOAD);
-			
-			uploadedTemplate = Template.upload()
-									.templateFile(uploadFile)
-									.execute(URL, ACCESS_KEY);
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-			if (uploadedTemplate.hasSucceeded()) {
-				System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
-				System.out.println();
-				TemplateDetails template = uploadedTemplate.getDetails();
-				System.out.println("Template Details:");
-				System.out.println("Template Name: " + template.getName());
-				System.out.println("Last Modified: " + template.getLastModifiedISO8601());
-				System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
-				//System.out.println(templateDetails.getAsJson());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Upload Template failed: status="
-						+ uploadedTemplate.getStatus()
-						+ " shortMsg="
-						+ uploadedTemplate.getShortMsg()
-						+ ((uploadedTemplate.getLongMsg() == null) ? "" : " longMsg="
-								+ uploadedTemplate.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			uploadedTemplate.cleanup();
-		}		
+		File uploadFile = new File(FILE_TO_UPLOAD);
+		UploadTemplateResponse uploadedTemplate = Template
+													.upload()
+													.templateFile(uploadFile)
+													.execute();
+
+		if (uploadedTemplate.hasSucceeded()) {
+			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
+			System.out.println();
+			TemplateDetails template = uploadedTemplate.getDetails();
+			System.out.println("Template Details:");
+			System.out.println("Template Name: " + template.getName());
+			System.out.println("Last Modified: " + template.getLastModifiedISO8601());
+			System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
+			//System.out.println(templateDetails.getAsJson());
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Upload Template failed: status="
+					+ uploadedTemplate.getStatus()
+					+ " shortMsg="
+					+ uploadedTemplate.getShortMsg()
+					+ ((uploadedTemplate.getLongMsg() == null) ? "" : " longMsg="
+							+ uploadedTemplate.getLongMsg()));
+		}
 	}
 }

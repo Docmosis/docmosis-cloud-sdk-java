@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.file;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -23,15 +24,12 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
- * Typically, you would use the File class to get an instance of this class, then
- * set the specifics you require using method chaining:
+ * Typically, you would use the FileStorage class to get an instance of this class, 
+ * then set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   ListFilesResponse files = File.list()
- *   							.url("https://dws2.docmosis.com/services/rs/listTemplates")
- *   							.accessKey("XXX")
- *   							.execute();
+ *   ListFilesResponse files = FileStorage.list().execute();
  *   List<FileDetails> list = files.list();
  *   for(FileDetails fd : list) {
  *    ...
@@ -39,24 +37,18 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * </pre>
  */
 public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
-
-	private static final long serialVersionUID = 4338222626030786768L;
 	
+	private static final String SERVICE_PATH = "listFiles";
 	private String folder = null;
 	private boolean includeSubFolders = false;
 	private boolean includeMetaData = false;
 	
 	public ListFilesRequest() {
-		super(ListFilesRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs" + "/listFiles"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public ListFilesRequest(String url) {
-		super(ListFilesRequest.class, url);
-	}
-
-	public ListFilesRequest(String url, String accessKey) {
-		super(ListFilesRequest.class, url, accessKey);
+	public ListFilesRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -81,7 +73,7 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 */
 	public ListFilesRequest folder(String folder) {
 		this.folder = folder;
-		return self;
+		return getThis();
 	}
 	
 	/**
@@ -109,7 +101,7 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 */
 	public ListFilesRequest includeSubFolders(boolean includeSubFolders) {
 		this.includeSubFolders = includeSubFolders;
-		return self;
+		return getThis();
 	}
 	
 	/**
@@ -137,31 +129,41 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 */
 	public ListFilesRequest includeMetaData(boolean includeMetaData) {
 		this.includeMetaData = includeMetaData;
-		return self;
+		return getThis();
 	}
 
 	@Override
-	public String toString() {
-		return "ListFilesRequest [" + super.toString() + ", folder=" + folder + ", includeSubFolders=" + includeSubFolders + ", includeMetaData="
-				+ includeMetaData + "]";
-	}
-	
-	@Override
 	public ListFilesResponse execute() throws DocmosisException {
-		return File.executelist(self);
+		return FileStorage.executelist(getThis());
 	}
 	
 	@Override
 	public ListFilesResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return File.executelist(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executelist(getThis());
 	}
 	
 	@Override
 	public ListFilesResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return File.executelist(self);
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executelist(getThis());
 	}
-	
+
+	@Override
+	public ListFilesResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return FileStorage.executelist(getThis());
+	}
+
+	@Override
+	protected ListFilesRequest getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "ListFilesRequest [folder=" + folder + ", includeSubFolders=" + includeSubFolders + ", includeMetaData="
+				+ includeMetaData + ", " + super.toString() + "]";
+	}
 }

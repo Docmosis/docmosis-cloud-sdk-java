@@ -14,123 +14,61 @@
  */
 package com.docmosis.sdk.request;
 
-import java.io.Serializable;
+import java.util.logging.Level;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environmentconfiguration.EnvironmentBuilder;
+import com.docmosis.sdk.environmentconfiguration.Proxy;
+import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
 /**
- * The object holds the instructions and data for a request to the Docmosis cloud.
+ * The object holds the common instructions and data for a request to the Docmosis cloud.
  * This is an abstract super object with the minimum requirements to make a request.
  * 
- * 
- * <pre>
- *   
- * </pre>
  */
-//TODO Update Java Doc Above
-public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> implements Serializable {
 
-	private static final long serialVersionUID = 4338222626030786768L;
+public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	
-	//reference to self as the subclass type
-	protected final T self;
-   
-    // rarely changed settings
-    private String url;
-    private String accessKey;
-    private int maxTries = 3;
-    private int retryDelayMS = 1000;
+	private final String servicePath;
+	private EnvironmentBuilder environmentBuilder;
 
-    public DocmosisCloudRequest(final Class<T> selfClass)
-    {
-    	this.self = selfClass.cast(this);
+    public DocmosisCloudRequest(final String servicePath) {
+    	this(servicePath, Environment.getDefaultEnvironment());
     }
     
-    /**
-     * Construct a new request with the specified end point url.
-     * 
-     * @param url the url to the Docmosis service.
-     */
-    public DocmosisCloudRequest(final Class<T> selfClass, String url)
-    {
-    	this.self = selfClass.cast(this);
-    	this.url = url;
+    public DocmosisCloudRequest(final String servicePath, final Environment environment) {
+    	this.servicePath = servicePath;
+    	
+    	this.environmentBuilder = EnvironmentBuilder.copyFrom(environment);
     }
-    
-    /**
-     * Construct a new request with the specified end point url and access key.
-     * 
-     * @param url the url to the Docmosis service.
-     * @param accessKey the access key to use for the render
-     */
-    public DocmosisCloudRequest(final Class<T> selfClass, String url, String accessKey)
-    {
-    	this.self = selfClass.cast(this);
-    	this.url = url;
-    	this.accessKey = accessKey;
-    }    
 
-    /**
+    public void setEnvironment(Environment environment) {
+    	this.environmentBuilder = EnvironmentBuilder.copyFrom(environment);
+    }
+
+    
+    public EnvironmentBuilder getEnvironment() {
+		return environmentBuilder;
+	}
+
+	/**
      * The URL for the web service end point.
-     * This is defaulted to the public cloud end-point for Docmosis Cloud Services.
+     * 
      * @return url of docmosis cloud or tornado endpoint.
      */
-	public String getUrl()
-	{
-		return url;
+	public String getUrl() {
+		return environmentBuilder.getUrl(servicePath);
 	}
 
-    /**
-     * Set the URL for the web service end point.
-     * This is defaulted to the public cloud end-point for Docmosis Cloud Services. 
-     * 
-     * @param url url of docmosis cloud or tornado endpoint.
-     */
-	public void setUrl(String url)
-	{
-		this.url = url;
-	}
-
-    /**
-     * Set the URL for the web service end point.
-     * This is defaulted to the public cloud end-point for Docmosis Cloud Services. 
-     * 
-     * @param url url of docmosis cloud or tornado endpoint.
-     */
-	public T url(String url)
-	{
-		this.url = url;
-		return self;
-	}
-
+	/**
+	 * The access key for using the end point.
+	 * 
+	 * @return access key of docmosis cloud or tornado endpoint.
+	 */
 	public String getAccessKey()
 	{
-		return accessKey;
-	}
-
-	/**
-	 * Set the access key for using the end point.  If using the public Docmosis Cloud Services
-	 * you must sign up (at least for a trial period) to obtain your access key.
-	 * Not required for connecting to Tornado.
-	 * 
-	 * @param accessKey your unique docmosis accesskey.
-	 */
-	public void setAccessKey(String accessKey)
-	{
-		this.accessKey = accessKey;
-	}
-
-	/**
-	 * Set the access key for using the end point.  If using the public Docmosis Cloud Services
-	 * you must sign up (at least for a trial period) to obtain your access key.
-	 * Not required for connecting to Tornado.
-	 * 
-	 * @param accessKey your unique docmosis accesskey.
-	 */
-	public T accessKey(String accessKey)
-	{
-		this.accessKey = accessKey;
-		return self;
+		return environmentBuilder.getAccessKey();
 	}
 
 	/**
@@ -141,30 +79,7 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> im
 	 */
 	public int getMaxTries()
 	{
-		return maxTries;
-	}
-
-	/**
-	 * Set the maximum number of tries that should be made to service this request 
-	 * when a communications / server error occurs. 
-	 * 
-	 * @param maxTries the maximum number of tries.
-	 */
-	public void setMaxTries(int maxTries)
-	{
-		this.maxTries = maxTries;
-	}
-
-	/**
-	 * Set the maximum number of tries that should be made to service this request 
-	 * when a communications / server error occurs. 
-	 * 
-	 * @param maxTries the maximum number of tries.
-	 */
-	public T maxTries(int maxTries)
-	{
-		this.maxTries = maxTries;
-		return self;
+		return environmentBuilder.getMaxTries();
 	}
 
 	/**
@@ -173,37 +88,70 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> im
 	 * 
 	 * @return the configured retry delay
 	 */
-	public int getRetryDelay()
+	public long getRetryDelay()
 	{
-		return retryDelayMS;
+		return environmentBuilder.getRetryDelayMS();
+	}
+	
+	/**
+	 * Get the client connection timeout (milliseconds) to establish 
+	 * the connection with the remote host.
+	 * 
+	 * @return the configured client connection timeout
+	 */
+	public long getConnectTimeout()
+	{
+		return environmentBuilder.getConnectTimeoutMS();
 	}
 
 	/**
-	 * Set the retry delay in milliseconds.
+	 * Get the read timeout (milliseconds) between packets.
 	 * 
-	 * @param retryDelayMS in milliseconds
+	 * @return the configured read timeout
 	 */
-	public void setRetryDelay(int retryDelayMS)
+	public long getReadTimeout()
 	{
-		this.retryDelayMS = retryDelayMS;
+		return environmentBuilder.getReadTimeoutMS();
 	}
 
 	/**
-	 * Set the retry delay in milliseconds.
+	 * Get the Proxy object containing proxy host, port and user credentials.
 	 * 
-	 * @param retryDelayMS in milliseconds
+	 * @return EnvironmentConfiguration.Proxy object
 	 */
-	public T retryDelay(int retryDelayMS)
-	{
-		this.retryDelayMS = retryDelayMS;
-		return self;
+	public Proxy getProxy() {
+		return environmentBuilder.getProxy();
+	}
+
+	/**
+	 * 
+	 * @return true if logging to file is enabled
+	 */
+	public boolean isLoggingEnabled() { 
+		return environmentBuilder.isLoggingEnabled();
+	}
+
+	/**
+	 * 
+	 * @return lowest level at which to log at
+	 */
+	public Level getLogLevel() {
+		return environmentBuilder.getLogLevel();
+	}
+
+	/**
+	 * 
+	 * @return Path and filename of log file
+	 */
+	public String getLogLocation() {
+		return environmentBuilder.getLogLocation();
 	}
 	
 	@Override
 	public String toString() {
-		return "url=" + url + ", accessKey=" + accessKey + ", maxTries="
-				+ maxTries + ", retryDelayMS=" + retryDelayMS;
+		return "servicePath=" + servicePath + ", environment=" + environmentBuilder.toString();
 	}
+
 
 	/**
 	 * Execute a request to the Docmosis cloud based on contained settings.
@@ -213,8 +161,11 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> im
 	 * 
 	 * @throws Exception if a problem occurs invoking the service. 
 	 */
-	public abstract DocmosisCloudResponse execute() throws Exception;
-	public abstract DocmosisCloudResponse execute(String url, String accessKey) throws Exception;
-	public abstract DocmosisCloudResponse execute(String accessKey) throws Exception;
+	public abstract DocmosisCloudResponse execute() throws DocmosisException;
+	public abstract DocmosisCloudResponse execute(String url, String accessKey) throws DocmosisException;
+	public abstract DocmosisCloudResponse execute(String accessKey) throws DocmosisException;
+	public abstract DocmosisCloudResponse execute(Environment env) throws DocmosisException;
+	
+	protected abstract T getThis();	
 
 }

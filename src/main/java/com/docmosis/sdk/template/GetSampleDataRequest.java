@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.template;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -21,40 +22,35 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * The object holds the instructions and data for a request to the Get Sample Data service.
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Render request.
+ * are parameters for the Get Sample Data request.
  * 
  * Typically, you would use the Template class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   GetSampleDataResponse templateSampleData = Template.getSampleData()
- *   												.url("https://dws2.docmosis.com/services/rs/getSampleData")
- *   												.templateName("MasterTemplates/MyMasterTemplate.docx")
- *   												.format("json")
- *   												.accessKey("XXX")
- *   												.execute();
- *   templateSampleData.toString();
+ *   GetSampleDataResponse templateSampleData = Template
+ *   											.getSampleData()
+ *   											.templateName("MasterTemplates/MyMasterTemplate.docx")
+ *   											.format("json")
+ *   											.execute();
+ *   if (templateSampleData.hasSucceeded()) {
+ *   	templateSampleData.toString();
+ *   }
  * </pre>
  */
 public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequest> {
-
-	private static final long serialVersionUID = 4338222626030786768L;
 	
+	private static final String SERVICE_PATH = "getSampleData";
 	private String templateName;
 	private String format = null;
 
 	public GetSampleDataRequest() {
-		super(GetSampleDataRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/getSampleData"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public GetSampleDataRequest(String url) {
-		super(GetSampleDataRequest.class, url);
-	}
-
-	public GetSampleDataRequest(String url, String accessKey) {
-		super(GetSampleDataRequest.class, url, accessKey);
+	public GetSampleDataRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -82,7 +78,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 */
 	public GetSampleDataRequest templateName(String templateName) {
 		this.templateName = templateName;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -112,29 +108,40 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 */
 	public GetSampleDataRequest format(String format) {
 		this.format = format;
-		return self;
+		return getThis();
 	}
 	
 	@Override
-	public String toString() {
-		return "GetSampleDataRequest [" + super.toString() + ", templateName=" + templateName + ", format=" + format + "]";
-	}
-
-	@Override
 	public GetSampleDataResponse execute() throws DocmosisException {
-		return Template.executeGetSampleData(self);
+		return Template.executeGetSampleData(getThis());
 	}
 	
 	@Override
 	public GetSampleDataResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Template.executeGetSampleData(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeGetSampleData(getThis());
 	}
 	
 	@Override
 	public GetSampleDataResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Template.executeGetSampleData(self);
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeGetSampleData(getThis());
+	}
+	
+	@Override
+	public GetSampleDataResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Template.executeGetSampleData(getThis());
+	}
+	
+	@Override
+	protected GetSampleDataRequest getThis()
+	{
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		return "GetSampleDataRequest [templateName=" + templateName + ", format=" + format  + ", " + super.toString() + "]";
 	}
 }

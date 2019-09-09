@@ -14,64 +14,72 @@
  */
 package com.docmosis.sdk.template;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
  * The object holds the instructions and data for a request to the Get Template Details service.
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Render request.
+ * are parameters for the Get Template Details request.
  * 
  * Typically, you would use the Template class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   GetTemplateDetailsResponse templateDetails = Template.getDetails()
- *   												.url("https://dws2.docmosis.com/services/rs/getTemplateDetails")
+ *   GetTemplateDetailsResponse templateDetails = Template
+ *   												.getDetails()
  *   												.templateName("MasterTemplates/MyMasterTemplate.docx")
- *   												.accessKey("XXX")
  *   												.execute();
- *   templateDetails.toString();
+ *   if (templateDetails.hasSucceeded()) {
+ *   	templateDetails.toString();
+ *   }
  * </pre>
  */
-public class GetTemplateDetailsRequest extends AbstractTemplateNameRequest<GetTemplateDetailsRequest> {
+public class GetTemplateDetailsRequest extends AbstractTemplateRequest<GetTemplateDetailsRequest> {
 
-	private static final long serialVersionUID = 4338222626030786768L;
+	private static final String SERVICE_PATH = "getTemplateDetails";
 
 	public GetTemplateDetailsRequest() {
-		super(GetTemplateDetailsRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/getTemplateDetails"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public GetTemplateDetailsRequest(String url) {
-		super(GetTemplateDetailsRequest.class, url);
+	public GetTemplateDetailsRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
-	public GetTemplateDetailsRequest(String url, String accessKey) {
-		super(GetTemplateDetailsRequest.class, url, accessKey);
+	@Override
+	public GetTemplateDetailsResponse execute() throws DocmosisException {
+		return Template.executeGetTemplateDetails(getThis());
+	}
+	
+	@Override
+	public GetTemplateDetailsResponse execute(String url, String accessKey) throws DocmosisException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeGetTemplateDetails(getThis());
+	}
+	
+	@Override
+	public GetTemplateDetailsResponse execute(String accessKey) throws DocmosisException {
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeGetTemplateDetails(getThis());
+	}
+
+	@Override
+	public GetTemplateDetailsResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Template.executeGetTemplateDetails(getThis());
+	}
+	
+	@Override
+	protected GetTemplateDetailsRequest getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "GetTemplateDetailsRequest [" + super.toString() + "]";
-	}
-
-	@Override
-	public GetTemplateDetailsResponse execute() throws DocmosisException {
-		return Template.executeGetTemplateDetails(self);
-	}
-	
-	@Override
-	public GetTemplateDetailsResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Template.executeGetTemplateDetails(self);
-	}
-	
-	@Override
-	public GetTemplateDetailsResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Template.executeGetTemplateDetails(self);
 	}
 }

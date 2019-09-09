@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.template;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -28,54 +29,56 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   ListTemplatesResponse templates = Template.list()
- *   										.url("https://dws2.docmosis.com/services/rs/listTemplates")
- *   										.accessKey("XXX")
- *   										.execute();
+ *   ListTemplatesResponse templates = Template.list().execute();
  *   List<TemplateDetails> list = templates.list();
  *   for(TemplateDetails td : list) {
- *    ...
+ *    	td.toString();
  *   }
  * </pre>
  */
 public class ListTemplatesRequest extends DocmosisCloudRequest<ListTemplatesRequest> {
-
-	private static final long serialVersionUID = 4338222626030786768L;
+	
+	private static final String SERVICE_PATH = "listTemplates";
 	
 	public ListTemplatesRequest() {
-		super(ListTemplatesRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/listTemplates"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public ListTemplatesRequest(String url) {
-		super(ListTemplatesRequest.class, url);
+	public ListTemplatesRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
-	public ListTemplatesRequest(String url, String accessKey) {
-		super(ListTemplatesRequest.class, url, accessKey);
+	@Override
+	public ListTemplatesResponse execute() throws DocmosisException {
+		return Template.executelist(this);
+	}
+	
+	@Override
+	public ListTemplatesResponse execute(String url, String accessKey) throws DocmosisException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executelist(getThis());
+	}
+	
+	@Override
+	public ListTemplatesResponse execute(String accessKey) throws DocmosisException {
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executelist(getThis());
+	}
+	
+	@Override
+	public ListTemplatesResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Template.executelist(getThis());
+	}
+
+	@Override
+	protected ListTemplatesRequest getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "ListTemplatesRequest [" + super.toString() + "]";
 	}
-
-	@Override
-	public ListTemplatesResponse execute() throws DocmosisException {
-		return Template.executelist(self);
-	}
-	
-	@Override
-	public ListTemplatesResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Template.executelist(self);
-	}
-	
-	@Override
-	public ListTemplatesResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Template.executelist(self);
-	}
-
 }

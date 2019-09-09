@@ -17,16 +17,17 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.render.GetRenderTagsResponse;
-import com.docmosis.sdk.render.Renderer;
-import com.docmosis.sdk.template.TemplateDetails;
+import com.docmosis.sdk.rendertags.GetRenderTagsResponse;
+import com.docmosis.sdk.rendertags.RenderTags;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * returns statistics on renders that were tagged with user-defined phrases (“tags”).
+ * This example connects to the public Docmosis cloud server and returns 
+ * statistics on renders that were tagged with user-defined phrases (“tags”).
  * 
  * How to use:
  * 
@@ -42,13 +43,7 @@ import com.docmosis.sdk.template.TemplateDetails;
 public class SimpleGetRenderTagsExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	//private static final String URL = "https://dws2.docmosis.com/services/rs/getRenderTags";
-	private static final String URL = "https://au.dws.docmosis.com/v3/api/getRenderTags";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -57,32 +52,25 @@ public class SimpleGetRenderTagsExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
+		
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetRenderTagsResponse renderTags = null; //The response to the Get Render Tags request.
+		GetRenderTagsResponse renderTags = RenderTags
+											.get()
+											.tags("test")
+											.padBlanks(true)
+											.execute();
 
-		try {
-			
-			renderTags = Renderer.getRenderTags()
-									.tags("test")
-									.padBlanks(true)
-									.execute(URL, ACCESS_KEY);
-
-			if (renderTags.hasSucceeded()) {
-				System.out.println(renderTags.toString());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Get Render tags failed: status="
-						+ renderTags.getStatus()
-						+ " shortMsg="
-						+ renderTags.getShortMsg()
-						+ ((renderTags.getLongMsg() == null) ? "" : " longMsg="
-								+ renderTags.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			renderTags.cleanup();
+		if (renderTags.hasSucceeded()) {
+			System.out.println(renderTags.toString());
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Get Render tags failed: status="
+					+ renderTags.getStatus()
+					+ " shortMsg="
+					+ renderTags.getShortMsg()
+					+ ((renderTags.getLongMsg() == null) ? "" : " longMsg="
+							+ renderTags.getLongMsg()));
 		}
 	}
 }

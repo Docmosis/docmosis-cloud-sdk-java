@@ -14,9 +14,9 @@
  */
 package com.docmosis.sdk.template;
 
-import com.docmosis.sdk.response.DocmosisFileResponse;
+import com.docmosis.sdk.response.DocmosisCloudResponse;
 
-public class GetTemplateResponse extends DocmosisFileResponse {
+public class GetTemplateResponse extends DocmosisCloudResponse {
 
 	public GetTemplateResponse() {
 		super();

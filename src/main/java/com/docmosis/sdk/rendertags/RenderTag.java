@@ -1,4 +1,4 @@
-package com.docmosis.sdk.render;
+package com.docmosis.sdk.rendertags;
 
 import java.util.List;
 
@@ -12,13 +12,13 @@ import java.util.List;
  * 	coundDocuments – the number of documents rendered against this tag in the year and month
  *
  */
-public class RenderTags {
+public class RenderTag {
 
 	private int year;
 	private int month;
 	private List<Tag> tags = null;
 	
-	public RenderTags(int year, int month, List<Tag> tags) {
+	public RenderTag(int year, int month, List<Tag> tags) {
 		this.year = year;
 		this.month = month;
 		this.tags = tags;

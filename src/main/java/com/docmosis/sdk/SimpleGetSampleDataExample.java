@@ -17,14 +17,16 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetSampleDataResponse;
 import com.docmosis.sdk.template.Template;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * returns the structure of a template stored on the Docmosis cloud server
+ * This example connects to the public Docmosis cloud server and returns the 
+ * structure of a template stored on the server.
  * 
  * How to use:
  * 
@@ -40,12 +42,7 @@ import com.docmosis.sdk.template.Template;
 public class SimpleGetSampleDataExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://dws2.docmosis.com/services/rs/getSampleData";
+	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
@@ -57,31 +54,25 @@ public class SimpleGetSampleDataExample
 			System.exit(1);
 		}
 
-		GetSampleDataResponse sampleData = null; //The response to the get Template Sample Data request.
-
-		try {
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 			
-			sampleData = Template.getSampleData()
-								.templateName(TEMPLATE_NAME)
-								.format("xml") //"xml" or "json"
-								.execute(URL, ACCESS_KEY);
+		GetSampleDataResponse sampleData = Template
+				   			.getSampleData()
+							.templateName(TEMPLATE_NAME)
+							.format("json") //"xml" or "json"
+							.execute();
 
-			if (sampleData.hasSucceeded()) {
-				System.out.println(sampleData.toString());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Get Template Structure failed: status="
-						+ sampleData.getStatus()
-						+ " shortMsg="
-						+ sampleData.getShortMsg()
-						+ ((sampleData.getLongMsg() == null) ? "" : " longMsg="
-								+ sampleData.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			sampleData.cleanup();
+		if (sampleData.hasSucceeded()) {
+			System.out.println(sampleData.toString());
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Get Template Structure failed: status="
+					+ sampleData.getStatus()
+					+ " shortMsg="
+					+ sampleData.getShortMsg()
+					+ ((sampleData.getLongMsg() == null) ? "" : " longMsg="
+							+ sampleData.getLongMsg()));
 		}
+
 	}
 }

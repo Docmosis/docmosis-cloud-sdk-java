@@ -14,45 +14,143 @@
  */
 package com.docmosis.sdk.image;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.request.DocmosisCloudRequest;
 
-public class DeleteImageRequest extends AbstractImagesRequest<DeleteImageRequest> {
-	
-	private static final long serialVersionUID = 4338222626030786768L;
-	
+/**
+ * The object holds the instructions and data for a request to the Delete Image service.
+ * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * for details about the settings for the request.  The properties set in this class 
+ * are parameters for the Delete Image request.
+ * 
+ * Typically, you would use the Image class to get an instance of this class, then
+ * set the specifics you require using method chaining:
+ * 
+ * 
+ * <pre>
+ *   DeleteImageRequest deleteImage = Image
+ *   									.delete()
+ *										.addImageName(fileToDelete)
+ *										.execute();
+ *  if (deleteTemplate.hasSucceeded()) {
+ *    //Succeeded
+ *  }
+ * </pre>
+ */
+public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest> {
+
+	private static final String SERVICE_PATH = "deleteImage";
+	private boolean isSystemImage = false;
+	private List<String> imageNames = null;
+
 	public DeleteImageRequest() {
-		super(DeleteImageRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/deleteImage"); //Default url
+		super(SERVICE_PATH);
+		imageNames = new ArrayList<String>();
 	}
 	
-	public DeleteImageRequest(String url) {
-		super(DeleteImageRequest.class, url);
+	public DeleteImageRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
+		imageNames = new ArrayList<String>();
 	}
 
-	public DeleteImageRequest(String url, String accessKey) {
-		super(DeleteImageRequest.class, url, accessKey);
+	/**
+	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
+	 * 
+	 * @return isSystemImage flag
+	 */
+	public boolean getIsSystemImage() {
+		return isSystemImage;
+	}
+
+	/**
+	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
+	 * 
+	 * @param isSystemImage Is system image flag
+	 */
+	public void setSystemImage(boolean isSystemImage) {
+		this.isSystemImage = isSystemImage;
+	}
+	
+	/**
+	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
+	 * 
+	 * @param isSystemImage Is system image flag
+	 */
+	public DeleteImageRequest isSystemImage(boolean isSystemImage) {
+		this.isSystemImage = isSystemImage;
+		return getThis();
+	}
+	
+	/**
+	 * The names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
+	 * @return The image names list.
+	 */
+	public List<String> getImageNames() {
+		return imageNames;
+	}
+
+	/**
+	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
+	 * @param imageNames the image name list.
+	 */
+	public void setImageNames(List<String> imageNames) {
+		this.imageNames = imageNames;
+	}
+
+	/**
+	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
+	 * @param imageNames the image name list.
+	 */
+	public DeleteImageRequest imageNames(List<String> imageNames) {
+		this.imageNames = imageNames;
+		return getThis();
+	}
+
+	/**
+	 * Add a Image Name.
+	 * 
+	 * @param imageName The name of the Image on the docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
+	 */
+	public DeleteImageRequest addImageName(String imageName) {
+		this.imageNames.add(imageName);
+		return getThis();
+	}
+
+	@Override
+	public DeleteImageResponse execute() throws DocmosisException {
+		return Image.executeDeleteImage(getThis());
+	}
+	
+	@Override
+	public DeleteImageResponse execute(String url, String accessKey) throws DocmosisException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Image.executeDeleteImage(getThis());
+	}
+	
+	@Override
+	public DeleteImageResponse execute(String accessKey) throws DocmosisException {
+		getEnvironment().setAccessKey(accessKey);
+		return Image.executeDeleteImage(getThis());
+	}
+
+	@Override
+	public DeleteImageResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Image.executeDeleteImage(getThis());
+	}
+
+	@Override
+	protected DeleteImageRequest getThis()
+	{
+		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "DeleteImageRequest [" + super.toString() + "]";
-	}
-
-	@Override
-	public DeleteImageResponse execute() throws DocmosisException {
-		return Image.executeDeleteImage(self);
-	}
-	
-	@Override
-	public DeleteImageResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Image.executeDeleteImage(self);
-	}
-	
-	@Override
-	public DeleteImageResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Image.executeDeleteImage(self);
 	}
 }

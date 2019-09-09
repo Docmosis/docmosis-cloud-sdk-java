@@ -16,29 +16,32 @@ package com.docmosis.sdk.template;
 
 import java.io.File;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
  * The object holds the instructions and data for a request to the Upload Template service.
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Render request.
+ * are parameters for the Upload Template request.
  * 
  * Typically, you would use the Template class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   UploadTemplateResponse uploadedTemplate = Template.upload()
- *											.templateFile(uploadFile)
- *											.execute(URL, ACCESS_KEY);
- *   uploadedTemplate.toString();
+ *   UploadTemplateResponse uploadedTemplate = Template
+ *   											.upload()
+ *												.templateFile(uploadFile)
+ *												.execute();
+ *	 if (uploadedTemplate.hasSucceeded()) {
+ *   	uploadedTemplate.toString();
+ *   }
  * </pre>
  */
-public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTemplateRequest> {
-
-	private static final long serialVersionUID = 4338222626030786768L;
+public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplateRequest> {
 	
+	private static final String SERVICE_PATH = "uploadTemplate";
 	private File templateFile = null;
 	private String templateDescription = "";
 	private boolean devMode = true;
@@ -48,16 +51,11 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	private boolean normalizeTemplateName = false;
 
 	public UploadTemplateRequest() {
-		super(UploadTemplateRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/uploadTemplate"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public UploadTemplateRequest(String url) {
-		super(UploadTemplateRequest.class, url);
-	}
-
-	public UploadTemplateRequest(String url, String accessKey) {
-		super(UploadTemplateRequest.class, url, accessKey);
+	public UploadTemplateRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -82,7 +80,7 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	 */
 	public UploadTemplateRequest templateFile(File templateFile) {
 		this.templateFile = templateFile;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -107,7 +105,7 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	 */
 	public UploadTemplateRequest templateDescription(String templateDescription) {
 		this.templateDescription = templateDescription;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -135,7 +133,7 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	 */
 	public UploadTemplateRequest devMode(boolean devMode) {
 		this.devMode = devMode;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -169,7 +167,7 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	 */
 	public UploadTemplateRequest keepPrevOnFail(boolean keepPrevOnFail) {
 		this.keepPrevOnFail = keepPrevOnFail;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -194,7 +192,7 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	 */
 	public UploadTemplateRequest fieldDelimPrefix(String fieldDelimPrefix) {
 		this.fieldDelimPrefix = fieldDelimPrefix;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -219,7 +217,7 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	 */
 	public UploadTemplateRequest fieldDelimSuffix(String fieldDelimSuffix) {
 		this.fieldDelimSuffix = fieldDelimSuffix;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -247,32 +245,43 @@ public class UploadTemplateRequest extends AbstractTemplateNameRequest<UploadTem
 	 */
 	public UploadTemplateRequest normalizeTemplateName(boolean normalizeTemplateName) {
 		this.normalizeTemplateName = normalizeTemplateName;
-		return self;
-	}
-
-	@Override
-	public String toString() {
-		return "UploadTemplateRequest [" + super.toString() + ", templateFile=" + templateFile + ", templateDescription=" + templateDescription
-				+ ", devMode=" + devMode + ", keepPrevOnFail=" + keepPrevOnFail + ", fieldDelimPrefix="
-				+ fieldDelimPrefix + ", fieldDelimSuffix=" + fieldDelimSuffix + ", normalizeTemplateName="
-				+ normalizeTemplateName + "]";
+		return getThis();
 	}
 
 	@Override
 	public UploadTemplateResponse execute() throws DocmosisException {
-		return Template.executeUploadTemplate(self);
+		return Template.executeUploadTemplate(getThis());
 	}
 	
 	@Override
 	public UploadTemplateResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Template.executeUploadTemplate(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeUploadTemplate(getThis());
 	}
 	
 	@Override
 	public UploadTemplateResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Template.executeUploadTemplate(self);
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeUploadTemplate(getThis());
+	}
+	
+	@Override
+	public UploadTemplateResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Template.executeUploadTemplate(getThis());
+	}
+
+	@Override
+	protected UploadTemplateRequest getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "UploadTemplateRequest [templateFile=" + templateFile + ", templateDescription=" + templateDescription
+				+ ", devMode=" + devMode + ", keepPrevOnFail=" + keepPrevOnFail + ", fieldDelimPrefix="
+				+ fieldDelimPrefix + ", fieldDelimSuffix=" + fieldDelimSuffix + ", normalizeTemplateName="
+				+ normalizeTemplateName + ", " + super.toString() + "]";
 	}
 }

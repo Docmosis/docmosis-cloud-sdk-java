@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.file;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -23,35 +24,32 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
- * Typically, you would use the File class to get an instance of this class, then
- * set the specifics you require using method chaining:
+ * Typically, you would use the FileStorage class to get an instance of this class, 
+ * then set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   DeleteFileResponse deletedFile = File.delete()
+ *   DeleteFileResponse deletedFile = FileStorage
+ *   									.delete()
  *   									.path(fileName)
- *   									.execute(URL, ACCESS_KEY);
- *   deletedFile.toString();
+ *   									.execute();
+ *   if (deletedFile.hasSucceeded()) {
+ *   	deletedFile.toString();
+ *   }
  * </pre>
  */
 public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>  {
 
-	private static final long serialVersionUID = 4338222626030786768L;
-	
+	private static final String SERVICE_PATH = "deleteFiles";
 	private String path;
 	private boolean includeSubFolders = false;
 	
 	public DeleteFilesRequest() {
-		super(DeleteFilesRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs" + "/deleteFiles"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public DeleteFilesRequest(String url) {
-		super(DeleteFilesRequest.class, url);
-	}
-
-	public DeleteFilesRequest(String url, String accessKey) {
-		super(DeleteFilesRequest.class, url, accessKey);
+	public DeleteFilesRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -77,7 +75,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	 */
 	public DeleteFilesRequest path(String path) {
 		this.path = path;
-		return self;
+		return getThis();
 	}
 
 	/**
@@ -103,30 +101,40 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	 */
 	public DeleteFilesRequest includeSubFolders(boolean includeSubFolders) {
 		this.includeSubFolders = includeSubFolders;
-		return self;
+		return getThis();
 	}
 
 	@Override
-	public String toString() {
-		return "DeleteFilesRequest [" + super.toString() + ", path=" + path + ", includeSubFolders=" + includeSubFolders + "]";
-	}
-	
-	@Override
 	public DeleteFilesResponse execute() throws DocmosisException {
-		return File.executeDeleteFiles(self);
+		return FileStorage.executeDeleteFiles(getThis());
 	}
 	
 	@Override
 	public DeleteFilesResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return File.executeDeleteFiles(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executeDeleteFiles(getThis());
 	}
 	
 	@Override
 	public DeleteFilesResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return File.executeDeleteFiles(self);
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executeDeleteFiles(getThis());
 	}
-	
+
+	@Override
+	public DeleteFilesResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return FileStorage.executeDeleteFiles(getThis());
+	}
+
+	@Override
+	protected DeleteFilesRequest getThis()
+	{
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "DeleteFilesRequest [path=" + path + ", includeSubFolders=" + includeSubFolders + ", " + super.toString() + "]";
+	}
 }

@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.template;
 
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
@@ -21,38 +22,33 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * The object holds the instructions and data for a request to the Get Template Structure service.
  * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Render request.
+ * are parameters for the Get Template Structure request.
  * 
  * Typically, you would use the Template class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
  * 
  * <pre>
- *   GetTemplateStructureResponse templateStructure = Template.getStructure()
- *   												.url("https://dws2.docmosis.com/services/rs/getTemplateStructure")
- *   												.templateName("MasterTemplates/MyMasterTemplate.docx")
- *   												.accessKey("XXX")
- *   												.execute();
- *   templateStructure.toString();
+ *   GetTemplateStructureResponse templateStructure = Template
+ *   													.getStructure()
+ *   													.templateName("MasterTemplates/MyMasterTemplate.docx")
+ *   													.execute();
+ *   if (templateStructure.hasSucceeded()) {
+ *   	templateStructure.toString();
+ *   }
  * </pre>
  */
 public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplateStructureRequest> {
 
-	private static final long serialVersionUID = 4338222626030786768L;
-	
+	private static final String SERVICE_PATH = "getTemplateStructure";
 	private String templateName;
 
 	public GetTemplateStructureRequest() {
-		super(GetTemplateStructureRequest.class);
-		setUrl("https://dws2.docmosis.com/services/rs/getTemplateStructure"); //Default url
+		super(SERVICE_PATH);
 	}
 	
-	public GetTemplateStructureRequest(String url) {
-		super(GetTemplateStructureRequest.class, url);
-	}
-
-	public GetTemplateStructureRequest(String url, String accessKey) {
-		super(GetTemplateStructureRequest.class, url, accessKey);
+	public GetTemplateStructureRequest(final Environment environment) {
+		super(SERVICE_PATH, environment);
 	}
 
 	/**
@@ -80,29 +76,40 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 	 */
 	public GetTemplateStructureRequest templateName(String templateName) {
 		this.templateName = templateName;
-		return self;
-	}
-
-	@Override
-	public String toString() {
-		return "GetTemplateStructureRequest [" + super.toString() + ", templateName=" + templateName + "]";
+		return getThis();
 	}
 
 	@Override
 	public GetTemplateStructureResponse execute() throws DocmosisException {
-		return Template.executeGetTemplateStructure(self);
+		return Template.executeGetTemplateStructure(getThis());
 	}
 	
 	@Override
 	public GetTemplateStructureResponse execute(String url, String accessKey) throws DocmosisException {
-		self.setUrl(url);
-		self.setAccessKey(accessKey);
-		return Template.executeGetTemplateStructure(self);
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeGetTemplateStructure(getThis());
 	}
 	
 	@Override
 	public GetTemplateStructureResponse execute(String accessKey) throws DocmosisException {
-		self.setAccessKey(accessKey);
-		return Template.executeGetTemplateStructure(self);
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeGetTemplateStructure(getThis());
+	}
+
+	@Override
+	public GetTemplateStructureResponse execute(Environment environment) throws DocmosisException {
+		super.setEnvironment(environment);
+		return Template.executeGetTemplateStructure(getThis());
+	}
+
+	@Override
+	public String toString() {
+		return "GetTemplateStructureRequest [templateName=" + templateName + ", " + super.toString() + "]";
+	}
+
+	@Override
+	protected GetTemplateStructureRequest getThis()
+	{
+		return this;
 	}
 }

@@ -18,6 +18,8 @@ package com.docmosis.sdk;
 import java.io.IOException;
 import java.util.List;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.ListTemplatesResponse;
 import com.docmosis.sdk.template.Template;
@@ -27,8 +29,8 @@ import com.docmosis.sdk.template.TemplateDetails;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * returns details about all templates stored on the Docmosis cloud server 
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about all templates stored on the server. 
  * 
  * How to use:
  * 
@@ -44,12 +46,7 @@ import com.docmosis.sdk.template.TemplateDetails;
 public class SimpleListTemplatesExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://dws2.docmosis.com/services/rs/listTemplates";
+	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!! 
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -58,34 +55,26 @@ public class SimpleListTemplatesExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
+
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 		
-		ListTemplatesResponse templates = null; //The response to the List Templates request.
+		ListTemplatesResponse templates = Template
+				.list()
+				.execute();
 
-		try {
-			
-			templates = Template.list()
-					.execute(URL, ACCESS_KEY);
-
-			if (templates.hasSucceeded()) {
-				List<TemplateDetails> list = templates.list();
-				for(TemplateDetails td : list) {
-					System.out.println(td.getName());
-					//System.out.println(td.toString());
-				}
-			} else {
-				// something went wrong, tell the user
-				System.err.println("List Templates failed: status="
-						+ templates.getStatus()
-						+ " shortMsg="
-						+ templates.getShortMsg()
-						+ ((templates.getLongMsg() == null) ? "" : " longMsg="
-								+ templates.getLongMsg()));
+		if (templates.hasSucceeded()) {
+			List<TemplateDetails> list = templates.list();
+			for(TemplateDetails td : list) {
+				System.out.println(td.getName() + " size=" + td.getSizeBytes() + " bytes");
 			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			templates.cleanup();
+		} else {
+			// something went wrong, tell the user
+			System.err.println("List Templates failed: status="
+					+ templates.getStatus()
+					+ " shortMsg="
+					+ templates.getShortMsg()
+					+ ((templates.getLongMsg() == null) ? "" : " longMsg="
+							+ templates.getLongMsg()));
 		}
 	}
 }

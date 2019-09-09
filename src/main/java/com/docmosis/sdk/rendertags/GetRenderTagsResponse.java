@@ -12,7 +12,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.docmosis.sdk.render;
+package com.docmosis.sdk.rendertags;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
 
 public class GetRenderTagsResponse extends DocmosisCloudResponse {
 
-	private List<RenderTags> renderTags = null;
+	private List<RenderTag> renderTags = null;
 
 	public GetRenderTagsResponse() {
 		super();
@@ -44,7 +44,7 @@ public class GetRenderTagsResponse extends DocmosisCloudResponse {
 	 * included all the tags).
 	 * @return
 	 */
-	public List<RenderTags> getRenderTags() {
+	public List<RenderTag> getRenderTags() {
 		return renderTags;
 	}
 
@@ -66,11 +66,11 @@ public class GetRenderTagsResponse extends DocmosisCloudResponse {
 	 * included all the tags).
 	 * @return
 	 */
-	public List<RenderTags> list() {
+	public List<RenderTag> list() {
 		return renderTags;
 	}
 
-	public void setRenderTags(List<RenderTags> renderTags) {
+	public void setRenderTags(List<RenderTag> renderTags) {
 		this.renderTags = renderTags;
 	}
 	
@@ -78,7 +78,7 @@ public class GetRenderTagsResponse extends DocmosisCloudResponse {
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
 		if (renderTags != null) { //Build formatted String to return.
-			for(RenderTags rt : renderTags) {
+			for(RenderTag rt : renderTags) {
 				sb.append(rt.toString());
 			}
 		}

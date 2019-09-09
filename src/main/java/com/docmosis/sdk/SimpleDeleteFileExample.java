@@ -18,15 +18,20 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
+import com.docmosis.sdk.environmentconfiguration.Endpoint;
+import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.file.DeleteFilesResponse;
-import com.docmosis.sdk.file.File;
+import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.handlers.DocmosisException;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * deletes a file stored on the Docmosis cloud server
+ * This example connects to the public Docmosis cloud server and deletes a 
+ * file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -42,12 +47,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimpleDeleteFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = Properties.accesskey;
-	// If you are using our dws3 product please replace the URL below with the one specified
-	// in the console under Account -> API URL.
-	// If you are using dws2 in the EU:
-	// private static final String URL = "https://eu-west.dws2.docmosis.com/services/rs/renderForm";
-	private static final String URL = "https://au.dws.docmosis.com/v3/api/deleteFiles";
+	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!!
 	//Full path of File to be deleted
 	private static final String FILE_TO_DELETE = "myFile1.pdf";
 
@@ -58,33 +58,27 @@ public class SimpleDeleteFileExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-
-		DeleteFilesResponse deletedFile = null; //The response to the Delete File request.
 		
-		try {
-			
-			deletedFile = File.delete()
-							.path(FILE_TO_DELETE)
-							//.includeSubFolders(true)
-							.execute(URL, ACCESS_KEY);
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-			if (deletedFile.hasSucceeded()) {
-				System.out.println(deletedFile.getShortMsg());
-				System.out.println("Successfully deleted " + FILE_TO_DELETE);
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Delete File failed: status="
-						+ deletedFile.getStatus()
-						+ " shortMsg="
-						+ deletedFile.getShortMsg()
-						+ ((deletedFile.getLongMsg() == null) ? "" : " longMsg="
-								+ deletedFile.getLongMsg()));
-			}
-		} catch (Exception e){
-			System.out.println("Error: " + e.getMessage());
-		} finally {
-			//Close off http client and http response
-			deletedFile.cleanup();
-		}		
+		DeleteFilesResponse deletedFile = FileStorage
+											.delete()
+											.path(FILE_TO_DELETE)
+											//.includeSubFolders(true)
+											.execute();
+
+		if (deletedFile.hasSucceeded()) {
+			System.out.println(deletedFile.getShortMsg());
+			System.out.println("Successfully deleted " + FILE_TO_DELETE);
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Delete File failed: status="
+					+ deletedFile.getStatus()
+					+ " shortMsg="
+					+ deletedFile.getShortMsg()
+					+ ((deletedFile.getLongMsg() == null) ? "" : " longMsg="
+							+ deletedFile.getLongMsg()));
+		}
+
 	}
 }

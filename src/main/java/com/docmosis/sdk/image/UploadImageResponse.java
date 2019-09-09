@@ -23,7 +23,17 @@ public class UploadImageResponse extends DocmosisCloudResponse {
 	public UploadImageResponse() {
 		super();
 	}
-	
+
+	/**
+	 * The attributes of the uploaded image:
+	 * name - the image file name
+	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
+	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
+	 * sizeBytes - the size in bytes
+	 * isSystemImage - whether a system image ("true" or "false")
+	 * md5 - the md5 hash code for the image
+	 * @return ImageDetails Object
+	 */
 	public ImageDetails getDetails() {
 		return imageDetails;
 	}
