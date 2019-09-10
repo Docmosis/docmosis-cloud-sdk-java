@@ -244,12 +244,18 @@ public class EnvironmentBuilder
 	}
 
 	public static void validate(EnvironmentBuilder env) throws InvalidEnvironmentException {
+		validate(env, true);
+	}
+	
+	public static void validate(EnvironmentBuilder env, boolean accessKeyMandatory) 
+		throws InvalidEnvironmentException 
+	{
 		if (env == null) {
 			throw new InvalidEnvironmentException("Environment not initialised");
 		}
-		Environment.validate(env.build());
+		Environment.validate(env.build(), accessKeyMandatory);
 	}
-	
+
 	public static EnvironmentBuilder copyFrom(Environment other) {
 		return new EnvironmentBuilder(other);
 	}

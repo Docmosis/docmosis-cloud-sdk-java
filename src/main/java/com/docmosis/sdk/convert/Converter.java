@@ -33,6 +33,9 @@ public class Converter {
 
     private static final Logger log = Logger.getLogger(Converter.class.getName());
     
+    /**
+     * Create the conversion request.
+     */
     public static ConverterRequest convert()
     {
     	final ConverterRequest req = new ConverterRequest();

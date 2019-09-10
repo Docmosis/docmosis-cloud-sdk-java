@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
 import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
@@ -30,7 +29,7 @@ import com.google.gson.Gson;
 /**
  * 
  * This example connects to the public Docmosis cloud server and renders the 
- * built-in WelcomeTemplate.doc template into a PDF which is saved to the 
+ * built-in WelcomeTemplate.docx template into a PDF which is saved to the 
  * local file system.  The code also populates the "title" field within the 
  * template.
  * 
@@ -49,7 +48,7 @@ public class SimpleCloudExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
@@ -70,7 +69,7 @@ public class SimpleCloudExample
 			System.exit(1);
 		}
 
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+		Environment.setDefaults(ACCESS_KEY);
 
 		//Create data to send
 		final Data data = new Data();
@@ -88,7 +87,7 @@ public class SimpleCloudExample
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile) //Or OutputStream TODO: MAKE OPTIONAL
+									.sendTo(outputFile) //Or OutputStream
 									.data(dataString)
 									.execute();
 						

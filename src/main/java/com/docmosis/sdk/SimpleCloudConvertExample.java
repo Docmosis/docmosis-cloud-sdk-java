@@ -20,7 +20,6 @@ import java.io.IOException;
 import com.docmosis.sdk.convert.Converter;
 import com.docmosis.sdk.convert.ConverterException;
 import com.docmosis.sdk.convert.ConverterResponse;
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
 import com.docmosis.sdk.environmentconfiguration.Environment;
 
 
@@ -59,7 +58,7 @@ public class SimpleCloudConvertExample
 			System.exit(1);
 		}
 		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+		Environment.setDefaults(ACCESS_KEY);
 
 		//Set the file to be converted
 		File convertFile = new File(FILE_TO_CONVERT);

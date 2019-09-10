@@ -24,10 +24,8 @@ public enum Endpoint {
 	/** EU */ 
 	DWS_VERSION_3_EU ("https://eu.dws.docmosis.com/v3/api/"),
 	/** Australia */ 
-	DWS_VERSION_3_AUS("https://au.dws.docmosis.com/v3/api/"),
+	DWS_VERSION_3_AUS("https://au.dws.docmosis.com/v3/api/");
 	
-	/** Legacy USA */
-	DWS_VERSION_2_USA("https://dws2.docmosis.com/services/rs/");
 	
 	private final String baseUrl;
 	
