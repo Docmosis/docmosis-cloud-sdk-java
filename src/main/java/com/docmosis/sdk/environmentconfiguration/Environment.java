@@ -37,8 +37,6 @@ public class Environment {
 	protected Level logLevel = DEFAULT_LOG_LEVEL;
 	protected String logLocation = DEFAULT_LOG_LOCATION;
 
-	// TODO - add default client connect timeout, read timeout, retry count, retry delay, proxy settings
-
 	private static Environment DEFAULT_ENVIRONMENT = null;
 
 	

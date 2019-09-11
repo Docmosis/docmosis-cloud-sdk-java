@@ -45,6 +45,19 @@ public class EnvironmentBuilder
 		return this;
 	}
 
+
+	/**
+	 * Set the end point to which requests will be sent.
+	 * 
+	 * @param endpoint the end point for service requests
+	 */
+	public EnvironmentBuilder setEndpoint(Endpoint endpoint)
+	{
+		env.setBaseUrl(endpoint.getBaseUrl());
+		return this;
+	}
+	
+	
 	/**
 	 * Set the base url of the request.
 	 * Use the Endpoint enum to get the base url of the different Docmosis servers,
