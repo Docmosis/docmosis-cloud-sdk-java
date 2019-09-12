@@ -44,7 +44,7 @@ import com.docmosis.sdk.image.Image;
 public class SimpleDeleteImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!!
+	private static final String ACCESS_KEY = "XXX";
 	//Full path of File(s) to be deleted
 	private static final String FIRST_FILE_TO_DELETE = "Image1.png";
 	//private static final String SECOND_FILE_TO_DELETE = "Image2.jpg";

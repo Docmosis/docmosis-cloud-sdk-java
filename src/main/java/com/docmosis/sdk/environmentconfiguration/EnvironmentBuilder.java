@@ -14,7 +14,6 @@
  */
 package com.docmosis.sdk.environmentconfiguration;
 
-import java.util.logging.Level;
 
 /**
  * This class helps to build an Environment instance with settings for communicating 
@@ -136,37 +135,6 @@ public class EnvironmentBuilder
 	}
 
 	/**
-	 * Enable logging to file (Default false)
-	 * 
-	 * @param loggingEnabled
-	 */
-	public EnvironmentBuilder setLoggingEnabled(boolean loggingEnabled) {
-		env.setLoggingEnabled(loggingEnabled);
-		return this;
-	}
-
-	/**
-	 * Set the lowest level at which to log at (default Level.FINE).
-	 * Use Level.All to log everything.
-	 * 
-	 * @param logLevel logging.Level object
-	 */
-	public EnvironmentBuilder setLogLevel(Level logLevel) {
-		env.setLogLevel(logLevel);
-		return this;
-	}
-
-	/**
-	 * Override default location of log file (Default ./DocmosisJavaSDK.log)
-	 * 
-	 * @param logLocation Path and filename to log to.
-	 */
-	public EnvironmentBuilder setLogLocation(String logLocation) {
-		env.setLogLocation(logLocation);
-		return this;
-	}
-
-	/**
 	 * The access key for using the end point.
 	 * 
 	 * @return access key of docmosis cloud or tornado endpoint.
@@ -230,30 +198,6 @@ public class EnvironmentBuilder
 	 */
 	public Proxy getProxy() {
 		return env.getProxy();
-	}
-
-	/**
-	 * 
-	 * @return true if logging to file is enabled
-	 */
-	public boolean isLoggingEnabled() { 
-		return env.isLoggingEnabled();
-	}
-
-	/**
-	 * 
-	 * @return lowest level at which to log at
-	 */
-	public Level getLogLevel() {
-		return env.getLogLevel();
-	}
-
-	/**
-	 * 
-	 * @return Path and filename of log file
-	 */
-	public String getLogLocation() {
-		return env.getLogLocation();
 	}
 
 	public static void validate(EnvironmentBuilder env) throws InvalidEnvironmentException {
@@ -382,37 +326,6 @@ public class EnvironmentBuilder
 	     */
 		public Environment setProxy(String host, int port, String user, String passwd) {
 			super.proxy = new Proxy(host, port, user, passwd);
-			return this;
-		}
-
-		/**
-		 * Enable logging to file (Default false)
-		 * 
-		 * @param loggingEnabled
-		 */
-		public Environment setLoggingEnabled(boolean loggingEnabled) {
-			super.loggingEnabled = loggingEnabled;
-			return this;
-		}
-
-		/**
-		 * Set the lowest level at which to log at (default Level.FINE).
-		 * Use Level.All to log everything.
-		 * 
-		 * @param logLevel logging.Level object
-		 */
-		public Environment setLogLevel(Level logLevel) {
-			super.logLevel = logLevel;
-			return this;
-		}
-
-		/**
-		 * Override default location of log file (Default ./DocmosisJavaSDK.log)
-		 * 
-		 * @param logLocation Path and filename to log to.
-		 */
-		public Environment setLogLocation(String logLocation) {
-			super.logLocation = logLocation;
 			return this;
 		}
 	}

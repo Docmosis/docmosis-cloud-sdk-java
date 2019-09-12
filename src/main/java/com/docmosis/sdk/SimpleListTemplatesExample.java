@@ -46,7 +46,7 @@ import com.docmosis.sdk.template.TemplateDetails;
 public class SimpleListTemplatesExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!! 
+	private static final String ACCESS_KEY = "XXX";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{

@@ -45,7 +45,7 @@ import com.docmosis.sdk.image.Image;
 public class SimpleGetImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 	//Full path of File to be uploaded
 	private static final String FILE_TO_GET = "Image1.png";
 	//private static final String FILE_TO_GET2 = "Image2.jpg";

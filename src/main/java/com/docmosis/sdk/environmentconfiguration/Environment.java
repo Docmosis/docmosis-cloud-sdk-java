@@ -14,7 +14,6 @@
  */
 package com.docmosis.sdk.environmentconfiguration;
 
-import java.util.logging.Level;
 
 public class Environment {
 	
@@ -23,8 +22,6 @@ public class Environment {
 	public static final long     DEFAULT_RETRY_DELAY = 1000L;
 	public static final long     DEFAULT_CONNECT_TIMEOUT = -1L;
 	public static final long     DEFAULT_READ_TIMEOUT = -1L;
-	public static final Level    DEFAULT_LOG_LEVEL = Level.FINE;
-	public static final String   DEFAULT_LOG_LOCATION = "./DocmosisJavaSDK.log";
 
 	protected String accessKey;
 	protected String baseUrl = DEFAULT_ENDPOINT.getBaseUrl();
@@ -33,9 +30,6 @@ public class Environment {
 	protected Proxy proxy;
 	protected long connectTimeoutMS = DEFAULT_CONNECT_TIMEOUT;
 	protected long readTimeoutMS = DEFAULT_READ_TIMEOUT;
-	protected boolean loggingEnabled = false;
-	protected Level logLevel = DEFAULT_LOG_LEVEL;
-	protected String logLocation = DEFAULT_LOG_LOCATION;
 
 	private static Environment DEFAULT_ENVIRONMENT = null;
 
@@ -53,9 +47,6 @@ public class Environment {
 			this.proxy = other.proxy;
 			this.connectTimeoutMS = other.connectTimeoutMS;
 			this.readTimeoutMS = other.connectTimeoutMS;
-			this.loggingEnabled = other.loggingEnabled;
-			this.logLevel = other.logLevel;
-			this.logLocation = other.logLocation;
 		}
 	}
 	
@@ -233,30 +224,6 @@ public class Environment {
 	public Proxy getProxy()
 	{
 		return proxy;
-	}
-
-	/**
-	 * 
-	 * @return true if logging to file is enabled
-	 */
-	public boolean isLoggingEnabled() { 
-		return loggingEnabled;
-	}
-
-	/**
-	 * 
-	 * @return lowest level at which to log at
-	 */
-	public Level getLogLevel() {
-		return logLevel;
-	}
-
-	/**
-	 * 
-	 * @return Path and filename of log file
-	 */
-	public String getLogLocation() {
-		return logLocation;
 	}
 
 	@Override

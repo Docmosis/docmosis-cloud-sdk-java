@@ -14,8 +14,6 @@
  */
 package com.docmosis.sdk.request;
 
-import java.util.logging.Level;
-
 import com.docmosis.sdk.environmentconfiguration.Environment;
 import com.docmosis.sdk.environmentconfiguration.EnvironmentBuilder;
 import com.docmosis.sdk.environmentconfiguration.Proxy;
@@ -121,30 +119,6 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	 */
 	public Proxy getProxy() {
 		return environmentBuilder.getProxy();
-	}
-
-	/**
-	 * 
-	 * @return true if logging to file is enabled
-	 */
-	public boolean isLoggingEnabled() { 
-		return environmentBuilder.isLoggingEnabled();
-	}
-
-	/**
-	 * 
-	 * @return lowest level at which to log at
-	 */
-	public Level getLogLevel() {
-		return environmentBuilder.getLogLevel();
-	}
-
-	/**
-	 * 
-	 * @return Path and filename of log file
-	 */
-	public String getLogLocation() {
-		return environmentBuilder.getLogLocation();
 	}
 	
 	@Override

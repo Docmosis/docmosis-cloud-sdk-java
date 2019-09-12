@@ -43,7 +43,7 @@ public class SimpleCloudConvertExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 	// Set the name of the output file to create
 	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
 	// Set the path to the file you want to convert

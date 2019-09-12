@@ -47,7 +47,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimpleRenameFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 	//Full path of File/Folder to be renamed
 	private static final String FILE_TO_RENAME = "myFile1.pdf";
 	//Full path of new name for File/Folder

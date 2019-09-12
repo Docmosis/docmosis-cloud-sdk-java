@@ -14,17 +14,14 @@
  */
 package com.docmosis.sdk.rendertags;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
-import com.docmosis.sdk.render.Renderer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -37,8 +34,6 @@ import com.google.gson.reflect.TypeToken;
  */
 public class RenderTags {
 	
-	private static final Logger log = Logger.getLogger(Renderer.class.getName());
-
     /**
 	 * Create a Render Tags Request. Run .execute() to run the request and return the Render Tags Response.
 	 * @return GetRenderTagsRequest
@@ -59,15 +54,6 @@ public class RenderTags {
 	 */
 	public static GetRenderTagsResponse executeGetRenderTags(GetRenderTagsRequest request) throws RenderTagsException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new RenderTagsException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "GetRenderTags(" + request.toString() + ")");
-		
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -95,7 +81,7 @@ public class RenderTags {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {

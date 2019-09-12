@@ -45,7 +45,7 @@ import com.docmosis.sdk.template.UploadTemplateResponse;
 public class SimpleUploadTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 	//Full path of File to be uploaded
 	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
 

@@ -17,8 +17,6 @@ package com.docmosis.sdk.handlers;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.net.ssl.SSLException;
 
@@ -36,19 +34,15 @@ import org.apache.http.protocol.HttpContext;
 public class DocmosisHTTPRequestRetryHandler implements HttpRequestRetryHandler
 {
 	private final int maxRetrys;
-	private final Logger log;
 	
-	public DocmosisHTTPRequestRetryHandler(int maxRetrys, Logger log)
+	public DocmosisHTTPRequestRetryHandler(int maxRetrys)
 	{
 		this.maxRetrys = maxRetrys;
-		this.log = log;
 	}
 
 	@Override
     public boolean retryRequest(IOException exception, int executionCount, HttpContext context)
     {
-    	log.log(Level.WARNING, "IOException. Try request: " + executionCount);
-
         if (executionCount >= maxRetrys) {
             // Do not retry if over max retry count
             return false;

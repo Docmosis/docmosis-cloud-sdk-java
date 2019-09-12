@@ -43,7 +43,7 @@ import com.docmosis.sdk.rendertags.RenderTags;
 public class SimpleGetRenderTagsExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{

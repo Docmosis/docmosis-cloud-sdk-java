@@ -47,7 +47,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimpleGetFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 	//Full path of File to get
 	private static final String FILE_TO_GET = "myFile1.pdf";
 

@@ -46,7 +46,7 @@ public class SimpleProxyExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
@@ -78,11 +78,6 @@ public class SimpleProxyExample
 		envBldr.setReadTimeoutMS(1000); //A maximum of 1 second of inactivity between two data packets.
 		envBldr.setMaxTries(5); //A maximum of 5 attempts to connect to the service will be used
 		envBldr.setRetryDelay(500); //A delay of 0.5 seconds between connection attempts will be used
-		
-		//Set logging information
-		envBldr.setLoggingEnabled(true); //Enable logging.
-		envBldr.setLogLevel(Level.ALL); //The minimum level which will be logged.
-		envBldr.setLogLocation("./Log/docmosisLog.log"); //Override default log file location
 
 		//Create data to send
 		final String data = "<title>" + "This is Docmosis Cloud\n" + new Date() + "</title>";

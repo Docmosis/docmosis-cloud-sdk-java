@@ -47,7 +47,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimpleDeleteFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!!
+	private static final String ACCESS_KEY = "XXX";
 	//Full path of File to be deleted
 	private static final String FILE_TO_DELETE = "myFile1.pdf";
 

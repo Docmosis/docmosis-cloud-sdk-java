@@ -14,10 +14,6 @@
  */
 package com.docmosis.sdk.render;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
@@ -33,9 +29,6 @@ import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
  *
  */
 public class Renderer {
-
-    private static final Logger log = Logger.getLogger(Renderer.class.getName());
-
 
     /**
      * Render a Docmosis document.
@@ -63,28 +56,6 @@ public class Renderer {
     
     public static RenderResponse executeRender(final RenderRequest request) throws RendererException 
     {
-    	
-    	//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new RendererException(e1);
-		}
-
-    	if (log.isLoggable(Level.FINE)) {
-            final StringBuilder buffer = new StringBuilder();
-	        buffer.append("render(");
-	        if (log.isLoggable(Level.FINEST)) {
-	        	// log the entire request
-	        	buffer.append(request.toString(true));
-	        } else {
-	        	// log just the more likely fields
-	        	buffer.append(request.toString(false));
-	        }
-	        buffer.append(")");
-	        log.log(Level.FINEST, buffer.toString());
-        }
-        
         RenderResponse response = new RenderResponse();
         
     	final boolean requestIsJson = requestIsJson(request);
@@ -92,7 +63,6 @@ public class Renderer {
 		//Build request
     	final String accessKey = request.getAccessKey();
         final String renderRequest = buildRequest(accessKey, request, requestIsJson);
-        log.fine("Sending request:" + renderRequest);
 
         StringEntity se = null;
         if (requestIsJson) {
@@ -104,7 +74,7 @@ public class Renderer {
         
         try {
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, se, log, requestIsJson);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, se, requestIsJson);
 	    }
 	    catch (DocmosisException e) {
 	    	throw new RendererException(e);

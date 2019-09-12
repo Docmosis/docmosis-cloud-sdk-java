@@ -14,10 +14,8 @@
  */
 package com.docmosis.sdk.file;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class FileStorage {
-	private static final Logger log = Logger.getLogger(FileStorage.class.getName());
 	
 	/**
 	 * Create a List Files Request. Run .execute() to run the request and return a List Files Response.
@@ -102,15 +99,6 @@ public class FileStorage {
 	 */
 	public static ListFilesResponse executelist(ListFilesRequest request) throws FileException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new FileException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "listFiles(" + request.toString() + ")");
-		
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -127,7 +115,7 @@ public class FileStorage {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -158,15 +146,6 @@ public class FileStorage {
 	 */	
 	public static PutFileResponse executePutFile(PutFileRequest request) throws FileException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new FileException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "putFile(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -198,7 +177,7 @@ public class FileStorage {
 
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
 	    	if (response.hasSucceeded()) {
 		    	if (responseString != null && responseString.length() > 0) {
@@ -226,15 +205,6 @@ public class FileStorage {
 	 */	
 	public static DeleteFilesResponse executeDeleteFiles(DeleteFilesRequest request) throws FileException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new FileException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "putFile(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -253,7 +223,7 @@ public class FileStorage {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -281,15 +251,6 @@ public class FileStorage {
 	 */
 	public static GetFileResponse executeGetFile(GetFileRequest request) throws FileException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new FileException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getFile(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -307,7 +268,7 @@ public class FileStorage {
 	    
 	    try {
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    }
 	    catch (DocmosisException e) {
 	    	throw new FileException(e);
@@ -323,15 +284,6 @@ public class FileStorage {
 	 */	
 	public static RenameFilesResponse executeRenameFiles(RenameFilesRequest request) throws FileException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new FileException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "RenameFiles(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -355,7 +307,7 @@ public class FileStorage {
 
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {

@@ -15,8 +15,6 @@
 package com.docmosis.sdk.handlers;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,16 +41,14 @@ public class DocmosisServiceUnavailableRetryStrategy implements ServiceUnavailab
 	private int maxRetrys;
 	private long retryDelay;
 	private PreviousFailureInformation prevFailure;
-	private final Logger log;
 	private int tries;
 	private boolean isJson;
 	
-	public DocmosisServiceUnavailableRetryStrategy(int maxRetrys, long retryDelay, Logger log, boolean isJson)
+	public DocmosisServiceUnavailableRetryStrategy(int maxRetrys, long retryDelay, boolean isJson)
 	{
 		this.maxRetrys = maxRetrys;
 		this.retryDelay = retryDelay;
 		prevFailure = null;
-		this.log = log;
 		this.isJson = isJson;
 	}
 
@@ -62,7 +58,6 @@ public class DocmosisServiceUnavailableRetryStrategy implements ServiceUnavailab
 		tries = executionCount;
 		int status = response.getStatusLine().getStatusCode();
     	if (status != 200){
-    		log.log(Level.WARNING, "Service Unavailable. Received status=" + status + ". Try request: " + executionCount);
     		if (response.getFirstHeader("Server") != null && 
     				(response.getFirstHeader("Server").toString().contains("Docmosis") || response.getFirstHeader("Server").toString().contains("Tornado"))) { //Response is from Docmosis and not a proxy.
 		    	try {
@@ -111,29 +106,24 @@ public class DocmosisServiceUnavailableRetryStrategy implements ServiceUnavailab
 				    		
 				    		
 			        	} catch (ParserConfigurationException e) {
-			        		log.log(Level.SEVERE, "Unable to extract XML error response", e);
 							throw new IOException(e);
 						} catch (SAXException e) {
-							log.log(Level.SEVERE, "Unable to extract XML error response", e);
 							throw new IOException(e);
 						}
 		    		}
 		    	}
 		    	catch (IOException e)
 		    	{
-		    		log.log(Level.SEVERE, "Error processing response:", e);
 		            prevFailure = null;
 		    	}
     		}
     		else { //Unexpected response from a proxy
     			try {
     				String server = response.getFirstHeader("Server") == null ? "" : response.getFirstHeader("Server").getValue();
-    				log.log(Level.SEVERE, "Unexpected Response from Server: " + server);
     				prevFailure = new PreviousFailureInformation(status, "", EntityUtils.toString(response.getEntity(), "UTF-8"), server);
     			}
     			catch (IOException e)
 		    	{
-		    		log.log(Level.SEVERE, "Error processing response:", e);
 		    		String server = response.getFirstHeader("Server") == null ? "" : response.getFirstHeader("Server").getValue();
 		    		prevFailure = new PreviousFailureInformation(status, "Unexpected Response from Server: " + server, "", server);
 		    	}
