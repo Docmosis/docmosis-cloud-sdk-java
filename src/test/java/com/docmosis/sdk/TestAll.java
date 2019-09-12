@@ -39,25 +39,25 @@ import junit.framework.TestCase;
 public class TestAll extends TestCase {
 	
 	private static final String DEFAULT_TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!!
-	private static final String FILE_TO_UPLOAD = "testFiles/myTemplateFile.docx";
-	private static final String FILE_TO_UPLOAD2 = "testFiles/myTemplateFile2.docx";
+	private static final String ACCESS_KEY = "XXX";
+	private static final String FILE_TO_UPLOAD = "src/test/java/testFiles/myTemplateFile.docx";
+	private static final String FILE_TO_UPLOAD2 = "src/test/java/testFiles/myTemplateFile2.docx";
 	private static final String FILE_GET = "myTemplateFile.docx";
 	private static final String FILE_NAME = "myTemplateFile.docx";
 	private static final String FILE_NAME2 = "myTemplateFile2.docx";
-	private static final String IMAGE_TO_UPLOAD = "testFiles/Image1.png";
+	private static final String IMAGE_TO_UPLOAD = "src/test/java/testFiles/Image1.png";
 	private static final String IMAGE_NAME = "Image1.png";
 	private static final String IMAGE_NAME2 = "Image2.jpg";
 	private static final String FILE_RENAME1 = "myDocument.docx";
 	private static final String FILE_RENAME2 = "myDocument2.docx";
 	
-	private static final String NONEXISTENT_FILE_TO_UPLOAD = "testFiles/myNonExistentTemplateFile.docx";
+	private static final String NONEXISTENT_FILE_TO_UPLOAD = "src/test/java/testFiles/myNonExistentTemplateFile.docx";
 	private static final String NONEXISTENT_FILE_NAME = "myNonExistentTemplateFile.docx";
-	private static final String NONEXISTENT_IMAGE_TO_UPLOAD = "testFiles/myNonExistentImage1.png";
+	private static final String NONEXISTENT_IMAGE_TO_UPLOAD = "src/test/java/testFiles/myNonExistentImage1.png";
 	private static final String NONEXISTENT_IMAGE_NAME = "myNonExistentImage1.png";
 	
 	//Send returned files here
-	private static final String OUT = "testFiles/output/Out";
+	private static final String OUT = "src/test/java/testFiles/output/Out";
 
 	public TestAll( String testName )
     {

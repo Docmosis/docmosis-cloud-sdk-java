@@ -18,7 +18,7 @@ import com.docmosis.sdk.environmentconfiguration.InvalidEnvironmentException;
 import com.docmosis.sdk.ping.Ping;
 
 /**
- * This example shows 2 methods for using the Docmosis Ping service.
+ * This example shows how to use the Docmosis Ping service.
  *
  */
 public class SimplePingExample {
