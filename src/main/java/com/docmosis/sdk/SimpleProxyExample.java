@@ -18,7 +18,6 @@ package com.docmosis.sdk;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Level;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.EnvironmentBuilder;
