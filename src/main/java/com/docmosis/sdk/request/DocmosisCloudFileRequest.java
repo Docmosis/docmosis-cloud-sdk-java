@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Environment;
 
 	/**
 	 * Abstract Class used for requests that may return an InputStream.
@@ -41,7 +41,11 @@ import com.docmosis.sdk.environmentconfiguration.Environment;
 		
 		/**
 		 * Sets the OutputStream for the returned file.
-		 * If a File has already been set then the File will be unset.
+		 * Calling this method will clear any previous call to {@link #sendTo(File)}.
+		 * 
+		 * No management of the given stream is performed (eg close()).  The result is simply streamed
+		 * there so the caller must create and also close the stream. 
+		 * 
 		 * @param outputStream The output that the returned File will be sent to
 		 */
 		public T sendTo(OutputStream outputStream) {
@@ -51,7 +55,7 @@ import com.docmosis.sdk.environmentconfiguration.Environment;
 		
 		/**
 		 * Sets the File output for the returned file.
-		 * If an OutputStream has already been set then the OutputStream will be unset.
+		 * Calling this method will clear any previous call to {@link #sendTo(OutputStream)}.
 		 * @param outputFile The file the returned file will be saved to
 		 */
 		public T sendTo(File outputFile) {

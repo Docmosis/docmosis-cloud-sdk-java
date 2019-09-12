@@ -7,8 +7,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>sdk</name>
-  <url>http://maven.apache.org</url>
+  <name>${project.groupId}:${project.artifactId}</name>
+  <url>https://www.docmosis.com/products/cloud.html</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,4 +44,100 @@
 		<scope>test</scope>
     </dependency>
   </dependencies>
+  <description>This SDK makes it easy to invoke API calls on Docmosis web service end points (such as the public Docmosis Cloud Services).</description>
+
+<distributionManagement>
+  <snapshotRepository>
+    <id>ossrh</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+  </snapshotRepository>
+  <repository>
+    <id>ossrh</id>
+    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+  </repository>
+</distributionManagement>
+
+  <organization>
+  	<url>https://www.docmosis.com/</url>
+  	<name>Docmosis</name>
+  </organization>
+
+  <licenses>
+  <license>
+    <name>The Apache License, Version 2.0</name>
+    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+  </license>
+</licenses>
+
+<developers>
+    <developer>
+      <name>Michelle Rauert</name>
+      <email>michelle@docmosis.com</email>
+      <organization>Docmosis</organization>
+      <organizationUrl>https://www.docmosis.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+  <connection>scm:git:git://github.com/docmosis/docmosis-cloud-java.git</connection>
+  <developerConnection>scm:git:ssh://github.com:docmosis/docmosis-cloud-java.git</developerConnection>
+  <url>http://github.com/docmosis/docmosis-cloud-java/tree/master</url>
+</scm>
+
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-source-plugin</artifactId>
+      <version>2.2.1</version>
+      <executions>
+        <execution>
+          <id>attach-sources</id>
+          <goals>
+            <goal>jar-no-fork</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <version>2.9.1</version>
+      <executions>
+        <execution>
+          <id>attach-javadocs</id>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-gpg-plugin</artifactId>
+      <version>1.5</version>
+      <executions>
+        <execution>
+          <id>sign-artifacts</id>
+          <phase>verify</phase>
+          <goals>
+            <goal>sign</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+  <groupId>org.sonatype.plugins</groupId>
+  <artifactId>nexus-staging-maven-plugin</artifactId>
+  <version>1.6.7</version>
+  <extensions>true</extensions>
+  <configuration>
+     <serverId>ossrh</serverId>
+     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+     <autoReleaseAfterClose>true</autoReleaseAfterClose>
+  </configuration>
+</plugin>
+  </plugins>
+</build>
+
 </project>

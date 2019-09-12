@@ -18,8 +18,8 @@ package com.docmosis.sdk;
 import java.io.IOException;
 import java.util.List;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.ListTemplatesResponse;
 import com.docmosis.sdk.template.Template;
@@ -46,7 +46,7 @@ import com.docmosis.sdk.template.TemplateDetails;
 public class SimpleListTemplatesExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!! 
+	private static final String ACCESS_KEY = "XXX";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{

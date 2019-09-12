@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.docmosis.sdk.convert.Converter;
 import com.docmosis.sdk.convert.ConverterException;
 import com.docmosis.sdk.convert.ConverterResponse;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.ping.Ping;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;

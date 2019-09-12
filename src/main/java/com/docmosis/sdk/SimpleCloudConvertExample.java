@@ -20,8 +20,7 @@ import java.io.IOException;
 import com.docmosis.sdk.convert.Converter;
 import com.docmosis.sdk.convert.ConverterException;
 import com.docmosis.sdk.convert.ConverterResponse;
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Environment;
 
 
 /**
@@ -44,7 +43,7 @@ public class SimpleCloudConvertExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 	// Set the name of the output file to create
 	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
 	// Set the path to the file you want to convert
@@ -59,7 +58,7 @@ public class SimpleCloudConvertExample
 			System.exit(1);
 		}
 		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+		Environment.setDefaults(ACCESS_KEY);
 
 		//Set the file to be converted
 		File convertFile = new File(FILE_TO_CONVERT);

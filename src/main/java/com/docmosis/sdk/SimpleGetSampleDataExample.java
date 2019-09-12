@@ -17,8 +17,8 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetSampleDataResponse;
 import com.docmosis.sdk.template.Template;
@@ -42,7 +42,7 @@ import com.docmosis.sdk.template.Template;
 public class SimpleGetSampleDataExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 

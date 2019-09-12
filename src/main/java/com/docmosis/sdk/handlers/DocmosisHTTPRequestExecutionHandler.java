@@ -17,11 +17,6 @@ package com.docmosis.sdk.handlers;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -47,9 +42,9 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.docmosis.sdk.convert.ConverterResponse;
-import com.docmosis.sdk.environmentconfiguration.EnvironmentBuilder;
-import com.docmosis.sdk.environmentconfiguration.InvalidEnvironmentException;
-import com.docmosis.sdk.environmentconfiguration.Proxy;
+import com.docmosis.sdk.environment.EnvironmentBuilder;
+import com.docmosis.sdk.environment.InvalidEnvironmentException;
+import com.docmosis.sdk.environment.Proxy;
 import com.docmosis.sdk.render.RenderRequest;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
@@ -73,7 +68,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 	 * @param request the request object.
 	 * @param payload the content to be sent with the POST.
 	 */
-	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad, Logger log, boolean requestIsJson) throws DocmosisException
+	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad, boolean requestIsJson) throws DocmosisException
 	{
 		CloseableHttpClient client = null;
 		CloseableHttpResponse chResponse = null;
@@ -90,9 +85,9 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    try {
 	    	//Create retry handlers
 	    	retryHandler = new DocmosisHTTPRequestRetryHandler(
-	    			request.getMaxTries(), log);
+	    			request.getMaxTries());
 	    	retryStrategy = new DocmosisServiceUnavailableRetryStrategy(
-	    			request.getMaxTries(), request.getRetryDelay(), log, requestIsJson);
+	    			request.getMaxTries(), request.getRetryDelay(), requestIsJson);
 
 	    	//Create HTTP Client
 	    	HttpClientBuilder clientBuilder = HttpClients
@@ -138,7 +133,7 @@ public class DocmosisHTTPRequestExecutionHandler {
  	    
     	    //Execute the request and populate the response object
     	    chResponse = client.execute(httpPost);
-    	    setResponse(response, chResponse, request.getUrl(), log, requestIsJson);
+    	    setResponse(response, chResponse, request.getUrl(), requestIsJson);
     	    
     	    try {
 	    	    if (request instanceof DocmosisCloudFileRequest) { //A file may have been returned
@@ -149,11 +144,9 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    	    				final String contentType = chResponse.getFirstHeader("Content-Type").getValue();
 	    	    				if (contentType.startsWith("application/json") || contentType.startsWith("application/xml")) {
 	    	    	    			// text payload - ignore for successful results
-	    	    					logEntry(log, "Response File stored to:" + rr.getStoreTo(), Level.FINE);
 	    	    	    		} else {
 	    	    	    			// binary payload
 	    	    	    			rr.sendDocumentTo(chResponse.getEntity().getContent());
-	    	    	    			logEntry(log, "Rendered File Output to:" + rr.getOutputName(), Level.FINE);
 	    	    	    		}
 			    	    	}
 	    	    		}
@@ -162,33 +155,26 @@ public class DocmosisHTTPRequestExecutionHandler {
 		    	    	DocmosisCloudFileRequest<?> requestFile = (DocmosisCloudFileRequest<?>) request;
 		    	    	if (chResponse.getStatusLine().getStatusCode() == 200 && chResponse.getEntity() != null) {
 		    	    		requestFile.sendDocumentTo(chResponse.getEntity().getContent());
-		    	    		logEntry(log, "Response File Output to:" + requestFile.getOutputName(), Level.FINE);
 		    	    	}
 	    	    	}
 	    	    } else { // A json String has been returned
 	    	    	//Get json response String
     	    		if (chResponse.getStatusLine().getStatusCode() == 200 && chResponse.getEntity() != null) {
     	    			responseString = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-    	    			logEntry(log, "Response String extracted", Level.FINE);
     	    		}
 	    	    }
     	    } catch (FileNotFoundException e) {
-	    		log.log(Level.SEVERE, "FileNotFoundException. Cannot save response.", e);
 	            throw new DocmosisException(e);
     	    } catch (IOException e) {
-	    		log.log(Level.SEVERE, "IOException. Cannot extract data from response.", e);
 	            throw new DocmosisException("Cannot extract data from response.", e);
 	        }
             
         } catch (ConnectException e) {
             // can't make the connection
-            log.log(Level.SEVERE, "Unable to connect to the Docmosis service.  Please check your URL and proxy settings:", e);
             throw new DocmosisException("Unable to connect to the Docmosis Cloud", e);
         } catch (ClientProtocolException e) {
-        	log.log(Level.SEVERE, "Error in the HTTP Protocol and/or Headers:", e);
         	throw new DocmosisException("Error in the HTTP Protocol and/or Headers:", e);
         } catch (IOException e) {
-        	log.log(Level.SEVERE, "Error processing request:", e);
         	throw new DocmosisException(e);
         }
 	    finally {
@@ -204,16 +190,16 @@ public class DocmosisHTTPRequestExecutionHandler {
         return responseString;
 	}
 
-	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad, Logger log) throws DocmosisException
+	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad) throws DocmosisException
 	{
-		return executeHttpPost(response, request, payLoad, log, true);
+		return executeHttpPost(response, request, payLoad, true);
 	}
 
 	/**
 	 * 
 	 * Generic method to set common Response details and the Failure Response message if status != 200 (failed). 
 	 */
-	public static void setResponse(DocmosisCloudResponse response, CloseableHttpResponse chResponse, String url, Logger log, boolean requestIsJson) throws IOException
+	public static void setResponse(DocmosisCloudResponse response, CloseableHttpResponse chResponse, String url, boolean requestIsJson) throws IOException
 	{
 		int status = chResponse.getStatusLine().getStatusCode();
 		if (status != 200 && chResponse.getEntity() != null) { //Request Failed and a message was returned
@@ -227,12 +213,11 @@ public class DocmosisHTTPRequestExecutionHandler {
     				setFailureResponseJson(response, chResponse);
     			}
     			else {
-    				setFailureResponseXml(response, chResponse, log);
+    				setFailureResponseXml(response, chResponse);
     			}
     			if (response.getLongMsg() == null) {
     				response.setLongMsg("URL [" + url + "] is not valid.");
     			}
-    			log.log(Level.WARNING, "Status = 404, " + response.getShortMsg() != "" ? response.getShortMsg() : response.getLongMsg());
 
     		} else if (status >= 501 && status <= 599) {
     			// deal with a connectivity-based server-error
@@ -244,12 +229,11 @@ public class DocmosisHTTPRequestExecutionHandler {
     				setFailureResponseJson(response, chResponse);
     			}
     			else {
-    				setFailureResponseXml(response, chResponse, log);
+    				setFailureResponseXml(response, chResponse);
     			}
     			if (response.getLongMsg() == null) {
     				response.setLongMsg("URL [" + url + "] is not available.");
     			}
-    			log.log(Level.WARNING, "Status = " + status + ", " + response.getShortMsg() != "" ? response.getShortMsg() : response.getLongMsg());
 
     		} else {
 				if (retryStrategy.getPrevFailure() != null) { //Building the previous failure object already consumed the response
@@ -260,10 +244,8 @@ public class DocmosisHTTPRequestExecutionHandler {
     				setFailureResponseJson(response, chResponse);
     			}
     			else {
-    				setFailureResponseXml(response, chResponse, log);
+    				setFailureResponseXml(response, chResponse);
     			}
-				log.log(Level.WARNING, "Status = " + status + ", " + response.getShortMsg() != "" ? response.getShortMsg() : 
-					response.getLongMsg() != "" ? response.getLongMsg() : "");
     		}
     	}
 		
@@ -309,7 +291,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 		response.setLongMsg(longMsg == null ? "" : longMsg.toString());
     }
     
-    private static void setFailureResponseXml(DocmosisCloudResponse response, CloseableHttpResponse chResponse, Logger log) throws IOException {
+    private static void setFailureResponseXml(DocmosisCloudResponse response, CloseableHttpResponse chResponse) throws IOException {
     	try {
     		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
     		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -328,7 +310,6 @@ public class DocmosisHTTPRequestExecutionHandler {
     		response.setLongMsg(longMsg == null ? "" : longMsg);
     		
     	} catch (ParserConfigurationException e) {
-    		log.log(Level.SEVERE, "Unable to extract json error response", e);
 			throw new IOException(e);
 		} catch (SAXException e) {
 			throw new IOException(e);
@@ -343,38 +324,6 @@ public class DocmosisHTTPRequestExecutionHandler {
     	}
     	return result;
     }
-
-	/**
-	 * Print message to the log at a default level of FINE.
-	 * @param message
-	 */
-	public static void logEntry(Logger log, String message)
-	{
-		logEntry(log, message, Level.FINE);
-	}
-
-	/**
-	 * Print message to the log at desired level.
-	 * @param message
-	 */
-	public static void logEntry(Logger log, String message, Level lvl)
-	{
-		if (log.isLoggable(lvl)) {
-	        log.log(lvl, message);
-        }
-	}
-	
-	public static void logInit(Logger log, DocmosisCloudRequest<?> request) throws IOException
-	{
-		log.setLevel(request.getEnvironment().getLogLevel());
-		if (request.getEnvironment().isLoggingEnabled()) {
-			Handler fileHandler = new FileHandler(request.getEnvironment().getLogLocation(), true);
-			fileHandler.setLevel(request.getEnvironment().getLogLevel());
-			fileHandler.setEncoding("UTF-8");
-			fileHandler.setFormatter(new SimpleFormatter());
-			log.addHandler(fileHandler);
-    	}
-	}
 
 	public static DocmosisHTTPRequestRetryHandler getRetryHandler() {
 		return retryHandler;

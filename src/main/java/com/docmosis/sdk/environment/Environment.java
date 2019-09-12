@@ -12,19 +12,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.docmosis.sdk.environmentconfiguration;
+package com.docmosis.sdk.environment;
 
-import java.util.logging.Level;
 
 public class Environment {
 	
-	public static final Endpoint DEFAULT_ENDPOINT = Endpoint.DWS_VERSION_3_USA; 
+	public static final Endpoint DEFAULT_ENDPOINT = Endpoint.DWS_VERSION_3_AUS; // TODO Switch To USA 
 	public static final int      DEFAULT_MAX_TRIES = 3;
 	public static final long     DEFAULT_RETRY_DELAY = 1000L;
 	public static final long     DEFAULT_CONNECT_TIMEOUT = -1L;
 	public static final long     DEFAULT_READ_TIMEOUT = -1L;
-	public static final Level    DEFAULT_LOG_LEVEL = Level.FINE;
-	public static final String   DEFAULT_LOG_LOCATION = "./DocmosisJavaSDK.log";
 
 	protected String accessKey;
 	protected String baseUrl = DEFAULT_ENDPOINT.getBaseUrl();
@@ -33,11 +30,6 @@ public class Environment {
 	protected Proxy proxy;
 	protected long connectTimeoutMS = DEFAULT_CONNECT_TIMEOUT;
 	protected long readTimeoutMS = DEFAULT_READ_TIMEOUT;
-	protected boolean loggingEnabled = false;
-	protected Level logLevel = DEFAULT_LOG_LEVEL;
-	protected String logLocation = DEFAULT_LOG_LOCATION;
-
-	// TODO - add default client connect timeout, read timeout, retry count, retry delay, proxy settings
 
 	private static Environment DEFAULT_ENVIRONMENT = null;
 
@@ -55,10 +47,18 @@ public class Environment {
 			this.proxy = other.proxy;
 			this.connectTimeoutMS = other.connectTimeoutMS;
 			this.readTimeoutMS = other.connectTimeoutMS;
-			this.loggingEnabled = other.loggingEnabled;
-			this.logLevel = other.logLevel;
-			this.logLocation = other.logLocation;
 		}
+	}
+	
+	/**
+	 * Create a new Environment using the given access key and defaults
+	 * for everything else.
+	 *  
+	 * @param accessKey
+	 */
+	public Environment(String accessKey)
+	{
+		this.accessKey = accessKey;
 	}
 	
 	/**
@@ -84,6 +84,16 @@ public class Environment {
 		this(endpoint.getBaseUrl(), accessKey);
 	}
 
+	/**
+	 * Set the default environment with the given settings to be used by default.
+	 * 
+	 * @param accessKey your access key for the service
+	 * @see Endpoint
+	 */
+	public static void setDefaults(String accessKey) {
+		DEFAULT_ENVIRONMENT = new Environment(accessKey);
+	}
+	
 	/**
 	 * Set the default environment with the given settings to be used by default.
 	 * 
@@ -216,72 +226,52 @@ public class Environment {
 		return proxy;
 	}
 
-	/**
-	 * 
-	 * @return true if logging to file is enabled
-	 */
-	public boolean isLoggingEnabled() { 
-		return loggingEnabled;
-	}
-
-	/**
-	 * 
-	 * @return lowest level at which to log at
-	 */
-	public Level getLogLevel() {
-		return logLevel;
-	}
-
-	/**
-	 * 
-	 * @return Path and filename of log file
-	 */
-	public String getLogLocation() {
-		return logLocation;
-	}
-
 	@Override
 	public String toString() {
 		return "Environment [accessKey=" + accessKey + ", baseUrl=" + baseUrl + ", maxTries=" + maxTries
 				+ ", retryDelayMS=" + retryDelayMS + "]";
 	}
 
+
 	/**
 	 * Determine if this is a valid-looking environment making sure the minimum fields have
 	 * been configured via one of the initialise() methods.
-	 *  
-	 * @throws InvalidEnvironmentException if the mandatory minimum settings (base url and access key)
-	 * are not set. 
+	 * 
+	 * @param accessKeyMandatory if true the access key is validated against null
+	 * @throws InvalidEnvironmentException if the mandatory minimum settings (base url and 
+	 * optionally the access key) are not set. 
 	 */
-	public void validate() throws InvalidEnvironmentException
+	public void validate(boolean accessKeyMandatory) throws InvalidEnvironmentException
 	{
 		if (baseUrl == null) {
 			throw new InvalidEnvironmentException("Environment does not have a Base Url configured");
 		}
 		
-		if (accessKey == null) {
+		if (accessKeyMandatory && accessKey == null) {
 			throw new InvalidEnvironmentException("Environment does not have an Access Key configured");
 		}
 	}
+	
 
 	/**
 	 * Determine if there is a valid-looking environment to work with either via the 
 	 * given parameter or the defaults have already been set by the initialise() methods.
 	 *  
 	 * @param env an overriding environment to use (may be null).
+	 * @param accessKeyMandatory if true the access key is validated against null
 	 * @throws InvalidEnvironmentException if the given environment or default environment
 	 * do not provide a base url and access key. 
 	 */
-	public static void validate(Environment env) throws InvalidEnvironmentException
+	public static void validate(Environment env, boolean accessKeyMandatory) throws InvalidEnvironmentException
 	{
 		if (env == null) {
 			if (DEFAULT_ENVIRONMENT == null) {
 				throw new InvalidEnvironmentException("Environment not initialised");
 			} else {
-				DEFAULT_ENVIRONMENT.validate();
+				DEFAULT_ENVIRONMENT.validate(accessKeyMandatory);
 			}
 		} else {
-			env.validate();
+			env.validate(accessKeyMandatory);
 		}
 	}
 }

@@ -14,10 +14,6 @@
  */
 package com.docmosis.sdk.render;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
@@ -34,16 +30,8 @@ import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
  */
 public class Renderer {
 
-    private static final Logger log = Logger.getLogger(Renderer.class.getName());
-
-//	private static final String FIELD_HEADER_X_DOCMOSIS_REQUEST_ID     = "X-Docmosis-RequestId";
-//	private static final String FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED = "X-Docmosis-PagesRendered";
-//	private static final String FIELD_HEADER_X_DOCMOSIS_SVR            = "X-Docmosis-Server";
-//	private static CloseableHttpClient client;
-//  private static CloseableHttpResponse responseHttp;
-
     /**
-     * Render a Docmosis document using either Tornado or Docmosis Cloud.
+     * Render a Docmosis document.
      * <p>
      * 
      * @param request the render data.
@@ -53,8 +41,6 @@ public class Renderer {
      */
     public Renderer()
     {
-//    	client = null;
-//    	responseHttp = null;
     }
  
     /**
@@ -70,93 +56,31 @@ public class Renderer {
     
     public static RenderResponse executeRender(final RenderRequest request) throws RendererException 
     {
-
-    	//Set environment
-    	//Handled in DocmosisHTTPRequestExecutionHandler
-//    	try {
-//    		EnvironmentBuilder.validate(request.getEnvironment());
-//		} catch (InvalidEnvironmentException e1) {
-//			throw new RendererException(e1);
-//		}
-
-//    	if (environment == null) {
-//    		environment = Environment.getDefaultEnvironment();
-//    	}
-    	
-    	//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new RendererException(e1);
-		}
-
-    	if (log.isLoggable(Level.FINE)) {
-            final StringBuilder buffer = new StringBuilder();
-	        buffer.append("render(");
-	        if (log.isLoggable(Level.FINEST)) {
-	        	// log the entire request
-	        	buffer.append(request.toString(true));
-	        } else {
-	        	// log just the more likely fields
-	        	buffer.append(request.toString(false));
-	        }
-	        buffer.append(")");
-	        log.log(Level.FINEST, buffer.toString());
-        }
-        
         RenderResponse response = new RenderResponse();
         
-		//try {
-        	
-        	final boolean requestIsJson = requestIsJson(request);
+    	final boolean requestIsJson = requestIsJson(request);
 
-    		//Build request
-	    	final String accessKey = request.getAccessKey();
-            final String renderRequest = buildRequest(accessKey, request, requestIsJson);
-            log.fine("Sending request:" + renderRequest);
+		//Build request
+    	final String accessKey = request.getAccessKey();
+        final String renderRequest = buildRequest(accessKey, request, requestIsJson);
 
-            StringEntity se = null;
-            if (requestIsJson) {
-            	se = new StringEntity(renderRequest, ContentType.create("application/json"));
-            }
-            else {
-            	se = new StringEntity(renderRequest, ContentType.create("application/xml"));
-            }
-            //httpPost.setEntity(se);
+        StringEntity se = null;
+        if (requestIsJson) {
+        	se = new StringEntity(renderRequest, ContentType.create("application/json"));
+        }
+        else {
+        	se = new StringEntity(renderRequest, ContentType.create("application/xml"));
+        }
+        
+        try {
+	    	//Execute request
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, se, requestIsJson);
+	    }
+	    catch (DocmosisException e) {
+	    	throw new RendererException(e);
+	    }
             
-            
-            
-            try {
-    	    	//Execute request
-    	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, se, log, requestIsJson);
-    	    }
-    	    catch (DocmosisException e) {
-    	    	throw new RendererException(e);
-    	    }
-            
-            //Build the response
-//            responseHttp = client.execute(httpPost);
-//            response = extractResponse(responseHttp, request.getUrl(), requestIsJson, retryStrategy.getPrevFailure());
-//            
-//            if (retryStrategy.getPrevFailure() != null) {
-//            	response.setPreviousFailureInformation(retryStrategy.getPrevFailure());
-//            	response.setTries(retryStrategy.getTries());
-//            }
-            
-//        } catch (ConnectException e) {
-//            // can't make the connection
-//            log.log(Level.FINE, "Unable to connect to the Docmosis service.  Please check your URL and proxy settings:", e);
-//            throw new RendererException("Unable to connect to the Docmosis Cloud", e);
-//        } catch (ClientProtocolException e) {
-//        	log.log(Level.FINE, "Error in the HTTP Protocol and/or Headers:", e);
-//            throw new RendererException("Error in the HTTP Protocol and/or Headers:", e);
-//        } catch (IOException e) {
-//        	log.log(Level.FINE, "Error processing render request:", e);
-//            throw new RendererException(e);
-//        }	    	
-        //catch(InterruptedException e) {
-        //	log.log(Level.WARNING, "Interrupted", e);
-        //}
+
         return response;
     }
 
@@ -229,6 +153,8 @@ public class Renderer {
         addField("pdfArchiveMode", request.getPdfArchiveMode(), buffer, true, jsonFormat);
         addField("pdfWatermark", request.getPdfWatermark(), buffer, true, jsonFormat);
         addField("pdfTagged", request.getPdfTagged(), buffer, true, jsonFormat);
+        
+        //TODO - add these parameters
         //Missing ignoreUnknownParams
         //Missing tags
         //Missing streamResultInResponse
@@ -257,10 +183,6 @@ public class Renderer {
         return buffer.toString();
     }
 
-//    private static void addField(final String key, final String value, final StringBuilder buffer) 
-//    {
-//    	addFieldJson(key, value, buffer, true);
-//    }
 
     private static void addField(final String key, final String value, final StringBuilder buffer,
                 final boolean quoteValue, final boolean jsonFormat) 
@@ -302,155 +224,4 @@ public class Renderer {
     	}
     }
 
-    /*
-     * Extract the payload which could be a success or failure and may even contain a binary document stream
-     */
-//    private static RenderResponse extractResponse(CloseableHttpResponse chResponse, String url, final boolean jsonFormat, PreviousFailureInformation prevFailure) throws IOException 
-//    {
-//    	RenderResponse response = new RenderResponse();
-//    	int status = chResponse.getStatusLine().getStatusCode();
-//    	
-//		final String contentType = chResponse.getFirstHeader("Content-Type").getValue();
-//    	if (status == 200) {
-//    		// succeeded
-//    		if (contentType.startsWith("application/json") || contentType.startsWith("application/xml")) {
-//    			// text payload - ignore for successful results
-//    		} else {
-//    			// binary payload
-//    			response.setDocument(chResponse.getEntity().getContent());
-//    		}
-//
-//    	} else if (chResponse.getEntity() != null) {
-////    		log.log(Level.SEVERE, "Render call failed: status = " + conn.getResponseCode());
-////    		log.log(Level.SEVERE, "message:" + conn.getResponseMessage());
-//    	
-//    		if (status == 404) {
-//    			// deal with not found explicitly
-//    			if (prevFailure != null) { //Building the previous failure object already consumed the response
-//    				response.setShortMsg(prevFailure.getShortMsg());
-//    			}
-//    			else if (jsonFormat) {
-//    				response = setFailureResponseJson(chResponse);
-//    			}
-//    			else {
-//    				response = setFailureResponseXml(chResponse);
-//    			}
-//    			response.setLongMsg("URL [" + url + "] is not valid.");
-//    			response.setStatus(status);
-//    			
-//    			return response;
-//
-//    		} else if (status >= 501 && status <= 599) {
-//    			// deal with a connectivity-based server-error
-//    			// 500 code could be the Docmosis service itself which will provide more diagnostics below.
-//    			if (prevFailure != null) { //Building the previous failure object already consumed the response
-//    				response.setShortMsg(prevFailure.getShortMsg());
-//    			}
-//    			else if (jsonFormat) {
-//    				response = setFailureResponseJson(chResponse);
-//    			}
-//    			else {
-//    				response = setFailureResponseXml(chResponse);
-//    			}
-//    			response.setLongMsg("URL [" + url + "] is not available.");
-//    			response.setStatus(status);
-//    			
-//    			return response;
-//    		}
-//    		else {
-//    			if (prevFailure != null) { //Building the previous failure object already consumed the response
-//    				response.setShortMsg(prevFailure.getShortMsg());
-//    				response.setLongMsg(prevFailure.getLongMsg());
-//    			
-//    			} else if (jsonFormat) {
-//			        // Read the error response from JSON
-//    				response = setFailureResponseJson(chResponse);
-//
-//		        } else {
-//	        		// Read the error response from XML
-//		        	response = setFailureResponseXml(chResponse);
-//		        }
-//    		}
-//    	} else {
-//    		// there is no stream of information to read - server didn't respond?
-//			// main error codes will be captured below.
-//    		response.setLongMsg(chResponse.toString());
-//    	}
-//    	
-//    	response.setStatus(status);
-//    	if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_REQUEST_ID)) {
-//    		response.setRequestId(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_REQUEST_ID).getValue());
-//    	}
-//    	if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED)) {
-//    		response.setPagesRendered(toInt(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED).getValue()));
-//    	}
-//    	if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_SVR)) {
-//    		response.setServerId(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_SVR).getValue());
-//    	}
-//    	response.setClientHTTP(client);
-//    	response.setResponseHttp(responseHttp);
-//
-//    	return response;
-//    }
-//
-//    private static RenderResponse setFailureResponseJson(CloseableHttpResponse chResponse) throws IOException {
-//    	RenderResponse response = new RenderResponse();
-//    	String jsonString  = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
-//		JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
-//		JsonElement shortMsg = null;
-//		JsonElement longMsg = null;
-//		if (jsonObject.has("shortMsg")) {
-//			shortMsg = jsonObject.get("shortMsg");
-//		}
-//		if (jsonObject.has("longMsg")) {
-//			longMsg = jsonObject.get("longMsg");
-//		}
-//		response.setShortMsg(shortMsg.toString());
-//		response.setLongMsg(longMsg == null ? chResponse.toString() : longMsg.toString());
-//    	return response;
-//    }
-//    
-//    private static RenderResponse setFailureResponseXml(CloseableHttpResponse chResponse) throws IOException {
-//    	RenderResponse response = new RenderResponse();
-//    	try {
-//    		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-//    		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-//    		Document doc = docBuilder.parse(chResponse.getEntity().getContent());
-//    		doc.getDocumentElement().normalize();
-//    		
-//    		Node responseNode = doc.getChildNodes().item(0);
-//    		if (responseNode != null) {
-//	    		final String shortMsg = getXMLStringAttribute(responseNode.getAttributes().getNamedItem("shortMsg"));
-//	    		final String longMsg = getXMLStringAttribute(responseNode.getAttributes().getNamedItem("longMsg"));
-//	    		
-//	    		response.setLongMsg(longMsg == null ? chResponse.toString() : longMsg);
-//	    		response.setShortMsg(shortMsg);
-//    		}
-//    		
-//    	} catch (ParserConfigurationException e) {
-//    		log.log(Level.FINE, "Unable to extract XML error response", e);
-//			throw new IOException(e);
-//		} catch (SAXException e) {
-//			throw new IOException(e);
-//		}
-//    	return response;
-//    }
-//
-//    private static int toInt(String val)
-//    {
-//    	try {
-//    		return Integer.parseInt(val);
-//    	} catch(NumberFormatException e) {
-//    		return 0;
-//    	}
-//    }
-//    
-//    private static final String getXMLStringAttribute(Node node)
-//    {
-//    	String result = null;
-//    	if (node != null) {
-//    		result = node.getNodeValue();
-//    	}
-//    	return result;
-//    }
 }

@@ -16,8 +16,7 @@ package com.docmosis.sdk.convert;
 
 import java.io.File;
 
-import com.docmosis.sdk.environmentconfiguration.Environment;
-import com.docmosis.sdk.render.RenderResponse;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
@@ -99,6 +98,12 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 		this.fileToConvert = fileToConvert;
 	}
 	
+	/**
+	 * Specify the local file to convert.  This file will be sent to the cloud and converted.
+	 * 
+	 * @param fileToConvert the file
+	 * @return this request
+	 */
 	public ConverterRequest fileToConvert(File fileToConvert)
 	{
 		this.fileToConvert = fileToConvert;
@@ -108,9 +113,6 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	/**
 	 * Execute a convert based on contained settings.
      * <p>
-     * NOTE: call {@link RenderResponse#cleanup()} on the response returned
-     *       to cleanup resources  
-	 * 
 	 * @return a response object giving status, possible error messages and optional
 	 * document payload.
 	 * 

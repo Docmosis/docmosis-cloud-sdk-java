@@ -12,24 +12,30 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.docmosis.sdk.environmentconfiguration;
+package com.docmosis.sdk.environment;
 
-import com.docmosis.sdk.handlers.DocmosisException;
+/**
+ * Docmosis End Points where the web services can be obtained.
+ */
+public enum Endpoint {
 
-public class InvalidEnvironmentException extends DocmosisException {
-
-	private static final long serialVersionUID = 2243119014554293600L;
-
-	public InvalidEnvironmentException(String message, Throwable cause) {
-		super(message, cause);
+	/** USA */ 
+	DWS_VERSION_3_USA("https://us.dws.docmosis.com/v3/api/"),
+	/** EU */ 
+	DWS_VERSION_3_EU ("https://eu.dws.docmosis.com/v3/api/"),
+	/** Australia */ 
+	DWS_VERSION_3_AUS("https://au.dws.docmosis.com/v3/api/");
+	
+	
+	private final String baseUrl;
+	
+	private Endpoint(final String baseUrl)
+	{
+		this.baseUrl = baseUrl;
 	}
-
-	public InvalidEnvironmentException(String message) {
-		super(message);
+	
+	public String getBaseUrl()
+	{
+		return baseUrl;
 	}
-
-	public InvalidEnvironmentException(Throwable cause) {
-		super(cause);
-	}
-
 }

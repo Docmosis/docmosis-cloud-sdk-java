@@ -14,9 +14,6 @@
  */
 package com.docmosis.sdk.convert;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -30,9 +27,10 @@ import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
  *
  */
 public class Converter {
-
-    private static final Logger log = Logger.getLogger(Converter.class.getName());
     
+    /**
+     * Create the conversion request.
+     */
     public static ConverterRequest convert()
     {
     	final ConverterRequest req = new ConverterRequest();
@@ -50,14 +48,6 @@ public class Converter {
      */
     public static ConverterResponse executeConvert(final ConverterRequest request) throws ConverterException 
     {
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new ConverterException(e1);
-		}
-
-    	DocmosisHTTPRequestExecutionHandler.logEntry(log, "convert(" + request.toString() + ")");
 
     	if (request.getFileToConvert() == null) {
     		throw new ConverterException("No conversion file specified");
@@ -87,7 +77,7 @@ public class Converter {
         
         try {
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    }
 	    catch (DocmosisException e) {
 	    	throw new ConverterException(e);

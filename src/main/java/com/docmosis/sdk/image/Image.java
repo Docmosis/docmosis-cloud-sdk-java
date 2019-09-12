@@ -14,10 +14,8 @@
  */
 package com.docmosis.sdk.image;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
@@ -37,7 +35,6 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class Image {
-	private static final Logger log = Logger.getLogger(Image.class.getName());
 	
 	/**
 	 * Create a List Images Request. Run .execute() to run the request and return a List Images Response.
@@ -91,15 +88,6 @@ public class Image {
 	 */
 	public static ListImagesResponse executelist(ListImagesRequest request) throws ImageException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new ImageException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "listImages(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -111,7 +99,7 @@ public class Image {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -142,15 +130,6 @@ public class Image {
 	 */	
 	public static UploadImageResponse executeUploadImage(UploadImageRequest request) throws ImageException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new ImageException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "uploadImage(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -178,7 +157,7 @@ public class Image {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -207,15 +186,6 @@ public class Image {
 	 */
 	public static DeleteImageResponse executeDeleteImage(DeleteImageRequest request) throws ImageException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new ImageException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "deleteImage(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -237,7 +207,7 @@ public class Image {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -265,15 +235,6 @@ public class Image {
 	 */
 	public static GetImageResponse executeGetImage(GetImageRequest request) throws ImageException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new ImageException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getImage(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -295,7 +256,7 @@ public class Image {
 
 	    try {
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    }
 	    catch (DocmosisException e) {
 	    	throw new ImageException(e);

@@ -18,8 +18,8 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.file.DeleteFilesResponse;
 import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.handlers.DocmosisException;
@@ -47,7 +47,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 public class SimpleDeleteFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; // TODO - remove accessKey!!
+	private static final String ACCESS_KEY = "XXX";
 	//Full path of File to be deleted
 	private static final String FILE_TO_DELETE = "myFile1.pdf";
 

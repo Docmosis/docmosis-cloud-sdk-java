@@ -17,8 +17,8 @@ package com.docmosis.sdk;
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.rendertags.GetRenderTagsResponse;
 import com.docmosis.sdk.rendertags.RenderTags;
@@ -43,7 +43,7 @@ import com.docmosis.sdk.rendertags.RenderTags;
 public class SimpleGetRenderTagsExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{

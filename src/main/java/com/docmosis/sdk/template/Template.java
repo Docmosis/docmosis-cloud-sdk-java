@@ -15,10 +15,8 @@
 package com.docmosis.sdk.template;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -47,8 +45,7 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class Template {
-	private static final Logger log = Logger.getLogger(Template.class.getName());
-	
+
 	/**
 	 * Create a List Template Request. Run .execute() to run the request and return a List Template Response.
 	 * @return ListTemplatesRequest
@@ -134,15 +131,6 @@ public class Template {
 	 */
 	public static ListTemplatesResponse executelist(ListTemplatesRequest request) throws TemplateException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new TemplateException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "listTemplates(" + request.toString() + ")");
-
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -154,7 +142,7 @@ public class Template {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -185,15 +173,6 @@ public class Template {
 	 */
 	public static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws TemplateException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new TemplateException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getTemplateDetails(" + request.toString() + ")");
-		
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -212,7 +191,7 @@ public class Template {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -241,15 +220,6 @@ public class Template {
 	 */
 	public static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws TemplateException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new TemplateException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getTemplateStructure(" + request.toString() + ")");
-    	
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -267,7 +237,7 @@ public class Template {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -295,15 +265,6 @@ public class Template {
 	 */	
 	public static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws TemplateException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new TemplateException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "uploadTemplate(" + request.toString() + ")");
-    	
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -335,7 +296,7 @@ public class Template {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -364,15 +325,6 @@ public class Template {
 	 */
 	public static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws TemplateException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new TemplateException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "deleteTemplate(" + request.toString() + ")");
-		
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -394,7 +346,7 @@ public class Template {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -422,15 +374,6 @@ public class Template {
 	 */
 	public static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws TemplateException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new TemplateException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getTemplate(" + request.toString() + ")");
-		
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -452,7 +395,7 @@ public class Template {
 	    
 	    try {
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    }
 	    catch (DocmosisException e) {
 	    	throw new TemplateException(e);
@@ -468,15 +411,6 @@ public class Template {
 	 */
 	public static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws TemplateException
 	{
-		//Initialize logger with environment settings.
-    	try {
-			DocmosisHTTPRequestExecutionHandler.logInit(log, request);
-		} catch (IOException e1) {
-			throw new TemplateException(e1);
-		}
-
-		DocmosisHTTPRequestExecutionHandler.logEntry(log, "getSampleData(" + request.toString() + ")");
-		
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		if (request.getAccessKey() != null) {
@@ -500,7 +434,7 @@ public class Template {
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload, log);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {

@@ -14,28 +14,19 @@
  */
 package com.docmosis.sdk;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
-import com.docmosis.sdk.environmentconfiguration.InvalidEnvironmentException;
+import com.docmosis.sdk.environment.InvalidEnvironmentException;
 import com.docmosis.sdk.ping.Ping;
 
 /**
- * This example shows 2 methods for using the Docmosis Ping service.
+ * This example shows how to use the Docmosis Ping service.
  *
  */
 public class SimplePingExample {
 
 	public static void main(String args[]) throws InvalidEnvironmentException
-	{
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), "");
-		if (Ping.execute()) {
-			System.out.println(Environment.getDefaultEnvironment().getBaseUrl() + " is active.");
-		}
-
-
-		Environment environment = new Environment(Endpoint.DWS_VERSION_2_USA.getBaseUrl(), ""); 
-		if (Ping.execute(environment)) {
-			System.out.println(environment.getBaseUrl() + " is active.");
+	{		
+		if (!Ping.execute()) {
+			throw new RuntimeException("Could not reach the service");
 		}
 	}
 }

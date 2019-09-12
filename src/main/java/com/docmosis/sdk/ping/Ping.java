@@ -19,9 +19,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.docmosis.sdk.environmentconfiguration.Environment;
-import com.docmosis.sdk.environmentconfiguration.EnvironmentBuilder;
-import com.docmosis.sdk.environmentconfiguration.InvalidEnvironmentException;
+import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.environment.EnvironmentBuilder;
+import com.docmosis.sdk.environment.InvalidEnvironmentException;
 import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
@@ -46,7 +46,7 @@ public class Ping {
     public static boolean execute() throws InvalidEnvironmentException
     {
     	EnvironmentBuilder envBuilder = new EnvironmentBuilder(Environment.getDefaultEnvironment());
-    	EnvironmentBuilder.validate(envBuilder);
+    	EnvironmentBuilder.validate(envBuilder, false);
     	return execute(envBuilder.getUrl("ping"));
     }
     

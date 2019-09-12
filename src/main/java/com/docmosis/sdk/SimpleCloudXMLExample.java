@@ -19,8 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;
@@ -47,7 +47,7 @@ public class SimpleCloudXMLExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX"; //TODO: Remove key.
+	private static final String ACCESS_KEY = "XXX";
 
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
