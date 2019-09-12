@@ -18,8 +18,8 @@ package com.docmosis.sdk;
 import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.image.Image;
 import com.docmosis.sdk.image.ImageDetails;

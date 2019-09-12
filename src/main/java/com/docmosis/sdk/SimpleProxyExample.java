@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 
-import com.docmosis.sdk.environmentconfiguration.Endpoint;
-import com.docmosis.sdk.environmentconfiguration.EnvironmentBuilder;
+import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.environment.EnvironmentBuilder;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;

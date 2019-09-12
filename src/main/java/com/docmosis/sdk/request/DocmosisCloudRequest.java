@@ -14,9 +14,9 @@
  */
 package com.docmosis.sdk.request;
 
-import com.docmosis.sdk.environmentconfiguration.Environment;
-import com.docmosis.sdk.environmentconfiguration.EnvironmentBuilder;
-import com.docmosis.sdk.environmentconfiguration.Proxy;
+import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.environment.EnvironmentBuilder;
+import com.docmosis.sdk.environment.Proxy;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 

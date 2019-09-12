@@ -14,7 +14,7 @@
  */
 package com.docmosis.sdk.template;
 
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**

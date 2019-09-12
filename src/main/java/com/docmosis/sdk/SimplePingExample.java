@@ -14,7 +14,7 @@
  */
 package com.docmosis.sdk;
 
-import com.docmosis.sdk.environmentconfiguration.InvalidEnvironmentException;
+import com.docmosis.sdk.environment.InvalidEnvironmentException;
 import com.docmosis.sdk.ping.Ping;
 
 /**

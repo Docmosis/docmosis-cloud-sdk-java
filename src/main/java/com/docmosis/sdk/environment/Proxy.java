@@ -12,7 +12,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.docmosis.sdk.environmentconfiguration;
+package com.docmosis.sdk.environment;
 
 /**
  * A simple class holding web-proxy information that can be used

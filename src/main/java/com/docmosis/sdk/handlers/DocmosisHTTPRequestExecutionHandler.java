@@ -42,9 +42,9 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.docmosis.sdk.convert.ConverterResponse;
-import com.docmosis.sdk.environmentconfiguration.EnvironmentBuilder;
-import com.docmosis.sdk.environmentconfiguration.InvalidEnvironmentException;
-import com.docmosis.sdk.environmentconfiguration.Proxy;
+import com.docmosis.sdk.environment.EnvironmentBuilder;
+import com.docmosis.sdk.environment.InvalidEnvironmentException;
+import com.docmosis.sdk.environment.Proxy;
 import com.docmosis.sdk.render.RenderRequest;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;

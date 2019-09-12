@@ -16,7 +16,7 @@ package com.docmosis.sdk.template;
 
 import java.io.File;
 
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
 
 /**

@@ -20,7 +20,7 @@ import java.io.IOException;
 import com.docmosis.sdk.convert.Converter;
 import com.docmosis.sdk.convert.ConverterException;
 import com.docmosis.sdk.convert.ConverterResponse;
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Environment;
 
 
 /**

@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import com.docmosis.sdk.environmentconfiguration.Environment;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;
