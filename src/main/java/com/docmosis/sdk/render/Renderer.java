@@ -24,21 +24,12 @@ import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
  * This class manages the interaction with the Docmosis render service endpoint - producing
  * documents.
  * 
- * Direct use of this class is not necessary since {@link RenderRequest.execute()} will invoke
+ * Direct use of this class is not necessary since {@link RenderRequest#execute()} will invoke
  * this class as required.
  *
  */
 public class Renderer {
 
-    /**
-     * Render a Docmosis document.
-     * <p>
-     * 
-     * @param request the render data.
-     * @return a response object encapsulating the result of the render
-     * 
-     * @throws RendererException if something goes wrong constructing the request
-     */
     public Renderer()
     {
     }
@@ -53,7 +44,15 @@ public class Renderer {
 
     	return req;
     }
-    
+
+    /**
+     * Render a Docmosis document.
+     * 
+     * @param request the render data.
+     * @return a response object encapsulating the result of the render
+     * 
+     * @throws RendererException if something goes wrong constructing the request
+     */
     public static RenderResponse executeRender(final RenderRequest request) throws RendererException 
     {
         RenderResponse response = new RenderResponse();
@@ -153,11 +152,11 @@ public class Renderer {
         addField("pdfArchiveMode", request.getPdfArchiveMode(), buffer, true, jsonFormat);
         addField("pdfWatermark", request.getPdfWatermark(), buffer, true, jsonFormat);
         addField("pdfTagged", request.getPdfTagged(), buffer, true, jsonFormat);
+        addField("ignoreUnknownParams", request.getIgnoreUnknownParams(), buffer, true, jsonFormat);
+        addField("tags", request.getTags(), buffer, true, jsonFormat);
         
-        //TODO - add these parameters
-        //Missing ignoreUnknownParams
-        //Missing tags
-        //Missing streamResultInResponse
+        //TODO - add this parameter and handling
+        //streamResultInResponse
 
         
         if (jsonFormat) {

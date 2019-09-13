@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Rename Files service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
@@ -55,7 +55,7 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 
 	/**
 	 * The original name of the file or folder.
-	 * @return
+	 * @return original file name
 	 */
 	public String getFromPath() {
 		return fromPath;
@@ -63,7 +63,7 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 
 	/**
 	 * Set the original name of the file or folder.
-	 * @param fromPath
+	 * @param fromPath original file name
 	 */
 	public void setFromPath(String fromPath) {
 		this.fromPath = fromPath;
@@ -71,8 +71,8 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 
 	/**
 	 * Set the original name of the file or folder.
-	 * @param fromPath
-	 * @return
+	 * @param fromPath original file name
+	 * @return this request for method chaining
 	 */
 	public RenameFilesRequest fromPath(String fromPath) {
 		this.fromPath = fromPath;
@@ -81,7 +81,7 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 
 	/**
 	 * The new name for the file or folder.
-	 * @return
+	 * @return new file name
 	 */
 	public String getToPath() {
 		return toPath;
@@ -89,7 +89,7 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 
 	/**
 	 * Set the new name for the file or folder.
-	 * @param toPath
+	 * @param toPath new file name
 	 */
 	public void setToPath(String toPath) {
 		this.toPath = toPath;
@@ -97,8 +97,8 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 
 	/**
 	 * Set the new name for the file or folder.
-	 * @param toPath
-	 * @return
+	 * @param toPath new file name
+	 * @return this request for method chaining
 	 */
 	public RenameFilesRequest toPath(String toPath) {
 		this.toPath = toPath;

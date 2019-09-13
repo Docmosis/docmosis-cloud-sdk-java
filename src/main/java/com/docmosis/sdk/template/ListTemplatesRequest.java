@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the List Templates service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
@@ -30,7 +30,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * <pre>
  *   ListTemplatesResponse templates = Template.list().execute();
- *   List<TemplateDetails> list = templates.list();
+ *   List&lt;TemplateDetails&gt; list = templates.list();
  *   for(TemplateDetails td : list) {
  *    	td.toString();
  *   }

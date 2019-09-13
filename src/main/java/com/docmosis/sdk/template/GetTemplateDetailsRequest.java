@@ -19,7 +19,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
  * The object holds the instructions and data for a request to the Get Template Details service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get Template Details request.
  * 

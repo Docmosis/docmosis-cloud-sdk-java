@@ -57,7 +57,7 @@ public class ConverterResponse extends DocmosisCloudResponse
 	/**
 	 * Get the length of the returned File in bytes
 	 *
-	 * @return
+	 * @return length of the returned File in bytes
 	 */
 	public long getLength()
 	{

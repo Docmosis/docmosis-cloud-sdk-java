@@ -13,22 +13,24 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
 import com.docmosis.sdk.environment.Endpoint;
-import com.docmosis.sdk.environment.EnvironmentBuilder;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;
 
 /**
  * 
- * This example shows how to set environmental settings including Proxies,
- * Timeouts and logging.
+ * This example connects to the public Docmosis cloud server and renders the 
+ * built-in WelcomeTemplate.doc template into a PDF which is saved to the 
+ * local file system.  The code also populates the "title" field within the 
+ * template.
  * 
  * How to use:
  * 
@@ -41,7 +43,7 @@ import com.docmosis.sdk.render.RendererException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleProxyExample
+public class SimpleCloudXMLExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
@@ -65,18 +67,7 @@ public class SimpleProxyExample
 			System.exit(1);
 		}
 		
-		EnvironmentBuilder envBldr = new EnvironmentBuilder();
-		envBldr.setAccessKey(ACCESS_KEY);
-		envBldr.setBaseUrl(Endpoint.DWS_VERSION_3_AUS.getBaseUrl());
-		
-		//Connect to the Docmosis service via a proxy
-		envBldr.setProxy("HostAddress", 8888, "UserName", "Password");
-		
-		//Set Connection timeout and retry settings
-		envBldr.setConnectTimeoutMS(2000); //A maximum of 2 seconds to establish the connection with the remote host.
-		envBldr.setReadTimeoutMS(1000); //A maximum of 1 second of inactivity between two data packets.
-		envBldr.setMaxTries(5); //A maximum of 5 attempts to connect to the service will be used
-		envBldr.setRetryDelay(500); //A delay of 0.5 seconds between connection attempts will be used
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
 		//Create data to send
 		final String data = "<title>" + "This is Docmosis Cloud\n" + new Date() + "</title>";
@@ -88,7 +79,7 @@ public class SimpleProxyExample
 									.outputName(OUTPUT_FILE)
 									.sendTo(outputFile) //Or OutputStream TODO: MAKE OPTIONAL
 									.data(data)
-									.execute(envBldr.build());
+									.execute();
 							
 
 		if (response.hasSucceeded()) {

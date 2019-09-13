@@ -13,25 +13,20 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
-
+package com.docmosis.sdk.examples;
 
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.file.RenameFilesResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
-
+import com.docmosis.sdk.template.GetSampleDataResponse;
+import com.docmosis.sdk.template.Template;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * renames a file stored on the server.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and returns the 
+ * structure of a template stored on the server.
  * 
  * How to use:
  * 
@@ -44,14 +39,12 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleRenameFileExample
+public class SimpleGetSampleDataExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File/Folder to be renamed
-	private static final String FILE_TO_RENAME = "myFile1.pdf";
-	//Full path of new name for File/Folder
-	private static final String NEW_NAME = "myOtherFile2.pdf";
+	// the welcome template is available in your cloud account by default
+	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -60,26 +53,26 @@ public class SimpleRenameFileExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		RenameFilesResponse renamedFile = FileStorage
-											.rename()
-											.fromPath(FILE_TO_RENAME)
-											.toPath(NEW_NAME)
-											.execute();
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+			
+		GetSampleDataResponse sampleData = Template
+				   			.getSampleData()
+							.templateName(TEMPLATE_NAME)
+							.format("json") //"xml" or "json"
+							.execute();
 
-		if (renamedFile.hasSucceeded()) {
-			//System.out.println(renamedFile.getShortMsg());
-			System.out.println("Successfully renamed \"" + FILE_TO_RENAME + "\" to \"" + NEW_NAME + "\"");
+		if (sampleData.hasSucceeded()) {
+			System.out.println(sampleData.toString());
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Rename File failed: status="
-					+ renamedFile.getStatus()
+			System.err.println("Get Template Structure failed: status="
+					+ sampleData.getStatus()
 					+ " shortMsg="
-					+ renamedFile.getShortMsg()
-					+ ((renamedFile.getLongMsg() == null) ? "" : " longMsg="
-							+ renamedFile.getLongMsg()));
+					+ sampleData.getShortMsg()
+					+ ((sampleData.getLongMsg() == null) ? "" : " longMsg="
+							+ sampleData.getLongMsg()));
 		}
+
 	}
 }

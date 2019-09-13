@@ -84,7 +84,7 @@ public class Image {
 	 * Execute a listImages request.
 	 * @param request Object
 	 * @return Response Object
-	 * @throws DocmosisException if execution fails or cannot extract data from response
+	 * @throws ImageException if execution fails or cannot extract data from response
 	 */
 	public static ListImagesResponse executelist(ListImagesRequest request) throws ImageException
 	{

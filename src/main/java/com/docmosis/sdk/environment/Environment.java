@@ -108,7 +108,7 @@ public class Environment {
 	/**
 	 * Set the default environment with the given settings to be used by default.
 	 * 
-	 * @param baseUrl   the base url ({@link Endpoint}) to the service.
+	 * @param endpoint {@link Endpoint} to the service.
 	 * @param accessKey your access key for the service
 	 * @see Endpoint
 	 */
@@ -119,7 +119,7 @@ public class Environment {
 	/**
 	 * Set the default environment with the given settings to be used by default.
 	 * 
-	 * @param env the set of properties to use as defaults
+	 * @param envBuilder the set of properties to use as defaults
 	 */
 	public static void setDefaults(EnvironmentBuilder envBuilder) {
 		DEFAULT_ENVIRONMENT = new Environment(envBuilder.build());

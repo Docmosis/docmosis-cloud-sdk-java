@@ -13,23 +13,24 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.image.Image;
-import com.docmosis.sdk.image.ImageDetails;
-import com.docmosis.sdk.image.UploadImageResponse;
+import com.docmosis.sdk.template.ListTemplatesResponse;
+import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateDetails;
+
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * uploads an image to store on the server.
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about all templates stored on the server. 
  * 
  * How to use:
  * 
@@ -42,12 +43,10 @@ import com.docmosis.sdk.image.UploadImageResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleUploadImageExample
+public class SimpleListTemplatesExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to be uploaded
-	private static final String FILE_TO_UPLOAD = "C:/example/Image1.png";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -56,32 +55,26 @@ public class SimpleUploadImageExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		File uploadFile = new File(FILE_TO_UPLOAD);
-		UploadImageResponse uploadedImage = Image
-											.upload()
-											.imageFile(uploadFile)
-											.execute();
 
-		if (uploadedImage.hasSucceeded()) {
-			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
-			System.out.println();
-			ImageDetails image = uploadedImage.getDetails();
-			System.out.println("Template Details:");
-			System.out.println("Template Name: " + image.getName());
-			System.out.println("Last Modified: " + image.getLastModifiedISO8601());
-			System.out.println("Size: " + ((double)image.getSizeBytes() / 1000000.0) + " mb");
-			//System.out.println(templateDetails.getAsJson());
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+		
+		ListTemplatesResponse templates = Template
+				.list()
+				.execute();
+
+		if (templates.hasSucceeded()) {
+			List<TemplateDetails> list = templates.list();
+			for(TemplateDetails td : list) {
+				System.out.println(td.getName() + " size=" + td.getSizeBytes() + " bytes");
+			}
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Upload Template failed: status="
-					+ uploadedImage.getStatus()
+			System.err.println("List Templates failed: status="
+					+ templates.getStatus()
 					+ " shortMsg="
-					+ uploadedImage.getShortMsg()
-					+ ((uploadedImage.getLongMsg() == null) ? "" : " longMsg="
-							+ uploadedImage.getLongMsg()));
+					+ templates.getShortMsg()
+					+ ((templates.getLongMsg() == null) ? "" : " longMsg="
+							+ templates.getLongMsg()));
 		}
 	}
 }

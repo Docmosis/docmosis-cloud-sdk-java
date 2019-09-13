@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Delete File service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "https://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
@@ -54,7 +54,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 
 	/**
 	 * The currently set name of the file or folder.
-	 * @return
+	 * @return currently set name of the file or folder
 	 */
 	public String getPath() {
 		return path;
@@ -71,7 +71,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	/**
 	 * The name of the file or folder.
 	 * @param path
-	 * @return
+	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest path(String path) {
 		this.path = path;
@@ -80,7 +80,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 
 	/**
 	 * If "true" all files within the given path are deleted also.
-	 * @return
+	 * @return include sub folders value
 	 */
 	public boolean getIncludeSubFolders() {
 		return includeSubFolders;
@@ -97,7 +97,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	/**
 	 * If "true" all files within the given path are deleted also.
 	 * @param includeSubFolders
-	 * @return
+	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest includeSubFolders(boolean includeSubFolders) {
 		this.includeSubFolders = includeSubFolders;

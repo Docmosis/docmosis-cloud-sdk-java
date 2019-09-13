@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Render Tags service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Render request.
  * 
@@ -36,7 +36,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  *   									.month(6)
  *   									.nMonths(2)
  *   									.execute();
- *   List<RenderTags> list = renderTags.list();
+ *   List&lt;RenderTags&gt; list = renderTags.list();
  *   for(RenderTags rt : list) {
  *    ...
  *   }
@@ -62,7 +62,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * Get current tags to query.
-	 * @return
+	 * @return current tags
 	 */
 	public String getTags() {
 		return tags;
@@ -79,6 +79,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	/**
 	 * The tags to query. This can be a single tag or a list of tags separated by the ; character.
 	 * @param tags
+	 * @return this request for method chaining
 	 */
 	public GetRenderTagsRequest tags(String tags) {
 		this.tags = tags;
@@ -87,7 +88,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * Get the year on which to report statistics.
-	 * @return
+	 * @return year
 	 */
 	public int getYear() {
 		return year;
@@ -95,7 +96,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * The year on which to report statistics. Defaults to the current year.
-	 * @param year
+	 * @param year a valid year
 	 */
 	public void setYear(int year) {
 		if (year > 2000 && year < 2050) {
@@ -105,7 +106,8 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	
 	/**
 	 * The year on which to report statistics. Defaults to the current year.
-	 * @param year
+	 * @param year a valid year
+	 * @return this request for method chaining
 	 */
 	public GetRenderTagsRequest year(int year) {
 		if (year > 2000 && year < 2050) {
@@ -116,7 +118,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * Get the month on which to report statistics (1=Jan).
-	 * @return
+	 * @return month
 	 */
 	public int getMonth() {
 		return month;
@@ -124,7 +126,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * The month on which to report statistics (1=Jan). Defaults to the current month.
-	 * @param month
+	 * @param month a valid month
 	 */
 	public void setMonth(int month) {
 		if (month > 0 && month < 13) {
@@ -134,7 +136,8 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	
 	/**
 	 * The month on which to report statistics (1=Jan). Defaults to the current month.
-	 * @param month
+	 * @param month a valid month
+	 * @return this request for method chaining
 	 */
 	public GetRenderTagsRequest month(int month) {
 		if (month > 0 && month < 13) {
@@ -145,7 +148,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * Get the number of months on which to report statistics.
-	 * @return
+	 * @return number of months
 	 */
 	public int getnMonths() {
 		return nMonths;
@@ -156,7 +159,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 * If more than one month is being reported, the months prior to the given year
 	 * and month are included. This means that this call always reports up to the
 	 * specified month.
-	 * @param nMonths
+	 * @param nMonths number of months
 	 */
 	public void setnMonths(int nMonths) {
 		this.nMonths = nMonths;
@@ -167,7 +170,8 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 * If more than one month is being reported, the months prior to the given year
 	 * and month are included. This means that this call always reports up to the
 	 * specified month.
-	 * @param nMonths
+	 * @param nMonths number of months
+	 * @return this request for method chaining
 	 */
 	public GetRenderTagsRequest nMonths(int nMonths) {
 		this.nMonths = nMonths;
@@ -176,7 +180,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * If true zero values will be included where no data exists.
-	 * @return
+	 * @return pad blanks setting
 	 */
 	public boolean getPadBlanks() {
 		return padBlanks;
@@ -201,6 +205,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 * with zero-values as required.
 	 * Defaults to false.
 	 * @param padBlanks
+	 * @return this request for method chaining
 	 */
 	public GetRenderTagsRequest padBlanks(boolean padBlanks) {
 		this.padBlanks = padBlanks;

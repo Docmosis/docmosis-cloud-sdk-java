@@ -13,22 +13,23 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.image.GetImageResponse;
 import com.docmosis.sdk.image.Image;
-import com.docmosis.sdk.image.ListImagesResponse;
-
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * details about all images stored on the server.
+ * This example connects to the public Docmosis cloud server and returns an 
+ * image stored on the server. Note that multiple images can be requested 
+ * and returned in a zip file.
  * 
  * How to use:
  * 
@@ -41,10 +42,13 @@ import com.docmosis.sdk.image.ListImagesResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListImagesExample
+public class SimpleGetImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+	//Full path of File to be uploaded
+	private static final String FILE_TO_GET = "Image1.png";
+	//private static final String FILE_TO_GET2 = "Image2.jpg";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -55,26 +59,26 @@ public class SimpleListImagesExample
 		}
 		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		ListImagesResponse images = Image
-									.list()
-									.execute();
 
-		if (images.hasSucceeded()) {
-			System.out.println(images.toString());
-//			List<ImageDetails> list = images.list();
-//			for(ImageDetails id : list) {
-//				System.out.println(id.getName());
-//				//System.out.println(id.toString());
-//			}
+		File outputFile = new File(FILE_TO_GET);
+		//File outputFile = new File("out.zip"); // If getting multiple templates they will be returned as a zip file.
+		GetImageResponse image = Image
+								.get()
+								.addImageName(FILE_TO_GET)
+								//.addImageName(FILE_TO_GET2) // Can specify more than one file
+								.sendTo(outputFile) //Or OutputStream
+								.execute();
+
+		if (image.hasSucceeded()) {
+			System.out.println("Output Image to: " + outputFile.getAbsolutePath());
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Images failed: status="
-					+ images.getStatus()
+			System.err.println("Get Image(s) failed: status="
+					+ image.getStatus()
 					+ " shortMsg="
-					+ images.getShortMsg()
-					+ ((images.getLongMsg() == null) ? "" : " longMsg="
-							+ images.getLongMsg()));
+					+ image.getShortMsg()
+					+ ((image.getLongMsg() == null) ? "" : " longMsg="
+							+ image.getLongMsg()));
 		}
 	}
 }

@@ -42,7 +42,6 @@ import com.google.gson.JsonParser;
  * 
  * Typically you would use this response to check for success, then decide what action to take.
  */
-//TODO FIX JAVADOC above
 public class DocmosisCloudResponse
 {
 	private int status;
@@ -71,7 +70,7 @@ public class DocmosisCloudResponse
 	 *   5xx = server error (eg 500)
 	 * </pre>
 	 * If this value is not a 200, then more information will be available
-	 * by calling the {@link #getShortErrorMsg()} and {@link #getLongErrorMsg()}.
+	 * by calling the {@link #getShortMsg()} and {@link #getLongMsg()}.
 	 * 
 	 * @return the http status code (200 means successful)
 	 */
@@ -135,7 +134,7 @@ public class DocmosisCloudResponse
 
 	/**
 	 * Get details of the previous failure.  This is only available when
-	 * getTries() return > 1
+	 * getTries() returns &gt; 1
 	 * 
 	 * @return null if no information is available.
 	 */
@@ -169,7 +168,11 @@ public class DocmosisCloudResponse
 		this.serverId = serverId;
 	}
 	
-	
+	/**
+	 * Returns the specified Object as a Json object.
+	 * @param input
+	 * @return json object
+	 */
 	private JsonObject getAsJson(Object input)
 	{
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").disableHtmlEscaping().create();
@@ -180,7 +183,8 @@ public class DocmosisCloudResponse
 
 	/**
 	 * Returns the specified Object as a formated Json string.
-	 * @return
+	 * @param input
+	 * @return formatted string of json object
 	 */
 	private String getAsJsonPretty(Object input)
 	{
@@ -196,18 +200,28 @@ public class DocmosisCloudResponse
 	
 	/**
 	 * Returns this response as a formated Json string.
-	 * @return
+	 * @return formatted string of json object
 	 */
 	public String getAsJsonPretty()
 	{
 		return getAsJsonPretty(this);
 	}
 	
+	/**
+	 * Returns this response as a formated xml string.
+	 * @param xml
+	 * @return formatted string of xml object
+	 */
 	public String getAsXMLPretty(String xml)
 	{
 		return getAsXMLPretty(xml, 4);
 	}
-	
+
+	/**
+	 * Returns object as a formated xml string.
+	 * @param document
+	 * @return formatted string of xml object
+	 */
 	public String getAsXMLPretty(Document document)
 	{
 		return getAsXMLPretty(document, 4);

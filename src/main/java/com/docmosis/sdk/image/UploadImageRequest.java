@@ -22,7 +22,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Upload Image service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Upload Image request.
  * 
@@ -75,6 +75,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	/**
 	 * Set the name of the image on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
 	 * @param imageName the image name.
+	 * @return this request for method chaining
 	 */
 	public UploadImageRequest imageName(String imageName) {
 		this.imageName = imageName;
@@ -100,6 +101,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	/**
 	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
 	 * @param isSystemImage Is system image flag
+	 * @return this request for method chaining
 	 */
 	public UploadImageRequest isSystemImage(boolean isSystemImage) {
 		this.isSystemImage = isSystemImage;
@@ -125,6 +127,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	/**
 	 * The file stream of the image.
 	 * @param imageFile The file to upload
+	 * @return this request for method chaining
 	 */
 	public UploadImageRequest imageFile(File imageFile) {
 		this.imageFile = imageFile;
@@ -150,6 +153,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	/**
 	 * A short description for the image.
 	 * @param imageDescription the image description
+	 * @return this request for method chaining
 	 */
 	public UploadImageRequest imageDescription(String imageDescription) {
 		this.imageDescription = imageDescription;
@@ -175,6 +179,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	/**
 	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
 	 * @param normalizeImageName
+	 * @return this request for method chaining
 	 */
 	public UploadImageRequest normalizeImageName(boolean normalizeImageName) {
 		this.normalizeImageName = normalizeImageName;

@@ -64,7 +64,7 @@ public class ListImagesResponse extends DocmosisCloudResponse {
 	 * as updates or deletions) this flag will be set to "true" to indicate
 	 * the list is not necessarily up to date. This is only ever expected
 	 * to be "true" for a short period after deletes or updates.
-	 * @return
+	 * @return image list stale state
 	 */
 	public boolean getImageListStale() {
 		return imageListStale;

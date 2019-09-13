@@ -12,26 +12,21 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+package com.docmosis.sdk.examples;
 
-package com.docmosis.sdk;
-
-
+import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.convert.Converter;
+import com.docmosis.sdk.convert.ConverterException;
+import com.docmosis.sdk.convert.ConverterResponse;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.DeleteFilesResponse;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.handlers.DocmosisException;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and deletes a 
- * file stored on the server.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and converts the 
+ * given document into a PDF which is then saved to the local file system.  
  * 
  * How to use:
  * 
@@ -44,14 +39,18 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleDeleteFileExample
+public class SimpleCloudConvertExample
 {
+
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to be deleted
-	private static final String FILE_TO_DELETE = "myFile1.pdf";
+	// Set the name of the output file to create
+	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
+	// Set the path to the file you want to convert
+	private static final String FILE_TO_CONVERT = "C:/example/myTemplateFile.docx";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws ConverterException,
+			IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
@@ -59,26 +58,30 @@ public class SimpleDeleteFileExample
 			System.exit(1);
 		}
 		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+		Environment.setDefaults(ACCESS_KEY);
 
-		DeleteFilesResponse deletedFile = FileStorage
-											.delete()
-											.path(FILE_TO_DELETE)
-											//.includeSubFolders(true)
-											.execute();
+		//Set the file to be converted
+		File convertFile = new File(FILE_TO_CONVERT);
+		File outputFile = new File(OUTPUT_FILE_NAME);
+		ConverterResponse response = Converter
+									.convert()
+									.fileToConvert(convertFile)
+									.outputName(OUTPUT_FILE_NAME)
+									.sendTo(outputFile) //Or OutputStream
+									.execute();
 
-		if (deletedFile.hasSucceeded()) {
-			System.out.println(deletedFile.getShortMsg());
-			System.out.println("Successfully deleted " + FILE_TO_DELETE);
+		if (response.hasSucceeded()) {
+			// great - convert succeeded.
+			System.out.println("Written:" + outputFile.getAbsolutePath());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Delete File failed: status="
-					+ deletedFile.getStatus()
+			System.err.println("Convert failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ deletedFile.getShortMsg()
-					+ ((deletedFile.getLongMsg() == null) ? "" : " longMsg="
-							+ deletedFile.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
-
 	}
 }

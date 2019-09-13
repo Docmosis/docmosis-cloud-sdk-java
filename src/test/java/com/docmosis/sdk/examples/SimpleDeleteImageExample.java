@@ -13,24 +13,22 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.template.ListTemplatesResponse;
-import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateDetails;
-
+import com.docmosis.sdk.image.DeleteImageResponse;
+import com.docmosis.sdk.image.Image;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * details about all templates stored on the server. 
+ * This example connects to the public Docmosis cloud server and deletes an 
+ * image stored on the server. Note that multiple images can be specified and
+ * deleted in one call.
  * 
  * How to use:
  * 
@@ -43,10 +41,13 @@ import com.docmosis.sdk.template.TemplateDetails;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListTemplatesExample
+public class SimpleDeleteImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+	//Full path of File(s) to be deleted
+	private static final String FIRST_FILE_TO_DELETE = "Image1.png";
+	//private static final String SECOND_FILE_TO_DELETE = "Image2.jpg";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -55,26 +56,27 @@ public class SimpleListTemplatesExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 		
-		ListTemplatesResponse templates = Template
-				.list()
-				.execute();
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		if (templates.hasSucceeded()) {
-			List<TemplateDetails> list = templates.list();
-			for(TemplateDetails td : list) {
-				System.out.println(td.getName() + " size=" + td.getSizeBytes() + " bytes");
-			}
+		DeleteImageResponse deleteImage = Image
+											.delete()
+											.addImageName(FIRST_FILE_TO_DELETE)
+											//.addImageName(SECOND_FILE_TO_DELETE)
+											.execute();
+
+		if (deleteImage.hasSucceeded()) {
+			System.out.println(deleteImage.getShortMsg());
+			System.out.println("Successfully deleted " + FIRST_FILE_TO_DELETE);
+			//System.out.println("Successfully deleted " + SECOND_FILE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Templates failed: status="
-					+ templates.getStatus()
+			System.err.println("Delete Template failed: status="
+					+ deleteImage.getStatus()
 					+ " shortMsg="
-					+ templates.getShortMsg()
-					+ ((templates.getLongMsg() == null) ? "" : " longMsg="
-							+ templates.getLongMsg()));
+					+ deleteImage.getShortMsg()
+					+ ((deleteImage.getLongMsg() == null) ? "" : " longMsg="
+							+ deleteImage.getLongMsg()));
 		}
 	}
 }

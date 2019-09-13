@@ -23,7 +23,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Delete Template service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Delete Template request.
  * 
@@ -79,6 +79,7 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
 	 * 
 	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
 	 */
 	public DeleteTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
 		this.isSystemTemplate = isSystemTemplate;
@@ -107,6 +108,7 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	 * Set the Template Names.
 	 * 
 	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 * @return this request for method chaining
 	 */
 	public DeleteTemplateRequest templateNames(List<String> templateNames) {
 		this.templateNames = templateNames;
@@ -117,6 +119,7 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	 * Add a Template Name.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 * @return this request for method chaining
 	 */
 	public DeleteTemplateRequest addTemplateName(String templateName) {
 		this.templateNames.add(templateName);

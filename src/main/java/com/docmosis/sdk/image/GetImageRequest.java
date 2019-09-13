@@ -23,7 +23,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Image service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get Image request.
  * 
@@ -81,6 +81,7 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
 	 * 
 	 * @param isSystemImage Is system image flag
+	 * @return this request for method chaining
 	 */
 	public GetImageRequest isSystemImage(boolean isSystemImage) {
 		this.isSystemImage = isSystemImage;
@@ -106,6 +107,7 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 	/**
 	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
 	 * @param imageNames the image name list.
+	 * @return this request for method chaining
 	 */
 	public GetImageRequest imageNames(List<String> imageNames) {
 		this.imageNames = imageNames;
@@ -116,6 +118,7 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 	 * Add a Image Name.
 	 * 
 	 * @param imageName The name of the Image on the docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
+	 * @return this request for method chaining
 	 */
 	public GetImageRequest addImageName(String imageName) {
 		this.imageNames.add(imageName);

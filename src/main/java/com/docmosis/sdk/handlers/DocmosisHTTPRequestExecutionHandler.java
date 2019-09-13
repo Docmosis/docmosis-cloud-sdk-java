@@ -65,8 +65,12 @@ public class DocmosisHTTPRequestExecutionHandler {
 
 	/**
 	 * Method executes the http POST via the apache http library.
-	 * @param request the request object.
-	 * @param payload the content to be sent with the POST.
+	 * @param response the response object
+	 * @param request the request object
+	 * @param payLoad the content to be sent with the POST
+	 * @param requestIsJson true if json, otherwise xml
+	 * @return json response as a string object. If a document response then a blank string is returned
+	 * @throws DocmosisException
 	 */
 	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad, boolean requestIsJson) throws DocmosisException
 	{
@@ -196,8 +200,12 @@ public class DocmosisHTTPRequestExecutionHandler {
 	}
 
 	/**
-	 * 
-	 * Generic method to set common Response details and the Failure Response message if status != 200 (failed). 
+	 * Generic method to set common Response details and the Failure Response message if status != 200 (failed).
+	 * @param response the response object
+	 * @param chResponse the apache response object
+	 * @param url of the endpoint
+	 * @param requestIsJson requestIsJson true if json, otherwise xml
+	 * @throws IOException if response cannot be extracted
 	 */
 	public static void setResponse(DocmosisCloudResponse response, CloseableHttpResponse chResponse, String url, boolean requestIsJson) throws IOException
 	{

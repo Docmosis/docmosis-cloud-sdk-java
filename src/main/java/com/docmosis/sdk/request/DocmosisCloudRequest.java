@@ -23,9 +23,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
 /**
  * The object holds the common instructions and data for a request to the Docmosis cloud.
  * This is an abstract super object with the minimum requirements to make a request.
- * 
+ * @param <T>
  */
-
 public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	
 	private final String servicePath;
@@ -133,7 +132,7 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	 * @return a response object giving status, possible error messages and optional
 	 * document payload.
 	 * 
-	 * @throws Exception if a problem occurs invoking the service. 
+	 * @throws DocmosisException if a problem occurs invoking the service. 
 	 */
 	public abstract DocmosisCloudResponse execute() throws DocmosisException;
 	public abstract DocmosisCloudResponse execute(String url, String accessKey) throws DocmosisException;

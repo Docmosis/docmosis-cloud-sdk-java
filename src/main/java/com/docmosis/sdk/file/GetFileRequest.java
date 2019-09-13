@@ -21,7 +21,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get File service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get File request.
  * 
@@ -55,7 +55,7 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 
 	/**
 	 * The name of the file, optionally including its path.
-	 * @return
+	 * @return file name
 	 */
 	public String getFileName() {
 		return fileName;
@@ -72,6 +72,7 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	/**
 	 * Set the name of the file, optionally including its path.
 	 * @param fileName
+	 * @return this request for method chaining
 	 */
 	public GetFileRequest fileName(String fileName) {
 		this.fileName = fileName;

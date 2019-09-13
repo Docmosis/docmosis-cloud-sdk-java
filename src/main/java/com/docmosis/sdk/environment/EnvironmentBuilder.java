@@ -38,6 +38,7 @@ public class EnvironmentBuilder
 	 * Not required for connecting to Tornado.
 	 * 
 	 * @param accessKey your unique docmosis accesskey.
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setAccessKey(String accessKey) {
 		env.setAccessKey(accessKey);
@@ -49,6 +50,7 @@ public class EnvironmentBuilder
 	 * Set the end point to which requests will be sent.
 	 * 
 	 * @param endpoint the end point for service requests
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setEndpoint(Endpoint endpoint)
 	{
@@ -62,7 +64,8 @@ public class EnvironmentBuilder
 	 * Use the Endpoint enum to get the base url of the different Docmosis servers,
 	 * eg Endpoint.DWS_VERSION_3_AUS.getBaseUrl().
 	 * 
-	 * @param baseUrl
+	 * @param baseUrl base url of the service endpoint
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setBaseUrl(String baseUrl) {
 		env.setBaseUrl(baseUrl);
@@ -74,6 +77,7 @@ public class EnvironmentBuilder
 	 * when a communications / server error occurs. 
 	 * 
 	 * @param maxTries the maximum number of attempts to connect to the web service.
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setMaxTries(int maxTries) {
 		env.setMaxTries(maxTries);
@@ -84,6 +88,7 @@ public class EnvironmentBuilder
 	 * Set the retry delay in milliseconds.
 	 * 
 	 * @param retryDelayMS in milliseconds
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setRetryDelay(long retryDelayMS) {
 		env.setRetryDelay(retryDelayMS);
@@ -93,7 +98,8 @@ public class EnvironmentBuilder
 	/**
 	 * The maximum time to establish the connection with the remote host.
 	 * 
-	 * @param connectTimeoutMS
+	 * @param connectTimeoutMS in milliseconds
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setConnectTimeoutMS(long connectTimeoutMS) {
 		env.setConnectTimeout(connectTimeoutMS);
@@ -104,7 +110,8 @@ public class EnvironmentBuilder
 	 * The maximum time waiting for data (in milliseconds) – after establishing the connection;
 	 * maximum time of inactivity between two data packets.
 	 * 
-	 * @param readTimeoutMS
+	 * @param readTimeoutMS in milliseconds
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setReadTimeoutMS(long readTimeoutMS) {
 		env.setReadTimeout(readTimeoutMS);
@@ -115,6 +122,7 @@ public class EnvironmentBuilder
 	 * Set the proxy for use with the request.
 	 * 
 	 * @param proxy object containing proxy details
+	 * @return this object for method chaining
 	 */
 	public EnvironmentBuilder setProxy(Proxy proxy) {
 		env.setProxy(proxy);
@@ -128,6 +136,7 @@ public class EnvironmentBuilder
      * @param port the port
      * @param user the user name for the proxy
      * @param passwd the password for the proxy
+     * @return this object for method chaining
      */
 	public EnvironmentBuilder setProxy(String host, int port, String user, String passwd) {
 		env.setProxy(host, port, user, passwd);
@@ -146,6 +155,7 @@ public class EnvironmentBuilder
 	/**
      * The URL for the web service end point.
      * 
+     * @param servicePath name of service being called
      * @return url of docmosis cloud or tornado endpoint.
      */
 	public String getUrl(String servicePath) {
@@ -245,6 +255,7 @@ public class EnvironmentBuilder
 		 * Not required for connecting to Tornado.
 		 * 
 		 * @param accessKey your unique docmosis accesskey.
+		 * @return this object for method chaining
 		 */
 		public Environment setAccessKey(String accessKey) {
 			super.accessKey = accessKey;
@@ -256,7 +267,8 @@ public class EnvironmentBuilder
 		 * Use the Endpoint enum to get the base url of the different Docmosis servers,
 		 * eg Endpoint.DWS_VERSION_3_AUS.getBaseUrl().
 		 * 
-		 * @param baseUrl
+		 * @param baseUrl base url of the service endpoint
+		 * @return this object for method chaining
 		 */
 		public Environment setBaseUrl(String baseUrl) {
 			super.baseUrl = baseUrl;
@@ -268,6 +280,7 @@ public class EnvironmentBuilder
 		 * when a communications / server error occurs. 
 		 * 
 		 * @param maxTries the maximum number of attempts to connect to the web service.
+		 * @return this object for method chaining
 		 */
 		public Environment setMaxTries(int maxTries) {
 			super.maxTries = maxTries;
@@ -278,6 +291,7 @@ public class EnvironmentBuilder
 		 * Set the retry delay in milliseconds.
 		 * 
 		 * @param retryDelayMS in milliseconds
+		 * @return this object for method chaining
 		 */
 		public Environment setRetryDelay(long retryDelayMS) {
 			super.retryDelayMS = retryDelayMS;
@@ -289,6 +303,7 @@ public class EnvironmentBuilder
 		 * the connection with the remote host.
 		 * 
 		 * @param connectTimeoutMS in milliseconds
+		 * @return this object for method chaining
 		 */
 		public Environment setConnectTimeout(long connectTimeoutMS) {
 			super.connectTimeoutMS = connectTimeoutMS;
@@ -300,6 +315,7 @@ public class EnvironmentBuilder
 		 * maximum time of inactivity between two data packets.
 		 * 
 		 * @param readTimeoutMS
+		 * @return this object for method chaining
 		 */
 		public Environment setReadTimeout(long readTimeoutMS) {
 			super.readTimeoutMS = readTimeoutMS;
@@ -310,6 +326,7 @@ public class EnvironmentBuilder
 		 * Set the proxy for use with the request.
 		 * 
 		 * @param proxy object containing proxy details
+		 * @return this object for method chaining
 		 */
 		public Environment setProxy(Proxy proxy) {
 			super.proxy = proxy;
@@ -323,6 +340,7 @@ public class EnvironmentBuilder
 	     * @param port the port
 	     * @param user the user name for the proxy
 	     * @param passwd the password for the proxy
+	     * @return this object for method chaining
 	     */
 		public Environment setProxy(String host, int port, String user, String passwd) {
 			super.proxy = new Proxy(host, port, user, passwd);

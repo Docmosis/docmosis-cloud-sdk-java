@@ -30,6 +30,8 @@ public class Converter {
     
     /**
      * Create the conversion request.
+     * 
+     * @return Conversion request object
      */
     public static ConverterRequest convert()
     {
@@ -56,13 +58,6 @@ public class Converter {
             throw new ConverterException("cannot read file to convert: ["
                             + request.getFileToConvert() + "]");
         }
-        
-        //Set environment
-//    	try {
-//    		EnvironmentBuilder.validate(request.getEnvironment());
-//		} catch (InvalidEnvironmentException e1) {
-//			throw new ConverterException(e1);
-//		}
         
         //Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();

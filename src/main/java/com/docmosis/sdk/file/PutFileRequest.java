@@ -23,7 +23,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Put File service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Put File request.
  * 
@@ -59,7 +59,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 
 	/**
 	 * The file stream to upload.
-	 * @param file
+	 * @return file to upload
 	 */
 	public File getFile() {
 		return file;
@@ -67,7 +67,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 
 	/**
 	 * Set the file stream to upload.
-	 * @param file
+	 * @param file to upload
 	 */
 	public void setFile(File file) {
 		this.file = file;
@@ -75,7 +75,8 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 
 	/**
 	 * Set the file stream to upload.
-	 * @param file
+	 * @param file to upload
+	 * @return this request for method chaining
 	 */
 	public PutFileRequest file(File file) {
 		this.file = file;
@@ -84,7 +85,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 
 	/**
 	 * An optional overriding file name which may also include a path.
-	 * @return
+	 * @return file name
 	 */
 	public String getFileName() {
 		return fileName;
@@ -101,6 +102,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	/**
 	 * Set an optional overriding file name which may also include a path.
 	 * @param fileName
+	 * @return this request for method chaining
 	 */
 	public PutFileRequest fileName(String fileName) {
 		this.fileName = fileName;
@@ -110,7 +112,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	/**
 	 * An optional setting for the content-type of this file. Docmosis will
 	 * attempt to work out the content type if not specified.
-	 * @return
+	 * @return content-type of file
 	 */
 	public String getContentType() {
 		return contentType;
@@ -119,7 +121,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	/**
 	 * Set the content-type of this file. Docmosis will attempt to work out
      * the content type if not specified.
-	 * @param contentType
+	 * @param contentType of file
 	 */
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
@@ -128,7 +130,8 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	/**
 	 * Set the content-type of this file. Docmosis will attempt to work out
      * the content type if not specified.
-	 * @param contentType
+	 * @param contentType of file
+	 * @return this request for method chaining
 	 */
 	public PutFileRequest contentType(String contentType) {
 		this.contentType = contentType;
@@ -138,7 +141,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	/**
 	 * An optional string of information to store with this file that can be
 	 * retrieved with the file later.
-	 * @return
+	 * @return meta data string
 	 */
 	public String getMetaData() {
 		return metaData;
@@ -147,7 +150,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	/**
 	 * Set an optional string of information to store with this file that can
 	 * be retrieved with the file later.
-	 * @param metaData
+	 * @param metaData string
 	 */
 	public void setMetaData(String metaData) {
 		this.metaData = metaData;
@@ -156,7 +159,8 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	/**
 	 * Set an optional string of information to store with this file that can
 	 * be retrieved with the file later.
-	 * @param metaData
+	 * @param metaData string
+	 * @return this request for method chaining
 	 */
 	public PutFileRequest metaData(String metaData) {
 		this.metaData = metaData;

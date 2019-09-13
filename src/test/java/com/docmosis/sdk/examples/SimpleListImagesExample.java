@@ -13,25 +13,22 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.file.GetFileResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.image.Image;
+import com.docmosis.sdk.image.ListImagesResponse;
+
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns a 
- * file stored on the server.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about all images stored on the server.
  * 
  * How to use:
  * 
@@ -44,12 +41,10 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetFileExample
+public class SimpleListImagesExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to get
-	private static final String FILE_TO_GET = "myFile1.pdf";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -60,24 +55,26 @@ public class SimpleGetFileExample
 		}
 		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
+		
+		ListImagesResponse images = Image
+									.list()
+									.execute();
 
-		File outputFile = new File(FILE_TO_GET);
-		GetFileResponse file = FileStorage
-								.get()
-								.fileName(FILE_TO_GET)
-								.sendTo(outputFile) //Or OutputStream
-								.execute();
-
-			if (file.hasSucceeded()) {
-				System.out.println("Output File to: " + outputFile.getAbsolutePath());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Get File failed: status="
-						+ file.getStatus()
-						+ " shortMsg="
-						+ file.getShortMsg()
-						+ ((file.getLongMsg() == null) ? "" : " longMsg="
-								+ file.getLongMsg()));
-			}
+		if (images.hasSucceeded()) {
+			System.out.println(images.toString());
+//			List<ImageDetails> list = images.list();
+//			for(ImageDetails id : list) {
+//				System.out.println(id.getName());
+//				//System.out.println(id.toString());
+//			}
+		} else {
+			// something went wrong, tell the user
+			System.err.println("List Images failed: status="
+					+ images.getStatus()
+					+ " shortMsg="
+					+ images.getShortMsg()
+					+ ((images.getLongMsg() == null) ? "" : " longMsg="
+							+ images.getLongMsg()));
+		}
 	}
 }

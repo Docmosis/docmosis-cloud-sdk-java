@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Sample Data service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get Sample Data request.
  * 
@@ -75,6 +75,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * Set the Template Name.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 * @return this request for method chaining
 	 */
 	public GetSampleDataRequest templateName(String templateName) {
 		this.templateName = templateName;
@@ -83,6 +84,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 
 	/**
 	 * returns true if the docmosis server will return the Sample Data in json format.
+	 * @return true if json sample data, otherwise xml
 	 */
 	public boolean isFormatJson() {
 		return (format == null || format == "" || format.equalsIgnoreCase("json"));
@@ -105,6 +107,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * Set the format of the Sample Data to be returned.
 	 * 
 	 * @param format format of the response, should be either "json" or "xml". Defaults to json.
+	 * @return this request for method chaining
 	 */
 	public GetSampleDataRequest format(String format) {
 		this.format = format;

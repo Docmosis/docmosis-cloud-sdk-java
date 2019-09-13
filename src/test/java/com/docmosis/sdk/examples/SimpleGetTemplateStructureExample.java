@@ -13,7 +13,7 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
 import java.io.IOException;
 

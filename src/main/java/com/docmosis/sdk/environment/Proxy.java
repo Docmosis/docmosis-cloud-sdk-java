@@ -34,14 +34,13 @@ public class Proxy {
      * @param user the user name for the proxy
      * @param passwd the password for the proxy
      */
-
     public Proxy(String host, int port, String user, String passwd) {
         this.host = host;
         this.port = port;
         this.user = user;
         this.passwd = passwd;
     }
-    
+
     public Proxy(Proxy proxy) {
         this.host = proxy.host;
         this.port = proxy.port;

@@ -13,20 +13,26 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
+
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.FileStorage;
+import com.docmosis.sdk.file.PutFileResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.template.GetSampleDataResponse;
-import com.docmosis.sdk.template.Template;
+
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns the 
- * structure of a template stored on the server.
+ * This example connects to the public Docmosis cloud server and 
+ * uploads a file to store on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -39,12 +45,12 @@ import com.docmosis.sdk.template.Template;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetSampleDataExample
+public class SimplePutFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	// the welcome template is available in your cloud account by default
-	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
+	//Full path of File to be uploaded
+	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -53,26 +59,27 @@ public class SimpleGetSampleDataExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
+		
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
+		
+		File uploadFile = new File(FILE_TO_UPLOAD);
+		PutFileResponse uploadedFile = FileStorage
+										.put()
+										.file(uploadFile)
+										.metaData("Test")
+										.execute();
 
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
-			
-		GetSampleDataResponse sampleData = Template
-				   			.getSampleData()
-							.templateName(TEMPLATE_NAME)
-							.format("json") //"xml" or "json"
-							.execute();
-
-		if (sampleData.hasSucceeded()) {
-			System.out.println(sampleData.toString());
+		if (uploadedFile.hasSucceeded()) {
+			System.out.println(uploadedFile.getShortMsg());
+			//System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Template Structure failed: status="
-					+ sampleData.getStatus()
+			System.err.println("Put File failed: status="
+					+ uploadedFile.getStatus()
 					+ " shortMsg="
-					+ sampleData.getShortMsg()
-					+ ((sampleData.getLongMsg() == null) ? "" : " longMsg="
-							+ sampleData.getLongMsg()));
+					+ uploadedFile.getShortMsg()
+					+ ((uploadedFile.getLongMsg() == null) ? "" : " longMsg="
+							+ uploadedFile.getLongMsg()));
 		}
-
 	}
 }

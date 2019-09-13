@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 /**
  * This object holds the instructions and data for the render request.
  * 
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
  * for details about the settings for the Render request.  The properties set in this class 
  * are parameters for the Render request.
  * 
@@ -65,6 +65,9 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
     private String pdfArchiveMode;
     private String pdfWatermark;
     private String pdfTagged;
+    private String ignoreUnknownParams;
+    private String tags;
+    //private String streamResultInResponse; //TODO: Add handling for this
     
     public RenderRequest() {
     	super(SERVICE_PATH);
@@ -94,6 +97,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * with the template upload request or via the web console.
      * 
      * @param templateName the template to use for the render
+     * @return this request for method chaining
      */
     public RenderRequest templateName(String templateName) {
         this.templateName = templateName;
@@ -119,6 +123,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * one of the developer's templates.  Set this if advised by Docmosis support.
      * 
      * @param isSystemTemplate "true" to indicate a system template.
+     * @return this request for method chaining
      */
     public RenderRequest isSystemTemplate(String isSystemTemplate) {
         this.isSystemTemplate = isSystemTemplate;
@@ -154,6 +159,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * the files inside a zip file result.
      * 
      * @param outputName the name of the result
+     * @return this request for method chaining
      */
     public RenderRequest outputName(String outputName) {
         this.outputName = outputName;
@@ -183,6 +189,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * appended as required. Valid options are pdf, doc, odt, rtf, html, txt.
      * 
      * @param outputFormat the output format specifier
+     * @return this request for method chaining
      */
     public RenderRequest outputFormat(String outputFormat) {
         this.outputFormat = outputFormat;
@@ -213,7 +220,8 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * extension appended as required. This option is ignored if more than one outputFormat is 
      * specified. 
      * 
-     * @param compressSingleFormat set to "y", "yes" and "true" (case-insensitive) to compress 
+     * @param compressSingleFormat set to "y", "yes" and "true" (case-insensitive) to compress
+     * @return this request for method chaining
      */
     public RenderRequest compressSingleFormat(String compressSingleFormat) {
         this.compressSingleFormat = compressSingleFormat;
@@ -261,6 +269,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * </pre>
      *  
      * @param storeTo the list of destinations.
+     * @return this request for method chaining
      */
     public RenderRequest storeTo(String storeTo) {
         this.storeTo = storeTo;
@@ -288,6 +297,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * equivalent which is linked to available statistics.
      *  
      * @param billingKey the key to apply with some association with billing.
+     * @return this request for method chaining
      */
     public RenderRequest billingKey(String billingKey) {
         this.billingKey = billingKey;
@@ -327,6 +337,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * The default mode is production (that is, dev mode is off).
      * 
      * @param devMode specify the dev/prod mode
+     * @return this request for method chaining
      */
     public RenderRequest devMode(String devMode) {
         this.devMode = devMode;
@@ -353,6 +364,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * and the structure of your data should match the template you are using.
      * 
      * @param data JSON or XML data.
+     * @return this request for method chaining
      */
     public RenderRequest data(String data) 
     {
@@ -379,6 +391,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * which can be useful when many documents are being rendered in parallel.
      * 
      * @param requestId a token to identify this job.
+     * @return this request for method chaining
      */
     public RenderRequest requestId(String requestId) {
         this.requestId = requestId;
@@ -402,6 +415,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * Set the subject when sending email.
      * 
      * @param mailSubject the subject text
+     * @return this request for method chaining
      */
     public RenderRequest mailSubject(String mailSubject) {
         this.mailSubject = mailSubject;
@@ -427,6 +441,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * message.
      * 
      * @param mailBodyHtml the html version of the email.
+     * @return this request for method chaining
      */
     public RenderRequest mailBodyHtml(String mailBodyHtml) {
         this.mailBodyHtml = mailBodyHtml;
@@ -467,6 +482,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * 
      * @param mailNoZipAttachments set to "true" to attach results as separate 
      * files when mutltiple files are being created.
+     * @return this request for method chaining
      */
     public RenderRequest mailNoZipAttachments(String mailNoZipAttachments) {
     	this.mailNoZipAttachments = mailNoZipAttachments;
@@ -496,6 +512,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * This value can be reported later with associated monthly counts. Limited to 150 characters.
      * 
      * @param sourceId a token to identify the render for statistics purposes.
+     * @return this request for method chaining
      */
     public RenderRequest sourceId(String sourceId) {
         this.sourceId = sourceId;
@@ -545,6 +562,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * More information is available in the Docmosis Developer Guide.
      * 
      * @param stylesInText "y" or "true" to enable this style of processing.
+     * @return this request for method chaining
      */
     public RenderRequest stylesInText(String stylesInText) {
         this.stylesInText = stylesInText;
@@ -578,6 +596,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * <b>Note</b>: pdfArchiveMode will disable any password setting for PDF documents.
 	 * 
 	 * @param passwordProtect the open-password for the output documents
+	 * @return this request for method chaining
 	 */
 	public RenderRequest passwordProtect(String passwordProtect)
 	{
@@ -606,6 +625,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * disables certain PDF features such as password protection and external hyperlinks.
 	 * 
 	 * @param pdfArchiveMode "true" will enable pdf archive mode.
+	 * @return this request for method chaining
 	 */
 	public RenderRequest pdfArchiveMode(String pdfArchiveMode)
 	{
@@ -632,6 +652,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * If specified, PDF documents will have the specified text added as a watermark across the document.
 	 * 
 	 * @param pdfWatermark the text to apply as a watermark
+	 * @return this request for method chaining
 	 */
 	public RenderRequest pdfWatermark(String pdfWatermark)
 	{
@@ -662,12 +683,78 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * in becomes "readable" by reader programs.
 	 * 
 	 * @param pdfTagged "true" to enable pdf-tagging
+	 * @return this request for method chaining
 	 */
 	public RenderRequest pdfTagged(String pdfTagged)
 	{
 		this.pdfTagged = pdfTagged;
 		return this;
 	}
+	
+
+	
+	
+	public String getIgnoreUnknownParams() {
+        return ignoreUnknownParams;
+    }
+
+    /**
+     * If true, unknown parameters in the request are allowed and ignored. 
+     * By default the render service will return an error if a parameter is 
+     * specified that is not expected.
+     * Defaults to false.
+     * 
+     * @param ignoreUnknownParams "true" to indicate a system template.
+     */
+    public void setIgnoreUnknownParams(String ignoreUnknownParams) {
+        this.ignoreUnknownParams = ignoreUnknownParams;
+    }
+    
+    /**
+     * If true, unknown parameters in the request are allowed and ignored. 
+     * By default the render service will return an error if a parameter is 
+     * specified that is not expected.
+     * Defaults to false.
+     * 
+     * @param ignoreUnknownParams "true" to indicate a ignore unknown parameters.
+     * @return this request for method chaining
+     */
+    public RenderRequest ignoreUnknownParams(String ignoreUnknownParams) {
+        this.ignoreUnknownParams = ignoreUnknownParams;
+        return this;
+    }
+	
+	
+    public String getTags() {
+        return tags;
+    }
+
+    /**
+     * A semi-colon delimited list of tags to record against this render. 
+     * The tags can be later queried (using the getRenderTags end point) 
+     * to retrieve stats such as page-counts and document-counts related to 
+     * the tags.
+     * 
+     * @param tags "list;of;tags;".
+     */
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+    
+    /**
+     * A semi-colon delimited list of tags to record against this render. 
+     * The tags can be later queried (using the getRenderTags end point) 
+     * to retrieve stats such as page-counts and document-counts related to 
+     * the tags.
+     * 
+     * @param tags "list;of;tags;".
+     * @return this request for method chaining
+     */
+    public RenderRequest tags(String tags) {
+        this.tags = tags;
+        return this;
+    }
+	
 
 	/**
 	 * Execute a render based on current settings in this instance and using the default Environment.

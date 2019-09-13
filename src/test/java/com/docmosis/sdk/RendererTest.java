@@ -80,7 +80,7 @@ public class RendererTest extends TestCase {
 	    public String build(int status, String responseContent) throws Exception{
 	    	this.setUp();
 	        String baseURL = startServer("/api", new myHttpRequestHandler(status, responseContent));
-	        HttpClient httpClient = HttpClients.custom().build();
+	        //HttpClient httpClient = HttpClients.custom().build();
 	        httpHost = start();
 	        return baseURL + "/api";
 	    }

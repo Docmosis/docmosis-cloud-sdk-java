@@ -1,4 +1,3 @@
-
 /*
  *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
@@ -14,22 +13,25 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.FileStorage;
+import com.docmosis.sdk.file.GetFileResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.template.GetTemplateDetailsResponse;
-import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateDetails;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * details about a template stored on the server.
+ * This example connects to the public Docmosis cloud server and returns a 
+ * file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -42,11 +44,12 @@ import com.docmosis.sdk.template.TemplateDetails;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetTemplateDetailsExample
+public class SimpleGetFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	private static final String TEMPLATE_FILE = "samples/WelcomeTemplate.docx";
+	//Full path of File to get
+	private static final String FILE_TO_GET = "myFile1.pdf";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -58,26 +61,23 @@ public class SimpleGetTemplateDetailsExample
 		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetTemplateDetailsResponse templateDetails =  Template
-														.getDetails()
-														.templateName(TEMPLATE_FILE)
-														.execute();
+		File outputFile = new File(FILE_TO_GET);
+		GetFileResponse file = FileStorage
+								.get()
+								.fileName(FILE_TO_GET)
+								.sendTo(outputFile) //Or OutputStream
+								.execute();
 
-		if (templateDetails.hasSucceeded()) {
-			TemplateDetails template = templateDetails.getDetails();
-			System.out.println("Template Details:");
-			System.out.println("Template Name: " + template.getName());
-			System.out.println("Last Modified: " + template.getLastModifiedISO8601());
-			System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
-			//System.out.println(templateDetails.getAsJson());
-		} else {
-			// something went wrong, tell the user
-			System.err.println("Get Template Details failed: status="
-					+ templateDetails.getStatus()
-					+ " shortMsg="
-					+ templateDetails.getShortMsg()
-					+ ((templateDetails.getLongMsg() == null) ? "" : " longMsg="
-							+ templateDetails.getLongMsg()));
-		}
+			if (file.hasSucceeded()) {
+				System.out.println("Output File to: " + outputFile.getAbsolutePath());
+			} else {
+				// something went wrong, tell the user
+				System.err.println("Get File failed: status="
+						+ file.getStatus()
+						+ " shortMsg="
+						+ file.getShortMsg()
+						+ ((file.getLongMsg() == null) ? "" : " longMsg="
+								+ file.getLongMsg()));
+			}
 	}
 }

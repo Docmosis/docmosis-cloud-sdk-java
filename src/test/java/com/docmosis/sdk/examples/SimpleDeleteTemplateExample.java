@@ -13,26 +13,21 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
 
-
-import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.file.PutFileResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
-
+import com.docmosis.sdk.template.DeleteTemplateResponse;
+import com.docmosis.sdk.template.Template;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * uploads a file to store on the server.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about a template stored on the server. Note that multiple images 
+ * can be specified and deleted in one call.
  * 
  * How to use:
  * 
@@ -45,12 +40,13 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimplePutFileExample
+public class SimpleDeleteTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to be uploaded
-	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
+	//Full path of File(s) to be deleted
+	private static final String FIRST_FILE_TO_DELETE = "myTemplateFile.docx";
+	//private static final String SECOND_FILE_TO_DELETE = "myOtherTemplateFile.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -60,26 +56,27 @@ public class SimplePutFileExample
 			System.exit(1);
 		}
 		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		File uploadFile = new File(FILE_TO_UPLOAD);
-		PutFileResponse uploadedFile = FileStorage
-										.put()
-										.file(uploadFile)
-										.metaData("Test")
-										.execute();
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		if (uploadedFile.hasSucceeded()) {
-			System.out.println(uploadedFile.getShortMsg());
-			//System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
+		DeleteTemplateResponse deleteTemplate = Template
+												.delete()
+												.addTemplateName(FIRST_FILE_TO_DELETE)
+												//.addTemplateName(SECOND_FILE_TO_DELETE)
+												.execute();
+
+		if (deleteTemplate.hasSucceeded()) {
+			System.out.println(deleteTemplate.getShortMsg());
+			System.out.println("Successfully deleted " + FIRST_FILE_TO_DELETE);
+			//System.out.println("Successfully deleted " + SECOND_FILE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Put File failed: status="
-					+ uploadedFile.getStatus()
+			System.err.println("Delete Template failed: status="
+					+ deleteTemplate.getStatus()
 					+ " shortMsg="
-					+ uploadedFile.getShortMsg()
-					+ ((uploadedFile.getLongMsg() == null) ? "" : " longMsg="
-							+ uploadedFile.getLongMsg()));
+					+ deleteTemplate.getShortMsg()
+					+ ((deleteTemplate.getLongMsg() == null) ? "" : " longMsg="
+							+ deleteTemplate.getLongMsg()));
 		}
+
 	}
 }

@@ -72,7 +72,7 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 	 * (such as updates or deletions) this flag will be set to "true" to
 	 * indicate the list is not necessarily up to date. This is only ever
 	 * expected to be "true" for a short period after deletes or updates.
-	 * @return
+	 * @return template list stale status
 	 */
 	public boolean getTemplateListStale() {
 		return templateListStale;

@@ -1,4 +1,4 @@
- /*
+/*
  *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +13,25 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk;
+package com.docmosis.sdk.examples;
+
 
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.FileStorage;
+import com.docmosis.sdk.file.RenameFilesResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.rendertags.GetRenderTagsResponse;
-import com.docmosis.sdk.rendertags.RenderTags;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * statistics on renders that were tagged with user-defined phrases (“tags”).
+ * This example connects to the public Docmosis cloud server and 
+ * renames a file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -40,10 +44,14 @@ import com.docmosis.sdk.rendertags.RenderTags;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetRenderTagsExample
+public class SimpleRenameFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+	//Full path of File/Folder to be renamed
+	private static final String FILE_TO_RENAME = "myFile1.pdf";
+	//Full path of new name for File/Folder
+	private static final String NEW_NAME = "myOtherFile2.pdf";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -55,22 +63,23 @@ public class SimpleGetRenderTagsExample
 		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetRenderTagsResponse renderTags = RenderTags
-											.get()
-											.tags("test")
-											.padBlanks(true)
+		RenameFilesResponse renamedFile = FileStorage
+											.rename()
+											.fromPath(FILE_TO_RENAME)
+											.toPath(NEW_NAME)
 											.execute();
 
-		if (renderTags.hasSucceeded()) {
-			System.out.println(renderTags.toString());
+		if (renamedFile.hasSucceeded()) {
+			//System.out.println(renamedFile.getShortMsg());
+			System.out.println("Successfully renamed \"" + FILE_TO_RENAME + "\" to \"" + NEW_NAME + "\"");
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Render tags failed: status="
-					+ renderTags.getStatus()
+			System.err.println("Rename File failed: status="
+					+ renamedFile.getStatus()
 					+ " shortMsg="
-					+ renderTags.getShortMsg()
-					+ ((renderTags.getLongMsg() == null) ? "" : " longMsg="
-							+ renderTags.getLongMsg()));
+					+ renamedFile.getShortMsg()
+					+ ((renamedFile.getLongMsg() == null) ? "" : " longMsg="
+							+ renamedFile.getLongMsg()));
 		}
 	}
 }

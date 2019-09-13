@@ -1,5 +1,5 @@
 /*
- *   Copyright 2012 Docmosis.com or its affiliates.  All Rights Reserved.
+ *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Convert service.
- * See the Web Services Developer guide at {@link http://www.docmosis.com/support}
+ * See the Web Services Developer guide at {@link "https://www.docmosis.com/support"}
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Convert request.
  * 
@@ -55,7 +55,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
     /**
      * Construct a new request with the specified environment.
      * 
-     * @param Environment environment object specifying the Cloud/Tornado service url and accesskey
+     * @param environment object specifying the Cloud/Tornado service url and accesskey
      */
     public ConverterRequest(final Environment environment)
     {
@@ -81,6 +81,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
      * is derived from the extension of this name. For example "resume1.pdf" implies a PDF format document. 
      * 
      * @param outputName the name of the result
+     * @return this request for method chaining
      */
     public ConverterRequest outputName(String outputName) {
         this.outputName = outputName;
@@ -102,7 +103,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	 * Specify the local file to convert.  This file will be sent to the cloud and converted.
 	 * 
 	 * @param fileToConvert the file
-	 * @return this request
+	 * @return this request for method chaining
 	 */
 	public ConverterRequest fileToConvert(File fileToConvert)
 	{
@@ -112,7 +113,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 
 	/**
 	 * Execute a convert based on contained settings.
-     * <p>
+     * 
 	 * @return a response object giving status, possible error messages and optional
 	 * document payload.
 	 * 
@@ -124,18 +125,49 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 		return Converter.executeConvert(getThis());
 	}
 
+	/**
+	 * Execute a convert based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique docmosis accesskey
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws ConverterException if a problem occurs invoking the service 
+	 */
 	@Override
 	public ConverterResponse execute(String url, String accessKey) throws ConverterException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Converter.executeConvert(getThis());
 	}
 	
+	/**
+	 * Execute a convert based on contained settings.
+     * 
+     * @param accessKey your unique docmosis accesskey
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws ConverterException if a problem occurs invoking the service 
+	 */
 	@Override
 	public ConverterResponse execute(String accessKey) throws ConverterException {
 		getEnvironment().setAccessKey(accessKey);
 		return Converter.executeConvert(getThis());
 	}
 	
+	/**
+	 * Execute a convert based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws ConverterException if a problem occurs invoking the service 
+	 */
 	@Override
 	public ConverterResponse execute(Environment environment) throws ConverterException {
 		super.setEnvironment(environment);

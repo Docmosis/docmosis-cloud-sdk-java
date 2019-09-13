@@ -22,7 +22,6 @@ import org.apache.http.impl.client.HttpClients;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.environment.EnvironmentBuilder;
 import com.docmosis.sdk.environment.InvalidEnvironmentException;
-import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
  * This class manages the interaction with the Docmosis ping service endpoint.
@@ -41,6 +40,7 @@ public class Ping {
      * The ping service provides a direct check that the Docmosis REST web services are online and there is at least one Docmosis server listening.
      * This is useful for diagnostics and for monitoring purposes.
      * @return true if at least one Docmosis server is listening.
+     * @throws InvalidEnvironmentException
      *
      */
     public static boolean execute() throws InvalidEnvironmentException
@@ -53,8 +53,9 @@ public class Ping {
     /**
      * The ping service provides a direct check that the Docmosis REST web services are online and there is at least one Docmosis server listening.
      * This is useful for diagnostics and for monitoring purposes.
+     * @param environment the set of environment properties to use
      * @return true if at least one Docmosis server is listening.
-     * @throws DocmosisException 
+     * @throws InvalidEnvironmentException 
      *
      */
     public static boolean execute(Environment environment) throws InvalidEnvironmentException

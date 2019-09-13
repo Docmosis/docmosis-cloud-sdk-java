@@ -26,6 +26,7 @@ import com.docmosis.sdk.environment.Environment;
 	/**
 	 * Abstract Class used for requests that may return an InputStream.
 	 * Contains an OutputManager to manage outputting of the returned InputStream.
+	 * @param <T>
 	 */
 	public abstract class DocmosisCloudFileRequest<T extends DocmosisCloudRequest<?>> extends DocmosisCloudRequest<T> {
 		
@@ -47,6 +48,7 @@ import com.docmosis.sdk.environment.Environment;
 		 * there so the caller must create and also close the stream. 
 		 * 
 		 * @param outputStream The output that the returned File will be sent to
+		 * @return this request for method chaining
 		 */
 		public T sendTo(OutputStream outputStream) {
 			output.setOutput(outputStream);
@@ -57,6 +59,7 @@ import com.docmosis.sdk.environment.Environment;
 		 * Sets the File output for the returned file.
 		 * Calling this method will clear any previous call to {@link #sendTo(OutputStream)}.
 		 * @param outputFile The file the returned file will be saved to
+		 * @return this request for method chaining
 		 */
 		public T sendTo(File outputFile) {
 			output.setOutput(outputFile);
@@ -67,7 +70,7 @@ import com.docmosis.sdk.environment.Environment;
 		 * Get name of the output destination.
 		 * For Files the Full Path is returned.
 		 * For Streams the type of Stream is returned.
-		 * @return
+		 * @return output file name or stream type
 		 */
 		public String getOutputName() {
 			return output.getOutputName();
@@ -154,7 +157,8 @@ import com.docmosis.sdk.environment.Environment;
 			 * to multiple destinations after you have received it, you will need to 
 			 * read it into memory or to a file first.
 			 * 
-			 * @param outputStream the destination to send the document
+			 * @param inputStream returned document
+			 * @throws FileNotFoundException
 			 * @throws IOException if an IO problem occurs or output not set
 			 */
 			public void sendDocumentTo(InputStream inputStream) throws FileNotFoundException, IOException
@@ -190,6 +194,7 @@ import com.docmosis.sdk.environment.Environment;
 			 * to multiple destinations after you have received it, you will need to 
 			 * read it into memory or to a file first.
 			 * 
+			 * @param inputStream returned document
 			 * @param outputStream the destination to send the document
 			 * 
 			 * @throws IOException if an IO problem occurs

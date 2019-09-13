@@ -34,6 +34,11 @@ public enum Endpoint {
 		this.baseUrl = baseUrl;
 	}
 	
+	/**
+	 * Get the service endpoint base url.
+	 * 
+	 * @return service endpoint base url
+	 */
 	public String getBaseUrl()
 	{
 		return baseUrl;
