@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 /**
  * This object holds the instructions and data for the render request.
  * 
- * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
+ * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the Render request.  The properties set in this class 
  * are parameters for the Render request.
  * 
@@ -533,7 +533,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * </li><li>
      * Underline eg "this is <i>underline</i>"
      * </li><li>
-     * Cell Colouring eg "<bgcolor="#ff0000"/>This cell is now red.
+     * Cell Colouring eg "&lt;bgcolor="#ff0000"/&gt;This cell is now red.
      * </li></ul>
      * The bgcolor tag must be at the beginning of your field data and the template field must 
      * be inside a table-cell to take effect. 
@@ -555,7 +555,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * </li><li>
      * Underline eg "this is <i>underline</i>"
      * </li><li>
-     * Cell Colouring eg "<bgcolor="#ff0000"/>This cell is now red.
+     * Cell Colouring eg "&lt;bgcolor="#ff0000"/&gt;This cell is now red.
      * </li></ul>
      * The bgcolor tag must be at the beginning of your field data and the template field must 
      * be inside a table-cell to take effect. 
@@ -578,7 +578,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * If specified, this parameter will set the password for PDF and DOC files 
 	 * created by the render. The password is used when opening the document. 
 	 * Use with care as setting the password means the recipient must know the 
-	 * password to read the document.<br/> 
+	 * password to read the document. 
 	 * <b>Note</b>: pdfArchiveMode will disable any password setting for PDF documents.
 	 * 
 	 * @param passwordProtect the open-password for the output documents
@@ -592,7 +592,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * If specified, this parameter will set the password for PDF and DOC files 
 	 * created by the render. The password is used when opening the document. 
 	 * Use with care as setting the password means the recipient must know the 
-	 * password to read the document.<br/> 
+	 * password to read the document.
 	 * <b>Note</b>: pdfArchiveMode will disable any password setting for PDF documents.
 	 * 
 	 * @param passwordProtect the open-password for the output documents

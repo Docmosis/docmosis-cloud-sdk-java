@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Delete File service.
- * See the Web Services Developer guide at {@link "https://www.docmosis.com/support"}
+ * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 

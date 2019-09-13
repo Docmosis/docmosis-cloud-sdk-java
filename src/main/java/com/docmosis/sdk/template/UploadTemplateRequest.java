@@ -21,7 +21,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
  * The object holds the instructions and data for a request to the Upload Template service.
- * See the Web Services Developer guide at {@link "http://www.docmosis.com/support"}
+ * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Upload Template request.
  * 
@@ -175,7 +175,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	}
 
 	/**
-	 * This specifies the prefix delimiter identifying a field in your template. The default is "<<".
+	 * This specifies the prefix delimiter identifying a field in your template. The default is "&lt;&lt;".
 	 * @return Value of prefix delimiter.
 	 */
 	public String getFieldDelimPrefix() {
@@ -183,7 +183,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	}
 
 	/**
-	 * This specifies the prefix delimiter identifying a field in your template. The default is "<<".
+	 * This specifies the prefix delimiter identifying a field in your template. The default is "&lt;&lt;".
 	 * @param fieldDelimPrefix value of prefix delimiter.
 	 */
 	public void setFieldDelimPrefix(String fieldDelimPrefix) {
@@ -191,7 +191,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	}
 
 	/**
-	 * This specifies the prefix delimiter identifying a field in your template. The default is "<<".
+	 * This specifies the prefix delimiter identifying a field in your template. The default is "&lt;&lt;".
 	 * @param fieldDelimPrefix value of prefix delimiter.
 	 * @return this request for method chaining
 	 */
@@ -201,7 +201,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	}
 
 	/**
-	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is ">>".
+	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is "&gt;&gt;".
 	 * @return Value of suffix delimiter.
 	 */
 	public String getFieldDelimSuffix() {
@@ -209,7 +209,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	}
 
 	/**
-	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is ">>".
+	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is "&gt;&gt;".
 	 * @param fieldDelimSuffix value of suffix delimiter.
 	 */
 	public void setFieldDelimSuffix(String fieldDelimSuffix) {
@@ -217,7 +217,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	}
 
 	/**
-	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is ">>".
+	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is "&gt;&gt;".
 	 * @param fieldDelimSuffix value of suffix delimiter.
 	 * @return this request for method chaining
 	 */
