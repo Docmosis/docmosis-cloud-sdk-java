@@ -70,7 +70,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 	 * @param payLoad the content to be sent with the POST
 	 * @param requestIsJson true if json, otherwise xml
 	 * @return json response as a string object. If a document response then a blank string is returned
-	 * @throws DocmosisException
+	 * @throws DocmosisException if something goes wrong whilst fullfilling the request
 	 */
 	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad, boolean requestIsJson) throws DocmosisException
 	{

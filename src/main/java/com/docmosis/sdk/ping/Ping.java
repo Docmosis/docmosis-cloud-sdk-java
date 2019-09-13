@@ -40,7 +40,7 @@ public class Ping {
      * The ping service provides a direct check that the Docmosis REST web services are online and there is at least one Docmosis server listening.
      * This is useful for diagnostics and for monitoring purposes.
      * @return true if at least one Docmosis server is listening.
-     * @throws InvalidEnvironmentException
+     * @throws InvalidEnvironmentException if environment url is invalid
      *
      */
     public static boolean execute() throws InvalidEnvironmentException
@@ -55,7 +55,7 @@ public class Ping {
      * This is useful for diagnostics and for monitoring purposes.
      * @param environment the set of environment properties to use
      * @return true if at least one Docmosis server is listening.
-     * @throws InvalidEnvironmentException 
+     * @throws InvalidEnvironmentException if environment url is invalid
      *
      */
     public static boolean execute(Environment environment) throws InvalidEnvironmentException

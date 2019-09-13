@@ -70,7 +70,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 
 	/**
 	 * The tags to query. This can be a single tag or a list of tags separated by the ; character.
-	 * @param tags
+	 * @param tags "list;of;tags;"
 	 */
 	public void setTags(String tags) {
 		this.tags = tags;
@@ -78,7 +78,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	
 	/**
 	 * The tags to query. This can be a single tag or a list of tags separated by the ; character.
-	 * @param tags
+	 * @param tags "list;of;tags;"
 	 * @return this request for method chaining
 	 */
 	public GetRenderTagsRequest tags(String tags) {
@@ -192,7 +192,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 * values for the tags requested over the given time period by padding the data
 	 * with zero-values as required.
 	 * Defaults to false.
-	 * @param padBlanks
+	 * @param padBlanks value
 	 */
 	public void setPadBlanks(boolean padBlanks) {
 		this.padBlanks = padBlanks;
@@ -204,7 +204,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 * values for the tags requested over the given time period by padding the data
 	 * with zero-values as required.
 	 * Defaults to false.
-	 * @param padBlanks
+	 * @param padBlanks value
 	 * @return this request for method chaining
 	 */
 	public GetRenderTagsRequest padBlanks(boolean padBlanks) {

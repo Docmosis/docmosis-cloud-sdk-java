@@ -209,7 +209,7 @@ public class DocmosisCloudResponse
 	
 	/**
 	 * Returns this response as a formated xml string.
-	 * @param xml
+	 * @param xml unformatted xml string
 	 * @return formatted string of xml object
 	 */
 	public String getAsXMLPretty(String xml)
@@ -219,7 +219,7 @@ public class DocmosisCloudResponse
 
 	/**
 	 * Returns object as a formated xml string.
-	 * @param document
+	 * @param document xml document object
 	 * @return formatted string of xml object
 	 */
 	public String getAsXMLPretty(Document document)

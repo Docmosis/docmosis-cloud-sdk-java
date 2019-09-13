@@ -170,7 +170,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 
 	/**
 	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
-	 * @param normalizeImageName
+	 * @param normalizeImageName value
 	 */
 	public void setNormalizeImageName(boolean normalizeImageName) {
 		this.normalizeImageName = normalizeImageName;
@@ -178,7 +178,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 
 	/**
 	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
-	 * @param normalizeImageName
+	 * @param normalizeImageName value
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest normalizeImageName(boolean normalizeImageName) {

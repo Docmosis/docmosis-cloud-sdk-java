@@ -314,7 +314,7 @@ public class EnvironmentBuilder
 		 * The maximum time waiting for data (in milliseconds) – after establishing the connection;
 		 * maximum time of inactivity between two data packets.
 		 * 
-		 * @param readTimeoutMS
+		 * @param readTimeoutMS in milliseconds
 		 * @return this object for method chaining
 		 */
 		public Environment setReadTimeout(long readTimeoutMS) {

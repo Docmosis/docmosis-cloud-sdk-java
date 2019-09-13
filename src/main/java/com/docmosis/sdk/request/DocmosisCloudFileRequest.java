@@ -26,7 +26,7 @@ import com.docmosis.sdk.environment.Environment;
 	/**
 	 * Abstract Class used for requests that may return an InputStream.
 	 * Contains an OutputManager to manage outputting of the returned InputStream.
-	 * @param <T>
+	 * @param <T> Request class
 	 */
 	public abstract class DocmosisCloudFileRequest<T extends DocmosisCloudRequest<?>> extends DocmosisCloudRequest<T> {
 		
@@ -78,8 +78,8 @@ import com.docmosis.sdk.environment.Environment;
 		
 		/**
 		 * Outputs the InputStream to the currently set File or OutputStream
-		 * @param inputStream
-		 * @throws IOException
+		 * @param inputStream returned document
+		 * @throws IOException if an IO problem occurs or output not set
 		 */
 		public void sendDocumentTo(InputStream inputStream) throws IOException {
 				output.sendDocumentTo(inputStream);
@@ -158,7 +158,7 @@ import com.docmosis.sdk.environment.Environment;
 			 * read it into memory or to a file first.
 			 * 
 			 * @param inputStream returned document
-			 * @throws FileNotFoundException
+			 * @throws FileNotFoundException if output file not set/valid
 			 * @throws IOException if an IO problem occurs or output not set
 			 */
 			public void sendDocumentTo(InputStream inputStream) throws FileNotFoundException, IOException

@@ -99,7 +99,7 @@ public class Renderer {
     /**
      * Determine if the given string looks like JSON
      * 
-     * @param data
+     * @param data full data string
      * @return true if it appears to be JSON or is null/blank
      */
     public static boolean isJson(String data)

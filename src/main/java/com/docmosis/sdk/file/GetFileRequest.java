@@ -63,7 +63,7 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 
 	/**
 	 * Set the name of the file, optionally including its path.
-	 * @param fileName
+	 * @param fileName name and path of the file
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
@@ -71,7 +71,7 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 
 	/**
 	 * Set the name of the file, optionally including its path.
-	 * @param fileName
+	 * @param fileName name and path of the file
 	 * @return this request for method chaining
 	 */
 	public GetFileRequest fileName(String fileName) {

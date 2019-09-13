@@ -19,7 +19,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * Abstract class for template requests. contains 2 common parameters.
- * @param <T>
+ * @param <T> Request class
  */
 public abstract class AbstractTemplateRequest<T extends DocmosisCloudRequest<?>> extends DocmosisCloudRequest<T> {
 	

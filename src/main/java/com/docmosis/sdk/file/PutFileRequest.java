@@ -93,7 +93,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 
 	/**
 	 * Set an optional overriding file name which may also include a path.
-	 * @param fileName
+	 * @param fileName value
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
@@ -101,7 +101,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 
 	/**
 	 * Set an optional overriding file name which may also include a path.
-	 * @param fileName
+	 * @param fileName value
 	 * @return this request for method chaining
 	 */
 	public PutFileRequest fileName(String fileName) {

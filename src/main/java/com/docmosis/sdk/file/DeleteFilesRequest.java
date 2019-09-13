@@ -62,7 +62,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 
 	/**
 	 * The name of the file or folder.
-	 * @param path
+	 * @param path of file/folder
 	 */
 	public void setPath(String path) {
 		this.path = path;
@@ -70,7 +70,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 
 	/**
 	 * The name of the file or folder.
-	 * @param path
+	 * @param path of file/folder
 	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest path(String path) {
@@ -88,7 +88,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 
 	/**
 	 * If "true" all files within the given path are deleted also.
-	 * @param includeSubFolders
+	 * @param includeSubFolders value
 	 */
 	public void setIncludeSubFolders(boolean includeSubFolders) {
 		this.includeSubFolders = includeSubFolders;
@@ -96,7 +96,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 
 	/**
 	 * If "true" all files within the given path are deleted also.
-	 * @param includeSubFolders
+	 * @param includeSubFolders value
 	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest includeSubFolders(boolean includeSubFolders) {

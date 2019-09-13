@@ -54,7 +54,7 @@ public class Environment {
 	 * Create a new Environment using the given access key and defaults
 	 * for everything else.
 	 *  
-	 * @param accessKey
+	 * @param accessKey your access key for the service
 	 */
 	public Environment(String accessKey)
 	{

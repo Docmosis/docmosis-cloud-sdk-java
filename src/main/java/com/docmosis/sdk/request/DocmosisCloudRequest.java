@@ -23,7 +23,7 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
 /**
  * The object holds the common instructions and data for a request to the Docmosis cloud.
  * This is an abstract super object with the minimum requirements to make a request.
- * @param <T>
+ * @param <T> Request class
  */
 public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	
