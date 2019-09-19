@@ -67,7 +67,18 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
     private String pdfTagged;
     private String ignoreUnknownParams;
     private String tags;
-    //private String streamResultInResponse; //TODO: Add handling for this
+
+    
+    
+    //The following fields are part of the Docmosis Web Services API but have not 
+    //been implemented in this SDK.
+    
+    /**
+	 * If set to "y","yes" or "true", the streamed result will be base64 encoded.
+	 * Note this only applies if the request includes (or implies) a “stream” result.
+	 */
+    //private String streamResultInResponse;
+
     
     public RenderRequest() {
     	super(SERVICE_PATH);
@@ -754,7 +765,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
         this.tags = tags;
         return this;
     }
-	
 
 	/**
 	 * Execute a render based on current settings in this instance and using the default Environment.

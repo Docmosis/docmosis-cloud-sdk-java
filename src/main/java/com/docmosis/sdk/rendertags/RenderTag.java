@@ -64,13 +64,13 @@ public class RenderTag {
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
 		sb.append("Year: " + getYear());
-		sb.append(System.lineSeparator());
+		sb.append(System.getProperty("line.separator"));
 		sb.append("Month: " + getMonth());
-		sb.append(System.lineSeparator());
+		sb.append(System.getProperty("line.separator"));
 		if (tags != null) { //Build formatted String to return.
 			for(Tag tg : tags) {
 				sb.append(tg.toString());
-				sb.append(System.lineSeparator());
+				sb.append(System.getProperty("line.separator"));
 			}
 		}
 		return sb.toString();

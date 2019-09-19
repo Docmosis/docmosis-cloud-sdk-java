@@ -56,7 +56,7 @@ import com.google.gson.JsonParser;
 
 public class DocmosisHTTPRequestExecutionHandler {
 
-	private static final String FIELD_HEADER_X_DOCMOSIS_SVR = "X-Docmosis-Server";
+	private static final String FIELD_HEADER_X_DOCMOSIS_SVR			   = "X-Docmosis-Server";
 	private static final String FIELD_HEADER_X_DOCMOSIS_REQUEST_ID     = "X-Docmosis-RequestId";
 	private static final String FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED = "X-Docmosis-PagesRendered";
 	private static final String FIELD_HEADER_X_DOCMOSIS_BYTES_OUTPUT   = "X-Docmosis-BytesOutput";
@@ -143,17 +143,15 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    	    if (request instanceof DocmosisCloudFileRequest) { //A file may have been returned
 	    	    	if (request instanceof RenderRequest) {  //A Rendered file may have been returned
 	    	    		RenderRequest rr = (RenderRequest) request;
-	    	    		if (rr.getStoreTo() == null || rr.getStoreTo().contains("stream")) {
-	    	    			if (chResponse.getStatusLine().getStatusCode() == 200 && chResponse.getEntity() != null) {
-	    	    				final String contentType = chResponse.getFirstHeader("Content-Type").getValue();
-	    	    				if (contentType.startsWith("application/json") || contentType.startsWith("application/xml")) {
-	    	    	    			// text payload - ignore for successful results
-	    	    	    		} else {
-	    	    	    			// binary payload
-	    	    	    			rr.sendDocumentTo(chResponse.getEntity().getContent());
-	    	    	    		}
-			    	    	}
-	    	    		}
+    	    			if (chResponse.getStatusLine().getStatusCode() == 200 && chResponse.getEntity() != null) {
+    	    				final String contentType = chResponse.getFirstHeader("Content-Type").getValue();
+    	    				if (contentType.startsWith("application/json") || contentType.startsWith("application/xml")) {
+    	    	    			// text payload - ignore for successful results
+    	    	    		} else {
+    	    	    			// binary payload
+    	    	    			rr.sendDocumentTo(chResponse.getEntity().getContent());
+    	    	    		}
+		    	    	}
 	    	    	} else {
 		    	    	//StoreDocument
 		    	    	DocmosisCloudFileRequest<?> requestFile = (DocmosisCloudFileRequest<?>) request;
@@ -170,7 +168,7 @@ public class DocmosisHTTPRequestExecutionHandler {
     	    } catch (FileNotFoundException e) {
 	            throw new DocmosisException(e);
     	    } catch (IOException e) {
-	            throw new DocmosisException("Cannot extract data from response.", e);
+	            throw new DocmosisException(e);
 	        }
             
         } catch (ConnectException e) {
@@ -185,8 +183,10 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    	try {
 	    		if (chResponse != null) {
 	    				chResponse.close();
-	    			}
-				client.close();
+	    		}
+	    		if (client != null) {
+	    			client.close();
+				}
 			} catch (IOException e) {
 				// quietly ignore 
 			}

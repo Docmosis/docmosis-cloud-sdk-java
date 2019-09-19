@@ -90,7 +90,7 @@ public class RenderTags {
 					
 					Type renderTagsListType = new TypeToken<List<RenderTag>>() {}.getType();
 					//Type listTagType = new TypeToken<List<Tag>>() {}.getType();
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					List<RenderTag> renderTags = gson.fromJson(jsonObject.get("renderTags"), renderTagsListType);
 					response.setRenderTags(renderTags);
 			    } else {

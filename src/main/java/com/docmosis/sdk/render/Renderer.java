@@ -155,10 +155,6 @@ public class Renderer {
         addField("ignoreUnknownParams", request.getIgnoreUnknownParams(), buffer, true, jsonFormat);
         addField("tags", request.getTags(), buffer, true, jsonFormat);
         
-        //TODO - add this parameter and handling
-        //streamResultInResponse
-
-        
         if (jsonFormat) {
         	String json = request.getData();
         	json = (json == null || "".equals(json.trim())) ? null : json;

@@ -72,7 +72,7 @@ public class ListFilesResponse extends DocmosisCloudResponse {
 		sb.append("storedFileListStale: " + getStoredFileListStale());
 		if (files != null) { //Build formatted String to return.
 			for(FileDetails id : files) {
-				sb.append(System.lineSeparator());
+				sb.append(System.getProperty("line.separator"));
 				sb.append(id.toString());
 			}
 		}

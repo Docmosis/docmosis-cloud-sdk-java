@@ -108,7 +108,7 @@ public class Image {
 	
 					response.setImageListStale(Boolean.parseBoolean(jsonObject.get("imageListStale").getAsString()));
 					Type listType = new TypeToken<List<ImageDetails>>() {}.getType();
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					List<ImageDetails> images = gson.fromJson(jsonObject.get("imageList"), listType);
 					response.setImages(images);
 			    } else {
@@ -164,7 +164,7 @@ public class Image {
 			    if (responseString != null && responseString.length() > 0) {
 					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					ImageDetails image = gson.fromJson(jsonObject.get("imageDetails"), ImageDetails.class);
 					response.setImageDetails(image);
 			    } else {

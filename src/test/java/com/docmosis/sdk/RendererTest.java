@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 
 public class RendererTest extends TestCase {
 
-	private static final String ACCESS_KEY = "XXX"; //TODO Delete
+	private static final String ACCESS_KEY = "XXX";
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 	private static final String OUTPUT_FORMAT = "pdf";
 	private static final String OUTPUT_FILE = "output_cloud." + OUTPUT_FORMAT;

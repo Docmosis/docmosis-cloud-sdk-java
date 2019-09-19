@@ -80,7 +80,7 @@ public class ListImagesResponse extends DocmosisCloudResponse {
 		sb.append("imageListStale: " + getImageListStale());
 		if (images != null) { //Build formatted String to return.
 			for(ImageDetails id : images) {
-				sb.append(System.lineSeparator());
+				sb.append(System.getProperty("line.separator"));
 				sb.append(id.toString());
 			}
 		}

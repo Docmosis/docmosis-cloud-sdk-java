@@ -86,7 +86,7 @@ public class SimpleProxyExample
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile) //Or OutputStream TODO: MAKE OPTIONAL
+									.sendTo(outputFile) //Or OutputStream
 									.data(data)
 									.execute(envBldr.build());
 							

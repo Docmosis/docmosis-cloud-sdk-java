@@ -89,7 +89,7 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 		if (templates != null) { //Build formatted String to return.
 			for(TemplateDetails td : templates) {
 				sb.append(td.toString());
-				sb.append(System.lineSeparator());
+				sb.append(System.getProperty("line.separator"));
 			}
 		}
 		return sb.toString();

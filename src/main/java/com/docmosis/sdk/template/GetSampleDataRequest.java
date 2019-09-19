@@ -87,7 +87,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * @return true if json sample data, otherwise xml
 	 */
 	public boolean isFormatJson() {
-		return (format == null || format == "" || format.equalsIgnoreCase("json"));
+		return (format == null || format.isEmpty() || format.equalsIgnoreCase("json"));
 	}
 	
 	public String getFormat() {

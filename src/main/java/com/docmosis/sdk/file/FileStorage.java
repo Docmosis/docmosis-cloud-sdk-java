@@ -124,7 +124,7 @@ public class FileStorage {
 	
 					response.setStoredFileListStale(Boolean.parseBoolean(jsonObject.get("storedFileListStale").getAsString()));
 					Type listType = new TypeToken<List<FileDetails>>() {}.getType();
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					List<FileDetails> files = gson.fromJson(jsonObject.get("storedFileList"), listType);
 					response.setFiles(files);
 			    } else {

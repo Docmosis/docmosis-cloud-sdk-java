@@ -175,7 +175,7 @@ public class DocmosisCloudResponse
 	 */
 	private JsonObject getAsJson(Object input)
 	{
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").disableHtmlEscaping().create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").disableHtmlEscaping().create();
 		String str = gson.toJson(input, input.getClass());
 		JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
 		return jsonObject;
@@ -188,7 +188,7 @@ public class DocmosisCloudResponse
 	 */
 	private String getAsJsonPretty(Object input)
 	{
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").disableHtmlEscaping().setPrettyPrinting().create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").disableHtmlEscaping().setPrettyPrinting().create();
 		String str = gson.toJson(input, input.getClass());
 		return str;
 	}

@@ -151,7 +151,7 @@ public class Template {
 	
 			    	response.setTemplateListStale(Boolean.parseBoolean(jsonObject.get("templateListStale").getAsString()));
 					Type listType = new TypeToken<List<TemplateDetails>>() {}.getType();
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					List<TemplateDetails> templates = gson.fromJson(jsonObject.get("templateList"), listType);
 					response.setTemplates(templates);
 			    } else {
@@ -198,7 +198,7 @@ public class Template {
 			    if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					TemplateDetails template = gson.fromJson(jsonObject.get("templateDetails"), TemplateDetails.class);
 					response.setTemplateDetails(template);
 			    } else {
@@ -303,7 +303,7 @@ public class Template {
 			    if (responseString != null && responseString.length() > 0) {
 					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
-					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					TemplateDetails template = gson.fromJson(jsonObject.get("templateDetails"), TemplateDetails.class);
 					response.setTemplateDetails(template);
 			    } else {
