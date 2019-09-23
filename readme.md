@@ -26,7 +26,7 @@ Typically your code will specify the environment then call the services
 required.  For example:
 
 ```
-	Environment.setDefaults(Endpoint.DWS_VERSION_3_USA, accessKey);
+	Environment.setDefaults(accessKey);
 	
 	ListTemplatesResponse templates = Template.list().execute();
 	List<TemplateDetails> list = templates.list();
@@ -61,16 +61,16 @@ then this will be stored within the response object.
 
 ###### *Envrionment and Authentication*
 
-Use the Environment classes and Endpoint enum to configure your endpoint and your 
-API key.  It is a global configuration and can be setup as part of your
-server initialization.  For example, to set the defaults for all subsequent calls:
+Use the Environment classes to configure your settings.  It is a global configuration 
+and can be setup as part of your server initialization.  For example, to set the 
+defaults for all subsequent calls:
 
 ```
-	Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+	Environment.setDefaults(ACCESS_KEY);
 ```
 
-Then environment settings can also specify connection timeouts, retries and proxy 
-configuration.
+Then environment settings can also specify service endpoint, connection timeouts, 
+retries and proxy configuration.
 
 As mentioned earlier, requests will use the default environment settings unless 
 settings are explicitly passed to execute().  For example, the following code
