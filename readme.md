@@ -1,21 +1,54 @@
-Docmosis Web Services SDK (Java Edition) Readme 
-===============================================
+Docmosis Cloud SDK Java (DWS3) - Readme
+=======================================
 
-Welcome to the Docmosis Web Services SDK (Java Edition).  This SDK makes it easy 
+Welcome to the Docmosis Web Services SDK (Java Edition). This SDK makes it easy 
 to invoke API calls on Docmosis web service end points (such as the public 
-Docmosis Cloud Services).  
+Docmosis Cloud Services).
 
-To run this SDK you require Java 1.6 or later and a Docmosis Cloud or Tornado 
-account.
+This version is intended for users of Docmosis Web Services 3 (DWS3).  
+
+To run this SDK you require Java 1.6 or later and a Docmosis DWS3 Cloud account.
 
 If you don't already have a Docmosis account you can sign up for a free trial
-at: https://www.docmosis.com/try.
+at: [https://www.docmosis.com/try](https://www.docmosis.com/try).
 
-Please look at the sample code for some examples to get started.  More 
-information about rendering documents can be found in the Web Services Guide 
-and the Template Guide in the Docmosis support site (http://www.docmosis.com)
+Please look at the [examples](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3/examples) 
+on our [github project page](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3) 
+for some sample code to get started.  More information about rendering documents 
+can be found in the Web Services Guide and the Template Guide at the Docmosis 
+support site: [docmosis.com](http://www.docmosis.com)
 
-##### Overview
+## Installation
+
+#### Maven
+
+Add the following dependency to your `pom.xml` file:
+
+```
+<dependency>
+  <groupId>com.docmosis</groupId>
+  <artifactId>docmosis-cloud-sdk-java</artifactId>
+  <version>3.X.X</version>
+</dependency>
+```
+
+Please be sure to replace `3.X.X` with the latest version number of the DWS3 SDK.
+
+#### JAR file
+
+The current release of the jar can be found under [dist](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3/dist), or you can 
+build the jar yourself with the following steps:
+
+1. Download the [Docmosis Cloud SDK Java (DWS3) project](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3)
+2. Unzip the package
+3. Build the jar using:
+
+    ```
+    $ mvn package
+    ```
+4. Import the jar into your project or add to your projects classpath
+
+## Overview
 
 The Docmosis cloud services is a REST-based API. All calls to Docmosis are 
 made using HTTPS POST requests. This SDK provides an easy to use wrapper 
@@ -35,7 +68,7 @@ required.  For example:
 	}
 ```
 
-###### *Request*
+#### Request
 
 Each service endpoint has a corresponding request object which allows you to set 
 input parameters. After filling in the request parameters, the request can be 
@@ -47,7 +80,7 @@ however each request can specify the environment settings to use.  More details
 on Environment settings are below. 
 
 
-###### *Response*
+#### Response
 
 Each service endpoint has a corresponding response object which is returned from 
 calling execute on the request object. Typically the response object is used to 
@@ -59,7 +92,7 @@ check the success of the request using:
 If any data has been returned from the request (eg The List Templates request) 
 then this will be stored within the response object.
 
-###### *Envrionment and Authentication*
+#### Envrionment and Authentication
 
 Use the Environment classes to configure your settings.  It is a global configuration 
 and can be setup as part of your server initialization.  For example, to set the 
@@ -85,9 +118,9 @@ will specify an environment explicitly for the list templates request:
 	ListTemplatesResponse templates = Template.list().execute(env);
 ```
 
-##### The Docmosis Services
+## The Docmosis Services
 
-###### *The Render Service*
+#### The Render Service
 The Docmosis render service can:
  - merge data into DOCX, DOC or ODT templates
  - produce PDF,DOCX,DOC,ODT output
@@ -111,12 +144,13 @@ The Docmosis render service can:
 		.sendTo(outputFile)
 		.data(dataString)
 		.execute();
-		
-   // process the outputFile that has been created.		
+
 ```
 
-###### *The Convert Service*
-The convert service allows files to be converted between formats. The process is simple conversion with no concept of templates and data and applies to Spreadsheet, presentation and drawing types of document.
+#### The Convert Service
+The convert service allows files to be converted between formats. The process 
+is simple conversion with no concept of templates and data and applies to 
+Spreadsheet, presentation and drawing types of document.
 
 ```
 	File convertFile = new File(FILE_TO_CONVERT);
@@ -128,14 +162,14 @@ The convert service allows files to be converted between formats. The process is
 		.execute();
 ```
 
-###### *The Template Services*
+#### The Template Services
 The template services include:
 
 - List Templates Service
 
 ```
 	ListTemplatesResponse templates = Template.list().execute();
-	templates.toString();
+	System.out.println(templates.toString());
 ```
 
 - Upload Template Service
@@ -193,14 +227,14 @@ The template services include:
 	System.out.println(sampleData.toString());
 ```
 
-###### *The Image Services*
+#### The Image Services
 The image services include:
 
 - List Images Service
 
 ```
 	ListImagesResponse images = Image.list().execute();
-	images.toString();
+	System.out.println(images.toString());
 ```
 
 - Upload Image Service
@@ -208,8 +242,8 @@ The image services include:
 ```
 	File uploadFile = new File(IMAGE_TO_UPLOAD);
 	UploadImageResponse uploadedImage = Image.upload()
-      .imageFile(uploadFile)
-      	.execute();
+		.imageFile(uploadFile)
+		.execute();
 ```
 
 - Get Image Service
@@ -230,7 +264,7 @@ The image services include:
 		.execute();
 ```
 
-###### *The File Storage Services*
+#### The File Storage Services
 These services are available if File Storage is enabled on your account.
 
 The File Storage services include:
@@ -278,7 +312,7 @@ The File Storage services include:
 		.execute();
 ```
 
-###### *The Get Render Tags Service*
+#### The Get Render Tags Service
 The get render tags service allows statistics to be retrieved on renders that were tagged with user-defined phrases (“tags”).
 
 ```
@@ -288,10 +322,10 @@ The get render tags service allows statistics to be retrieved on renders that we
 		.month(1)
 		.nMonths(6)
 		.execute();
-	renderTags.toString()
+	System.out.println(renderTags.toString());
 ```
 
-###### *The Ping Service*
+#### The Ping Service
 
 ```
 	if (Ping.execute()) {
@@ -299,3 +333,6 @@ The get render tags service allows statistics to be retrieved on renders that we
 	}
 ```
 
+## License
+
+Please see the LICENSE file.
