@@ -20,11 +20,11 @@ package com.docmosis.sdk.environment;
 public enum Endpoint {
 
 	/** USA */ 
-	DWS_VERSION_3_USA("https://us.dws.docmosis.com/v3/api/"),
+	DWS_VERSION_3_USA("https://us.dws3.docmosis.com/api/"),
 	/** EU */ 
-	DWS_VERSION_3_EU ("https://eu.dws.docmosis.com/v3/api/"),
+	DWS_VERSION_3_EU ("https://eu.dws3.docmosis.com/api/"),
 	/** Australia */ 
-	DWS_VERSION_3_AUS("https://au.dws.docmosis.com/v3/api/");
+	DWS_VERSION_3_AUS("https://au.dws3.docmosis.com/api/");
 	
 	
 	private final String baseUrl;

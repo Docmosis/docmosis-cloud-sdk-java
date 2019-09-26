@@ -16,12 +16,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
     	<groupId>org.apache.httpcomponents</groupId>
     	<artifactId>httpclient</artifactId>
     	<version>4.5.9</version>
@@ -35,13 +29,6 @@
     	<groupId>org.apache.httpcomponents</groupId>
     	<artifactId>httpmime</artifactId>
     	<version>4.5.9</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.apache.httpcomponents</groupId>
-    	<artifactId>httpclient</artifactId>
-    	<version>4.5.8</version>
-    	<classifier>tests</classifier>
-		<scope>test</scope>
     </dependency>
   </dependencies>
   <description>This SDK makes it easy to invoke API calls on Docmosis web service end points (such as the public Docmosis Cloud Services).</description>

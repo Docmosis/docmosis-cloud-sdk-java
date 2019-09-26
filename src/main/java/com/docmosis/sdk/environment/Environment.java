@@ -17,7 +17,7 @@ package com.docmosis.sdk.environment;
 
 public class Environment {
 	
-	public static final Endpoint DEFAULT_ENDPOINT = Endpoint.DWS_VERSION_3_AUS; // TODO Switch To USA 
+	public static final Endpoint DEFAULT_ENDPOINT = Endpoint.DWS_VERSION_3_USA;
 	public static final int      DEFAULT_MAX_TRIES = 3;
 	public static final long     DEFAULT_RETRY_DELAY = 1000L;
 	public static final long     DEFAULT_CONNECT_TIMEOUT = -1L;
