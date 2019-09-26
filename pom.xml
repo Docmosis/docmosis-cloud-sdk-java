@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.docmosis</groupId>
   <artifactId>docmosis-cloud-sdk-java</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>3.0.0</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -69,7 +68,8 @@
   <connection>scm:git:git://github.com/docmosis/docmosis-cloud-sdk-java.git</connection>
   <developerConnection>scm:git:ssh://github.com:docmosis/docmosis-cloud-sdk-java.git</developerConnection>
   <url>http://github.com/docmosis/docmosis-cloud-sdk-java/tree/master</url>
-</scm>
+  <tag>docmosis-cloud-sdk-java-3.0.0</tag>
+  </scm>
 
 <build>
   <plugins>
