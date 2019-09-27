@@ -13,24 +13,19 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import com.docmosis.sdk.environment.Endpoint;
+import com.docmosis.sdk.convert.Converter;
+import com.docmosis.sdk.convert.ConverterException;
+import com.docmosis.sdk.convert.ConverterResponse;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.template.ListTemplatesResponse;
-import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateDetails;
-
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * details about all templates stored on the server. 
+ * This example connects to the public Docmosis cloud server and converts the 
+ * given document into a PDF which is then saved to the local file system.  
  * 
  * How to use:
  * 
@@ -43,38 +38,49 @@ import com.docmosis.sdk.template.TemplateDetails;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListTemplatesExample
+public class SimpleCloudConvertExample
 {
+
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+	// Set the name of the output file to create
+	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
+	// Set the path to the file you want to convert
+	private static final String FILE_TO_CONVERT = "C:/example/myTemplateFile.docx";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws ConverterException,
+			IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 		
-		ListTemplatesResponse templates = Template
-				.list()
-				.execute();
+		Environment.setDefaults(ACCESS_KEY);
 
-		if (templates.hasSucceeded()) {
-			List<TemplateDetails> list = templates.list();
-			for(TemplateDetails td : list) {
-				System.out.println(td.getName() + " size=" + td.getSizeBytes() + " bytes");
-			}
+		//Set the file to be converted
+		File convertFile = new File(FILE_TO_CONVERT);
+		File outputFile = new File(OUTPUT_FILE_NAME);
+		ConverterResponse response = Converter
+									.convert()
+									.fileToConvert(convertFile)
+									.outputName(OUTPUT_FILE_NAME)
+									.sendTo(outputFile) //Or OutputStream
+									.execute();
+
+		if (response.hasSucceeded()) {
+			// great - convert succeeded.
+			System.out.println("Written:" + outputFile.getAbsolutePath());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Templates failed: status="
-					+ templates.getStatus()
+			System.err.println("Convert failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ templates.getShortMsg()
-					+ ((templates.getLongMsg() == null) ? "" : " longMsg="
-							+ templates.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

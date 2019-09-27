@@ -13,23 +13,18 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
-import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.template.GetTemplateResponse;
+import com.docmosis.sdk.template.GetSampleDataResponse;
 import com.docmosis.sdk.template.Template;
-
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns a 
- * template stored on the server. Note that multiple templates can be requested
- * and returned in a zip file.
+ * This example connects to the public Docmosis cloud server and returns the 
+ * structure of a template stored on the server.
  * 
  * How to use:
  * 
@@ -42,14 +37,12 @@ import com.docmosis.sdk.template.Template;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetTemplateExample
+public class SimpleGetSampleDataExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-
-	//Full path of File to be uploaded
-	private static final String FILE_TO_GET = "myTemplateFile.docx";
-	//private static final String FILE_TO_GET2 = "myTemplateFile2.docx";
+	// the welcome template is available in your cloud account by default
+	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -59,26 +52,25 @@ public class SimpleGetTemplateExample
 			System.exit(1);
 		}
 
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+			
+		GetSampleDataResponse sampleData = Template
+				   			.getSampleData()
+							.templateName(TEMPLATE_NAME)
+							.format("json") //"xml" or "json"
+							.execute();
 
-		File outputFile = new File(FILE_TO_GET);
-		GetTemplateResponse template = Template
-										.get()
-										.addTemplateName(FILE_TO_GET)
-										//.addTemplateName(FILE_TO_GET2) // Can specify more than one file
-										.sendTo(outputFile) //Or OutputStream
-										.execute();
-
-		if (template.hasSucceeded()) {
-			System.out.println("Template(s) sent to: " + outputFile.getAbsolutePath());
+		if (sampleData.hasSucceeded()) {
+			System.out.println(sampleData.toString());
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Template(s) failed: status="
-					+ template.getStatus()
+			System.err.println("Get Template Structure failed: status="
+					+ sampleData.getStatus()
 					+ " shortMsg="
-					+ template.getShortMsg()
-					+ ((template.getLongMsg() == null) ? "" : " longMsg="
-							+ template.getLongMsg()));
+					+ sampleData.getShortMsg()
+					+ ((sampleData.getLongMsg() == null) ? "" : " longMsg="
+							+ sampleData.getLongMsg()));
 		}
+
 	}
 }

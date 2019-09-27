@@ -13,20 +13,21 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.template.GetTemplateStructureResponse;
-import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.image.GetImageResponse;
+import com.docmosis.sdk.image.Image;
+
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns the 
- * structure of a template stored on the server.
+ * This example connects to the public Docmosis cloud server and returns an 
+ * image stored on the server. Note that multiple images can be requested 
+ * and returned in a zip file.
  * 
  * How to use:
  * 
@@ -39,13 +40,13 @@ import com.docmosis.sdk.template.Template;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetTemplateStructureExample
+public class SimpleGetImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	// the welcome template is available in your cloud account by default
-	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-
+	//Full path of File to be uploaded
+	private static final String FILE_TO_GET = "Image1.png";
+	//private static final String FILE_TO_GET2 = "Image2.jpg";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -54,24 +55,28 @@ public class SimpleGetTemplateStructureExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-
+		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetTemplateStructureResponse templateStructure = Template
-															.getStructure()
-															.templateName(TEMPLATE_NAME)
-															.execute();
+		File outputFile = new File(FILE_TO_GET);
+		//File outputFile = new File("out.zip"); // If getting multiple templates they will be returned as a zip file.
+		GetImageResponse image = Image
+								.get()
+								.addImageName(FILE_TO_GET)
+								//.addImageName(FILE_TO_GET2) // Can specify more than one file
+								.sendTo(outputFile) //Or OutputStream
+								.execute();
 
-		if (templateStructure.hasSucceeded()) {
-			System.out.println(templateStructure.toString());
+		if (image.hasSucceeded()) {
+			System.out.println("Output Image to: " + outputFile.getAbsolutePath());
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Template Structure failed: status="
-					+ templateStructure.getStatus()
+			System.err.println("Get Image(s) failed: status="
+					+ image.getStatus()
 					+ " shortMsg="
-					+ templateStructure.getShortMsg()
-					+ ((templateStructure.getLongMsg() == null) ? "" : " longMsg="
-							+ templateStructure.getLongMsg()));
+					+ image.getShortMsg()
+					+ ((image.getLongMsg() == null) ? "" : " longMsg="
+							+ image.getLongMsg()));
 		}
 	}
 }

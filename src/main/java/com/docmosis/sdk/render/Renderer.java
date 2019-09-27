@@ -134,25 +134,25 @@ public class Renderer {
         // Start building the instruction.
         addField("accessKey", accessKey, buffer, true, jsonFormat);
         addField("templateName", request.getTemplateName(), buffer, true, jsonFormat);
-        addField("isSystemTemplate", request.getIsSystemTemplate(), buffer, true, jsonFormat);
+        addField("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()), buffer, true, jsonFormat);
         addField("outputName", request.getOutputName(), buffer, true, jsonFormat);
         addField("outputFormat", request.getOutputFormat(), buffer, true, jsonFormat);
-        addField("compressSingleFormat", request.getCompressSingleFormat(), buffer, true, jsonFormat);
+        addField("compressSingleFormat", String.valueOf(request.getCompressSingleFormat()), buffer, true, jsonFormat);
         addField("storeTo", request.getStoreTo(), buffer, true, jsonFormat);
         addField("billingKey", request.getBillingKey(), buffer, true, jsonFormat); //Still used??
-        addField("devMode", request.getDevMode(), buffer, true, jsonFormat);
+        addField("devMode", String.valueOf(request.getDevMode()), buffer, true, jsonFormat);
         addField("requestId", request.getRequestId(), buffer, true, jsonFormat);
         addField("mailSubject", request.getMailSubject(), buffer, true, jsonFormat);
         addField("mailBodyHtml", request.getMailBodyHtml(), buffer, true, jsonFormat);
         addField("mailBodyText", request.getMailBodyText(), buffer, true, jsonFormat);
-        addField("mailNoZipAttachments", request.getMailNoZipAttachments(), buffer, true, jsonFormat);
+        addField("mailNoZipAttachments", String.valueOf(request.getMailNoZipAttachments()), buffer, true, jsonFormat);
         addField("sourceId", request.getSourceId(), buffer, true, jsonFormat);
-        addField("stylesInText", request.getStylesInText(), buffer, true, jsonFormat);
+        addField("stylesInText", String.valueOf(request.getStylesInText()), buffer, true, jsonFormat);
         addField("passwordProtect", request.getPasswordProtect(), buffer, true, jsonFormat);
-        addField("pdfArchiveMode", request.getPdfArchiveMode(), buffer, true, jsonFormat);
+        addField("pdfArchiveMode", String.valueOf(request.getPdfArchiveMode()), buffer, true, jsonFormat);
         addField("pdfWatermark", request.getPdfWatermark(), buffer, true, jsonFormat);
-        addField("pdfTagged", request.getPdfTagged(), buffer, true, jsonFormat);
-        addField("ignoreUnknownParams", request.getIgnoreUnknownParams(), buffer, true, jsonFormat);
+        addField("pdfTagged", String.valueOf(request.getPdfTagged()), buffer, true, jsonFormat);
+        addField("ignoreUnknownParams", String.valueOf(request.getIgnoreUnknownParams()), buffer, true, jsonFormat);
         addField("tags", request.getTags(), buffer, true, jsonFormat);
         
         if (jsonFormat) {

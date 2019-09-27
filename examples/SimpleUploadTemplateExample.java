@@ -13,23 +13,21 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.file.ListFilesResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateDetails;
+import com.docmosis.sdk.template.UploadTemplateResponse;
+
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * details about files stored on the server. 
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and 
+ * uploads a template to store on the server.
  * 
  * How to use:
  * 
@@ -42,10 +40,12 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListFilesExample
+public class SimpleUploadTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+	//Full path of File to be uploaded
+	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -56,31 +56,30 @@ public class SimpleListFilesExample
 		}
 		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		ListFilesResponse files = FileStorage
-									.list()
-									.execute();
 
-		if (files.hasSucceeded()) {
-			System.out.println(files.toString());
-//			List<FileDetails> list = files.list();
-//			if (list != null) {
-//				for(FileDetails fd : list) {
-//					System.out.println(fd.toString());
-//					//System.out.println(td.toString());
-//				}
-//			}
-//			else {
-//				System.out.println("No files on Docmosis Server");
-//			}
+		File uploadFile = new File(FILE_TO_UPLOAD);
+		UploadTemplateResponse uploadedTemplate = Template
+													.upload()
+													.templateFile(uploadFile)
+													.execute();
+
+		if (uploadedTemplate.hasSucceeded()) {
+			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
+			System.out.println();
+			TemplateDetails template = uploadedTemplate.getDetails();
+			System.out.println("Template Details:");
+			System.out.println("Template Name: " + template.getName());
+			System.out.println("Last Modified: " + template.getLastModifiedISO8601());
+			System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
+			//System.out.println(templateDetails.getAsJson());
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Files failed: status="
-					+ files.getStatus()
+			System.err.println("Upload Template failed: status="
+					+ uploadedTemplate.getStatus()
 					+ " shortMsg="
-					+ files.getShortMsg()
-					+ ((files.getLongMsg() == null) ? "" : " longMsg="
-							+ files.getLongMsg()));
+					+ uploadedTemplate.getShortMsg()
+					+ ((uploadedTemplate.getLongMsg() == null) ? "" : " longMsg="
+							+ uploadedTemplate.getLongMsg()));
 		}
 	}
 }

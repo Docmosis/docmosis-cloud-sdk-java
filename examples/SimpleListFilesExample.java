@@ -12,21 +12,22 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.docmosis.sdk.examples;
 
-import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.convert.Converter;
-import com.docmosis.sdk.convert.ConverterException;
-import com.docmosis.sdk.convert.ConverterResponse;
+import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-
+import com.docmosis.sdk.file.FileStorage;
+import com.docmosis.sdk.file.ListFilesResponse;
+import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and converts the 
- * given document into a PDF which is then saved to the local file system.  
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about files stored on the server. 
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -39,18 +40,12 @@ import com.docmosis.sdk.environment.Environment;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleCloudConvertExample
+public class SimpleListFilesExample
 {
-
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	// Set the name of the output file to create
-	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
-	// Set the path to the file you want to convert
-	private static final String FILE_TO_CONVERT = "C:/example/myTemplateFile.docx";
 
-	public static void main(String args[]) throws ConverterException,
-			IOException
+	public static void main(String args[]) throws DocmosisException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
@@ -58,30 +53,32 @@ public class SimpleCloudConvertExample
 			System.exit(1);
 		}
 		
-		Environment.setDefaults(ACCESS_KEY);
-
-		//Set the file to be converted
-		File convertFile = new File(FILE_TO_CONVERT);
-		File outputFile = new File(OUTPUT_FILE_NAME);
-		ConverterResponse response = Converter
-									.convert()
-									.fileToConvert(convertFile)
-									.outputName(OUTPUT_FILE_NAME)
-									.sendTo(outputFile) //Or OutputStream
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
+		
+		ListFilesResponse files = FileStorage
+									.list()
 									.execute();
 
-		if (response.hasSucceeded()) {
-			// great - convert succeeded.
-			System.out.println("Written:" + outputFile.getAbsolutePath());
-
+		if (files.hasSucceeded()) {
+			System.out.println(files.toString());
+//			List<FileDetails> list = files.list();
+//			if (list != null) {
+//				for(FileDetails fd : list) {
+//					System.out.println(fd.toString());
+//					//System.out.println(td.toString());
+//				}
+//			}
+//			else {
+//				System.out.println("No files on Docmosis Server");
+//			}
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Convert failed: status="
-					+ response.getStatus()
+			System.err.println("List Files failed: status="
+					+ files.getStatus()
 					+ " shortMsg="
-					+ response.getShortMsg()
-					+ ((response.getLongMsg() == null) ? "" : " longMsg="
-							+ response.getLongMsg()));
+					+ files.getShortMsg()
+					+ ((files.getLongMsg() == null) ? "" : " longMsg="
+							+ files.getLongMsg()));
 		}
 	}
 }

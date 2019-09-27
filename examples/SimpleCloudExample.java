@@ -1,5 +1,5 @@
 /*
- *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
+ *   Copyright 2012 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,22 +13,23 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
-import com.docmosis.sdk.environment.Endpoint;
-import com.docmosis.sdk.environment.EnvironmentBuilder;
+import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;
+import com.google.gson.Gson;
 
 /**
  * 
- * This example shows how to set environmental settings including Proxies,
- * Timeouts and logging.
+ * This example connects to the public Docmosis cloud server and renders the 
+ * built-in WelcomeTemplate.docx template into a PDF which is saved to the 
+ * local file system.  The code also populates the "title" field within the 
+ * template.
  * 
  * How to use:
  * 
@@ -41,7 +42,7 @@ import com.docmosis.sdk.render.RendererException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleProxyExample
+public class SimpleCloudExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
@@ -56,6 +57,7 @@ public class SimpleProxyExample
 	// The name of the file we are going to write the document to.
 	private static final String OUTPUT_FILE = "output_cloud." + OUTPUT_FORMAT;
 
+
 	public static void main(String args[]) throws IOException,
 			RendererException
 	{
@@ -64,36 +66,32 @@ public class SimpleProxyExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		EnvironmentBuilder envBldr = new EnvironmentBuilder();
-		envBldr.setAccessKey(ACCESS_KEY);
-		envBldr.setBaseUrl(Endpoint.DWS_VERSION_3_AUS.getBaseUrl());
-		
-		//Connect to the Docmosis service via a proxy
-		envBldr.setProxy("HostAddress", 8888, "UserName", "Password");
-		
-		//Set Connection timeout and retry settings
-		envBldr.setConnectTimeoutMS(2000); //A maximum of 2 seconds to establish the connection with the remote host.
-		envBldr.setReadTimeoutMS(1000); //A maximum of 1 second of inactivity between two data packets.
-		envBldr.setMaxTries(5); //A maximum of 5 attempts to connect to the service will be used
-		envBldr.setRetryDelay(500); //A delay of 0.5 seconds between connection attempts will be used
+
+		Environment.setDefaults(ACCESS_KEY);
 
 		//Create data to send
-		final String data = "<title>" + "This is Docmosis Cloud\n" + new Date() + "</title>";
+		final Data data = new Data();
+		data.setTitle("This is Docmosis Cloud\n" + new Date());
+		ArrayList<Message> messages = new ArrayList<Message>();
+	    messages.add(new Message("This cloud experience is better than I thought."));
+	    messages.add(new Message("The sun is shining."));
+	    messages.add(new Message("Right, now back to work."));
+	    data.setMessages(messages);
 
+		String dataString = new Gson().toJson(data); //Data String to send.
+		
 		File outputFile = new File(OUTPUT_FILE);
 		RenderResponse response = Renderer
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
 									.sendTo(outputFile) //Or OutputStream
-									.data(data)
-									.execute(envBldr.build());
-							
+									.data(dataString)
+									.execute();
+						
 
 		if (response.hasSucceeded()) {
 			// great - render succeeded.
-
 			System.out.println("Written:" + outputFile.getAbsolutePath());
 
 		} else {
@@ -104,6 +102,58 @@ public class SimpleProxyExample
 					+ response.getShortMsg()
 					+ ((response.getLongMsg() == null) ? "" : " longMsg="
 							+ response.getLongMsg()));
+		}
+	}
+
+	/**
+	 * This is a sample Data object/POJO. The data can be any typical structure that
+	 * matches your template. You then use a library to convert this object into
+	 * JSON format for rendering.
+	 */
+	public static class Data
+	{
+		private String title;
+		private ArrayList<Message> messages = new ArrayList<Message>();
+		
+		public Data() {}
+
+		public Data(String title, ArrayList<Message> messages)
+		{
+			this.title = title;
+			this.messages = messages;
+		}
+		public String getTitle()
+		{
+			return title;
+		}
+		public void setTitle(String title)
+		{
+			this.title = title;
+		}
+		public ArrayList<Message> getMessages()
+		{
+			return messages;
+		}
+		public void setMessages(ArrayList<Message> messages)
+		{
+			this.messages = messages;
+		}
+	}
+	public static class Message
+	{
+		private String msg;
+		
+		public Message(String msg)
+		{
+			this.msg = msg;
+		}
+		public String getMsg()
+		{
+			return msg;
+		}
+		public void setMsg(String msg)
+		{
+			this.msg = msg;
 		}
 	}
 }

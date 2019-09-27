@@ -13,22 +13,20 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.image.DeleteImageResponse;
 import com.docmosis.sdk.image.Image;
-import com.docmosis.sdk.image.ListImagesResponse;
-
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * details about all images stored on the server.
+ * This example connects to the public Docmosis cloud server and deletes an 
+ * image stored on the server. Note that multiple images can be specified and
+ * deleted in one call.
  * 
  * How to use:
  * 
@@ -41,10 +39,13 @@ import com.docmosis.sdk.image.ListImagesResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListImagesExample
+public class SimpleDeleteImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+	//Full path of File(s) to be deleted
+	private static final String FIRST_FILE_TO_DELETE = "Image1.png";
+	//private static final String SECOND_FILE_TO_DELETE = "Image2.jpg";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -54,27 +55,26 @@ public class SimpleListImagesExample
 			System.exit(1);
 		}
 		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		ListImagesResponse images = Image
-									.list()
-									.execute();
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		if (images.hasSucceeded()) {
-			System.out.println(images.toString());
-//			List<ImageDetails> list = images.list();
-//			for(ImageDetails id : list) {
-//				System.out.println(id.getName());
-//				//System.out.println(id.toString());
-//			}
+		DeleteImageResponse deleteImage = Image
+											.delete()
+											.addImageName(FIRST_FILE_TO_DELETE)
+											//.addImageName(SECOND_FILE_TO_DELETE)
+											.execute();
+
+		if (deleteImage.hasSucceeded()) {
+			System.out.println(deleteImage.getShortMsg());
+			System.out.println("Successfully deleted " + FIRST_FILE_TO_DELETE);
+			//System.out.println("Successfully deleted " + SECOND_FILE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Images failed: status="
-					+ images.getStatus()
+			System.err.println("Delete Template failed: status="
+					+ deleteImage.getStatus()
 					+ " shortMsg="
-					+ images.getShortMsg()
-					+ ((images.getLongMsg() == null) ? "" : " longMsg="
-							+ images.getLongMsg()));
+					+ deleteImage.getShortMsg()
+					+ ((deleteImage.getLongMsg() == null) ? "" : " longMsg="
+							+ deleteImage.getLongMsg()));
 		}
 	}
 }

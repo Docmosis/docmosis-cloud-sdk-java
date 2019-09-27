@@ -13,22 +13,22 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.DeleteFilesResponse;
+import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.image.DeleteImageResponse;
-import com.docmosis.sdk.image.Image;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and deletes an 
- * image stored on the server. Note that multiple images can be specified and
- * deleted in one call.
+ * This example connects to the public Docmosis cloud server and deletes a 
+ * file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -41,13 +41,12 @@ import com.docmosis.sdk.image.Image;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleDeleteImageExample
+public class SimpleDeleteFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File(s) to be deleted
-	private static final String FIRST_FILE_TO_DELETE = "Image1.png";
-	//private static final String SECOND_FILE_TO_DELETE = "Image2.jpg";
+	//Full path of File to be deleted
+	private static final String FILE_TO_DELETE = "myFile1.pdf";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -59,24 +58,24 @@ public class SimpleDeleteImageExample
 		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		DeleteImageResponse deleteImage = Image
+		DeleteFilesResponse deletedFile = FileStorage
 											.delete()
-											.addImageName(FIRST_FILE_TO_DELETE)
-											//.addImageName(SECOND_FILE_TO_DELETE)
+											.path(FILE_TO_DELETE)
+											//.includeSubFolders(true)
 											.execute();
 
-		if (deleteImage.hasSucceeded()) {
-			System.out.println(deleteImage.getShortMsg());
-			System.out.println("Successfully deleted " + FIRST_FILE_TO_DELETE);
-			//System.out.println("Successfully deleted " + SECOND_FILE_TO_DELETE);
+		if (deletedFile.hasSucceeded()) {
+			System.out.println(deletedFile.getShortMsg());
+			System.out.println("Successfully deleted " + FILE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Delete Template failed: status="
-					+ deleteImage.getStatus()
+			System.err.println("Delete File failed: status="
+					+ deletedFile.getStatus()
 					+ " shortMsg="
-					+ deleteImage.getShortMsg()
-					+ ((deleteImage.getLongMsg() == null) ? "" : " longMsg="
-							+ deleteImage.getLongMsg()));
+					+ deletedFile.getShortMsg()
+					+ ((deletedFile.getLongMsg() == null) ? "" : " longMsg="
+							+ deletedFile.getLongMsg()));
 		}
+
 	}
 }

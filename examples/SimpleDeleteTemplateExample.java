@@ -13,25 +13,19 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
-
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.file.RenameFilesResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
-
+import com.docmosis.sdk.template.DeleteTemplateResponse;
+import com.docmosis.sdk.template.Template;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * renames a file stored on the server.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and returns 
+ * details about a template stored on the server. Note that multiple images 
+ * can be specified and deleted in one call.
  * 
  * How to use:
  * 
@@ -44,14 +38,13 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleRenameFileExample
+public class SimpleDeleteTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File/Folder to be renamed
-	private static final String FILE_TO_RENAME = "myFile1.pdf";
-	//Full path of new name for File/Folder
-	private static final String NEW_NAME = "myOtherFile2.pdf";
+	//Full path of File(s) to be deleted
+	private static final String FIRST_FILE_TO_DELETE = "myTemplateFile.docx";
+	//private static final String SECOND_FILE_TO_DELETE = "myOtherTemplateFile.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -61,25 +54,27 @@ public class SimpleRenameFileExample
 			System.exit(1);
 		}
 		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		RenameFilesResponse renamedFile = FileStorage
-											.rename()
-											.fromPath(FILE_TO_RENAME)
-											.toPath(NEW_NAME)
-											.execute();
+		DeleteTemplateResponse deleteTemplate = Template
+												.delete()
+												.addTemplateName(FIRST_FILE_TO_DELETE)
+												//.addTemplateName(SECOND_FILE_TO_DELETE)
+												.execute();
 
-		if (renamedFile.hasSucceeded()) {
-			//System.out.println(renamedFile.getShortMsg());
-			System.out.println("Successfully renamed \"" + FILE_TO_RENAME + "\" to \"" + NEW_NAME + "\"");
+		if (deleteTemplate.hasSucceeded()) {
+			System.out.println(deleteTemplate.getShortMsg());
+			System.out.println("Successfully deleted " + FIRST_FILE_TO_DELETE);
+			//System.out.println("Successfully deleted " + SECOND_FILE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Rename File failed: status="
-					+ renamedFile.getStatus()
+			System.err.println("Delete Template failed: status="
+					+ deleteTemplate.getStatus()
 					+ " shortMsg="
-					+ renamedFile.getShortMsg()
-					+ ((renamedFile.getLongMsg() == null) ? "" : " longMsg="
-							+ renamedFile.getLongMsg()));
+					+ deleteTemplate.getShortMsg()
+					+ ((deleteTemplate.getLongMsg() == null) ? "" : " longMsg="
+							+ deleteTemplate.getLongMsg()));
 		}
+
 	}
 }

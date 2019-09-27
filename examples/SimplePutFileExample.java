@@ -13,23 +13,23 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
 import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.FileStorage;
+import com.docmosis.sdk.file.PutFileResponse;
 import com.docmosis.sdk.handlers.DocmosisException;
-import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateDetails;
-import com.docmosis.sdk.template.UploadTemplateResponse;
 
 
 /**
  * 
  * This example connects to the public Docmosis cloud server and 
- * uploads a template to store on the server.
+ * uploads a file to store on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -42,7 +42,7 @@ import com.docmosis.sdk.template.UploadTemplateResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleUploadTemplateExample
+public class SimplePutFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
@@ -58,30 +58,25 @@ public class SimpleUploadTemplateExample
 		}
 		
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-
+		
 		File uploadFile = new File(FILE_TO_UPLOAD);
-		UploadTemplateResponse uploadedTemplate = Template
-													.upload()
-													.templateFile(uploadFile)
-													.execute();
+		PutFileResponse uploadedFile = FileStorage
+										.put()
+										.file(uploadFile)
+										.metaData("Test")
+										.execute();
 
-		if (uploadedTemplate.hasSucceeded()) {
-			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
-			System.out.println();
-			TemplateDetails template = uploadedTemplate.getDetails();
-			System.out.println("Template Details:");
-			System.out.println("Template Name: " + template.getName());
-			System.out.println("Last Modified: " + template.getLastModifiedISO8601());
-			System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
-			//System.out.println(templateDetails.getAsJson());
+		if (uploadedFile.hasSucceeded()) {
+			System.out.println(uploadedFile.getShortMsg());
+			//System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Upload Template failed: status="
-					+ uploadedTemplate.getStatus()
+			System.err.println("Put File failed: status="
+					+ uploadedFile.getStatus()
 					+ " shortMsg="
-					+ uploadedTemplate.getShortMsg()
-					+ ((uploadedTemplate.getLongMsg() == null) ? "" : " longMsg="
-							+ uploadedTemplate.getLongMsg()));
+					+ uploadedFile.getShortMsg()
+					+ ((uploadedFile.getLongMsg() == null) ? "" : " longMsg="
+							+ uploadedFile.getLongMsg()));
 		}
 	}
 }

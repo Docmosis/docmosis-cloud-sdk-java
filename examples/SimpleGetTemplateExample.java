@@ -13,25 +13,21 @@
  *   limitations under the License.
  */
 
-package com.docmosis.sdk.examples;
-
-
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.DeleteFilesResponse;
-import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.template.GetTemplateResponse;
+import com.docmosis.sdk.template.Template;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and deletes a 
- * file stored on the server.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and returns a 
+ * template stored on the server. Note that multiple templates can be requested
+ * and returned in a zip file.
  * 
  * How to use:
  * 
@@ -44,12 +40,14 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleDeleteFileExample
+public class SimpleGetTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to be deleted
-	private static final String FILE_TO_DELETE = "myFile1.pdf";
+
+	//Full path of File to be uploaded
+	private static final String FILE_TO_GET = "myTemplateFile.docx";
+	//private static final String FILE_TO_GET2 = "myTemplateFile2.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -58,27 +56,27 @@ public class SimpleDeleteFileExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		DeleteFilesResponse deletedFile = FileStorage
-											.delete()
-											.path(FILE_TO_DELETE)
-											//.includeSubFolders(true)
-											.execute();
+		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		if (deletedFile.hasSucceeded()) {
-			System.out.println(deletedFile.getShortMsg());
-			System.out.println("Successfully deleted " + FILE_TO_DELETE);
+		File outputFile = new File(FILE_TO_GET);
+		GetTemplateResponse template = Template
+										.get()
+										.addTemplateName(FILE_TO_GET)
+										//.addTemplateName(FILE_TO_GET2) // Can specify more than one file
+										.sendTo(outputFile) //Or OutputStream
+										.execute();
+
+		if (template.hasSucceeded()) {
+			System.out.println("Template(s) sent to: " + outputFile.getAbsolutePath());
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Delete File failed: status="
-					+ deletedFile.getStatus()
+			System.err.println("Get Template(s) failed: status="
+					+ template.getStatus()
 					+ " shortMsg="
-					+ deletedFile.getShortMsg()
-					+ ((deletedFile.getLongMsg() == null) ? "" : " longMsg="
-							+ deletedFile.getLongMsg()));
+					+ template.getShortMsg()
+					+ ((template.getLongMsg() == null) ? "" : " longMsg="
+							+ template.getLongMsg()));
 		}
-
 	}
 }
