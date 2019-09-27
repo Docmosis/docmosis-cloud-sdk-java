@@ -46,26 +46,26 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	private static final String SERVICE_PATH = "render";
     
     private String templateName;
-    private String isSystemTemplate;
+    private boolean isSystemTemplate = false;
     private String outputName;
     private String outputFormat;
-    private String compressSingleFormat;
+    private boolean compressSingleFormat = false;
     private String storeTo;
     private String billingKey;
-    private String devMode;
+    private boolean devMode = false;
     private String data;
     private String requestId;
     private String mailSubject;
     private String mailBodyHtml;
     private String mailBodyText;
-    private String mailNoZipAttachments;
+    private boolean mailNoZipAttachments = false;
     private String sourceId;
-    private String stylesInText;
+    private boolean stylesInText = false;
     private String passwordProtect;
-    private String pdfArchiveMode;
+    private boolean pdfArchiveMode = false;
     private String pdfWatermark;
-    private String pdfTagged;
-    private String ignoreUnknownParams;
+    private boolean pdfTagged = false;
+    private boolean ignoreUnknownParams = false;
     private String tags;
 
     
@@ -115,28 +115,30 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
         return this;
     }
 
-    public String getIsSystemTemplate() {
+    public boolean getIsSystemTemplate() {
         return isSystemTemplate;
     }
 
     /**
      * Indicate the template to use is a "system" template, meaning it is not 
      * one of the developer's templates.  Set this if advised by Docmosis support.
+     * Defaults to false.
      * 
-     * @param isSystemTemplate "true" to indicate a system template.
+     * @param isSystemTemplate true to indicate a system template.
      */
-    public void setIsSystemTemplate(String isSystemTemplate) {
+    public void setIsSystemTemplate(boolean isSystemTemplate) {
         this.isSystemTemplate = isSystemTemplate;
     }
     
     /**
      * Indicate the template to use is a "system" template, meaning it is not 
      * one of the developer's templates.  Set this if advised by Docmosis support.
+     * Defaults to false.
      * 
-     * @param isSystemTemplate "true" to indicate a system template.
+     * @param isSystemTemplate true to indicate a system template.
      * @return this request for method chaining
      */
-    public RenderRequest isSystemTemplate(String isSystemTemplate) {
+    public RenderRequest isSystemTemplate(boolean isSystemTemplate) {
         this.isSystemTemplate = isSystemTemplate;
         return this;
     }
@@ -207,7 +209,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
         return this;
     }
 
-    public String getCompressSingleFormat() {
+    public boolean getCompressSingleFormat() {
         return compressSingleFormat;
     }
 
@@ -216,11 +218,12 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * will contain a document in the specified format with a name based on 
      * outputName + outputFormat. The resulting zip file name will be the outputName with the .zip 
      * extension appended as required. This option is ignored if more than one outputFormat is 
-     * specified. 
+     * specified.
+     * Defaults to false.
      * 
-     * @param compressSingleFormat set to "y", "yes" and "true" (case-insensitive) to compress 
+     * @param compressSingleFormat set true to compress 
      */
-    public void setCompressSingleFormat(String compressSingleFormat) {
+    public void setCompressSingleFormat(boolean compressSingleFormat) {
         this.compressSingleFormat = compressSingleFormat;
     }
     
@@ -229,12 +232,13 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * will contain a document in the specified format with a name based on 
      * outputName + outputFormat. The resulting zip file name will be the outputName with the .zip 
      * extension appended as required. This option is ignored if more than one outputFormat is 
-     * specified. 
+     * specified.
+     * Defaults to false.
      * 
-     * @param compressSingleFormat set to "y", "yes" and "true" (case-insensitive) to compress
+     * @param compressSingleFormat set to true to compress
      * @return this request for method chaining
      */
-    public RenderRequest compressSingleFormat(String compressSingleFormat) {
+    public RenderRequest compressSingleFormat(boolean compressSingleFormat) {
         this.compressSingleFormat = compressSingleFormat;
         return this;
     }
@@ -315,42 +319,42 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
         return this;
     }
 
-    public String getDevMode() {
+    public boolean getDevMode() {
         return devMode;
     }
 
     /**
      * Document production can run in development and production respectively. If set 
-     * to "y", "yes" or "true" this operation will work in "dev" mode, meaning that if 
-     * something is incorrect in the template, data or instructions Docmosis will do 
-     * it's best to produce a document. Such a document may contain errors such as 
-     * missing images and data, and wherever possible, Docmosis will highlight problems 
-     * to indicate the failure. In production mode errors in document rendering will 
-     * result in a failure result only and no document will be produced. The production 
-     * mode is to ensure that a bad document is never produced/delivered to a recipient. 
-     * The default mode is production (that is, dev mode is off).
+     * to true this operation will work in "dev" mode, meaning that if something is 
+     * incorrect in the template, data or instructions Docmosis will do it's best to 
+     * produce a document. Such a document may contain errors such as missing images 
+     * and data, and wherever possible, Docmosis will highlight problems to indicate 
+     * the failure. In production mode errors in document rendering will result in a 
+     * failure result only and no document will be produced. The production mode is 
+     * to ensure that a bad document is never produced/delivered to a recipient. The 
+     * default mode is production (that is, dev mode is off).
      * 
      * @param devMode specify the dev/prod mode
      */
-    public void setDevMode(String devMode) {
+    public void setDevMode(boolean devMode) {
         this.devMode = devMode;
     }
     
     /**
      * Document production can run in development and production respectively. If set 
-     * to "y", "yes" or "true" this operation will work in "dev" mode, meaning that if 
-     * something is incorrect in the template, data or instructions Docmosis will do 
-     * it's best to produce a document. Such a document may contain errors such as 
-     * missing images and data, and wherever possible, Docmosis will highlight problems 
-     * to indicate the failure. In production mode errors in document rendering will 
-     * result in a failure result only and no document will be produced. The production 
-     * mode is to ensure that a bad document is never produced/delivered to a recipient. 
-     * The default mode is production (that is, dev mode is off).
+     * to true this operation will work in "dev" mode, meaning that if something is 
+     * incorrect in the template, data or instructions Docmosis will do it's best to 
+     * produce a document. Such a document may contain errors such as missing images 
+     * and data, and wherever possible, Docmosis will highlight problems to indicate 
+     * the failure. In production mode errors in document rendering will result in a 
+     * failure result only and no document will be produced. The production mode is 
+     * to ensure that a bad document is never produced/delivered to a recipient. The 
+     * default mode is production (that is, dev mode is off).
      * 
      * @param devMode specify the dev/prod mode
      * @return this request for method chaining
      */
-    public RenderRequest devMode(String devMode) {
+    public RenderRequest devMode(boolean devMode) {
         this.devMode = devMode;
         return this;
     }
@@ -472,30 +476,32 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
         this.mailBodyText = mailBodyText;
     }
 
-    public String getMailNoZipAttachments() {
+    public boolean getMailNoZipAttachments() {
         return mailNoZipAttachments;
     }
 
     /**
      * If this is set to true, any email attachments will be attached 
      * as individual files rather than as a single zip (when multiple formats are being used).
+     * Defaults to false.
      * 
-     * @param mailNoZipAttachments set to "true" to attach results as separate 
+     * @param mailNoZipAttachments set to true to attach results as separate 
      * files when mutltiple files are being created.
      */
-    public void setMailNoZipAttachments(String mailNoZipAttachments) {
+    public void setMailNoZipAttachments(boolean mailNoZipAttachments) {
         this.mailNoZipAttachments = mailNoZipAttachments;
     }
     
     /**
      * If this is set to true, any email attachments will be attached 
      * as individual files rather than as a single zip (when multiple formats are being used).
+     * Defaults to false.
      * 
-     * @param mailNoZipAttachments set to "true" to attach results as separate 
+     * @param mailNoZipAttachments set to true to attach results as separate 
      * files when mutltiple files are being created.
      * @return this request for method chaining
      */
-    public RenderRequest mailNoZipAttachments(String mailNoZipAttachments) {
+    public RenderRequest mailNoZipAttachments(boolean mailNoZipAttachments) {
     	this.mailNoZipAttachments = mailNoZipAttachments;
         return this;
     }
@@ -530,12 +536,12 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
         return this;
     }
 
-    public String getStylesInText() {
+    public boolean getStylesInText() {
         return stylesInText;
     }
 
     /**
-     * If set to "y","yes" or "true", your data will be parsed looking for html-like mark-up. The following mark-up is supported:
+     * If set to true, your data will be parsed looking for html-like mark-up. The following mark-up is supported:
      * <ul>
      * <li>
      * Bold eg "this is <b>bold</b>"
@@ -549,15 +555,16 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * The bgcolor tag must be at the beginning of your field data and the template field must 
      * be inside a table-cell to take effect. 
      * More information is available in the Docmosis Developer Guide.
+     * Defaults to false.
      * 
-     * @param stylesInText "y" or "true" to enable this style of processing.
+     * @param stylesInText true to enable this style of processing.
      */
-    public void setStylesInText(String stylesInText) {
+    public void setStylesInText(boolean stylesInText) {
         this.stylesInText = stylesInText;
     }
     
     /**
-     * If set to "y","yes" or "true", your data will be parsed looking for html-like mark-up. The following mark-up is supported:
+     * If set to true, your data will be parsed looking for html-like mark-up. The following mark-up is supported:
      * <ul>
      * <li>
      * Bold eg "this is <b>bold</b>"
@@ -571,11 +578,12 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * The bgcolor tag must be at the beginning of your field data and the template field must 
      * be inside a table-cell to take effect. 
      * More information is available in the Docmosis Developer Guide.
+     * Defaults to false.
      * 
-     * @param stylesInText "y" or "true" to enable this style of processing.
+     * @param stylesInText true to enable this style of processing.
      * @return this request for method chaining
      */
-    public RenderRequest stylesInText(String stylesInText) {
+    public RenderRequest stylesInText(boolean stylesInText) {
         this.stylesInText = stylesInText;
         return this;
     }
@@ -615,7 +623,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 		return this;
 	}
 
-	public String getPdfArchiveMode()
+	public boolean getPdfArchiveMode()
 	{
 		return pdfArchiveMode;
 	}
@@ -623,10 +631,11 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	/**
 	 * Create pdf documents in PDF-A mode for long term storage. Note this setting 
 	 * disables certain PDF features such as password protection and external hyperlinks.
+	 * Defaults to false.
 	 * 
-	 * @param pdfArchiveMode "true" will enable pdf archive mode.
+	 * @param pdfArchiveMode true will enable pdf archive mode.
 	 */
-	public void setPdfArchiveMode(String pdfArchiveMode)
+	public void setPdfArchiveMode(boolean pdfArchiveMode)
 	{
 		this.pdfArchiveMode = pdfArchiveMode;
 	}
@@ -634,11 +643,12 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	/**
 	 * Create pdf documents in PDF-A mode for long term storage. Note this setting 
 	 * disables certain PDF features such as password protection and external hyperlinks.
+	 * Defaults to false.
 	 * 
-	 * @param pdfArchiveMode "true" will enable pdf archive mode.
+	 * @param pdfArchiveMode true will enable pdf archive mode.
 	 * @return this request for method chaining
 	 */
-	public RenderRequest pdfArchiveMode(String pdfArchiveMode)
+	public RenderRequest pdfArchiveMode(boolean pdfArchiveMode)
 	{
 		this.pdfArchiveMode = pdfArchiveMode;
 		return this;
@@ -671,7 +681,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 		return this;
 	}
 
-	public String getPdfTagged()
+	public boolean getPdfTagged()
 	{
 		return pdfTagged;
 	}
@@ -680,10 +690,11 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * If specified, the PDF documents will have extra information inserted to 
 	 * assist with low-vision readability tools. For example, alt-text for images 
 	 * in becomes "readable" by reader programs.
+	 * Defaults to false.
 	 * 
-	 * @param pdfTagged "true" to enable pdf-tagging
+	 * @param pdfTagged true to enable pdf-tagging
 	 */
-	public void setPdfTagged(String pdfTagged)
+	public void setPdfTagged(boolean pdfTagged)
 	{
 		this.pdfTagged = pdfTagged;
 	}
@@ -692,11 +703,12 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 	 * If specified, the PDF documents will have extra information inserted to 
 	 * assist with low-vision readability tools. For example, alt-text for images 
 	 * in becomes "readable" by reader programs.
+	 * Defaults to false.
 	 * 
-	 * @param pdfTagged "true" to enable pdf-tagging
+	 * @param pdfTagged true to enable pdf-tagging
 	 * @return this request for method chaining
 	 */
-	public RenderRequest pdfTagged(String pdfTagged)
+	public RenderRequest pdfTagged(boolean pdfTagged)
 	{
 		this.pdfTagged = pdfTagged;
 		return this;
@@ -705,7 +717,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 
 	
 	
-	public String getIgnoreUnknownParams() {
+	public boolean getIgnoreUnknownParams() {
         return ignoreUnknownParams;
     }
 
@@ -715,9 +727,9 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * specified that is not expected.
      * Defaults to false.
      * 
-     * @param ignoreUnknownParams "true" to indicate a system template.
+     * @param ignoreUnknownParams true to indicate a system template.
      */
-    public void setIgnoreUnknownParams(String ignoreUnknownParams) {
+    public void setIgnoreUnknownParams(boolean ignoreUnknownParams) {
         this.ignoreUnknownParams = ignoreUnknownParams;
     }
     
@@ -727,10 +739,10 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
      * specified that is not expected.
      * Defaults to false.
      * 
-     * @param ignoreUnknownParams "true" to indicate a ignore unknown parameters.
+     * @param ignoreUnknownParams true to indicate a ignore unknown parameters.
      * @return this request for method chaining
      */
-    public RenderRequest ignoreUnknownParams(String ignoreUnknownParams) {
+    public RenderRequest ignoreUnknownParams(boolean ignoreUnknownParams) {
         this.ignoreUnknownParams = ignoreUnknownParams;
         return this;
     }
