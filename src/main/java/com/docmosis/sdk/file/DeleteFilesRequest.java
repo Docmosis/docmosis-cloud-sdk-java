@@ -75,7 +75,7 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	 */
 	public DeleteFilesRequest path(String path) {
 		this.path = path;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -101,37 +101,32 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	 */
 	public DeleteFilesRequest includeSubFolders(boolean includeSubFolders) {
 		this.includeSubFolders = includeSubFolders;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public DeleteFilesResponse execute() throws DocmosisException {
-		return FileStorage.executeDeleteFiles(getThis());
+		return FileStorage.executeDeleteFiles(this);
 	}
 	
 	@Override
 	public DeleteFilesResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executeDeleteFiles(getThis());
+		return FileStorage.executeDeleteFiles(this);
 	}
 	
 	@Override
 	public DeleteFilesResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executeDeleteFiles(getThis());
+		return FileStorage.executeDeleteFiles(this);
 	}
 
 	@Override
 	public DeleteFilesResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return FileStorage.executeDeleteFiles(getThis());
+		return FileStorage.executeDeleteFiles(this);
 	}
 
-	@Override
-	protected DeleteFilesRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

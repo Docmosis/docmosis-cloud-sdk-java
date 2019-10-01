@@ -83,7 +83,7 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	 */
 	public DeleteTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
 		this.isSystemTemplate = isSystemTemplate;
-		return getThis();
+		return this;
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	 */
 	public DeleteTemplateRequest templateNames(List<String> templateNames) {
 		this.templateNames = templateNames;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -123,37 +123,37 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	 */
 	public DeleteTemplateRequest addTemplateName(String templateName) {
 		this.templateNames.add(templateName);
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public DeleteTemplateResponse execute() throws DocmosisException {
-		return Template.executeDeleteTemplate(getThis());
+		return Template.executeDeleteTemplate(this);
 	}
 	
 	@Override
 	public DeleteTemplateResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeDeleteTemplate(getThis());
+		return Template.executeDeleteTemplate(this);
 	}
 	
 	@Override
 	public DeleteTemplateResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executeDeleteTemplate(getThis());
+		return Template.executeDeleteTemplate(this);
 	}
 	
 	@Override
 	public DeleteTemplateResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Template.executeDeleteTemplate(getThis());
+		return Template.executeDeleteTemplate(this);
 	}
 	
-	@Override
-	protected DeleteTemplateRequest getThis()
-	{
-		return this;
-	}
+//	@Override
+//	protected DeleteTemplateRequest getThis()
+//	{
+//		return this;
+//	}
 	
 	@Override
 	public String toString() {

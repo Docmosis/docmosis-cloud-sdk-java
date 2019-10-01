@@ -80,7 +80,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 */
 	public PutFileRequest file(File file) {
 		this.file = file;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 */
 	public PutFileRequest fileName(String fileName) {
 		this.fileName = fileName;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 */
 	public PutFileRequest contentType(String contentType) {
 		this.contentType = contentType;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -164,37 +164,32 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 */
 	public PutFileRequest metaData(String metaData) {
 		this.metaData = metaData;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public PutFileResponse execute() throws DocmosisException {
-		return FileStorage.executePutFile(getThis());
+		return FileStorage.executePutFile(this);
 	}
 	
 	@Override
 	public PutFileResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executePutFile(getThis());
+		return FileStorage.executePutFile(this);
 	}
 	
 	@Override
 	public PutFileResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executePutFile(getThis());
+		return FileStorage.executePutFile(this);
 	}
 
 	@Override
 	public PutFileResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return FileStorage.executePutFile(getThis());
+		return FileStorage.executePutFile(this);
 	}
 
-	@Override
-	protected PutFileRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

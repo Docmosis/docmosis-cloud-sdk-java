@@ -83,7 +83,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 */
 	public GetRenderTagsRequest tags(String tags) {
 		this.tags = tags;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 		if (year > 2000 && year < 2050) {
 			this.year = year;
 		}
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 		if (month > 0 && month < 13) {
 			this.month = month;
 		}
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -175,7 +175,7 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 */
 	public GetRenderTagsRequest nMonths(int nMonths) {
 		this.nMonths = nMonths;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -209,37 +209,32 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 	 */
 	public GetRenderTagsRequest padBlanks(boolean padBlanks) {
 		this.padBlanks = padBlanks;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public GetRenderTagsResponse execute() throws DocmosisException {
-		return RenderTags.executeGetRenderTags(getThis());
+		return RenderTags.executeGetRenderTags(this);
 	}
 	
 	@Override
 	public GetRenderTagsResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return RenderTags.executeGetRenderTags(getThis());
+		return RenderTags.executeGetRenderTags(this);
 	}
 	
 	@Override
 	public GetRenderTagsResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return RenderTags.executeGetRenderTags(getThis());
+		return RenderTags.executeGetRenderTags(this);
 	}
 
 	@Override
 	public GetRenderTagsResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return RenderTags.executeGetRenderTags(getThis());
+		return RenderTags.executeGetRenderTags(this);
 	}
 
-	@Override
-	protected GetRenderTagsRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

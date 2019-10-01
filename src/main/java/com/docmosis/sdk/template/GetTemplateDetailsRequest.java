@@ -48,35 +48,36 @@ public class GetTemplateDetailsRequest extends AbstractTemplateRequest<GetTempla
 	public GetTemplateDetailsRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
+	
+	public GetTemplateDetailsRequest templateName(String templateName)
+	{
+		super.setTemplateName(templateName);
+		return this;
+	}
 
 	@Override
 	public GetTemplateDetailsResponse execute() throws DocmosisException {
-		return Template.executeGetTemplateDetails(getThis());
+		return Template.executeGetTemplateDetails(this);
 	}
 	
 	@Override
 	public GetTemplateDetailsResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetTemplateDetails(getThis());
+		return Template.executeGetTemplateDetails(this);
 	}
 	
 	@Override
 	public GetTemplateDetailsResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetTemplateDetails(getThis());
+		return Template.executeGetTemplateDetails(this);
 	}
 
 	@Override
 	public GetTemplateDetailsResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Template.executeGetTemplateDetails(getThis());
+		return Template.executeGetTemplateDetails(this);
 	}
-	
-	@Override
-	protected GetTemplateDetailsRequest getThis()
-	{
-		return this;
-	}
+
 
 	@Override
 	public String toString() {

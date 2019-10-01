@@ -76,7 +76,7 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 */
 	public RenameFilesRequest fromPath(String fromPath) {
 		this.fromPath = fromPath;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -102,37 +102,32 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 */
 	public RenameFilesRequest toPath(String toPath) {
 		this.toPath = toPath;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public RenameFilesResponse execute() throws DocmosisException {
-		return FileStorage.executeRenameFiles(getThis());
+		return FileStorage.executeRenameFiles(this);
 	}
 	
 	@Override
 	public RenameFilesResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executeRenameFiles(getThis());
+		return FileStorage.executeRenameFiles(this);
 	}
 	
 	@Override
 	public RenameFilesResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executeRenameFiles(getThis());
+		return FileStorage.executeRenameFiles(this);
 	}
 
 	@Override
 	public RenameFilesResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return FileStorage.executeRenameFiles(getThis());
+		return FileStorage.executeRenameFiles(this);
 	}
 
-	@Override
-	protected RenameFilesRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

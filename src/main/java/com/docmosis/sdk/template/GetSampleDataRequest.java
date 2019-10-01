@@ -79,7 +79,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 */
 	public GetSampleDataRequest templateName(String templateName) {
 		this.templateName = templateName;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -111,37 +111,37 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 */
 	public GetSampleDataRequest format(String format) {
 		this.format = format;
-		return getThis();
+		return this;
 	}
 	
 	@Override
 	public GetSampleDataResponse execute() throws DocmosisException {
-		return Template.executeGetSampleData(getThis());
+		return Template.executeGetSampleData(this);
 	}
 	
 	@Override
 	public GetSampleDataResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetSampleData(getThis());
+		return Template.executeGetSampleData(this);
 	}
 	
 	@Override
 	public GetSampleDataResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetSampleData(getThis());
+		return Template.executeGetSampleData(this);
 	}
 	
 	@Override
 	public GetSampleDataResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Template.executeGetSampleData(getThis());
+		return Template.executeGetSampleData(this);
 	}
-	
-	@Override
-	protected GetSampleDataRequest getThis()
-	{
-		return this;
-	}
+//	
+//	@Override
+//	protected GetSampleDataRequest getThis()
+//	{
+//		return this;
+//	}
 	
 	@Override
 	public String toString() {

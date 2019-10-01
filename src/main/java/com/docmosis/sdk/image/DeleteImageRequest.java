@@ -83,7 +83,7 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 	 */
 	public DeleteImageRequest isSystemImage(boolean isSystemImage) {
 		this.isSystemImage = isSystemImage;
-		return getThis();
+		return this;
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 	 */
 	public DeleteImageRequest imageNames(List<String> imageNames) {
 		this.imageNames = imageNames;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -120,37 +120,32 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 	 */
 	public DeleteImageRequest addImageName(String imageName) {
 		this.imageNames.add(imageName);
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public DeleteImageResponse execute() throws DocmosisException {
-		return Image.executeDeleteImage(getThis());
+		return Image.executeDeleteImage(this);
 	}
 	
 	@Override
 	public DeleteImageResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Image.executeDeleteImage(getThis());
+		return Image.executeDeleteImage(this);
 	}
 	
 	@Override
 	public DeleteImageResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Image.executeDeleteImage(getThis());
+		return Image.executeDeleteImage(this);
 	}
 
 	@Override
 	public DeleteImageResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Image.executeDeleteImage(getThis());
+		return Image.executeDeleteImage(this);
 	}
 
-	@Override
-	protected DeleteImageRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

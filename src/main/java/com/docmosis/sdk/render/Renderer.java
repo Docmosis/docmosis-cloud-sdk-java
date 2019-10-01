@@ -57,11 +57,11 @@ public class Renderer {
     {
         RenderResponse response = new RenderResponse();
         
-    	final boolean requestIsJson = requestIsJson(request);
+    	final boolean requestIsJson = requestIsJson(request.getParams());
 
 		//Build request
     	final String accessKey = request.getAccessKey();
-        final String renderRequest = buildRequest(accessKey, request, requestIsJson);
+        final String renderRequest = buildRequest(accessKey, request.getParams(), requestIsJson);
 
         StringEntity se = null;
         if (requestIsJson) {
@@ -91,7 +91,7 @@ public class Renderer {
      * @param req
      * @return
      */
-    private static boolean requestIsJson(RenderRequest req)
+    private static boolean requestIsJson(RenderRequestParams req)
     {
     	return req == null || isJson(req.getData());
     }
@@ -127,14 +127,14 @@ public class Renderer {
     	return isJson;
     }
     
-    private static String buildRequest(final String accessKey, final RenderRequest request, 
+    private static String buildRequest(final String accessKey, final RenderRequestParams request, 
     		final boolean jsonFormat) {
         StringBuilder buffer = new StringBuilder();
 
         // Start building the instruction.
         addField("accessKey", accessKey, buffer, true, jsonFormat);
         addField("templateName", request.getTemplateName(), buffer, true, jsonFormat);
-        addField("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()), buffer, true, jsonFormat);
+//        addField("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()), buffer, true, jsonFormat);
         addField("outputName", request.getOutputName(), buffer, true, jsonFormat);
         addField("outputFormat", request.getOutputFormat(), buffer, true, jsonFormat);
         addField("compressSingleFormat", String.valueOf(request.getCompressSingleFormat()), buffer, true, jsonFormat);

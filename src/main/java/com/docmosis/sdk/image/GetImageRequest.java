@@ -85,7 +85,7 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 	 */
 	public GetImageRequest isSystemImage(boolean isSystemImage) {
 		this.isSystemImage = isSystemImage;
-		return getThis();
+		return this;
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 	 */
 	public GetImageRequest imageNames(List<String> imageNames) {
 		this.imageNames = imageNames;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -122,30 +122,30 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 	 */
 	public GetImageRequest addImageName(String imageName) {
 		this.imageNames.add(imageName);
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public GetImageResponse execute() throws DocmosisException {
-		return Image.executeGetImage(getThis());
+		return Image.executeGetImage(this);
 	}
 	
 	@Override
 	public GetImageResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Image.executeGetImage(getThis());
+		return Image.executeGetImage(this);
 	}
 	
 	@Override
 	public GetImageResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Image.executeGetImage(getThis());
+		return Image.executeGetImage(this);
 	}
 
 	@Override
 	public GetImageResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Image.executeGetImage(getThis());
+		return Image.executeGetImage(this);
 	}
 
 	@Override

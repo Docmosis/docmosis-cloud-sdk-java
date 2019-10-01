@@ -77,30 +77,30 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 	 */
 	public GetTemplateStructureRequest templateName(String templateName) {
 		this.templateName = templateName;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public GetTemplateStructureResponse execute() throws DocmosisException {
-		return Template.executeGetTemplateStructure(getThis());
+		return Template.executeGetTemplateStructure(this);
 	}
 	
 	@Override
 	public GetTemplateStructureResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetTemplateStructure(getThis());
+		return Template.executeGetTemplateStructure(this);
 	}
 	
 	@Override
 	public GetTemplateStructureResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetTemplateStructure(getThis());
+		return Template.executeGetTemplateStructure(this);
 	}
 
 	@Override
 	public GetTemplateStructureResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Template.executeGetTemplateStructure(getThis());
+		return Template.executeGetTemplateStructure(this);
 	}
 
 	@Override
@@ -108,9 +108,4 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 		return "GetTemplateStructureRequest [templateName=" + templateName + ", " + super.toString() + "]";
 	}
 
-	@Override
-	protected GetTemplateStructureRequest getThis()
-	{
-		return this;
-	}
 }

@@ -56,26 +56,21 @@ public class ListTemplatesRequest extends DocmosisCloudRequest<ListTemplatesRequ
 	@Override
 	public ListTemplatesResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executelist(getThis());
+		return Template.executelist(this);
 	}
 	
 	@Override
 	public ListTemplatesResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executelist(getThis());
+		return Template.executelist(this);
 	}
 	
 	@Override
 	public ListTemplatesResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Template.executelist(getThis());
+		return Template.executelist(this);
 	}
 
-	@Override
-	protected ListTemplatesRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

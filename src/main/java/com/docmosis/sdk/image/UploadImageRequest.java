@@ -79,7 +79,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	 */
 	public UploadImageRequest imageName(String imageName) {
 		this.imageName = imageName;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	 */
 	public UploadImageRequest isSystemImage(boolean isSystemImage) {
 		this.isSystemImage = isSystemImage;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	 */
 	public UploadImageRequest imageFile(File imageFile) {
 		this.imageFile = imageFile;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	 */
 	public UploadImageRequest imageDescription(String imageDescription) {
 		this.imageDescription = imageDescription;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -183,30 +183,30 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	 */
 	public UploadImageRequest normalizeImageName(boolean normalizeImageName) {
 		this.normalizeImageName = normalizeImageName;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public UploadImageResponse execute() throws DocmosisException {
-		return Image.executeUploadImage(getThis());
+		return Image.executeUploadImage(this);
 	}
 	
 	@Override
 	public UploadImageResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Image.executeUploadImage(getThis());
+		return Image.executeUploadImage(this);
 	}
 	
 	@Override
 	public UploadImageResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Image.executeUploadImage(getThis());
+		return Image.executeUploadImage(this);
 	}
 	
 	@Override
 	public UploadImageResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Image.executeUploadImage(getThis());
+		return Image.executeUploadImage(this);
 	}
 
 	@Override
@@ -216,9 +216,4 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 				+ ", normalizeImageName=" + normalizeImageName + ", " + super.toString() + "]";
 	}
 
-	@Override
-	protected UploadImageRequest getThis()
-	{
-		return this;
-	}
 }

@@ -25,7 +25,7 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * This is an abstract super object with the minimum requirements to make a request.
  * @param <T> Request class
  */
-public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
+public abstract class DocmosisCloudRequest<T> {
 	
 	private final String servicePath;
 	private EnvironmentBuilder environmentBuilder;
@@ -139,6 +139,5 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	public abstract DocmosisCloudResponse execute(String accessKey) throws DocmosisException;
 	public abstract DocmosisCloudResponse execute(Environment env) throws DocmosisException;
 	
-	protected abstract T getThis();	
 
 }

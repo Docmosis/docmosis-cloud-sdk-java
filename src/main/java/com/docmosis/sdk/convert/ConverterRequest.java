@@ -15,6 +15,7 @@
 package com.docmosis.sdk.convert;
 
 import java.io.File;
+import java.io.OutputStream;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
@@ -85,7 +86,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
      */
     public ConverterRequest outputName(String outputName) {
         this.outputName = outputName;
-        return getThis();
+        return this;
     }
 
     
@@ -108,7 +109,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	public ConverterRequest fileToConvert(File fileToConvert)
 	{
 		this.fileToConvert = fileToConvert;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -122,7 +123,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	@Override
 	public ConverterResponse execute() throws ConverterException
 	{
-		return Converter.executeConvert(getThis());
+		return Converter.executeConvert(this);
 	}
 
 	/**
@@ -139,7 +140,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	@Override
 	public ConverterResponse execute(String url, String accessKey) throws ConverterException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Converter.executeConvert(getThis());
+		return Converter.executeConvert(this);
 	}
 	
 	/**
@@ -155,7 +156,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	@Override
 	public ConverterResponse execute(String accessKey) throws ConverterException {
 		getEnvironment().setAccessKey(accessKey);
-		return Converter.executeConvert(getThis());
+		return Converter.executeConvert(this);
 	}
 	
 	/**
@@ -171,7 +172,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	@Override
 	public ConverterResponse execute(Environment environment) throws ConverterException {
 		super.setEnvironment(environment);
-		return Converter.executeConvert(getThis());
+		return Converter.executeConvert(this);
 	}
 
 	@Override
@@ -180,6 +181,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 		return this;
 	}
 
+	
 	@Override
 	public String toString()
 	{

@@ -76,31 +76,31 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	 */
 	public GetFileRequest fileName(String fileName) {
 		this.fileName = fileName;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public GetFileResponse execute() throws DocmosisException {
-		return FileStorage.executeGetFile(getThis());
+		return FileStorage.executeGetFile(this);
 	}
 	
 	@Override
 	public GetFileResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executeGetFile(getThis());
+		return FileStorage.executeGetFile(this);
 	}
 	
 	@Override
 	public GetFileResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executeGetFile(getThis());
+		return FileStorage.executeGetFile(this);
 	}
 
 	
 	@Override
 	public GetFileResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return FileStorage.executeGetFile(getThis());
+		return FileStorage.executeGetFile(this);
 	}
 
 	@Override

@@ -39,7 +39,7 @@ import junit.framework.TestCase;
 public class TestAll extends TestCase {
 	
 	private static final String DEFAULT_TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-	private static final String ACCESS_KEY = "XXX";
+	private static final String ACCESS_KEY = "ODNlYmM0OTEtNGY2OS00N2Q3LWFjZTUtNDllMTJmNWY4MzY4OjA2MTAwMTI";
 	private static final String FILE_TO_UPLOAD = "src/test/java/testFiles/myTemplateFile.docx";
 	private static final String FILE_TO_UPLOAD2 = "src/test/java/testFiles/myTemplateFile2.docx";
 	private static final String FILE_GET = "myTemplateFile.docx";
@@ -87,17 +87,18 @@ public class TestAll extends TestCase {
 			RenderResponse rsp = Renderer.render().templateName(DEFAULT_TEMPLATE_NAME).outputName(OUT).outputFormat("pdf").sendTo(outputFile)
 					.data("{\"title\":\"This is Docmosis Cloud\\nTue Aug 27 16:10:12 AWST 2019\",\"messages\":[{\"msg\":\"This cloud experience is better than I thought.\"},{\"msg\":\"The sun is shining.\"},{\"msg\":\"Right, now back to work.\"}]}")
 					.execute();
-			assertTrue(rsp.hasSucceeded());
+			assertTrue(rsp.getShortMsg(), rsp.hasSucceeded());
 			rsp = Renderer.render().templateName(DEFAULT_TEMPLATE_NAME).outputName(OUT).outputFormat("pdf").sendTo(outputFile)
 					.data("<title>This is Docmosis Cloud\r\n" + 
 							"Tue Aug 27 16:11:54 AWST 2019</title>")
 					.execute();
-			assertTrue(rsp.hasSucceeded());
+			assertTrue(rsp.getShortMsg(), rsp.hasSucceeded());
 			rsp = Renderer.render().templateName(NONEXISTENT_FILE_NAME).outputName(OUT).outputFormat("pdf").sendTo(outputFile)
 					.data("{\"title\":\"This is Docmosis Cloud\\nTue Aug 27 16:10:12 AWST 2019\",\"messages\":[{\"msg\":\"This cloud experience is better than I thought.\"},{\"msg\":\"The sun is shining.\"},{\"msg\":\"Right, now back to work.\"}]}")
 					.execute();
-			assertFalse(rsp.hasSucceeded());
+			assertFalse(rsp.getShortMsg(), rsp.hasSucceeded());
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail();
 		}
 	}

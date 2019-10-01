@@ -74,7 +74,7 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 */
 	public ListFilesRequest folder(String folder) {
 		this.folder = folder;
-		return getThis();
+		return this;
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 */
 	public ListFilesRequest includeSubFolders(boolean includeSubFolders) {
 		this.includeSubFolders = includeSubFolders;
-		return getThis();
+		return this;
 	}
 	
 	/**
@@ -132,37 +132,32 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 */
 	public ListFilesRequest includeMetaData(boolean includeMetaData) {
 		this.includeMetaData = includeMetaData;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public ListFilesResponse execute() throws DocmosisException {
-		return FileStorage.executelist(getThis());
+		return FileStorage.executelist(this);
 	}
 	
 	@Override
 	public ListFilesResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executelist(getThis());
+		return FileStorage.executelist(this);
 	}
 	
 	@Override
 	public ListFilesResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executelist(getThis());
+		return FileStorage.executelist(this);
 	}
 
 	@Override
 	public ListFilesResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return FileStorage.executelist(getThis());
+		return FileStorage.executelist(this);
 	}
 
-	@Override
-	protected ListFilesRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

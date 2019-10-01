@@ -50,32 +50,27 @@ public class ListImagesRequest extends DocmosisCloudRequest<ListImagesRequest> {
 
 	@Override
 	public ListImagesResponse execute() throws DocmosisException {
-		return Image.executelist(getThis());
+		return Image.executelist(this);
 	}
 	
 	@Override
 	public ListImagesResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Image.executelist(getThis());
+		return Image.executelist(this);
 	}
 	
 	@Override
 	public ListImagesResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Image.executelist(getThis());
+		return Image.executelist(this);
 	}
 
 	@Override
 	public ListImagesResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Image.executelist(getThis());
+		return Image.executelist(this);
 	}
 
-	@Override
-	protected ListImagesRequest getThis()
-	{
-		return this;
-	}
 
 	@Override
 	public String toString() {

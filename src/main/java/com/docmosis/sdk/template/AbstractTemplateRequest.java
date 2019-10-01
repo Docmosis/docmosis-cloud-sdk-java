@@ -21,7 +21,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * Abstract class for template requests. contains 2 common parameters.
  * @param <T> Request class
  */
-public abstract class AbstractTemplateRequest<T extends DocmosisCloudRequest<?>> extends DocmosisCloudRequest<T> {
+public abstract class AbstractTemplateRequest<T> extends DocmosisCloudRequest<T> {
 	
 	private boolean isSystemTemplate = false;
 	private String templateName;
@@ -58,9 +58,8 @@ public abstract class AbstractTemplateRequest<T extends DocmosisCloudRequest<?>>
 	 * @param isSystemTemplate Is system template flag
 	 * @return this request for method chaining
 	 */
-	public T isSystemTemplate(boolean isSystemTemplate) {
+	public void isSystemTemplate(boolean isSystemTemplate) {
 		this.isSystemTemplate = isSystemTemplate;
-		return getThis();
 	}
 	
 	/**
@@ -77,20 +76,10 @@ public abstract class AbstractTemplateRequest<T extends DocmosisCloudRequest<?>>
 	 * 
 	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 */
-	public void setTemplateNam(String templateName) {
+	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
 	}
 
-	/**
-	 * Set the Template Name.
-	 * 
-	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 * @return this request for method chaining
-	 */
-	public T templateName(String templateName) {
-		this.templateName = templateName;
-		return getThis();
-	}
 
 	@Override
 	public String toString() {

@@ -81,7 +81,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 */
 	public UploadTemplateRequest templateFile(File templateFile) {
 		this.templateFile = templateFile;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 */
 	public UploadTemplateRequest templateDescription(String templateDescription) {
 		this.templateDescription = templateDescription;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 */
 	public UploadTemplateRequest devMode(boolean devMode) {
 		this.devMode = devMode;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 */
 	public UploadTemplateRequest keepPrevOnFail(boolean keepPrevOnFail) {
 		this.keepPrevOnFail = keepPrevOnFail;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 */
 	public UploadTemplateRequest fieldDelimPrefix(String fieldDelimPrefix) {
 		this.fieldDelimPrefix = fieldDelimPrefix;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 */
 	public UploadTemplateRequest fieldDelimSuffix(String fieldDelimSuffix) {
 		this.fieldDelimSuffix = fieldDelimSuffix;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -252,36 +252,30 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 */
 	public UploadTemplateRequest normalizeTemplateName(boolean normalizeTemplateName) {
 		this.normalizeTemplateName = normalizeTemplateName;
-		return getThis();
+		return this;
 	}
 
 	@Override
 	public UploadTemplateResponse execute() throws DocmosisException {
-		return Template.executeUploadTemplate(getThis());
+		return Template.executeUploadTemplate(this);
 	}
 	
 	@Override
 	public UploadTemplateResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeUploadTemplate(getThis());
+		return Template.executeUploadTemplate(this);
 	}
 	
 	@Override
 	public UploadTemplateResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executeUploadTemplate(getThis());
+		return Template.executeUploadTemplate(this);
 	}
 	
 	@Override
 	public UploadTemplateResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Template.executeUploadTemplate(getThis());
-	}
-
-	@Override
-	protected UploadTemplateRequest getThis()
-	{
-		return this;
+		return Template.executeUploadTemplate(this);
 	}
 
 	@Override

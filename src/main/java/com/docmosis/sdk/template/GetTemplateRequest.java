@@ -84,7 +84,7 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	 */
 	public GetTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
 		this.isSystemTemplate = isSystemTemplate;
-		return getThis();
+		return this;
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	 */
 	public GetTemplateRequest templateNames(List<String> templateNames) {
 		this.templateNames = templateNames;
-		return getThis();
+		return this;
 	}
 
 	/**
@@ -124,30 +124,30 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	 */
 	public GetTemplateRequest addTemplateName(String templateName) {
 		this.templateNames.add(templateName);
-		return getThis();
+		return this;
 	}
 	
 	@Override
 	public GetTemplateResponse execute() throws DocmosisException {
-		return Template.executeGetTemplate(getThis());
+		return Template.executeGetTemplate(this);
 	}
 	
 	@Override
 	public GetTemplateResponse execute(String url, String accessKey) throws DocmosisException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetTemplate(getThis());
+		return Template.executeGetTemplate(this);
 	}
 	
 	@Override
 	public GetTemplateResponse execute(String accessKey) throws DocmosisException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetTemplate(getThis());
+		return Template.executeGetTemplate(this);
 	}
 	
 	@Override
 	public GetTemplateResponse execute(Environment environment) throws DocmosisException {
 		super.setEnvironment(environment);
-		return Template.executeGetTemplate(getThis());
+		return Template.executeGetTemplate(this);
 	}
 	
 	@Override
