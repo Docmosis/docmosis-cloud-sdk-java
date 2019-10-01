@@ -23,6 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
@@ -70,7 +71,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 	 * @param payLoad the content to be sent with the POST
 	 * @param requestIsJson true if json, otherwise xml
 	 * @return json response as a string object. If a document response then a blank string is returned
-	 * @throws DocmosisException if something goes wrong whilst fullfilling the request
+	 * @throws DocmosisException if something goes wrong whilst fulfilling the request
 	 */
 	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad, boolean requestIsJson) throws DocmosisException
 	{
@@ -134,7 +135,10 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    			.build();
 	    			
 	    	httpPost.setConfig(config);
- 	    
+	    	
+	    	//Set user agent header
+	    	httpPost.addHeader(HttpHeaders.USER_AGENT, "DocmosisCloudSDKJava/" + request.getEnvironment().getSdkVersion() + " (" + request.getEnvironment().getOS() + ")");
+	    	
     	    //Execute the request and populate the response object
     	    chResponse = client.execute(httpPost);
     	    setResponse(response, chResponse, request.getUrl(), requestIsJson);

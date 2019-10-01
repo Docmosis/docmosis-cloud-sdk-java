@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
-  <url>https://www.docmosis.com/products/cloud.html</url>
+  <url>http://github.com/docmosis/docmosis-cloud-sdk-java</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

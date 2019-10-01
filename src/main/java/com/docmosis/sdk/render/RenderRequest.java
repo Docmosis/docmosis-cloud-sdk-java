@@ -475,6 +475,17 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
     public void setMailBodyText(String mailBodyText) {
         this.mailBodyText = mailBodyText;
     }
+    
+    /**
+     * Set the email body in plain text.
+     * 
+     * @param mailBodyText the plain text message body.
+     * @return this request for method chaining
+     */
+    public RenderRequest mailBodyText(String mailBodyText) {
+        this.mailBodyText = mailBodyText;
+        return this;
+    }
 
     public boolean getMailNoZipAttachments() {
         return mailNoZipAttachments;
