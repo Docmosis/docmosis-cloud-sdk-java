@@ -209,6 +209,16 @@ public class EnvironmentBuilder
 	public Proxy getProxy() {
 		return env.getProxy();
 	}
+	
+	public String getSdkVersion()
+	{
+		return env.getSdkVersion();
+	}
+	
+	public String getOS()
+	{
+		return env.getOS();
+	}
 
 	public static void validate(EnvironmentBuilder env) throws InvalidEnvironmentException {
 		validate(env, true);
