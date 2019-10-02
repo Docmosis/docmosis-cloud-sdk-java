@@ -50,13 +50,12 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
     //The following fields are part of the Docmosis Web Services API but have not 
     //been implemented in this SDK.
     
-    /**
-	 * If set to "y","yes" or "true", the streamed result will be base64 encoded.
+    /*
+	 * If set to true, the streamed result will be base64 encoded.
 	 * Note this only applies if the request includes (or implies) a “stream” result.
 	 */
     //private String streamResultInResponse;
 
-    
     public RenderRequest() {
     	super(SERVICE_PATH);
     }
@@ -64,8 +63,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
     public RenderRequest(final Environment environment) {
     	super(SERVICE_PATH, environment);
     } 
-    
-    
+
     public RenderRequestParams getParams()
     {
     	return params;
@@ -82,8 +80,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
     	params.setTemplateName(templateName);
         return this;
     }
-    
-    
+
     /**
      * Set the name to give the rendered document. If no format is specified ({@link #outputFormat}), 
      * the format of the resulting document is derived from the extension of this name. 
@@ -131,7 +128,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return this;
     }
 
-    
     /**
      * Specify where to send the resulting document(s). If no specification is given, 
      * "stream" is assumed and the result will be streamed back to the requester, 
@@ -155,7 +151,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return this;
     }
 
-    
     /**
      * Set the billingKey string.  This is simply a user-defined token string
      * that can be later reported against.  {@link #sourceId} for an alternative
@@ -169,7 +164,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return this;
     }
 
-    
     /**
      * Document production can run in development and production respectively. If set 
      * to true this operation will work in "dev" mode, meaning that if something is 
@@ -225,7 +219,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return this;
     }
 
-    
     /**
      * Set the email body in HTML.  This will deliver a html-content 
      * message.
@@ -249,7 +242,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return this;
     }
 
-    
     /**
      * If this is set to true, any email attachments will be attached 
      * as individual files rather than as a single zip (when multiple formats are being used).
@@ -303,7 +295,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return this;
     }
 
-	
 	/**
 	 * If specified, this parameter will set the password for PDF and DOC files 
 	 * created by the render. The password is used when opening the document. 
@@ -320,7 +311,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
 		return this;
 	}
 
-	
 	/**
 	 * Create pdf documents in PDF-A mode for long term storage. Note this setting 
 	 * disables certain PDF features such as password protection and external hyperlinks.
@@ -347,7 +337,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
 		return this;
 	}
 
-	
 	/**
 	 * If specified, the PDF documents will have extra information inserted to 
 	 * assist with low-vision readability tools. For example, alt-text for images 
@@ -363,9 +352,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
 		return this;
 	}
 	
-
-
-    
     /**
      * If true, unknown parameters in the request are allowed and ignored. 
      * By default the render service will return an error if a parameter is 
@@ -379,8 +365,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
     	params.setIgnoreUnknownParams(ignoreUnknownParams);
         return this;
     }
-	
-    
+
     /**
      * A semi-colon delimited list of tags to record against this render. 
      * The tags can be later queried (using the getRenderTags end point) 
@@ -395,8 +380,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return this;
     }
  
-
-
 	/**
 	 * Execute a render based on current settings in this instance and using the default Environment.
      * <p>
@@ -405,16 +388,19 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
 	 * 
 	 * @throws RendererException if a problem occurs invoking the service 
 	 */
+    @Override
 	public RenderResponse execute() throws RendererException
 	{
 		return Renderer.executeRender(this);
 	}
 
+    @Override
 	public RenderResponse execute(String url, String accessKey) throws RendererException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Renderer.executeRender(this);
 	}
-	
+
+    @Override
 	public RenderResponse execute(String accessKey) throws RendererException {
 		getEnvironment().setAccessKey(accessKey);
 		return Renderer.executeRender(this);
@@ -430,6 +416,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
 	 * 
 	 * @throws RendererException if a problem occurs invoking the service 
 	 */
+    @Override
 	public RenderResponse execute(Environment environment) throws RendererException
 	{
 		setEnvironment(environment);
@@ -442,9 +429,9 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
      * This is a convenience method equivalent to:
      * <pre>
      *   renderRequest.TemplateName(templateName)
-     *   			.outputName(outputName);
-     *   			.data(data);
-     *   			.execute();
+     *              .outputName(outputName);
+     *              .data(data);
+     *              .execute();
      * </pre>
      * 
      * <p>
@@ -470,13 +457,11 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
         return execute();
     }
     
-
 	@Override
 	protected RenderRequest getThis() {
 		return this;
 	}
 	
-
 	@Override
 	public String toString()
 	{

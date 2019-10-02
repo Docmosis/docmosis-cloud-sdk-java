@@ -15,6 +15,7 @@
 package com.docmosis.sdk.template;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -268,29 +269,41 @@ public class Template {
 	{
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getTemplateFile() != null) {
-			if (request.getTemplateFile().canRead()) {
-				builder.addBinaryBody("templateFile", request.getTemplateFile(), ContentType.APPLICATION_OCTET_STREAM, request.getTemplateFile().getName());
-			} else {
-				throw new TemplateException("cannot read template: ["
-	                    + request.getTemplateFile() + "]");
-			}
-		} else {
-			throw new TemplateException("No template selected");
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		builder.addTextBody("templateDescription", request.getTemplateDescription());
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-		builder.addTextBody("devMode", String.valueOf(request.getDevMode()));
-		builder.addTextBody("keepPrevOnFail", String.valueOf(request.getKeepPrevOnFail()));
-		builder.addTextBody("fieldDelimPrefix", request.getFieldDelimPrefix());
-		builder.addTextBody("fieldDelimSuffix", request.getFieldDelimSuffix());
-		builder.addTextBody("normalizeTemplateName", String.valueOf(request.getNormalizeTemplateName()));
+		UploadTemplateRequestParams params = request.getParams();
+//		if (request.getAccessKey() != null) {
+//			builder.addTextBody("accessKey", request.getAccessKey());
+//		}
+//		if (params.getTemplateFile() != null) {
+//			if (params.getTemplateFile().canRead()) {
+//				builder.addBinaryBody("templateFile", params.getTemplateFile(), ContentType.APPLICATION_OCTET_STREAM, params.getTemplateFile().getName());
+//			} else {
+//				throw new TemplateException("cannot read template: ["
+//	                    + params.getTemplateFile() + "]");
+//			}
+//		} else {
+//			throw new TemplateException("No template selected");
+//		}
+//		if (params.getTemplateName() != null) {
+//			builder.addTextBody("templateName", params.getTemplateName());
+//		}
+//		builder.addTextBody("templateDescription", params.getTemplateDescription());
+//		builder.addTextBody("isSystemTemplate", String.valueOf(params.getIsSystemTemplate()));
+//		builder.addTextBody("devMode", String.valueOf(params.getDevMode()));
+//		builder.addTextBody("keepPrevOnFail", String.valueOf(params.getKeepPrevOnFail()));
+//		builder.addTextBody("fieldDelimPrefix", params.getFieldDelimPrefix());
+//		builder.addTextBody("fieldDelimSuffix", params.getFieldDelimSuffix());
+//		builder.addTextBody("normalizeTemplateName", String.valueOf(params.getNormalizeTemplateName()));
+
+		addField(builder, "accessKey", request.getAccessKey());
+		addField(builder, "templateFile", params.getTemplateFile());
+		addField(builder, "templateName", params.getTemplateName());
+		addField(builder, "templateDescription", params.getTemplateDescription());
+		addField(builder, "isSystemTemplate", params.getIsSystemTemplate());
+		addField(builder, "devMode", params.getDevMode());
+		addField(builder, "keepPrevOnFail", params.getKeepPrevOnFail());
+		addField(builder, "fieldDelimPrefix", params.getFieldDelimPrefix());
+		addField(builder, "fieldDelimSuffix", params.getFieldDelimSuffix());
+		addField(builder, "normalizeTemplateName", params.getNormalizeTemplateName());
 
 		HttpEntity payload = builder.build();
 	    UploadTemplateResponse response = new UploadTemplateResponse();
@@ -484,5 +497,37 @@ public class Template {
 	    	throw new TemplateException(e);
 	    }
 		return response;
+	}
+	
+	private static boolean addField(MultipartEntityBuilder builder, String key, String param) {
+		boolean rtn = false;
+		if (param != null) {
+			builder.addTextBody(key, param);
+			rtn = true;
+		}
+		return rtn;
+	}
+	private static boolean addField(MultipartEntityBuilder builder, String key, Boolean param) {
+		boolean rtn = false;
+		if (param != null) {
+			builder.addTextBody(key, String.valueOf(param));
+			rtn = true;
+		}
+		return rtn;
+	}
+	private static boolean addField(MultipartEntityBuilder builder, String key, File param) throws TemplateException {
+		boolean rtn = false;
+		if (param != null) {
+			if (param.canRead()) {
+				builder.addTextBody(key, String.valueOf(param));
+				builder.addBinaryBody(key, param, ContentType.APPLICATION_OCTET_STREAM, param.getName());
+				rtn = true;
+			} else {
+				throw new TemplateException("cannot read " + key + ": [" + param + "]");
+			}
+		} else {
+			throw new TemplateException("No " + key + " selected");
+		}
+		return rtn;
 	}
 }

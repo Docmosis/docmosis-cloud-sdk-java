@@ -166,7 +166,9 @@ import com.docmosis.sdk.environment.Environment;
 				if (inputStream != null) {
 					if (isFileOutput()) {
 						if (getOutputFile() != null) {
-							getOutputFile().getParentFile().mkdirs();
+							if (getOutputFile().getParentFile() != null) {
+								getOutputFile().getParentFile().mkdirs();
+							}
 							FileOutputStream fout = new FileOutputStream(getOutputFile());
 							try {
 								sendDocumentTo(inputStream, fout);

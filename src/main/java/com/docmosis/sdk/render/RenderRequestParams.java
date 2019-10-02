@@ -19,7 +19,7 @@ import com.docmosis.sdk.request.param.RequestParameters;
 /**
  * This object holds the instructions and data for the render request.
  * 
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the Render request.  The properties set in this class 
  * are parameters for the Render request.
  * 
@@ -28,17 +28,18 @@ import com.docmosis.sdk.request.param.RequestParameters;
  * 
  * <pre>
  *   RenderResponse response = Renderer
- *								.render()
- *								.templateName(TemplateName)
- *								.outputName(outputFileName)
- *								.sendTo(outputFileOrStream)
- *								.data(dataString)
- *								.execute();
+ *                              .render()
+ *                              .templateName(TemplateName)
+ *                              .outputName(outputFileName)
+ *                              .sendTo(outputFileOrStream)
+ *                              .data(dataString)
+ *                              .execute();
  *   if (response.hasSucceeded()) {
- *		//File rendered and saved to outputFileOrStream
+ *       //File rendered and saved to outputFileOrStream
  *	 }
  *   ...
  * </pre>
+ * 
  */
 public class RenderRequestParams extends RequestParameters {
 
@@ -71,7 +72,7 @@ public class RenderRequestParams extends RequestParameters {
     //been implemented in this SDK.
     
     /*
-	 * If set to "y","yes" or "true", the streamed result will be base64 encoded.
+	 * If set to true, the streamed result will be base64 encoded.
 	 * Note this only applies if the request includes (or implies) a “stream” result.
 	 */
     //private String streamResultInResponse;

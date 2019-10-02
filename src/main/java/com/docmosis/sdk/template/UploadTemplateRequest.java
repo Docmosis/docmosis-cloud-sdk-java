@@ -18,6 +18,7 @@ import java.io.File;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Upload Template service.
@@ -39,16 +40,11 @@ import com.docmosis.sdk.handlers.DocmosisException;
  *   }
  * </pre>
  */
-public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplateRequest> {
+public class UploadTemplateRequest extends DocmosisCloudRequest<UploadTemplateRequest> {
 	
 	private static final String SERVICE_PATH = "uploadTemplate";
-	private File templateFile = null;
-	private String templateDescription = "";
-	private boolean devMode = true;
-	private boolean keepPrevOnFail = false;
-	private String fieldDelimPrefix = "<<";
-	private String fieldDelimSuffix = ">>";
-	private boolean normalizeTemplateName = false;
+	
+	private UploadTemplateRequestParams params = new UploadTemplateRequestParams();
 
 	public UploadTemplateRequest() {
 		super(SERVICE_PATH);
@@ -58,46 +54,41 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 		super(SERVICE_PATH, environment);
 	}
 
-	/**
-	 * Get currently set Template File to be uploaded.
-	 * @return File object of the template to be uploaded.
-	 */
-	public File getTemplateFile() {
-		return templateFile;
-	}
+	public UploadTemplateRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
-	 * Set the Template File to be uploaded.
-	 * @param templateFile File object of the template to be uploaded.
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
 	 */
-	public void setTemplateFile(File templateFile) {
-		this.templateFile = templateFile;
+	public UploadTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
+		return this;
 	}
-
+	
+	/**
+	 * Set the Template Name.
+	 * 
+	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 * @return this request for method chaining
+	 */
+	public UploadTemplateRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
+		return this;
+	}
+	
 	/**
 	 * Set the Template File to be uploaded.
 	 * @param templateFile File object of the template to be uploaded.
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest templateFile(File templateFile) {
-		this.templateFile = templateFile;
+		params.setTemplateFile(templateFile);
 		return this;
-	}
-
-	/**
-	 * Get current description of the template.
-	 * @return Template Description.
-	 */
-	public String getTemplateDescription() {
-		return templateDescription;
-	}
-
-	/**
-	 * Set the optional template description parameter.
-	 * @param templateDescription description of the template.
-	 */
-	public void setTemplateDescription(String templateDescription) {
-		this.templateDescription = templateDescription;
 	}
 
 	/**
@@ -106,88 +97,32 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest templateDescription(String templateDescription) {
-		this.templateDescription = templateDescription;
+		params.setTemplateDescription(templateDescription);
 		return this;
 	}
 
 	/**
-	 * If set to "y", "yes" or "true" the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
-	 * Defaults to "true".
-	 * @return value of development mode
-	 */
-	public boolean getDevMode() {
-		return devMode;
-	}
-
-	/**
-	 * If set to "y", "yes" or "true" the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
-	 * Defaults to "true".
-	 * @param devMode true if you want Docmosis to handle errors and report them in the rendered document.
-	 */
-	public void setDevMode(boolean devMode) {
-		this.devMode = devMode;
-	}
-	
-	/**
-	 * If set to "y", "yes" or "true" the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
-	 * Defaults to "true".
+	 * If set to true the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
+	 * Defaults to true.
 	 * @param devMode true if you want Docmosis to handle errors and report them in the rendered document.
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest devMode(boolean devMode) {
-		this.devMode = devMode;
+		params.setDevMode(devMode);
 		return this;
 	}
 
 	/**
-	 * If set to "y", "yes" or "true" the previous template of the same name will be left in place if the uploaded template has errors. If not specified (or "n", "no" or "false") the original template is always removed, even if this uploaded template has errors.
+	 * If set to true the previous template of the same name will be left in place if the uploaded template has errors. If not specified (or "n", "no" or "false") the original template is always removed, even if this uploaded template has errors.
 	 * This only has effect when devMode is disabled (since devMode is intended to allow templates with errors to be displayed by Docmosis).
 	 * This parameter means that in production mode (non-developer mode) template uploads will not replace a working template with a bad template.
-	 * Defaults to "false".
-	 * @return Value of keep previous on fail.
-	 */
-	public boolean getKeepPrevOnFail() {
-		return keepPrevOnFail;
-	}
-
-	/**
-	 * If set to "y", "yes" or "true" the previous template of the same name will be left in place if the uploaded template has errors. If not specified (or "n", "no" or "false") the original template is always removed, even if this uploaded template has errors.
-	 * This only has effect when devMode is disabled (since devMode is intended to allow templates with errors to be displayed by Docmosis).
-	 * This parameter means that in production mode (non-developer mode) template uploads will not replace a working template with a bad template.
-	 * Defaults to "false".
-	 * @param keepPrevOnFail value of keep previous on fail.
-	 */
-	public void setKeepPrevOnFail(boolean keepPrevOnFail) {
-		this.keepPrevOnFail = keepPrevOnFail;
-	}
-
-	/**
-	 * If set to "y", "yes" or "true" the previous template of the same name will be left in place if the uploaded template has errors. If not specified (or "n", "no" or "false") the original template is always removed, even if this uploaded template has errors.
-	 * This only has effect when devMode is disabled (since devMode is intended to allow templates with errors to be displayed by Docmosis).
-	 * This parameter means that in production mode (non-developer mode) template uploads will not replace a working template with a bad template.
-	 * Defaults to "false".
+	 * Defaults to false.
 	 * @param keepPrevOnFail value of keep previous on fail.
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest keepPrevOnFail(boolean keepPrevOnFail) {
-		this.keepPrevOnFail = keepPrevOnFail;
+		params.setKeepPrevOnFail(keepPrevOnFail);
 		return this;
-	}
-
-	/**
-	 * This specifies the prefix delimiter identifying a field in your template. The default is "&lt;&lt;".
-	 * @return Value of prefix delimiter.
-	 */
-	public String getFieldDelimPrefix() {
-		return fieldDelimPrefix;
-	}
-
-	/**
-	 * This specifies the prefix delimiter identifying a field in your template. The default is "&lt;&lt;".
-	 * @param fieldDelimPrefix value of prefix delimiter.
-	 */
-	public void setFieldDelimPrefix(String fieldDelimPrefix) {
-		this.fieldDelimPrefix = fieldDelimPrefix;
 	}
 
 	/**
@@ -196,24 +131,8 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest fieldDelimPrefix(String fieldDelimPrefix) {
-		this.fieldDelimPrefix = fieldDelimPrefix;
+		params.setFieldDelimPrefix(fieldDelimPrefix);
 		return this;
-	}
-
-	/**
-	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is "&gt;&gt;".
-	 * @return Value of suffix delimiter.
-	 */
-	public String getFieldDelimSuffix() {
-		return fieldDelimSuffix;
-	}
-
-	/**
-	 * This specifies the suffix delimiter identifying the end of a field in your template. The default is "&gt;&gt;".
-	 * @param fieldDelimSuffix value of suffix delimiter.
-	 */
-	public void setFieldDelimSuffix(String fieldDelimSuffix) {
-		this.fieldDelimSuffix = fieldDelimSuffix;
 	}
 
 	/**
@@ -222,36 +141,18 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest fieldDelimSuffix(String fieldDelimSuffix) {
-		this.fieldDelimSuffix = fieldDelimSuffix;
+		params.setFieldDelimSuffix(fieldDelimSuffix);
 		return this;
 	}
 
 	/**
-	 * If set to "y", "yes" or "true" the template name given will be NFC normalized (Unicode NFC normalization).
-	 * The default is false.
-	 * @return Value of normalize template.
-	 */
-	public boolean getNormalizeTemplateName() {
-		return normalizeTemplateName;
-	}
-
-	/**
-	 * If set to "y", "yes" or "true" the template name given will be NFC normalized (Unicode NFC normalization).
-	 * The default is false.
-	 * @param normalizeTemplateName value of normalize template.
-	 */
-	public void setNormalizeTemplateName(boolean normalizeTemplateName) {
-		this.normalizeTemplateName = normalizeTemplateName;
-	}
-
-	/**
-	 * If set to "y", "yes" or "true" the template name given will be NFC normalized (Unicode NFC normalization).
+	 * If set to true the template name given will be NFC normalized (Unicode NFC normalization).
 	 * The default is false.
 	 * @param normalizeTemplateName value of normalize template.
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest normalizeTemplateName(boolean normalizeTemplateName) {
-		this.normalizeTemplateName = normalizeTemplateName;
+		params.setNormalizeTemplateName(normalizeTemplateName);
 		return this;
 	}
 
@@ -280,9 +181,6 @@ public class UploadTemplateRequest extends AbstractTemplateRequest<UploadTemplat
 
 	@Override
 	public String toString() {
-		return "UploadTemplateRequest [templateFile=" + templateFile + ", templateDescription=" + templateDescription
-				+ ", devMode=" + devMode + ", keepPrevOnFail=" + keepPrevOnFail + ", fieldDelimPrefix="
-				+ fieldDelimPrefix + ", fieldDelimSuffix=" + fieldDelimSuffix + ", normalizeTemplateName="
-				+ normalizeTemplateName + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }
