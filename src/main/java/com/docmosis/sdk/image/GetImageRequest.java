@@ -23,7 +23,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Image service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get Image request.
  * 
@@ -33,12 +33,12 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * <pre>
  *  GetImageResponse getImage = Image
- *   							.get()
- *								.addImageName(imageToGet)
- *								.sendTo(outputFileOrStream)
- *								.execute();
+ *                               .get()
+ *                               .addImageName(imageToGet)
+ *                               .sendTo(outputFileOrStream)
+ *                               .execute();
  *  if (getImage.hasSucceeded()) {
- *  	//File saved to outputFileOrStream
+ *      //File saved to outputFileOrStream
  *  }
  * </pre>
  */

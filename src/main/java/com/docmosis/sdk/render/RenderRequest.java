@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 /**
  * This object holds the instructions and data for the render request.
  * 
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the Render request.  The properties set in this class 
  * are parameters for the Render request.
  * 
@@ -29,14 +29,14 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * <pre>
  *   RenderResponse response = Renderer
- *								.render()
- *								.templateName(TemplateName)
- *								.outputName(outputFileName)
- *								.sendTo(outputFileOrStream)
- *								.data(dataString)
- *								.execute();
+ *                              .render()
+ *                              .templateName(TemplateName)
+ *                              .outputName(outputFileName)
+ *                              .sendTo(outputFileOrStream)
+ *                              .data(dataString)
+ *                              .execute();
  *   if (response.hasSucceeded()) {
- *		//File rendered and saved to outputFileOrStream
+ *       //File rendered and saved to outputFileOrStream
  *	 }
  *   ...
  * </pre>
@@ -148,7 +148,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
     }
 
     /**
-     * Set the name to give the rendered document. If no format is specified (@see #outputFormat), 
+     * Set the name to give the rendered document. If no format is specified ({@link #outputFormat}), 
      * the format of the resulting document is derived from the extension of this name. 
      * For example "resume1.pdf" implies a PDF format document. 
      * 
@@ -163,7 +163,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
     }
     
     /**
-     * Set the name to give the rendered document. If no format is specified (@see #outputFormat), 
+     * Set the name to give the rendered document. If no format is specified ({@link #outputFormat}), 
      * the format of the resulting document is derived from the extension of this name. 
      * For example "resume1.pdf" implies a PDF format document. 
      * 
@@ -297,7 +297,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
 
     /**
      * Set the billingKey string.  This is simply a user-defined token string
-     * that can be later reported against.  @see sourceId for an alternative
+     * that can be later reported against.  {@link #sourceId} for an alternative
      * equivalent which is linked to available statistics.
      *  
      * @param billingKey the key to apply with some association with billing.
@@ -308,7 +308,7 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest>{
     
     /**
      * Set the billingKey string.  This is simply a user-defined token string
-     * that can be later reported against.  @see sourceId for an alternative
+     * that can be later reported against.  {@link #sourceId} for an alternative
      * equivalent which is linked to available statistics.
      *  
      * @param billingKey the key to apply with some association with billing.
