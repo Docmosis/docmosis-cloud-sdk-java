@@ -241,17 +241,6 @@ public class RenderRequest extends DocmosisCloudFileRequest<RenderRequest> {
     	params.setMailBodyText(mailBodyText);
         return this;
     }
-    
-    /**
-     * Set the email body in plain text.
-     * 
-     * @param mailBodyText the plain text message body.
-     * @return this request for method chaining
-     */
-    public RenderRequest mailBodyText(String mailBodyText) {
-        this.mailBodyText = mailBodyText;
-        return this;
-    }
 
     /**
      * If this is set to true, any email attachments will be attached 
