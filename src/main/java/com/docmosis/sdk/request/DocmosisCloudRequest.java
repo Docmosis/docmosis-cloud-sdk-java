@@ -16,7 +16,6 @@ package com.docmosis.sdk.request;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.environment.EnvironmentBuilder;
-import com.docmosis.sdk.environment.Proxy;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
@@ -56,68 +55,6 @@ public abstract class DocmosisCloudRequest<T> {
      */
 	public String getUrl() {
 		return environmentBuilder.getUrl(servicePath);
-	}
-
-	/**
-	 * The access key for using the end point.
-	 * 
-	 * @return access key of docmosis cloud or tornado endpoint.
-	 */
-	public String getAccessKey()
-	{
-		return environmentBuilder.getAccessKey();
-	}
-
-	/**
-	 * Get the maximum number of tries that should be attempted to service
-	 * this request when a server/network error occurs.
-	 * 
-	 * @return the maximum number of tries configured.
-	 */
-	public int getMaxTries()
-	{
-		return environmentBuilder.getMaxTries();
-	}
-
-	/**
-	 * Get the retry delay (milliseconds) to apply when
-	 * a retry is required.
-	 * 
-	 * @return the configured retry delay
-	 */
-	public long getRetryDelay()
-	{
-		return environmentBuilder.getRetryDelayMS();
-	}
-	
-	/**
-	 * Get the client connection timeout (milliseconds) to establish 
-	 * the connection with the remote host.
-	 * 
-	 * @return the configured client connection timeout
-	 */
-	public long getConnectTimeout()
-	{
-		return environmentBuilder.getConnectTimeoutMS();
-	}
-
-	/**
-	 * Get the read timeout (milliseconds) between packets.
-	 * 
-	 * @return the configured read timeout
-	 */
-	public long getReadTimeout()
-	{
-		return environmentBuilder.getReadTimeoutMS();
-	}
-
-	/**
-	 * Get the Proxy object containing proxy host, port and user credentials.
-	 * 
-	 * @return EnvironmentConfiguration.Proxy object
-	 */
-	public Proxy getProxy() {
-		return environmentBuilder.getProxy();
 	}
 	
 	@Override

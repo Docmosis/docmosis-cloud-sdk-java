@@ -135,8 +135,8 @@ public class Template {
 	{
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
+		if (request.getEnvironment().getAccessKey() != null) {
+			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
 		}
 
 		HttpEntity payload = builder.build();
@@ -177,8 +177,8 @@ public class Template {
 	{
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
+		if (request.getEnvironment().getAccessKey() != null) {
+			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
 		}
 		if (request.getTemplateName() != null) {
 			builder.addTextBody("templateName", request.getTemplateName());
@@ -224,8 +224,8 @@ public class Template {
 	{
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
+		if (request.getEnvironment().getAccessKey() != null) {
+			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
 		}
 		if (request.getTemplateName() != null) {
 			builder.addTextBody("templateName", request.getTemplateName());
@@ -294,7 +294,7 @@ public class Template {
 //		builder.addTextBody("fieldDelimSuffix", params.getFieldDelimSuffix());
 //		builder.addTextBody("normalizeTemplateName", String.valueOf(params.getNormalizeTemplateName()));
 
-		addField(builder, "accessKey", request.getAccessKey());
+		addField(builder, "accessKey", request.getEnvironment().getAccessKey());
 		addField(builder, "templateFile", params.getTemplateFile());
 		addField(builder, "templateName", params.getTemplateName());
 		addField(builder, "templateDescription", params.getTemplateDescription());
@@ -341,8 +341,8 @@ public class Template {
 	{
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
+		if (request.getEnvironment().getAccessKey() != null) {
+			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
 		}
 		if (request.getTemplateNames() != null) {
 			List<String> templateNames = request.getTemplateNames();
@@ -390,8 +390,8 @@ public class Template {
 	{
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
+		if (request.getEnvironment().getAccessKey() != null) {
+			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
 		}
 		if (request.getTemplateNames() != null) {
 			List<String> templateNames = request.getTemplateNames();
@@ -427,8 +427,8 @@ public class Template {
 	{
 		//Build request
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
+		if (request.getEnvironment().getAccessKey() != null) {
+			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
 		}
 		if (request.getTemplateName() != null) {
 			builder.addTextBody("templateName", request.getTemplateName());

@@ -60,7 +60,7 @@ public class Renderer {
     	final boolean requestIsJson = requestIsJson(request.getParams());
 
 		//Build request
-    	final String accessKey = request.getAccessKey();
+    	final String accessKey = request.getEnvironment().getAccessKey();
         final String renderRequest = buildRequest(accessKey, request.getParams(), requestIsJson);
 
         StringEntity se = null;

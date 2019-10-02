@@ -90,9 +90,9 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    try {
 	    	//Create retry handlers
 	    	retryHandler = new DocmosisHTTPRequestRetryHandler(
-	    			request.getMaxTries());
+	    			request.getEnvironment().getMaxTries());
 	    	retryStrategy = new DocmosisServiceUnavailableRetryStrategy(
-	    			request.getMaxTries(), request.getRetryDelay(), requestIsJson);
+	    			request.getEnvironment().getMaxTries(), request.getEnvironment().getRetryDelayMS(), requestIsJson);
 
 	    	//Create HTTP Client
 	    	HttpClientBuilder clientBuilder = HttpClients
@@ -130,8 +130,8 @@ public class DocmosisHTTPRequestExecutionHandler {
 
 	    	//Configure timeouts
 	    	RequestConfig config = configBuilder
-    	            .setConnectTimeout((int)request.getConnectTimeout())
-    	            .setSocketTimeout((int)request.getReadTimeout())
+    	            .setConnectTimeout((int)request.getEnvironment().getConnectTimeoutMS())
+    	            .setSocketTimeout((int)request.getEnvironment().getReadTimeoutMS())
 	    			.build();
 	    			
 	    	httpPost.setConfig(config);
