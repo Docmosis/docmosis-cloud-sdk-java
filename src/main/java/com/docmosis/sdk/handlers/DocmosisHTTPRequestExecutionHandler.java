@@ -47,7 +47,6 @@ import com.docmosis.sdk.environment.EnvironmentBuilder;
 import com.docmosis.sdk.environment.InvalidEnvironmentException;
 import com.docmosis.sdk.environment.Proxy;
 import com.docmosis.sdk.render.RenderRequest;
-import com.docmosis.sdk.render.RenderRequestParams;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 import com.docmosis.sdk.request.DocmosisCloudRequest;

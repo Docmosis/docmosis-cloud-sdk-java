@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Template Structure service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get Template Structure request.
  * 
@@ -30,11 +30,11 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * <pre>
  *   GetTemplateStructureResponse templateStructure = Template
- *   													.getStructure()
- *   													.templateName("MasterTemplates/MyMasterTemplate.docx")
- *   													.execute();
+ *                                                     .getStructure()
+ *                                                     .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                                     .execute();
  *   if (templateStructure.hasSucceeded()) {
- *   	templateStructure.toString();
+ *       templateStructure.toString();
  *   }
  * </pre>
  */

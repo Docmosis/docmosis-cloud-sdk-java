@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Rename Files service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
@@ -30,12 +30,12 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * <pre>
  *  RenameFileResponse renameFile = FileStorage
- *   								.rename()
- *   								.fromPath(oldName)
- *   								.toPath(newName)
- *   								.execute();
+ *                                   .rename()
+ *                                   .fromPath(oldName)
+ *                                   .toPath(newName)
+ *                                   .execute();
  *   if (renameFile.hasSucceeded()) {
- *  	System.out.println(oldName + " renamed to " + newName);
+ *       System.out.println(oldName + " renamed to " + newName);
  *  }
  * </pre>
  */

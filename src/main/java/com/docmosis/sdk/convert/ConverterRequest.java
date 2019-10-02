@@ -15,14 +15,13 @@
 package com.docmosis.sdk.convert;
 
 import java.io.File;
-import java.io.OutputStream;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Convert service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Convert request.
  * 
@@ -32,13 +31,13 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * <pre>
  *   ConverterResponse response = Converter
- *									.convert()
- *									.fileToConvert(convertFile)
- *									.outputName(outputFileName)
- *									.sendTo(outputFileOrStream)
- *									.execute();
+ *                                  .convert()
+ *                                  .fileToConvert(convertFile)
+ *                                  .outputName(outputFileName)
+ *                                  .sendTo(outputFileOrStream)
+ *                                  .execute();
  *   if (response.hasSucceeded()) {
- *		//File converted and saved to outputFileOrStream
+ *       //File converted and saved to outputFileOrStream
  *	 }
  *   ...
  * </pre>

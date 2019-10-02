@@ -69,7 +69,7 @@ public class RenderRequestParamsOLD {
     //The following fields are part of the Docmosis Web Services API but have not 
     //been implemented in this SDK.
     
-    /**
+    /*
 	 * If set to "y","yes" or "true", the streamed result will be base64 encoded.
 	 * Note this only applies if the request includes (or implies) a “stream” result.
 	 */

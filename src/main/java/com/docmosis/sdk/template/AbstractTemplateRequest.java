@@ -56,7 +56,6 @@ public abstract class AbstractTemplateRequest<T> extends DocmosisCloudRequest<T>
 	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
 	 * 
 	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
 	 */
 	public void isSystemTemplate(boolean isSystemTemplate) {
 		this.isSystemTemplate = isSystemTemplate;

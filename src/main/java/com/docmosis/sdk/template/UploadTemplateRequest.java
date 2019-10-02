@@ -21,7 +21,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 
 /**
  * The object holds the instructions and data for a request to the Upload Template service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Upload Template request.
  * 
@@ -31,11 +31,11 @@ import com.docmosis.sdk.handlers.DocmosisException;
  * 
  * <pre>
  *   UploadTemplateResponse uploadedTemplate = Template
- *   											.upload()
- *												.templateFile(uploadFile)
- *												.execute();
- *	 if (uploadedTemplate.hasSucceeded()) {
- *   	uploadedTemplate.toString();
+ *                                              .upload()
+ *                                              .templateFile(uploadFile)
+ *                                              .execute();
+ *   if (uploadedTemplate.hasSucceeded()) {
+ *       uploadedTemplate.toString();
  *   }
  * </pre>
  */
