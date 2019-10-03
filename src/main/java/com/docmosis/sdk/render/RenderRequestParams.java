@@ -44,27 +44,27 @@ import com.docmosis.sdk.request.param.RequestParameters;
 public class RenderRequestParams extends RequestParameters {
 
     
-    private static final String TEMPLATE_NAME             = "templateName";
-    private static final String OUTPUT_NAME               = "outputName";
-    private static final String OUTPUT_FORMAT             = "outputFormat";
-    private static final String COMPRESS_SINGLE_FORMAT    = "compressSingleFormat";
-    private static final String STORE_TO                  = "storeTo";
-    private static final String BILLING_KEY               = "billingKey";
-    private static final String DEV_MODE                  = "devMode";
-    private static final String DATA                      = "data";
-    private static final String REQUEST_ID                = "requestId";
-    private static final String MAIL_SUBJECT              = "mailSubject";
-    private static final String MAIL_BODY_HTML            = "mailBodyHtml";
-    private static final String MAIL_BODY_TEXT            = "mailBodyText";
-    private static final String MAIL_NO_ZIP_ATTACHMENTS   = "mailNoZipAttachments";
-    private static final String SOURCE_ID                 = "sourceId";
-    private static final String STYLES_IN_TEXT            = "stylesInText";
-    private static final String PASSWORD_PROTECT          = "passwordProtect";
-    private static final String PDF_ARCHIVE_MODE          = "pdfArchiveMode";
-    private static final String PDF_WATERMARK             = "pdfWatermark";
-    private static final String PDF_TAGGED                = "pdfTagged";
-    private static final String IGNORE_UNKNOWN_PARAMETERS = "ignoreUnknownParams";
-    private static final String TAGS                      = "tags";
+    public static final String TEMPLATE_NAME             = "templateName";
+    public static final String OUTPUT_NAME               = "outputName";
+    public static final String OUTPUT_FORMAT             = "outputFormat";
+    public static final String COMPRESS_SINGLE_FORMAT    = "compressSingleFormat";
+    public static final String STORE_TO                  = "storeTo";
+    public static final String BILLING_KEY               = "billingKey";
+    public static final String DEV_MODE                  = "devMode";
+    public static final String DATA                      = "data";
+    public static final String REQUEST_ID                = "requestId";
+    public static final String MAIL_SUBJECT              = "mailSubject";
+    public static final String MAIL_BODY_HTML            = "mailBodyHtml";
+    public static final String MAIL_BODY_TEXT            = "mailBodyText";
+    public static final String MAIL_NO_ZIP_ATTACHMENTS   = "mailNoZipAttachments";
+    public static final String SOURCE_ID                 = "sourceId";
+    public static final String STYLES_IN_TEXT            = "stylesInText";
+    public static final String PASSWORD_PROTECT          = "passwordProtect";
+    public static final String PDF_ARCHIVE_MODE          = "pdfArchiveMode";
+    public static final String PDF_WATERMARK             = "pdfWatermark";
+    public static final String PDF_TAGGED                = "pdfTagged";
+    public static final String IGNORE_UNKNOWN_PARAMETERS = "ignoreUnknownParams";
+    public static final String TAGS                      = "tags";
 
     
     

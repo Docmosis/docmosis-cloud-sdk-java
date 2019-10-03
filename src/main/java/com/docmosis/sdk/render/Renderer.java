@@ -19,6 +19,7 @@ import org.apache.http.entity.StringEntity;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.param.ParamType;
 
 /**
  * This class manages the interaction with the Docmosis render service endpoint - producing
@@ -131,30 +132,19 @@ public class Renderer {
     		final boolean jsonFormat) {
         StringBuilder buffer = new StringBuilder();
 
+        
         // Start building the instruction.
         addField("accessKey", accessKey, buffer, true, jsonFormat);
-        addField("templateName", request.getTemplateName(), buffer, true, jsonFormat);
-//        addField("isSystemTemplate", request.getIsSystemTemplate(), buffer, true, jsonFormat);
-        addField("outputName", request.getOutputName(), buffer, true, jsonFormat);
-        addField("outputFormat", request.getOutputFormat(), buffer, true, jsonFormat);
-        addField("compressSingleFormat", request.getCompressSingleFormat(), buffer, true, jsonFormat);
-        addField("storeTo", request.getStoreTo(), buffer, true, jsonFormat);
-        addField("billingKey", request.getBillingKey(), buffer, true, jsonFormat);
-        addField("devMode", request.getDevMode(), buffer, true, jsonFormat);
-        addField("requestId", request.getRequestId(), buffer, true, jsonFormat);
-        addField("mailSubject", request.getMailSubject(), buffer, true, jsonFormat);
-        addField("mailBodyHtml", request.getMailBodyHtml(), buffer, true, jsonFormat);
-        addField("mailBodyText", request.getMailBodyText(), buffer, true, jsonFormat);
-        addField("mailNoZipAttachments", request.getMailNoZipAttachments(), buffer, true, jsonFormat);
-        addField("sourceId", request.getSourceId(), buffer, true, jsonFormat);
-        addField("stylesInText", request.getStylesInText(), buffer, true, jsonFormat);
-        addField("passwordProtect", request.getPasswordProtect(), buffer, true, jsonFormat);
-        addField("pdfArchiveMode", request.getPdfArchiveMode(), buffer, true, jsonFormat);
-        addField("pdfWatermark", request.getPdfWatermark(), buffer, true, jsonFormat);
-        addField("pdfTagged", request.getPdfTagged(), buffer, true, jsonFormat);
-        addField("ignoreUnknownParams", request.getIgnoreUnknownParams(), buffer, true, jsonFormat);
-        addField("tags", request.getTags(), buffer, true, jsonFormat);
         
+        // add all parameters except for the DATA which we'll put last
+        for(String paramName : request.getKeys()) {
+        	if (!RenderRequestParams.DATA.equals(paramName)) {
+        		ParamType value = request.getParam(paramName);
+        		addField(paramName, value, buffer, true, jsonFormat);
+        	}
+        }
+
+        // add the data formatted as required
         if (jsonFormat) {
         	String json = request.getData();
         	json = (json == null || "".equals(json.trim())) ? null : json;
@@ -175,8 +165,17 @@ public class Renderer {
         	buffer.append("</render>");
         }
 
+       
         return buffer.toString();
     }
+
+    private static void addField(final String key, final ParamType value, final StringBuilder buffer,
+            final boolean quoteValue, final boolean jsonFormat) 
+	{
+    	if (value != null) {
+    		addField(key, value.toString(), buffer, quoteValue, jsonFormat);
+    	}
+	}
 
 
     private static void addField(final String key, final String value, final StringBuilder buffer,
@@ -188,18 +187,6 @@ public class Renderer {
     		addFieldXml(key, value, buffer, quoteValue);
     	}
     }
-    
-    private static void addField(final String key, final Boolean value, final StringBuilder buffer,
-            final boolean quoteValue, final boolean jsonFormat) 
-	{
-    	if (value != null) {
-			if (jsonFormat) {
-				addFieldJson(key, String.valueOf(value), buffer, quoteValue);
-			} else {
-				addFieldXml(key, String.valueOf(value), buffer, quoteValue);
-			}
-		}
-	}
     
     private static void addFieldJson(final String key, final String value, final StringBuilder buffer,
             final boolean quoteValue)
