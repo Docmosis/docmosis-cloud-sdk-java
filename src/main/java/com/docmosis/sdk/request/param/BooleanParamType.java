@@ -22,8 +22,13 @@ public class BooleanParamType extends AbstractParamType {
 	}
 	
 	@Override
-	public String toString() {
+	public String stringValue() {
 		return value == null ? null : String.valueOf(value);
+	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(value);
 	}	
 
 }

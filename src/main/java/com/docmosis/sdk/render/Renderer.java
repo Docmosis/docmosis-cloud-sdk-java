@@ -173,7 +173,7 @@ public class Renderer {
             final boolean quoteValue, final boolean jsonFormat) 
 	{
     	if (value != null) {
-    		addField(key, value.toString(), buffer, quoteValue, jsonFormat);
+    		addField(key, value.stringValue(), buffer, quoteValue, jsonFormat);
     	}
 	}
 
