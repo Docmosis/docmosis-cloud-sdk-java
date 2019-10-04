@@ -18,11 +18,10 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.RequestBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -88,15 +87,11 @@ public class Image {
 	 */
 	public static ListImagesResponse executelist(ListImagesRequest request) throws ImageException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
+		ListImagesResponse response = new ListImagesResponse();
 
-		HttpEntity payload = builder.build();
-	    ListImagesResponse response = new ListImagesResponse();
-	    
+		//Build request
+    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey());
+
 	    try {
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
@@ -130,32 +125,12 @@ public class Image {
 	 */	
 	public static UploadImageResponse executeUploadImage(UploadImageRequest request) throws ImageException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getImageFile() != null) {
-			if (request.getImageFile().canRead()) {
-				builder.addBinaryBody("imageFile", request.getImageFile(), ContentType.APPLICATION_OCTET_STREAM, request.getImageFile().getName());
-			} else {
-				throw new ImageException("cannot read image: ["
-	                    + request.getImageFile() + "]");
-			}
-		} else {
-			throw new ImageException("No Image File specified.");
-		}
-		if (request.getImageName() != null) {
-			builder.addTextBody("imageName", request.getImageName());
-		}
-		builder.addTextBody("imageDescription", request.getImageDescription());
-		builder.addTextBody("isSystemImage", String.valueOf(request.getIsSystemImage()));
-		builder.addTextBody("normalizeImageName", String.valueOf(request.getNormalizeImageName()));
-
-	    HttpEntity payload = builder.build();
 	    UploadImageResponse response = new UploadImageResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
@@ -186,26 +161,12 @@ public class Image {
 	 */
 	public static DeleteImageResponse executeDeleteImage(DeleteImageRequest request) throws ImageException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getImageNames() != null) {
-			List<String> imageNames = request.getImageNames();
-			for(String imageName : imageNames) {
-				builder.addTextBody("imageName", imageName);
-			}
-		}
-		else {
-			throw new ImageException("No Image Name specified.");
-		}
-		builder.addTextBody("isSystemImage", String.valueOf(request.getIsSystemImage()));
-		
-	    HttpEntity payload = builder.build();
 	    DeleteImageResponse response = new DeleteImageResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
@@ -235,26 +196,12 @@ public class Image {
 	 */
 	public static GetImageResponse executeGetImage(GetImageRequest request) throws ImageException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getImageNames() != null) {
-			List<String> imageNames = request.getImageNames();
-			for(String imageName : imageNames) {
-				builder.addTextBody("imageName", imageName);
-			}
-		}
-		else {
-			throw new ImageException("No Image Name specified.");
-		}
-		builder.addTextBody("isSystemImage", String.valueOf(request.getIsSystemImage()));
-
-	    HttpEntity payload = builder.build();
 	    GetImageResponse response = new GetImageResponse();
 
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    }

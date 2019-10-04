@@ -14,7 +14,6 @@
  */
 package com.docmosis.sdk.template;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
@@ -44,65 +43,21 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRequest> {
 	
 	private static final String SERVICE_PATH = "deleteTemplate";
-	private boolean isSystemTemplate = false;
-	private List<String> templateNames = null;
+
+	private DeleteTemplateRequestParams params = new DeleteTemplateRequestParams();
 
 	public DeleteTemplateRequest() {
 		super(SERVICE_PATH);
-		templateNames = new ArrayList<String>();
 	}
 	
 	public DeleteTemplateRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
-		templateNames = new ArrayList<String>();
 	}
 	
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @return isSystemTemplate flag
-	 */
-	public boolean getIsSystemTemplate() {
-		return isSystemTemplate;
-	}
-
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 */
-	public void setSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-	}
-	
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
-	 */
-	public DeleteTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-		return this;
-	}
-	
-	/**
-	 * Get the currently set templateNames.
-	 * 
-	 * @return List of the name of the Templates on the docmosis server.
-	 */
-	public List<String> getTemplateNames() {
-		return templateNames;
-	}
-	
-	/**
-	 * Set the Template Names.
-	 * 
-	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
-	}
+	public DeleteTemplateRequestParams getParams()
+    {
+    	return params;
+    }
 	
 	/**
 	 * Set the Template Names.
@@ -111,18 +66,29 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	 * @return this request for method chaining
 	 */
 	public DeleteTemplateRequest templateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
+		params.setTemplateNames(templateNames);
 		return this;
 	}
 
 	/**
-	 * Add a Template Name.
+	 * Set the Template Name.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
 	 */
-	public DeleteTemplateRequest addTemplateName(String templateName) {
-		this.templateNames.add(templateName);
+	public DeleteTemplateRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
+		return this;
+	}
+
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
+	 */
+	public DeleteTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
 		return this;
 	}
 
@@ -149,22 +115,8 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 		return Template.executeDeleteTemplate(this);
 	}
 	
-//	@Override
-//	protected DeleteTemplateRequest getThis()
-//	{
-//		return this;
-//	}
-	
 	@Override
 	public String toString() {
-		String names = "(";
-		if (templateNames != null) {
-			for (String tn: templateNames) {
-				names += tn + "; ";
-			}
-			names = names.substring(0, names.length()-2) + ") ";
-		}
-		return "DeleteTemplateRequest [isSystemTemplate=" + isSystemTemplate + ", templateNames=" + names + ", " + super.toString() + "]";
+		return params.toString();
 	}
-	
 }

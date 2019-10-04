@@ -14,7 +14,6 @@
  */
 package com.docmosis.sdk.image;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
@@ -44,35 +43,40 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest> {
 
 	private static final String SERVICE_PATH = "deleteImage";
-	private boolean isSystemImage = false;
-	private List<String> imageNames = null;
+
+	private DeleteImageRequestParams params = new DeleteImageRequestParams();
 
 	public DeleteImageRequest() {
 		super(SERVICE_PATH);
-		imageNames = new ArrayList<String>();
 	}
-	
+
 	public DeleteImageRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
-		imageNames = new ArrayList<String>();
 	}
 
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @return isSystemImage flag
-	 */
-	public boolean getIsSystemImage() {
-		return isSystemImage;
-	}
+	public DeleteImageRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @param isSystemImage Is system image flag
+	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
+	 * @param imageNames the image name list.
+	 * @return this request for method chaining
 	 */
-	public void setSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
+	public DeleteImageRequest imageNames(List<String> imageNames) {
+		params.setImageNames(imageNames);
+		return this;
+	}
+	
+	/**
+	 * add an image name. Should include path, eg "HeaderImages/companyLogo.png".
+	 * @param imageName the image name.
+	 * @return this request for method chaining
+	 */
+	public DeleteImageRequest imageName(String imageName) {
+		params.setImageName(imageName);
+		return this;
 	}
 	
 	/**
@@ -82,44 +86,7 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 	 * @return this request for method chaining
 	 */
 	public DeleteImageRequest isSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
-		return this;
-	}
-	
-	/**
-	 * The names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @return The image names list.
-	 */
-	public List<String> getImageNames() {
-		return imageNames;
-	}
-
-	/**
-	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageNames the image name list.
-	 */
-	public void setImageNames(List<String> imageNames) {
-		this.imageNames = imageNames;
-	}
-
-	/**
-	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageNames the image name list.
-	 * @return this request for method chaining
-	 */
-	public DeleteImageRequest imageNames(List<String> imageNames) {
-		this.imageNames = imageNames;
-		return this;
-	}
-
-	/**
-	 * Add a Image Name.
-	 * 
-	 * @param imageName The name of the Image on the docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
-	 * @return this request for method chaining
-	 */
-	public DeleteImageRequest addImageName(String imageName) {
-		this.imageNames.add(imageName);
+		params.setIsSystemImage(isSystemImage);
 		return this;
 	}
 
@@ -146,9 +113,8 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 		return Image.executeDeleteImage(this);
 	}
 
-
 	@Override
 	public String toString() {
-		return "DeleteImageRequest [" + super.toString() + "]";
+		return params.toString();
 	}
 }

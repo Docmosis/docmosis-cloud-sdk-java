@@ -55,7 +55,10 @@ public class SimpleGetRenderTagsExample
 
 		GetRenderTagsResponse renderTags = RenderTags
 											.get()
-											.tags("test")
+											.tags("my;tags;")
+											.year(2019)
+											.nMonths(2)
+											.month(10)
 											.padBlanks(true)
 											.execute();
 

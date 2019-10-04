@@ -41,7 +41,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplateStructureRequest> {
 
 	private static final String SERVICE_PATH = "getTemplateStructure";
-	private String templateName;
+
+	private GetTemplateStructureRequestParams params = new GetTemplateStructureRequestParams();
 
 	public GetTemplateStructureRequest() {
 		super(SERVICE_PATH);
@@ -50,25 +51,12 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 	public GetTemplateStructureRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * Get the currently set templateName.
-	 * 
-	 * @return The name of the Template on the docmosis server.
-	 */
-	public String getTemplateName() {
-		return templateName;
-	}
-
-	/**
-	 * Set the Template Name.
-	 * 
-	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
-	}
 	
+	public GetTemplateStructureRequestParams getParams()
+    {
+    	return params;
+    }
+
 	/**
 	 * Set the Template Name.
 	 * 
@@ -76,7 +64,7 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 	 * @return this request for method chaining
 	 */
 	public GetTemplateStructureRequest templateName(String templateName) {
-		this.templateName = templateName;
+		params.setTemplateName(templateName);
 		return this;
 	}
 
@@ -105,7 +93,6 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 
 	@Override
 	public String toString() {
-		return "GetTemplateStructureRequest [templateName=" + templateName + ", " + super.toString() + "]";
+		return params.toString();
 	}
-
 }

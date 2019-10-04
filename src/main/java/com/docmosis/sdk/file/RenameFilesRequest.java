@@ -42,8 +42,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest> {
 
 	private static final String SERVICE_PATH = "renameFiles";
-	private String fromPath;
-	private String toPath;
+	
+	private RenameFilesRequestParams params = new RenameFilesRequestParams();
 
 	public RenameFilesRequest() {
 		super(SERVICE_PATH);
@@ -52,22 +52,11 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	public RenameFilesRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * The original name of the file or folder.
-	 * @return original file name
-	 */
-	public String getFromPath() {
-		return fromPath;
-	}
-
-	/**
-	 * Set the original name of the file or folder.
-	 * @param fromPath original file name
-	 */
-	public void setFromPath(String fromPath) {
-		this.fromPath = fromPath;
-	}
+	
+	public RenameFilesRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
 	 * Set the original name of the file or folder.
@@ -75,24 +64,8 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 * @return this request for method chaining
 	 */
 	public RenameFilesRequest fromPath(String fromPath) {
-		this.fromPath = fromPath;
+		params.setFromPath(fromPath);
 		return this;
-	}
-
-	/**
-	 * The new name for the file or folder.
-	 * @return new file name
-	 */
-	public String getToPath() {
-		return toPath;
-	}
-
-	/**
-	 * Set the new name for the file or folder.
-	 * @param toPath new file name
-	 */
-	public void setToPath(String toPath) {
-		this.toPath = toPath;
 	}
 
 	/**
@@ -101,7 +74,7 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 * @return this request for method chaining
 	 */
 	public RenameFilesRequest toPath(String toPath) {
-		this.toPath = toPath;
+		params.setToPath(toPath);
 		return this;
 	}
 
@@ -131,6 +104,6 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 
 	@Override
 	public String toString() {
-		return "RenameFileRequest [fromPath=" + fromPath + ", toPath=" + toPath + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

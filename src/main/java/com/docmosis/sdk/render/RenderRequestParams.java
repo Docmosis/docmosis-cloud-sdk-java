@@ -17,28 +17,11 @@ package com.docmosis.sdk.render;
 import com.docmosis.sdk.request.param.RequestParameters;
 
 /**
- * This object holds the instructions and data for the render request.
+ * This object holds the parameters for the render request.
  * 
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the Render request.  The properties set in this class 
  * are parameters for the Render request.
- * 
- * Typically, you would use the Renderer class to get an instance of this class, then
- * set the specifics you require using method chaining:
- * 
- * <pre>
- *   RenderResponse response = Renderer
- *                              .render()
- *                              .templateName(TemplateName)
- *                              .outputName(outputFileName)
- *                              .sendTo(outputFileOrStream)
- *                              .data(dataString)
- *                              .execute();
- *   if (response.hasSucceeded()) {
- *       //File rendered and saved to outputFileOrStream
- *	 }
- *   ...
- * </pre>
  * 
  */
 public class RenderRequestParams extends RequestParameters {
@@ -77,7 +60,6 @@ public class RenderRequestParams extends RequestParameters {
 	 */
     //private String streamResultInResponse;
 
-    
 
     public String getTemplateName() {
         return getStringParam(TEMPLATE_NAME);
@@ -129,8 +111,6 @@ public class RenderRequestParams extends RequestParameters {
     	setParam(OUTPUT_FORMAT, outputFormat);
     }
     
-
-
     public Boolean getCompressSingleFormat() {
         return getBooleanParam(COMPRESS_SINGLE_FORMAT);
     }
@@ -149,8 +129,6 @@ public class RenderRequestParams extends RequestParameters {
     	setParam(COMPRESS_SINGLE_FORMAT, compressSingleFormat);
     }
     
-
-
     public String getStoreTo() {
         return getStringParam(STORE_TO);
     }
@@ -176,8 +154,6 @@ public class RenderRequestParams extends RequestParameters {
     	setParam(STORE_TO, storeTo);
     }
     
-
-
     public String getBillingKey() {
         return getStringParam(BILLING_KEY);
     }
@@ -193,7 +169,6 @@ public class RenderRequestParams extends RequestParameters {
     	setParam(BILLING_KEY, billingKey);
     }
     
-
     public Boolean getDevMode() {
         return getBooleanParam(DEV_MODE);
     }
@@ -214,7 +189,6 @@ public class RenderRequestParams extends RequestParameters {
     public void setDevMode(Boolean devMode) {
     	setParam(DEV_MODE, devMode);
     }
-    
 
     public String getData() {
         return getStringParam(DATA);
@@ -230,7 +204,6 @@ public class RenderRequestParams extends RequestParameters {
     {
     	setParam(DATA, data);
     }
-    
 
     public String getRequestId() {
         return getStringParam(REQUEST_ID);
@@ -245,7 +218,6 @@ public class RenderRequestParams extends RequestParameters {
     public void setRequestId(String requestId) {
     	setParam(REQUEST_ID, requestId);
     }
-    
 
     public String getMailSubject() {
         return getStringParam(MAIL_SUBJECT);
@@ -259,7 +231,6 @@ public class RenderRequestParams extends RequestParameters {
     public void setMailSubject(String mailSubject) {
     	setParam(MAIL_SUBJECT, mailSubject);
     }
-    
 
     public String getMailBodyHtml() {
         return getStringParam(MAIL_BODY_HTML);
@@ -304,11 +275,9 @@ public class RenderRequestParams extends RequestParameters {
     	setParam(MAIL_NO_ZIP_ATTACHMENTS, mailNoZipAttachments);
     }
     
-    
     public String getSourceId() {
         return getStringParam(SOURCE_ID);
     }
-    
 
     /**
      * Any ID you would like to associate with this render. This could be a 
@@ -321,7 +290,6 @@ public class RenderRequestParams extends RequestParameters {
     public void setSourceId(String sourceId) {
     	setParam(SOURCE_ID, sourceId);
     }
-    
 
     public Boolean getStylesInText() {
         return getBooleanParam(STYLES_IN_TEXT);
@@ -368,7 +336,6 @@ public class RenderRequestParams extends RequestParameters {
 	{
 		setParam(PASSWORD_PROTECT, passwordProtect);
 	}
-	
 
 	public Boolean getPdfArchiveMode()
 	{
@@ -386,7 +353,6 @@ public class RenderRequestParams extends RequestParameters {
 	{
 		setParam(PDF_ARCHIVE_MODE, pdfArchiveMode);
 	}
-	
 
 	public String getPdfWatermark()
 	{
@@ -402,7 +368,6 @@ public class RenderRequestParams extends RequestParameters {
 	{
 		setParam(PDF_WATERMARK, pdfWatermark);
 	}
-	
 
 	public Boolean getPdfTagged()
 	{
@@ -422,7 +387,6 @@ public class RenderRequestParams extends RequestParameters {
 		setParam(PDF_TAGGED, pdfTagged);
 	}
 	
-	
 	public Boolean getIgnoreUnknownParams() {
         return getBooleanParam(IGNORE_UNKNOWN_PARAMETERS);
     }
@@ -438,7 +402,6 @@ public class RenderRequestParams extends RequestParameters {
     public void setIgnoreUnknownParams(Boolean ignoreUnknownParams) {
     	setParam(IGNORE_UNKNOWN_PARAMETERS, ignoreUnknownParams);
     }
-    
 	
     public String getTags() {
         return getStringParam(TAGS);
@@ -455,9 +418,6 @@ public class RenderRequestParams extends RequestParameters {
     public void setTags(String tags) {
     	setParam(TAGS, tags);
     }
-    
-
-
 
 	@Override
 	public String toString()

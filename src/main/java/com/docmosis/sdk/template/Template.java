@@ -15,7 +15,6 @@
 package com.docmosis.sdk.template;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -25,8 +24,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -34,6 +31,7 @@ import org.xml.sax.InputSource;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.RequestBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -133,14 +131,10 @@ public class Template {
 	 */
 	public static ListTemplatesResponse executelist(ListTemplatesRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getEnvironment().getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
-		}
-
-		HttpEntity payload = builder.build();
 	    ListTemplatesResponse response = new ListTemplatesResponse();
+
+	    //Build request
+    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey());
 	    
 	    try {
 	    	//Execute request
@@ -175,23 +169,12 @@ public class Template {
 	 */
 	public static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getEnvironment().getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-
-	    HttpEntity payload = builder.build();
 	    GetTemplateDetailsResponse response = new GetTemplateDetailsResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
@@ -222,22 +205,12 @@ public class Template {
 	 */
 	public static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getEnvironment().getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-
-	    HttpEntity payload = builder.build();
 	    GetTemplateStructureResponse response = new GetTemplateStructureResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 
@@ -267,49 +240,13 @@ public class Template {
 	 */	
 	public static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		UploadTemplateRequestParams params = request.getParams();
-//		if (request.getAccessKey() != null) {
-//			builder.addTextBody("accessKey", request.getAccessKey());
-//		}
-//		if (params.getTemplateFile() != null) {
-//			if (params.getTemplateFile().canRead()) {
-//				builder.addBinaryBody("templateFile", params.getTemplateFile(), ContentType.APPLICATION_OCTET_STREAM, params.getTemplateFile().getName());
-//			} else {
-//				throw new TemplateException("cannot read template: ["
-//	                    + params.getTemplateFile() + "]");
-//			}
-//		} else {
-//			throw new TemplateException("No template selected");
-//		}
-//		if (params.getTemplateName() != null) {
-//			builder.addTextBody("templateName", params.getTemplateName());
-//		}
-//		builder.addTextBody("templateDescription", params.getTemplateDescription());
-//		builder.addTextBody("isSystemTemplate", String.valueOf(params.getIsSystemTemplate()));
-//		builder.addTextBody("devMode", String.valueOf(params.getDevMode()));
-//		builder.addTextBody("keepPrevOnFail", String.valueOf(params.getKeepPrevOnFail()));
-//		builder.addTextBody("fieldDelimPrefix", params.getFieldDelimPrefix());
-//		builder.addTextBody("fieldDelimSuffix", params.getFieldDelimSuffix());
-//		builder.addTextBody("normalizeTemplateName", String.valueOf(params.getNormalizeTemplateName()));
-
-		addField(builder, "accessKey", request.getEnvironment().getAccessKey());
-		addField(builder, "templateFile", params.getTemplateFile());
-		addField(builder, "templateName", params.getTemplateName());
-		addField(builder, "templateDescription", params.getTemplateDescription());
-		addField(builder, "isSystemTemplate", params.getIsSystemTemplate());
-		addField(builder, "devMode", params.getDevMode());
-		addField(builder, "keepPrevOnFail", params.getKeepPrevOnFail());
-		addField(builder, "fieldDelimPrefix", params.getFieldDelimPrefix());
-		addField(builder, "fieldDelimSuffix", params.getFieldDelimSuffix());
-		addField(builder, "normalizeTemplateName", params.getNormalizeTemplateName());
-
-		HttpEntity payload = builder.build();
-	    UploadTemplateResponse response = new UploadTemplateResponse();
+		UploadTemplateResponse response = new UploadTemplateResponse();
 	    
 	    try {
-	    	//Execute request
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
+		    //Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
 	    	//Extract data from Response String
@@ -339,26 +276,12 @@ public class Template {
 	 */
 	public static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getEnvironment().getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
-		}
-		if (request.getTemplateNames() != null) {
-			List<String> templateNames = request.getTemplateNames();
-			for(String templateName : templateNames) {
-				builder.addTextBody("templateName", templateName);
-			}
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-	    
-		HttpEntity payload = builder.build();
 	    DeleteTemplateResponse response = new DeleteTemplateResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
@@ -388,26 +311,12 @@ public class Template {
 	 */
 	public static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getEnvironment().getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
-		}
-		if (request.getTemplateNames() != null) {
-			List<String> templateNames = request.getTemplateNames();
-			for(String templateName : templateNames) {
-				builder.addTextBody("templateName", templateName);
-			}
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-	    
-		HttpEntity payload = builder.build();
 	    GetTemplateResponse response = new GetTemplateResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    }
@@ -425,28 +334,12 @@ public class Template {
 	 */
 	public static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getEnvironment().getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getEnvironment().getAccessKey());
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		if (request.getFormat() != null) {
-			builder.addTextBody("format", request.getFormat());
-		}
-		else {
-			builder.addTextBody("format", "");
-		}
-	    HttpEntity payload = builder.build();
-
 	    GetSampleDataResponse response = new GetSampleDataResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+	    	
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    	
@@ -497,37 +390,5 @@ public class Template {
 	    	throw new TemplateException(e);
 	    }
 		return response;
-	}
-	
-	private static boolean addField(MultipartEntityBuilder builder, String key, String param) {
-		boolean rtn = false;
-		if (param != null) {
-			builder.addTextBody(key, param);
-			rtn = true;
-		}
-		return rtn;
-	}
-	private static boolean addField(MultipartEntityBuilder builder, String key, Boolean param) {
-		boolean rtn = false;
-		if (param != null) {
-			builder.addTextBody(key, String.valueOf(param));
-			rtn = true;
-		}
-		return rtn;
-	}
-	private static boolean addField(MultipartEntityBuilder builder, String key, File param) throws TemplateException {
-		boolean rtn = false;
-		if (param != null) {
-			if (param.canRead()) {
-				builder.addTextBody(key, String.valueOf(param));
-				builder.addBinaryBody(key, param, ContentType.APPLICATION_OCTET_STREAM, param.getName());
-				rtn = true;
-			} else {
-				throw new TemplateException("cannot read " + key + ": [" + param + "]");
-			}
-		} else {
-			throw new TemplateException("No " + key + " selected");
-		}
-		return rtn;
 	}
 }

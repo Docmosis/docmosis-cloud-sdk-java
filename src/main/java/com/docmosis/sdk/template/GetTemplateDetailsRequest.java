@@ -16,6 +16,7 @@ package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Template Details service.
@@ -37,9 +38,11 @@ import com.docmosis.sdk.handlers.DocmosisException;
  *   }
  * </pre>
  */
-public class GetTemplateDetailsRequest extends AbstractTemplateRequest<GetTemplateDetailsRequest> {
+public class GetTemplateDetailsRequest extends DocmosisCloudRequest<GetTemplateDetailsRequest> {
 
 	private static final String SERVICE_PATH = "getTemplateDetails";
+	
+	private GetTemplateDetailsRequestParams params = new GetTemplateDetailsRequestParams();
 
 	public GetTemplateDetailsRequest() {
 		super(SERVICE_PATH);
@@ -49,12 +52,33 @@ public class GetTemplateDetailsRequest extends AbstractTemplateRequest<GetTempla
 		super(SERVICE_PATH, environment);
 	}
 	
-	public GetTemplateDetailsRequest templateName(String templateName)
-	{
-		super.setTemplateName(templateName);
+	public GetTemplateDetailsRequestParams getParams()
+    {
+    	return params;
+    }
+
+	/**
+	 * Set the Template Name.
+	 * 
+	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 * @return this request for method chaining
+	 */
+	public GetTemplateDetailsRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
 		return this;
 	}
 
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
+	 */
+	public GetTemplateDetailsRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
+		return this;
+	}
+	
 	@Override
 	public GetTemplateDetailsResponse execute() throws DocmosisException {
 		return Template.executeGetTemplateDetails(this);
@@ -78,9 +102,8 @@ public class GetTemplateDetailsRequest extends AbstractTemplateRequest<GetTempla
 		return Template.executeGetTemplateDetails(this);
 	}
 
-
 	@Override
 	public String toString() {
-		return "GetTemplateDetailsRequest [" + super.toString() + "]";
+		return params.toString();
 	}
 }

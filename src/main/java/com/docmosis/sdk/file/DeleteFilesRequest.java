@@ -41,8 +41,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>  {
 
 	private static final String SERVICE_PATH = "deleteFiles";
-	private String path;
-	private boolean includeSubFolders = false;
+	
+	private DeleteFilesRequestParams params = new DeleteFilesRequestParams();
 	
 	public DeleteFilesRequest() {
 		super(SERVICE_PATH);
@@ -51,22 +51,11 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	public DeleteFilesRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * The currently set name of the file or folder.
-	 * @return currently set name of the file or folder
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * The name of the file or folder.
-	 * @param path of file/folder
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
+	
+	public DeleteFilesRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
 	 * The name of the file or folder.
@@ -74,33 +63,17 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest path(String path) {
-		this.path = path;
+		params.setPath(path);
 		return this;
 	}
 
 	/**
-	 * If "true" all files within the given path are deleted also.
-	 * @return include sub folders value
-	 */
-	public boolean getIncludeSubFolders() {
-		return includeSubFolders;
-	}
-
-	/**
-	 * If "true" all files within the given path are deleted also.
-	 * @param includeSubFolders value
-	 */
-	public void setIncludeSubFolders(boolean includeSubFolders) {
-		this.includeSubFolders = includeSubFolders;
-	}
-
-	/**
-	 * If "true" all files within the given path are deleted also.
+	 * If true all files within the given path are deleted also.
 	 * @param includeSubFolders value
 	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest includeSubFolders(boolean includeSubFolders) {
-		this.includeSubFolders = includeSubFolders;
+		params.setIncludeSubFolders(includeSubFolders);
 		return this;
 	}
 
@@ -130,6 +103,6 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 
 	@Override
 	public String toString() {
-		return "DeleteFilesRequest [path=" + path + ", includeSubFolders=" + includeSubFolders + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

@@ -45,8 +45,8 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest> {
     
 	private static final String SERVICE_PATH = "convert";
-	private File fileToConvert;
-    private String outputName;
+	
+	private ConverterRequestParams params = new ConverterRequestParams();
     
     public ConverterRequest() {
     	super(SERVICE_PATH);
@@ -60,22 +60,13 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
     public ConverterRequest(final Environment environment)
     {
     	super(SERVICE_PATH, environment);
-    }    
-
-    public String getOutputName() {
-        return outputName;
-    }
-
-    /**
-     * Set the name to give the output document.  The format of the resulting document 
-     * is derived from the extension of this name. For example "resume1.pdf" implies a PDF format document. 
-     * 
-     * @param outputName the name of the result
-     */
-    public void setOutputName(String outputName) {
-        this.outputName = outputName;
     }
     
+    public ConverterRequestParams getParams()
+    {
+    	return params;
+    }
+
     /**
      * Set the name to give the output document.  The format of the resulting document 
      * is derived from the extension of this name. For example "resume1.pdf" implies a PDF format document. 
@@ -83,22 +74,12 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
      * @param outputName the name of the result
      * @return this request for method chaining
      */
-    public ConverterRequest outputName(String outputName) {
-        this.outputName = outputName;
+    public ConverterRequest outputName(String outputName)
+    {
+        params.setOutputName(outputName);
         return this;
     }
 
-    
-    public File getFileToConvert()
-	{
-		return fileToConvert;
-	}
-
-	public void setFileToConvert(File fileToConvert)
-	{
-		this.fileToConvert = fileToConvert;
-	}
-	
 	/**
 	 * Specify the local file to convert.  This file will be sent to the cloud and converted.
 	 * 
@@ -107,7 +88,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	 */
 	public ConverterRequest fileToConvert(File fileToConvert)
 	{
-		this.fileToConvert = fileToConvert;
+		params.setFileToConvert(fileToConvert);
 		return this;
 	}
 
@@ -184,7 +165,6 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	@Override
 	public String toString()
 	{
-		return "ConverterRequest [fileToConvert="
-				+ fileToConvert + ", outputName=" + outputName + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

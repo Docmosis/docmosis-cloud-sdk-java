@@ -43,11 +43,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest> {
 	
 	private static final String SERVICE_PATH = "uploadImage";
-	private String imageName;
-	private boolean isSystemImage = false;
-	private File imageFile = null;
-	private String imageDescription = "";
-	private boolean normalizeImageName = false;
+	
+	private UploadImageRequestParams params = new UploadImageRequestParams();
 
 	public UploadImageRequest() {
 		super(SERVICE_PATH);
@@ -56,134 +53,59 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	public UploadImageRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
+	
+	public UploadImageRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
-	 * The name of the image on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @return The image name.
+	 * Set the file stream to upload.
+	 * @param imageFile The file to upload
+	 * @return this request for method chaining
 	 */
-	public String getImageName() {
-		return imageName;
+	public UploadImageRequest imageFile(File imageFile) {
+		params.setImageFile(imageFile);
+		return this;
 	}
-
-	/**
-	 * Set the name of the image on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageName the image name.
-	 */
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
-	}
-
+	
 	/**
 	 * Set the name of the image on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
 	 * @param imageName the image name.
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest imageName(String imageName) {
-		this.imageName = imageName;
+		params.setImageName(imageName);
+		return this;
+	}
+	
+	/**
+	 * Set a short description for the image.
+	 * @param imageDescription the image description
+	 * @return this request for method chaining
+	 */
+	public UploadImageRequest imageDescription(String imageDescription) {
+		params.setImageDescription(imageDescription);
 		return this;
 	}
 
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @return isSystemImage flag
-	 */
-	public boolean getIsSystemImage() {
-		return isSystemImage;
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @param isSystemImage Is system image flag
-	 */
-	public void setSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
-	}
-	
 	/**
 	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
 	 * @param isSystemImage Is system image flag
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest isSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
+		params.setIsSystemImage(isSystemImage);
 		return this;
 	}
 
 	/**
-	 * The file stream of the image.
-	 * @return imageFile File Object
-	 */
-	public File getImageFile() {
-		return imageFile;
-	}
-
-	/**
-	 * The file stream of the image.
-	 * @param imageFile The file to upload
-	 */
-	public void setImageFile(File imageFile) {
-		this.imageFile = imageFile;
-	}
-	
-	/**
-	 * The file stream of the image.
-	 * @param imageFile The file to upload
-	 * @return this request for method chaining
-	 */
-	public UploadImageRequest imageFile(File imageFile) {
-		this.imageFile = imageFile;
-		return this;
-	}
-
-	/**
-	 * A short description for the image.
-	 * @return image description String
-	 */
-	public String getImageDescription() {
-		return imageDescription;
-	}
-
-	/**
-	 * A short description for the image.
-	 * @param imageDescription the image description
-	 */
-	public void setImageDescription(String imageDescription) {
-		this.imageDescription = imageDescription;
-	}
-
-	/**
-	 * A short description for the image.
-	 * @param imageDescription the image description
-	 * @return this request for method chaining
-	 */
-	public UploadImageRequest imageDescription(String imageDescription) {
-		this.imageDescription = imageDescription;
-		return this;
-	}
-
-	/**
-	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
-	 * @return normalizeImageName flag
-	 */
-	public boolean getNormalizeImageName() {
-		return normalizeImageName;
-	}
-
-	/**
-	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
-	 * @param normalizeImageName value
-	 */
-	public void setNormalizeImageName(boolean normalizeImageName) {
-		this.normalizeImageName = normalizeImageName;
-	}
-
-	/**
-	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
+	 * If set to true the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
 	 * @param normalizeImageName value
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest normalizeImageName(boolean normalizeImageName) {
-		this.normalizeImageName = normalizeImageName;
+		params.setNormalizeImageName(normalizeImageName);
 		return this;
 	}
 
@@ -212,9 +134,6 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 
 	@Override
 	public String toString() {
-		return "UploadImageRequest [imageName=" + imageName + ", isSystemImage=" + isSystemImage
-				+ ", imageFile=" + imageFile + ", imageDescription=" + imageDescription
-				+ ", normalizeImageName=" + normalizeImageName + ", " + super.toString() + "]";
+		return params.toString();
 	}
-
 }

@@ -19,68 +19,40 @@ import java.io.File;
 import com.docmosis.sdk.request.param.RequestParameters;
 
 /**
- * The object holds the instructions and data for a request to the Upload Template service.
+ * The object holds the parameters for a request to the Upload Template service.
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Upload Template request.
  * 
- * Typically, you would use the Template class to get an instance of this class, then
- * set the specifics you require using method chaining:
- * 
- * 
- * <pre>
- *   UploadTemplateResponse uploadedTemplate = Template
- *                                              .upload()
- *                                              .templateFile(uploadFile)
- *                                              .execute();
- *   if (uploadedTemplate.hasSucceeded()) {
- *       uploadedTemplate.toString();
- *   }
- * </pre>
  */
 public class UploadTemplateRequestParams extends RequestParameters {
 
-//	private boolean isSystemTemplate = false;
-//	private String templateName;
-//	private File templateFile = null;
-//	private String templateDescription = "";
-//	private boolean devMode = true;
-//	private boolean keepPrevOnFail = false;
-//	private String fieldDelimPrefix = "<<";
-//	private String fieldDelimSuffix = ">>";
-//	private boolean normalizeTemplateName = false;
-
-	private static final String IS_SYSTEM_TEMPLATE		= "isSystemTemplate";
-	private static final String TEMPLATE_NAME			= "templateName";
 	private static final String TEMPLATE_FILE			= "templateFile";
+	private static final String TEMPLATE_NAME			= "templateName";
 	private static final String TEMPLATE_DESCRIPTION	= "templateDescription";
+	private static final String IS_SYSTEM_TEMPLATE		= "isSystemTemplate";
 	private static final String DEV_MODE				= "devMode";
 	private static final String KEEP_PREV_ON_FAIL		= "keepPrevOnFail";
 	private static final String FIELD_DELIM_PREFIX		= "fieldDelimPrefix";
 	private static final String FIELD_DELIM_SUFFIX		= "fieldDelimSuffix";
 	private static final String NORMALIZE_TEMPLATE_NAME	= "normalizeTemplateName";
 
-	
-	
-	
 	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @return isSystemTemplate flag
+	 * Get currently set Template File to be uploaded.
+	 * @return File object of the template to be uploaded.
 	 */
-	public Boolean getIsSystemTemplate() {
-		return getBooleanParam(IS_SYSTEM_TEMPLATE);
+	public File getTemplateFile() {
+		return getFileParam(TEMPLATE_FILE);
 	}
 
 	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
+	 * Set the Template File to be uploaded.
+	 * @param templateFile File object of the template to be uploaded.
 	 */
-	public void setIsSystemTemplate(boolean isSystemTemplate) {
-		super.setParam(IS_SYSTEM_TEMPLATE, isSystemTemplate);
+	public void setTemplateFile(File templateFile) {
+		super.setParam(TEMPLATE_FILE, templateFile);
 	}
-	
+
 	/**
 	 * Get the currently set templateName.
 	 * 
@@ -98,24 +70,7 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	public void setTemplateName(String templateName) {
 		super.setParam(TEMPLATE_NAME, templateName);
 	}
-	
-	
-	/**
-	 * Get currently set Template File to be uploaded.
-	 * @return File object of the template to be uploaded.
-	 */
-	public File getTemplateFile() {
-		return getFileParam(TEMPLATE_FILE);
-	}
 
-	/**
-	 * Set the Template File to be uploaded.
-	 * @param templateFile File object of the template to be uploaded.
-	 */
-	public void setTemplateFile(File templateFile) {
-		super.setParam(TEMPLATE_FILE, templateFile);
-	}
-	
 	/**
 	 * Get current description of the template.
 	 * @return Template Description.
@@ -131,7 +86,25 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	public void setTemplateDescription(String templateDescription) {
 		super.setParam(TEMPLATE_DESCRIPTION, templateDescription);
 	}
-	
+
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @return isSystemTemplate flag
+	 */
+	public Boolean getIsSystemTemplate() {
+		return getBooleanParam(IS_SYSTEM_TEMPLATE);
+	}
+
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 */
+	public void setIsSystemTemplate(boolean isSystemTemplate) {
+		super.setParam(IS_SYSTEM_TEMPLATE, isSystemTemplate);
+	}
+
 	/**
 	 * If set to true the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
 	 * Defaults to true.
@@ -221,5 +194,4 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	public void setNormalizeTemplateName(boolean normalizeTemplateName) {
 		super.setParam(NORMALIZE_TEMPLATE_NAME, normalizeTemplateName);
 	}
-
 }

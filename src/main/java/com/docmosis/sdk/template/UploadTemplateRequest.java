@@ -60,28 +60,6 @@ public class UploadTemplateRequest extends DocmosisCloudRequest<UploadTemplateRe
     }
 
 	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
-	 */
-	public UploadTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
-		params.setIsSystemTemplate(isSystemTemplate);
-		return this;
-	}
-	
-	/**
-	 * Set the Template Name.
-	 * 
-	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 * @return this request for method chaining
-	 */
-	public UploadTemplateRequest templateName(String templateName) {
-		params.setTemplateName(templateName);
-		return this;
-	}
-	
-	/**
 	 * Set the Template File to be uploaded.
 	 * @param templateFile File object of the template to be uploaded.
 	 * @return this request for method chaining
@@ -92,12 +70,34 @@ public class UploadTemplateRequest extends DocmosisCloudRequest<UploadTemplateRe
 	}
 
 	/**
+	 * Set the Template Name.
+	 * 
+	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 * @return this request for method chaining
+	 */
+	public UploadTemplateRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
+		return this;
+	}
+
+	/**
 	 * Set the optional template description parameter.
 	 * @param templateDescription description of the template.
 	 * @return this request for method chaining
 	 */
 	public UploadTemplateRequest templateDescription(String templateDescription) {
 		params.setTemplateDescription(templateDescription);
+		return this;
+	}
+	
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
+	 */
+	public UploadTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
 		return this;
 	}
 

@@ -42,8 +42,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequest> {
 	
 	private static final String SERVICE_PATH = "getSampleData";
-	private String templateName;
-	private String format = null;
+	
+	private GetSampleDataRequestParams params = new GetSampleDataRequestParams();
 
 	public GetSampleDataRequest() {
 		super(SERVICE_PATH);
@@ -52,25 +52,12 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	public GetSampleDataRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
+	
+	public GetSampleDataRequestParams getParams()
+    {
+    	return params;
+    }
 
-	/**
-	 * Get the currently set templateName.
-	 * 
-	 * @return The name of the Template on the docmosis server.
-	 */
-	public String getTemplateName() {
-		return templateName;
-	}
-	
-	/**
-	 * Set the Template Name.
-	 * 
-	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
-	}
-	
 	/**
 	 * Set the Template Name.
 	 * 
@@ -78,7 +65,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * @return this request for method chaining
 	 */
 	public GetSampleDataRequest templateName(String templateName) {
-		this.templateName = templateName;
+		params.setTemplateName(templateName);
 		return this;
 	}
 
@@ -87,22 +74,10 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * @return true if json sample data, otherwise xml
 	 */
 	public boolean isFormatJson() {
+		String format = params.getFormat();
 		return (format == null || format.isEmpty() || format.equalsIgnoreCase("json"));
 	}
 	
-	public String getFormat() {
-		return format;
-	}
-
-	/**
-	 * Set the format of the Sample Data to be returned.
-	 * 
-	 * @param format format of the response, should be either "json" or "xml". Defaults to json.
-	 */
-	public void setFormat(String format) {
-		this.format = format;
-	}
-
 	/**
 	 * Set the format of the Sample Data to be returned.
 	 * 
@@ -110,7 +85,7 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * @return this request for method chaining
 	 */
 	public GetSampleDataRequest format(String format) {
-		this.format = format;
+		params.setFormat(format);
 		return this;
 	}
 	
@@ -136,15 +111,9 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 		super.setEnvironment(environment);
 		return Template.executeGetSampleData(this);
 	}
-//	
-//	@Override
-//	protected GetSampleDataRequest getThis()
-//	{
-//		return this;
-//	}
 	
 	@Override
 	public String toString() {
-		return "GetSampleDataRequest [templateName=" + templateName + ", format=" + format  + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

@@ -61,16 +61,6 @@ public class SimpleListFilesExample
 
 		if (files.hasSucceeded()) {
 			System.out.println(files.toString());
-//			List<FileDetails> list = files.list();
-//			if (list != null) {
-//				for(FileDetails fd : list) {
-//					System.out.println(fd.toString());
-//					//System.out.println(td.toString());
-//				}
-//			}
-//			else {
-//				System.out.println("No files on Docmosis Server");
-//			}
 		} else {
 			// something went wrong, tell the user
 			System.err.println("List Files failed: status="

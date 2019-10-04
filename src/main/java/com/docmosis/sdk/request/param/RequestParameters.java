@@ -49,6 +49,31 @@ public class RequestParameters {
 	public void setParam(String name, File value) {
 		params.put(name, new FileParamType(value));
 	}
+	
+	public void setParam(String name, List<String> value) {
+		if (params.containsKey(name)) {
+			List<String> al = ((StringListParamType) params.get(name)).getValue();
+			al.addAll(value);
+			params.put(name, new StringListParamType(al));
+		}
+		else {
+			params.put(name, new StringListParamType(value));
+		}
+	}
+	
+	public List<String> getStringListParam(String name) {
+		final ParamType val = params.get(name);		
+		return val == null ? null :val.stringListValue();
+	}
+	
+	public void setParam(String name, Integer value) {
+		params.put(name, new IntegerParamType(value));
+	}
+	
+	public Integer getIntegerParam(String name) {
+		final ParamType val = params.get(name);
+		return val == null ? null :val.integerValue();
+	}
 
 	@Override
 	public String toString() {

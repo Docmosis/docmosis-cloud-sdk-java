@@ -47,7 +47,7 @@ public class SimplePutFileExample
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 	//Full path of File to be uploaded
-	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
+	private static final String FILE_TO_UPLOAD = "C:/example/myFile1.pdf";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -63,12 +63,10 @@ public class SimplePutFileExample
 		PutFileResponse uploadedFile = FileStorage
 										.put()
 										.file(uploadFile)
-										.metaData("Test")
 										.execute();
 
 		if (uploadedFile.hasSucceeded()) {
 			System.out.println(uploadedFile.getShortMsg());
-			//System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
 		} else {
 			// something went wrong, tell the user
 			System.err.println("Put File failed: status="

@@ -60,11 +60,13 @@ public class SimpleGetTemplateExample
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
 		File outputFile = new File(FILE_TO_GET);
+		//File outputFile = new File("out.zip"); // If getting multiple templates they will be returned as a zip file.
+
 		GetTemplateResponse template = Template
 										.get()
-										.addTemplateName(FILE_TO_GET)
-										//.addTemplateName(FILE_TO_GET2) // Can specify more than one file
-										.sendTo(outputFile) //Or OutputStream
+										.templateName(FILE_TO_GET)
+										//.templateName(FILE_TO_GET2) // Can specify more than one file
+										.sendTo(outputFile)
 										.execute();
 
 		if (template.hasSucceeded()) {

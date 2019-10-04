@@ -59,11 +59,11 @@ public class SimpleGetImageExample
 		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
 		File outputFile = new File(FILE_TO_GET);
-		//File outputFile = new File("out.zip"); // If getting multiple templates they will be returned as a zip file.
+		//File outputFile = new File("out.zip"); // If getting multiple images they will be returned as a zip file.
 		GetImageResponse image = Image
 								.get()
-								.addImageName(FILE_TO_GET)
-								//.addImageName(FILE_TO_GET2) // Can specify more than one file
+								.imageName(FILE_TO_GET)
+								//.imageName(FILE_TO_GET2) // Can specify more than one file
 								.sendTo(outputFile) //Or OutputStream
 								.execute();
 

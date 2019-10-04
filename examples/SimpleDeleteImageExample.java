@@ -59,8 +59,8 @@ public class SimpleDeleteImageExample
 
 		DeleteImageResponse deleteImage = Image
 											.delete()
-											.addImageName(FIRST_FILE_TO_DELETE)
-											//.addImageName(SECOND_FILE_TO_DELETE)
+											.imageName(FIRST_FILE_TO_DELETE)
+											//.imageName(SECOND_FILE_TO_DELETE)
 											.execute();
 
 		if (deleteImage.hasSucceeded()) {

@@ -43,8 +43,8 @@ public class SimpleDeleteTemplateExample
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 	//Full path of File(s) to be deleted
-	private static final String FIRST_FILE_TO_DELETE = "myTemplateFile.docx";
-	//private static final String SECOND_FILE_TO_DELETE = "myOtherTemplateFile.docx";
+	private static final String FIRST_FILE_TO_DELETE = "myTemplateFile2.docx";
+	//private static final String SECOND_FILE_TO_DELETE = "myTemplateFile3.docx";
 
 	public static void main(String args[]) throws DocmosisException, IOException
 	{
@@ -58,8 +58,8 @@ public class SimpleDeleteTemplateExample
 
 		DeleteTemplateResponse deleteTemplate = Template
 												.delete()
-												.addTemplateName(FIRST_FILE_TO_DELETE)
-												//.addTemplateName(SECOND_FILE_TO_DELETE)
+												.templateName(FIRST_FILE_TO_DELETE)
+												//.templateName(SECOND_FILE_TO_DELETE)
 												.execute();
 
 		if (deleteTemplate.hasSucceeded()) {

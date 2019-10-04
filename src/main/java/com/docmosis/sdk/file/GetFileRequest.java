@@ -43,7 +43,8 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	
 	private static final String SERVICE_PATH = "getFile";
-	private String fileName;
+
+	private GetFileRequestParams params = new GetFileRequestParams();
 
 	public GetFileRequest() {
 		super(SERVICE_PATH);
@@ -52,22 +53,11 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	public GetFileRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * The name of the file, optionally including its path.
-	 * @return file name
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-
-	/**
-	 * Set the name of the file, optionally including its path.
-	 * @param fileName name and path of the file
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+	
+	public GetFileRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
 	 * Set the name of the file, optionally including its path.
@@ -75,7 +65,7 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	 * @return this request for method chaining
 	 */
 	public GetFileRequest fileName(String fileName) {
-		this.fileName = fileName;
+		params.setFileName(fileName);
 		return this;
 	}
 
@@ -111,6 +101,6 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 
 	@Override
 	public String toString() {
-		return "GetFileRequest [fileName=" + fileName + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

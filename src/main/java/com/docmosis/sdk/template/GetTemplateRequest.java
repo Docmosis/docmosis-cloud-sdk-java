@@ -14,7 +14,6 @@
  */
 package com.docmosis.sdk.template;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
@@ -45,66 +44,22 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequest> {
 	
 	private static final String SERVICE_PATH = "getTemplate";
-	private boolean isSystemTemplate = false;
-	private List<String> templateNames = null;
 	
+	private GetTemplateRequestParams params = new GetTemplateRequestParams();
+
 	public GetTemplateRequest() {
 		super(SERVICE_PATH);
-		templateNames = new ArrayList<String>();
 	}
 	
 	public GetTemplateRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
-		templateNames = new ArrayList<String>();
 	}
+	
+	public GetTemplateRequestParams getParams()
+    {
+    	return params;
+    }
 
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @return isSystemTemplate flag
-	 */
-	public boolean getIsSystemTemplate() {
-		return isSystemTemplate;
-	}
-
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 */
-	public void setSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-	}
-	
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
-	 */
-	public GetTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-		return this;
-	}
-	
-	/**
-	 * Get the currently set templateNames.
-	 * 
-	 * @return List of the name of the Templates on the docmosis server.
-	 */
-	public List<String> getTemplateNames() {
-		return templateNames;
-	}
-	
-	/**
-	 * Set the Template Names.
-	 * 
-	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
-	}
-	
 	/**
 	 * Set the Template Names.
 	 * 
@@ -112,21 +67,32 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	 * @return this request for method chaining
 	 */
 	public GetTemplateRequest templateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
+		params.setTemplateNames(templateNames);
 		return this;
 	}
-
+	
 	/**
-	 * Add a Template Name.
+	 * Set the Template Name.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
 	 */
-	public GetTemplateRequest addTemplateName(String templateName) {
-		this.templateNames.add(templateName);
+	public GetTemplateRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
 		return this;
 	}
 	
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
+	 */
+	public GetTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
+		return this;
+	}
+
 	@Override
 	public GetTemplateResponse execute() throws DocmosisException {
 		return Template.executeGetTemplate(this);
@@ -158,13 +124,6 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	
 	@Override
 	public String toString() {
-		String names = "(";
-		if (templateNames != null) {
-			for (String tn: templateNames) {
-				names += tn + "; ";
-			}
-			names = names.substring(0, names.length()-2) + ")";
-		}
-		return "GetTemplateRequest [isSystemTemplate=" + isSystemTemplate + ", templateNames=" + names +  ", " + super.toString() +  "]";
+		return params.toString();
 	}
 }

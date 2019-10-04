@@ -39,7 +39,7 @@ import junit.framework.TestCase;
 public class TestAll extends TestCase {
 	
 	private static final String DEFAULT_TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-	private static final String ACCESS_KEY = "ODNlYmM0OTEtNGY2OS00N2Q3LWFjZTUtNDllMTJmNWY4MzY4OjA2MTAwMTI";
+	private static final String ACCESS_KEY = "XXX";
 	private static final String FILE_TO_UPLOAD = "src/test/java/testFiles/myTemplateFile.docx";
 	private static final String FILE_TO_UPLOAD2 = "src/test/java/testFiles/myTemplateFile2.docx";
 	private static final String FILE_GET = "myTemplateFile.docx";
@@ -163,7 +163,7 @@ public class TestAll extends TestCase {
 			UploadTemplateResponse rsp = Template.upload().templateFile(uploadFile).execute();
 			assertTrue(rsp.hasSucceeded());
 			
-			DeleteTemplateResponse drsp = Template.delete().addTemplateName(FILE_NAME).execute();
+			DeleteTemplateResponse drsp = Template.delete().templateName(FILE_NAME).execute();
 			assertTrue(drsp.hasSucceeded());
 			try {
 				uploadFile = new File(NONEXISTENT_FILE_TO_UPLOAD);
@@ -220,9 +220,9 @@ public class TestAll extends TestCase {
 	public void testGetTemplate() {
 		try {
 			File outputFile = new File(OUT + "2");
-			GetTemplateResponse rsp = Template.get().addTemplateName(DEFAULT_TEMPLATE_NAME).sendTo(outputFile).execute();
+			GetTemplateResponse rsp = Template.get().templateName(DEFAULT_TEMPLATE_NAME).sendTo(outputFile).execute();
 			assertTrue(rsp.hasSucceeded());
-			rsp = Template.get().addTemplateName(NONEXISTENT_FILE_NAME).sendTo(outputFile).execute();
+			rsp = Template.get().templateName(NONEXISTENT_FILE_NAME).sendTo(outputFile).execute();
 			assertFalse(rsp.hasSucceeded());
 		} catch (Exception e) {
 			fail();
@@ -251,7 +251,7 @@ public class TestAll extends TestCase {
 			File uploadFile = new File(IMAGE_TO_UPLOAD);
 			UploadImageResponse rsp = Image.upload().imageFile(uploadFile).execute();
 			assertTrue(rsp.hasSucceeded());
-			DeleteImageResponse drsp = Image.delete().addImageName(IMAGE_NAME).execute();
+			DeleteImageResponse drsp = Image.delete().imageName(IMAGE_NAME).execute();
 			assertTrue(drsp.hasSucceeded());
 			try {
 				uploadFile = new File(NONEXISTENT_IMAGE_TO_UPLOAD);
@@ -268,9 +268,9 @@ public class TestAll extends TestCase {
 	public void testGetImage() {
 		try {
 			File outputFile = new File(OUT + "3");
-			GetImageResponse rsp = Image.get().addImageName(IMAGE_NAME2).sendTo(outputFile).execute();
+			GetImageResponse rsp = Image.get().imageName(IMAGE_NAME2).sendTo(outputFile).execute();
 			assertTrue(rsp.hasSucceeded());
-			rsp = Image.get().addImageName(NONEXISTENT_IMAGE_NAME).sendTo(outputFile).execute();
+			rsp = Image.get().imageName(NONEXISTENT_IMAGE_NAME).sendTo(outputFile).execute();
 			assertFalse(rsp.hasSucceeded());
 		} catch (Exception e) {
 			fail();
