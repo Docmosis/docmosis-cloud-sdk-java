@@ -43,6 +43,11 @@
     	<classifier>tests</classifier>
 		<scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>com.openpojo</groupId>
+    	<artifactId>openpojo</artifactId>
+    	<version>0.8.13</version>
+    </dependency>
   </dependencies>
   <description>This SDK makes it easy to invoke API calls on Docmosis web service end points (such as the public Docmosis Cloud Services).</description>
 

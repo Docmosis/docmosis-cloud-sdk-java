@@ -49,7 +49,7 @@ public class DocmosisCloudResponse
 	private String longMsg;
 	private String serverId;
 	private int tries;
-	private PreviousFailureInformation prevFailureInfo;
+	private PreviousFailureInformation previousFailureInformation;
 	
 	/**
 	 * Determine if convert request succeeded.
@@ -140,7 +140,7 @@ public class DocmosisCloudResponse
 	 */
 	public PreviousFailureInformation getPreviousFailureInformation()
 	{
-		return prevFailureInfo;
+		return previousFailureInformation;
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class DocmosisCloudResponse
 	 */
 	public void setPreviousFailureInformation(PreviousFailureInformation failureInfo)
 	{
-		this.prevFailureInfo = failureInfo;
+		this.previousFailureInformation = failureInfo;
 	}
 
 	/**

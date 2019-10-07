@@ -15,7 +15,6 @@
 
 package com.docmosis.sdk.template;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.request.param.RequestParameters;
@@ -47,9 +46,7 @@ public class GetTemplateRequestParams extends RequestParameters {
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 */
 	public void setTemplateName(String templateName) {
-		ArrayList<String> al = new ArrayList<String>();
-		al.add(templateName);
-		super.setParam(TEMPLATE_NAME, al);
+		super.addParam(TEMPLATE_NAME, templateName);
 	}
 	
 	/**

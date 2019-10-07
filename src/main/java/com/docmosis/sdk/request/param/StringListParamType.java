@@ -1,5 +1,6 @@
 package com.docmosis.sdk.request.param;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StringListParamType extends AbstractParamType {
@@ -9,6 +10,12 @@ public class StringListParamType extends AbstractParamType {
 	public StringListParamType(List<String> value)
 	{
 		this.value = value;
+	}
+	
+	public StringListParamType(String value)
+	{
+		this.value = new ArrayList<String>();
+		this.value.add(value);
 	}
 
 	public List<String> getValue() {

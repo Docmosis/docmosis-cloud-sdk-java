@@ -66,7 +66,7 @@ public class SimpleUploadTemplateExample
 		if (uploadedTemplate.hasSucceeded()) {
 			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
 			System.out.println();
-			TemplateDetails template = uploadedTemplate.getDetails();
+			TemplateDetails template = uploadedTemplate.getTemplateDetails();
 			System.out.println("Template Details:");
 			System.out.println("Template Name: " + template.getName());
 			System.out.println("Last Modified: " + template.getLastModifiedISO8601());

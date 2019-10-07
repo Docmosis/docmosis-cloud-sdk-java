@@ -31,7 +31,7 @@ public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 	 * 
 	 * @return Json representation of the templates structure
 	 */
-	public JsonObject getStructure() {
+	public JsonObject getTemplateStructure() {
 		return templateStructure;
 	}
 

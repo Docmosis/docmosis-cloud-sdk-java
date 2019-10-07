@@ -62,7 +62,7 @@ public class SimpleGetTemplateDetailsExample
 														.execute();
 
 		if (templateDetails.hasSucceeded()) {
-			TemplateDetails template = templateDetails.getDetails();
+			TemplateDetails template = templateDetails.getTemplateDetails();
 			System.out.println("Template Details:");
 			System.out.println("Template Name: " + template.getName());
 			System.out.println("Last Modified: " + template.getLastModifiedISO8601());

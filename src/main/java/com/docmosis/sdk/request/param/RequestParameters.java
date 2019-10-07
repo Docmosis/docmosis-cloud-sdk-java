@@ -61,6 +61,22 @@ public class RequestParameters {
 		}
 	}
 	
+	/**
+	 * Method for adding a String to a String List Param type
+	 * @param name key
+	 * @param value to add to String List
+	 */
+	public void addParam(String name, String value) {
+		if (params.containsKey(name)) {
+			List<String> lst = ((StringListParamType) params.get(name)).getValue();
+			lst.add(value);
+			params.put(name, new StringListParamType(lst));
+		}
+		else {
+			params.put(name, new StringListParamType(value));
+		}
+	}
+	
 	public List<String> getStringListParam(String name) {
 		final ParamType val = params.get(name);		
 		return val == null ? null :val.stringListValue();

@@ -38,7 +38,7 @@ public class UploadTemplateResponse extends DocmosisCloudResponse {
 	 * templateDescription- the description uploaded with the template
 	 * @return TemplateDetails Object
 	 */
-	public TemplateDetails getDetails() {
+	public TemplateDetails getTemplateDetails() {
 		return templateDetails;
 	}
 

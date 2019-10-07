@@ -14,7 +14,6 @@
  */
 package com.docmosis.sdk.image;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.request.param.RequestParameters;
@@ -45,9 +44,7 @@ public class DeleteImageRequestParams extends RequestParameters {
 	 * @param imageName The name of the Image on the docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 */
 	public void setImageName(String imageName) {
-		ArrayList<String> al = new ArrayList<String>();
-		al.add(imageName);
-		super.setParam(IMAGE_NAME, al);
+		super.addParam(IMAGE_NAME, imageName);
 	}
 
 	/**

@@ -34,7 +34,7 @@ public class UploadImageResponse extends DocmosisCloudResponse {
 	 * md5 - the md5 hash code for the image
 	 * @return ImageDetails Object
 	 */
-	public ImageDetails getDetails() {
+	public ImageDetails getImageDetails() {
 		return imageDetails;
 	}
 

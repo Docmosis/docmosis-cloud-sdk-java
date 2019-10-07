@@ -66,7 +66,7 @@ public class SimpleUploadImageExample
 		if (uploadedImage.hasSucceeded()) {
 			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
 			System.out.println();
-			ImageDetails image = uploadedImage.getDetails();
+			ImageDetails image = uploadedImage.getImageDetails();
 			System.out.println("Template Details:");
 			System.out.println("Template Name: " + image.getName());
 			System.out.println("Last Modified: " + image.getLastModifiedISO8601());
