@@ -27,10 +27,16 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class PutFileRequestParams extends RequestParameters {
 
-	private static final String FILE = "file";
-	private static final String FILE_NAME = "fileName";
-	private static final String CONTENT_TYPE = "contentType";
-	private static final String META_DATA = "metaData";
+	private static final String FILE				= "file";
+	private static final String FILE_NAME			= "fileName";
+	private static final String CONTENT_TYPE		= "contentType";
+	private static final String META_DATA			= "metaData";
+	
+	private static final String[] REQUIRED_PARAMS	= {FILE};
+
+	public PutFileRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 
 	/**
 	 * The file stream to upload.

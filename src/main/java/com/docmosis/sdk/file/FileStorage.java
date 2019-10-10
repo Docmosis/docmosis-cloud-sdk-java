@@ -157,7 +157,7 @@ public class FileStorage {
 		    }
 	    }
 	    catch (DocmosisException e) {
-	    	e.printStackTrace();
+	    	//e.printStackTrace();
 	    	throw new FileException(e);
 	    }
 		return response;

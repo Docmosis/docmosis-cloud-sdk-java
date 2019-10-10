@@ -9,11 +9,23 @@ import java.util.Map;
 public class RequestParameters {
 
 	private Map<String, ParamType> params = new LinkedHashMap<String, ParamType>();
+	private String[] requiredParams;
 
+	public RequestParameters(String[] requiredParams) {
+		this.requiredParams = requiredParams;
+	}
 	public List<String> getKeys()
 	{
 		return new ArrayList<String>(params.keySet());
 	}
+	
+	/**
+     * Get list of param names that are required for the request
+     * @return required params
+     */
+    public String[] getRequiredParams() {
+        return requiredParams;
+    }
 	
 	public void setParam(String name, ParamType type) {
 		params.put(name, type);

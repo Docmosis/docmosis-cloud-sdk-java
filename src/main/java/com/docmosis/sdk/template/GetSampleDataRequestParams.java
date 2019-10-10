@@ -25,8 +25,14 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class GetSampleDataRequestParams extends RequestParameters {
 	
-	private static final String TEMPLATE_NAME = "templateName";
-	private static final String FORMAT = "format";
+	private static final String TEMPLATE_NAME		= "templateName";
+	private static final String FORMAT				= "format";
+	
+	private static final String[] REQUIRED_PARAMS	= {TEMPLATE_NAME};
+
+	public GetSampleDataRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 	
 	/**
 	 * Get the currently set templateName.

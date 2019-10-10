@@ -36,6 +36,12 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	private static final String FIELD_DELIM_PREFIX		= "fieldDelimPrefix";
 	private static final String FIELD_DELIM_SUFFIX		= "fieldDelimSuffix";
 	private static final String NORMALIZE_TEMPLATE_NAME	= "normalizeTemplateName";
+	
+	private static final String[] REQUIRED_PARAMS		= {TEMPLATE_FILE};
+
+    public UploadTemplateRequestParams() {
+    	super(REQUIRED_PARAMS);
+    }
 
 	/**
 	 * Get currently set Template File to be uploaded.

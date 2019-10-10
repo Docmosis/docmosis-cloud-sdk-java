@@ -25,8 +25,14 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class RenameFilesRequestParams extends RequestParameters {
 
-	private static final String FROM_PATH = "fromPath";
-	private static final String TO_PATH = "toPath";
+	private static final String FROM_PATH			= "fromPath";
+	private static final String TO_PATH				= "toPath";
+	
+	private static final String[] REQUIRED_PARAMS	= {FROM_PATH, TO_PATH};
+
+	public RenameFilesRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 
 	/**
 	 * The original name of the file or folder.

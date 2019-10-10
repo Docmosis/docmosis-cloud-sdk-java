@@ -26,7 +26,13 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class GetTemplateStructureRequestParams extends RequestParameters {
 
-	private static final String TEMPLATE_NAME = "templateName";
+	private static final String TEMPLATE_NAME		= "templateName";
+	
+	private static final String[] REQUIRED_PARAMS	= {TEMPLATE_NAME};
+
+	public GetTemplateStructureRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 	
 	/**
 	 * Get the currently set templateName.

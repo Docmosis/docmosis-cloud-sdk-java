@@ -34,7 +34,7 @@ public class RenderRequestParams extends RequestParameters {
     private static final String STORE_TO                  = "storeTo";
     private static final String BILLING_KEY               = "billingKey";
     private static final String DEV_MODE                  = "devMode";
-    public static final String DATA                      = "data";
+    public static final String DATA                       = "data";
     private static final String REQUEST_ID                = "requestId";
     private static final String MAIL_SUBJECT              = "mailSubject";
     private static final String MAIL_BODY_HTML            = "mailBodyHtml";
@@ -48,8 +48,12 @@ public class RenderRequestParams extends RequestParameters {
     private static final String PDF_TAGGED                = "pdfTagged";
     private static final String IGNORE_UNKNOWN_PARAMETERS = "ignoreUnknownParams";
     private static final String TAGS                      = "tags";
-
     
+    private static final String[] REQUIRED_PARAMS         = {TEMPLATE_NAME};
+
+	public RenderRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
     
     //The following fields are part of the Docmosis Web Services API but have not 
     //been implemented in this SDK.

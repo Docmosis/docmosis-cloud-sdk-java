@@ -19,6 +19,7 @@ import org.apache.http.entity.StringEntity;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.RequestBuilder;
 import com.docmosis.sdk.request.param.ParamType;
 
 /**
@@ -59,6 +60,14 @@ public class Renderer {
         RenderResponse response = new RenderResponse();
         
     	final boolean requestIsJson = requestIsJson(request.getParams());
+    	
+    	try {
+    		RequestBuilder.testRequiredParams(request.getParams());
+    	}
+    	catch (DocmosisException e) {
+			throw new RendererException(e);
+    	}
+		
 
 		//Build request
     	final String accessKey = request.getEnvironment().getAccessKey();

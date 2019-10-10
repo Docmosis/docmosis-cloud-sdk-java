@@ -29,6 +29,8 @@ public class RequestBuilder {
 	 */
 	public static HttpEntity buildMultiPartRequest(String accessKey, RequestParameters params) throws DocmosisException {
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+		testRequiredParams(params);
 		
 		//Add access key first
 		if (accessKey != null) {
@@ -92,6 +94,30 @@ public class RequestBuilder {
 			builder.addBinaryBody(key, param, ContentType.APPLICATION_OCTET_STREAM, param.getName());
 		} else {
 			throw new DocmosisException("cannot read " + key + ": [" + param + "]");
+		}
+	}
+
+	/**
+	 * Checks that all required parameters exist within params object.
+	 * Throws Exception if any are missing.
+	 * @param params request parameters
+	 * @throws DocmosisException if any required request parameters are missing
+	 */
+	public static void testRequiredParams(RequestParameters params) throws DocmosisException {
+		StringBuilder sb = new StringBuilder();
+		for (String s : params.getRequiredParams()) {
+			if (!params.getKeys().contains(s)) {
+				if (sb.length() == 0) {
+					sb.append(s);
+				}
+				else {
+					sb.append(", ").append(s);
+				}
+				
+			}
+		}
+		if (sb.length() != 0) {
+			throw new DocmosisException("Missing required parameters: " + sb.toString());
 		}
 	}
 }

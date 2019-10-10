@@ -25,8 +25,14 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class DeleteFilesRequestParams extends RequestParameters {
 
-	private static final String PATH = "path";
-	private static final String INCLUDE_SUB_FOLDERS = "includeSubFolders";
+	private static final String PATH				= "path";
+	private static final String INCLUDE_SUB_FOLDERS	= "includeSubFolders";
+	
+	private static final String[] REQUIRED_PARAMS	= {PATH};
+
+	public DeleteFilesRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 
 	/**
 	 * The currently set name of the file or folder.

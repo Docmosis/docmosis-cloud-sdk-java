@@ -25,7 +25,13 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class GetFileRequestParams extends RequestParameters {
 
-	private static final String FILE_NAME = "fileName";
+	private static final String FILE_NAME			= "fileName";
+	
+	private static final String[] REQUIRED_PARAMS	= {FILE_NAME};
+
+	public GetFileRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 
 	/**
 	 * The name of the file, optionally including its path.

@@ -27,11 +27,17 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class UploadImageRequestParams extends RequestParameters {
 	
-	private static final String IMAGE_FILE = "imageFile";
-	private static final String IMAGE_NAME = "imageName";
-	private static final String IMAGE_DESCRIPTION = "imageDescription";
-	private static final String IS_SYSTEM_IMAGE = "isSystemImage";
-	private static final String NORMALIZE_IMAGE_NAME = "normalizeImageName";
+	private static final String IMAGE_FILE				= "imageFile";
+	private static final String IMAGE_NAME				= "imageName";
+	private static final String IMAGE_DESCRIPTION		= "imageDescription";
+	private static final String IS_SYSTEM_IMAGE			= "isSystemImage";
+	private static final String NORMALIZE_IMAGE_NAME	= "normalizeImageName";
+	
+	private static final String[] REQUIRED_PARAMS		= {IMAGE_FILE};
+
+	public UploadImageRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 
 	/**
 	 * The file stream of the image.

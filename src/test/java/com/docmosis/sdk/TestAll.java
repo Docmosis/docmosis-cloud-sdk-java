@@ -10,6 +10,8 @@ import com.docmosis.sdk.convert.ConverterResponse;
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.file.DeleteFilesResponse;
+import com.docmosis.sdk.file.FileException;
+import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.GetFileResponse;
 import com.docmosis.sdk.file.ListFilesResponse;
 import com.docmosis.sdk.file.PutFileResponse;
@@ -18,13 +20,16 @@ import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.image.DeleteImageResponse;
 import com.docmosis.sdk.image.GetImageResponse;
 import com.docmosis.sdk.image.Image;
+import com.docmosis.sdk.image.ImageException;
 import com.docmosis.sdk.image.ListImagesResponse;
 import com.docmosis.sdk.image.UploadImageResponse;
 import com.docmosis.sdk.ping.Ping;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
+import com.docmosis.sdk.render.RendererException;
 import com.docmosis.sdk.rendertags.GetRenderTagsResponse;
 import com.docmosis.sdk.rendertags.RenderTags;
+import com.docmosis.sdk.rendertags.RenderTagsException;
 import com.docmosis.sdk.template.DeleteTemplateResponse;
 import com.docmosis.sdk.template.GetSampleDataResponse;
 import com.docmosis.sdk.template.GetTemplateDetailsResponse;
@@ -32,6 +37,7 @@ import com.docmosis.sdk.template.GetTemplateResponse;
 import com.docmosis.sdk.template.GetTemplateStructureResponse;
 import com.docmosis.sdk.template.ListTemplatesResponse;
 import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateException;
 import com.docmosis.sdk.template.UploadTemplateResponse;
 
 import junit.framework.TestCase;
@@ -39,13 +45,14 @@ import junit.framework.TestCase;
 public class TestAll extends TestCase {
 	
 	private static final String DEFAULT_TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-	private static final String ACCESS_KEY = "XXX";
+	private static final String ACCESS_KEY = "ZjU4MWZkM2UtYjAzNy00OTg0LTkzNjEtYzJlNTBlZGY2ZDk5OjAwMTAxNTg";
 	private static final String FILE_TO_UPLOAD = "src/test/java/testFiles/myTemplateFile.docx";
 	private static final String FILE_TO_UPLOAD2 = "src/test/java/testFiles/myTemplateFile2.docx";
 	private static final String FILE_GET = "myTemplateFile.docx";
 	private static final String FILE_NAME = "myTemplateFile.docx";
 	private static final String FILE_NAME2 = "myTemplateFile2.docx";
 	private static final String IMAGE_TO_UPLOAD = "src/test/java/testFiles/Image1.png";
+	private static final String IMAGE_TO_UPLOAD2 = "src/test/java/testFiles/Image2.jpg";
 	private static final String IMAGE_NAME = "Image1.png";
 	private static final String IMAGE_NAME2 = "Image2.jpg";
 	private static final String FILE_RENAME1 = "myDocument.docx";
@@ -98,10 +105,26 @@ public class TestAll extends TestCase {
 					.execute();
 			assertFalse(rsp.getShortMsg(), rsp.hasSucceeded());
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			fail();
 		}
 	}
+	
+	@Test
+	public void testRendererMissingParams() {
+		try {
+			Renderer.render().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof RendererException);
+		}
+	}
+
+	/*
+	  *********************
+	  * Render Tags Tests *
+	  *********************
+	*/
 	
 	@Test
 	public void testGetRenderTags() {
@@ -110,6 +133,16 @@ public class TestAll extends TestCase {
 			assertTrue(rsp.hasSucceeded());
 		} catch (Exception e) {
 			fail();
+		}
+	}
+	
+	@Test
+	public void testGetRenderTagsMissingParams() {
+		try {
+			RenderTags.get().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof RenderTagsException);
 		}
 	}
 
@@ -136,6 +169,16 @@ public class TestAll extends TestCase {
 			}
 		} catch (Exception e2) {
 			fail();
+		}
+	}
+	
+	@Test
+	public void testConverterMissingParams() {
+		try {
+			Converter.convert().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof ConverterException);
 		}
 	}
 
@@ -168,6 +211,7 @@ public class TestAll extends TestCase {
 			try {
 				uploadFile = new File(NONEXISTENT_FILE_TO_UPLOAD);
 				rsp = Template.upload().templateFile(uploadFile).execute();
+				fail();
 			} catch (Exception e1) {
 				assertTrue(e1 instanceof DocmosisException);
 			}
@@ -229,6 +273,66 @@ public class TestAll extends TestCase {
 		}
 	}
 
+	@Test
+	public void testUploadTemplateMissingParams() {
+		try {
+			Template.upload().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof TemplateException);
+		}
+	}
+
+	@Test
+	public void testDeleteTemplateMissingParams() {
+		try {
+			Template.delete().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof TemplateException);
+		}
+	}
+
+	@Test
+	public void testGetTemplateStructureMissingParams() {
+		try {
+			Template.getStructure().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof TemplateException);
+		}
+	}
+
+	@Test
+	public void testGetTemplateDetailsMissingParams() {
+		try {
+			Template.getDetails().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof TemplateException);
+		}
+	}
+
+	@Test
+	public void testGetSampleDataMissingParams() {
+		try {
+			Template.getSampleData().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof TemplateException);
+		}
+	}
+
+	@Test
+	public void testGetTemplateMissingParams() {
+		try {
+			Template.get().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof TemplateException);
+		}
+	}
+
 /*
   ***************
   * Image Tests *
@@ -256,6 +360,7 @@ public class TestAll extends TestCase {
 			try {
 				uploadFile = new File(NONEXISTENT_IMAGE_TO_UPLOAD);
 				rsp = Image.upload().imageFile(uploadFile).execute();
+				fail();
 			} catch (Exception e1) {
 				assertTrue(e1 instanceof DocmosisException);
 			}
@@ -267,6 +372,9 @@ public class TestAll extends TestCase {
 	@Test
 	public void testGetImage() {
 		try {
+			File uploadFile = new File(IMAGE_TO_UPLOAD2);
+			UploadImageResponse ursp = Image.upload().imageFile(uploadFile).execute();
+			assertTrue(ursp.hasSucceeded());
 			File outputFile = new File(OUT + "3");
 			GetImageResponse rsp = Image.get().imageName(IMAGE_NAME2).sendTo(outputFile).execute();
 			assertTrue(rsp.hasSucceeded());
@@ -274,6 +382,36 @@ public class TestAll extends TestCase {
 			assertFalse(rsp.hasSucceeded());
 		} catch (Exception e) {
 			fail();
+		}
+	}
+	
+	@Test
+	public void testUploadImageMissingParams() {
+		try {
+			Image.upload().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof ImageException);
+		}
+	}
+	
+	@Test
+	public void testDeleteImageMissingParams() {
+		try {
+			Image.delete().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof ImageException);
+		}
+	}
+	
+	@Test
+	public void testGetImageMissingParams() {
+		try {
+			Image.get().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof ImageException);
 		}
 	}
 
@@ -286,7 +424,7 @@ public class TestAll extends TestCase {
 	@Test
 	public void testListFiles() {
 		try {
-			ListFilesResponse rsp = com.docmosis.sdk.file.FileStorage.list().execute();
+			ListFilesResponse rsp = FileStorage.list().execute();
 			assertTrue(rsp.hasSucceeded());
 		} catch (Exception e) {
 			fail();
@@ -297,14 +435,15 @@ public class TestAll extends TestCase {
 	public void testPutDeleteFile() {
 		try {
 			File uploadFile = new File(FILE_TO_UPLOAD2);
-			PutFileResponse rsp = com.docmosis.sdk.file.FileStorage.put().file(uploadFile).metaData("Test").execute();
+			PutFileResponse rsp = FileStorage.put().file(uploadFile).metaData("Test").execute();
 			assertTrue(rsp.hasSucceeded());
-			DeleteFilesResponse drsp = com.docmosis.sdk.file.FileStorage.delete().path(FILE_NAME2).execute();
+			DeleteFilesResponse drsp = FileStorage.delete().path(FILE_NAME2).execute();
 			assertTrue(drsp.hasSucceeded());
 		
 			try {
 				uploadFile = new File(NONEXISTENT_FILE_TO_UPLOAD);
-				rsp = com.docmosis.sdk.file.FileStorage.put().file(uploadFile).metaData("Test").execute();
+				rsp = FileStorage.put().file(uploadFile).metaData("Test").execute();
+				fail();
 			} catch (Exception e1) {
 				assertTrue(e1 instanceof DocmosisException);
 			}
@@ -316,9 +455,9 @@ public class TestAll extends TestCase {
 	@Test
 	public void testFileRename() {
 		try {
-			RenameFilesResponse rsp = com.docmosis.sdk.file.FileStorage.rename().fromPath(FILE_RENAME1).toPath(FILE_RENAME2).execute();
+			RenameFilesResponse rsp = FileStorage.rename().fromPath(FILE_RENAME1).toPath(FILE_RENAME2).execute();
 			assertTrue(rsp.hasSucceeded());
-			rsp = com.docmosis.sdk.file.FileStorage.rename().fromPath(FILE_RENAME2).toPath(FILE_RENAME1).execute();
+			rsp = FileStorage.rename().fromPath(FILE_RENAME2).toPath(FILE_RENAME1).execute();
 			assertTrue(rsp.hasSucceeded());
 		} catch (Exception e) {
 			fail();
@@ -328,13 +467,56 @@ public class TestAll extends TestCase {
 	@Test
 	public void testGetFile() {
 		try {
+			File uploadFile = new File(FILE_TO_UPLOAD);
+			PutFileResponse ursp = FileStorage.put().file(uploadFile).metaData("Test").execute();
+			assertTrue(ursp.hasSucceeded());
 			File outputFile = new File(OUT + "4");
-			GetFileResponse rsp = com.docmosis.sdk.file.FileStorage.get().fileName(FILE_GET).sendTo(outputFile).execute();
+			GetFileResponse rsp = FileStorage.get().fileName(FILE_GET).sendTo(outputFile).execute();
 			assertTrue(rsp.hasSucceeded());
-			rsp = com.docmosis.sdk.file.FileStorage.get().fileName(NONEXISTENT_FILE_NAME).sendTo(outputFile).execute();
+			rsp = FileStorage.get().fileName(NONEXISTENT_FILE_NAME).sendTo(outputFile).execute();
 			assertFalse(rsp.hasSucceeded());
 		} catch (Exception e) {
 			fail();
+		}
+	}
+
+	@Test
+	public void testPutFileMissingParams() {
+		try {
+			FileStorage.put().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof FileException);
+		}
+	}
+
+	@Test
+	public void testDeleteFileMissingParams() {
+		try {
+			FileStorage.delete().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof FileException);
+		}
+	}
+
+	@Test
+	public void testRenameFileMissingParams() {
+		try {
+			FileStorage.rename().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof FileException);
+		}
+	}
+
+	@Test
+	public void testGetFileMissingParams() {
+		try {
+			FileStorage.get().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof FileException);
 		}
 	}
 }

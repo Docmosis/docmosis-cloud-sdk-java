@@ -25,12 +25,18 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class GetRenderTagsRequestParams extends RequestParameters {
 	
-	private static final String TAGS = "tags";
-	private static final String YEAR = "year";
-	private static final String MONTH = "month";
-	private static final String N_MONTHS = "nMonths";
-	private static final String PAD_BLANKS = "padBlanks";
+	private static final String TAGS				= "tags";
+	private static final String YEAR				= "year";
+	private static final String MONTH				= "month";
+	private static final String N_MONTHS			= "nMonths";
+	private static final String PAD_BLANKS			= "padBlanks";
 	
+	private static final String[] REQUIRED_PARAMS	= {TAGS};
+
+	public GetRenderTagsRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
+
 	/**
 	 * Get current tags to query.
 	 * @return current tags

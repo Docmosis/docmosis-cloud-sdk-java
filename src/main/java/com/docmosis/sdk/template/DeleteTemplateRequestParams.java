@@ -28,8 +28,14 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class DeleteTemplateRequestParams extends RequestParameters {
 
-	private static final String TEMPLATE_NAME = "templateName";
-	private static final String IS_SYSTEM_TEMPLATE = "isSystemTemplate";
+	private static final String TEMPLATE_NAME		= "templateName";
+	private static final String IS_SYSTEM_TEMPLATE	= "isSystemTemplate";
+	
+	private static final String[] REQUIRED_PARAMS	= {TEMPLATE_NAME};
+
+	public DeleteTemplateRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 	
 	/**
 	 * Get the currently set templateNames.

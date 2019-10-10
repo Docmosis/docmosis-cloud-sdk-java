@@ -27,8 +27,14 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class ConverterRequestParams extends RequestParameters {
 	
-	private static final String FILE = "file";
-	private static final String OUTPUT_NAME = "outputName";
+	private static final String FILE 				= "file";
+	private static final String OUTPUT_NAME			= "outputName";
+	
+	private static final String[] REQUIRED_PARAMS	= {FILE, OUTPUT_NAME};
+
+	public ConverterRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 	
     public File getFileToConvert()
 	{

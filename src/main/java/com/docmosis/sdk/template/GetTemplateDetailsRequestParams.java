@@ -28,6 +28,12 @@ public class GetTemplateDetailsRequestParams extends RequestParameters {
 
 	private static final String TEMPLATE_NAME		= "templateName";
 	private static final String IS_SYSTEM_TEMPLATE	= "isSystemTemplate";
+	
+	private static final String[] REQUIRED_PARAMS	= {TEMPLATE_NAME};
+
+	public GetTemplateDetailsRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 
 	/**
 	 * Get the currently set templateName.

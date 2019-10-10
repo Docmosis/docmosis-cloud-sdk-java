@@ -27,8 +27,14 @@ import com.docmosis.sdk.request.param.RequestParameters;
  */
 public class DeleteImageRequestParams extends RequestParameters {
 	
-	private static final String IMAGE_NAME = "imageName";
-	private static final String IS_SYSTEM_IMAGE = "isSystemImage";
+	private static final String IMAGE_NAME			= "imageName";
+	private static final String IS_SYSTEM_IMAGE		= "isSystemImage";
+	
+	private static final String[] REQUIRED_PARAMS	= {IMAGE_NAME};
+
+	public DeleteImageRequestParams() {
+		super(REQUIRED_PARAMS);
+	}
 
 	/**
 	 * Get the currently set Image Names
