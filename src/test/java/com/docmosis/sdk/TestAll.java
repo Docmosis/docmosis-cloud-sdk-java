@@ -45,7 +45,7 @@ import junit.framework.TestCase;
 public class TestAll extends TestCase {
 	
 	private static final String DEFAULT_TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-	private static final String ACCESS_KEY = "ZjU4MWZkM2UtYjAzNy00OTg0LTkzNjEtYzJlNTBlZGY2ZDk5OjAwMTAxNTg";
+	private static final String ACCESS_KEY = "XXX";
 	private static final String FILE_TO_UPLOAD = "src/test/java/testFiles/myTemplateFile.docx";
 	private static final String FILE_TO_UPLOAD2 = "src/test/java/testFiles/myTemplateFile2.docx";
 	private static final String FILE_GET = "myTemplateFile.docx";
@@ -111,9 +111,37 @@ public class TestAll extends TestCase {
 	}
 	
 	@Test
-	public void testRendererMissingParams() {
+	public void testRenderForm() {
+		try {
+			File outputFile = new File(OUT + "5");
+			RenderResponse rsp = Renderer.renderForm().templateName(DEFAULT_TEMPLATE_NAME).outputName(OUT + "5").outputFormat("pdf").sendTo(outputFile)
+					.data("title","This is Docmosis Cloud")
+					.execute();
+			assertTrue(rsp.getShortMsg(), rsp.hasSucceeded());
+			rsp = Renderer.renderForm().templateName(NONEXISTENT_FILE_NAME).outputName(OUT + "5").outputFormat("pdf").sendTo(outputFile)
+					.data("title","This is Docmosis Cloud")
+					.execute();
+			assertFalse(rsp.getShortMsg(), rsp.hasSucceeded());
+		} catch (Exception e) {
+			//e.printStackTrace();
+			fail();
+		}
+	}
+	
+	@Test
+	public void testRenderMissingParams() {
 		try {
 			Renderer.render().execute();
+			fail();
+		} catch (Exception e1) {
+			assertTrue(e1 instanceof RendererException);
+		}
+	}
+	
+	@Test
+	public void testRenderFormMissingParams() {
+		try {
+			Renderer.renderForm().execute();
 			fail();
 		} catch (Exception e1) {
 			assertTrue(e1 instanceof RendererException);

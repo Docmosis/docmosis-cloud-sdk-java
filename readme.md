@@ -147,6 +147,20 @@ The Docmosis render service can:
 
 ```
 
+The render service can also be invoked with key/value pair data:
+
+```
+	File outputFile = new File(OUTPUT_FILE_NAME);
+	RenderResponse response = Renderer.renderForm()
+		.templateName(TEMPLATE_NAME)
+		.outputName(OUTPUT_FILE_NAME)
+		.sendTo(outputFile)
+		.data(name1, value1)
+		.data(name2, value2)
+		.execute();
+
+```
+
 #### The Convert Service
 The convert service allows files to be converted between formats. The process 
 is simple conversion with no concept of templates and data and applies to 

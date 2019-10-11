@@ -17,22 +17,23 @@ package com.docmosis.sdk.render;
 import com.docmosis.sdk.environment.Environment;
 
 /**
- * This object holds the instructions and data for the render request.
+ * This object holds the instructions and data for the render form request.
  * 
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
- * for details about the settings for the Render request.  The properties set in this class 
- * are parameters for the Render request.
+ * for details about the settings for the Render Form request.  The properties set in this class 
+ * are parameters for the Render Form request.
  * 
  * Typically, you would use the Renderer class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
  * <pre>
  *   RenderResponse response = Renderer
- *                              .render()
+ *                              .renderForm()
  *                              .templateName(TemplateName)
  *                              .outputName(outputFileName)
  *                              .sendTo(outputFileOrStream)
- *                              .data(dataString)
+ *                              .data(name, value)
+ *                              .data(name, value)
  *                              .execute();
  *   if (response.hasSucceeded()) {
  *       //File rendered and saved to outputFileOrStream
@@ -40,38 +41,37 @@ import com.docmosis.sdk.environment.Environment;
  *   ...
  * </pre>
  */
-public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
+public class RenderFormRequest extends AbstractRenderRequest<RenderFormRequest> {
 
-	private static final String SERVICE_PATH = "render";
+	private static final String SERVICE_PATH = "renderForm";
 
-    public RenderRequest() {
-    	super(SERVICE_PATH, new RenderRequestParams());
+    public RenderFormRequest() {
+    	super(SERVICE_PATH, new RenderFormRequestParams());
     }
 
-    public RenderRequest(final Environment environment) {
-    	super(SERVICE_PATH, environment, new RenderRequestParams());
+    public RenderFormRequest(final Environment environment) {
+    	super(SERVICE_PATH, environment, new RenderFormRequestParams());
     }
 
     @Override
-    public RenderRequestParams getParams()
+    public RenderFormRequestParams getParams()
     {
-    	return (RenderRequestParams) super.getParams();
+    	return (RenderFormRequestParams) super.getParams();
     }
 
-
-    /**
-     * Set the data for the render. The format of the string is either JSON 
-     * and the structure of your data should match the template you are using.
-     * 
-     * @param data JSON or XML data.
-     * @return this request for method chaining
-     */
-    public RenderRequest data(String data) 
+	/**
+	 * Add a data value in the form of a name/value pair.
+	 * @param name or key of the data pair
+	 * @param value of the data pair
+	 * @return this request for method chaining
+	 */
+    public RenderFormRequest data(String name, String value) 
     {
-    	getParams().setData(data);
+    	getParams().setDataParam(name, value);
         return getThis();
     }
 
+ 
 	/**
 	 * Execute a render based on current settings in this instance and using the default Environment.
      * <p>
@@ -83,19 +83,19 @@ public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
     @Override
 	public RenderResponse execute() throws RendererException
 	{
-		return Renderer.executeRender(this);
+		return Renderer.executeRenderForm(this);
 	}
 
     @Override
 	public RenderResponse execute(String url, String accessKey) throws RendererException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Renderer.executeRender(this);
+		return Renderer.executeRenderForm(this);
 	}
 
     @Override
 	public RenderResponse execute(String accessKey) throws RendererException {
 		getEnvironment().setAccessKey(accessKey);
-		return Renderer.executeRender(this);
+		return Renderer.executeRenderForm(this);
 	}
 	
 	/**
@@ -112,51 +112,17 @@ public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
 	public RenderResponse execute(Environment environment) throws RendererException
 	{
 		setEnvironment(environment);
-		return Renderer.executeRender(this);
+		return Renderer.executeRenderForm(this);
 	}
-
-    /**
-     * Execute a render using current defaults (for url, accessKey and proxy) and specifying 
-     * a common set of parameters.
-     * This is a convenience method equivalent to:
-     * <pre>
-     *   renderRequest.TemplateName(templateName)
-     *              .outputName(outputName);
-     *              .data(data);
-     *              .execute();
-     * </pre>
-     * 
-     * <p>
-     * 
-     * @param templateName
-     *            the location and name of the template within the Docmosis
-     *            Template Store.
-     * @param outputName
-     *            the output location and file name; this is relative to the
-     *            path of the current project.
-     * @param data
-     *            the data to inject into the Docmosis document; may be in JSON
-     *            or XML format.
-	 * @return a response object giving status and possible error messages
-	 * @throws RendererException if a problem occurs invoking the service
-     */
-    public RenderResponse execute(final String templateName, final String outputName, final String data)
-            throws RendererException {
-    	getParams().setTemplateName(templateName);
-    	getParams().setOutputName(outputName);
-    	getParams().setData(data);
-        
-        return execute();
-    }
     
 	@Override
-	protected RenderRequest getThis() {
+	protected RenderFormRequest getThis() {
 		return this;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return getParams().toString(false);
+		return getParams().toString();
 	}
 }

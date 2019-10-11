@@ -2,6 +2,7 @@ package com.docmosis.sdk.request.param;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,13 @@ public class RequestParameters {
 	public RequestParameters(String[] requiredParams) {
 		this.requiredParams = requiredParams;
 	}
+	public RequestParameters(RequestParameters requestParameters) {
+		List<String> keys = requestParameters.getKeys();
+		for (String k: keys) {
+			setParam(k, requestParameters.getParam(k));
+		}
+		this.requiredParams = requestParameters.getRequiredParams();
+	}
 	public List<String> getKeys()
 	{
 		return new ArrayList<String>(params.keySet());
@@ -25,6 +33,31 @@ public class RequestParameters {
      */
     public String[] getRequiredParams() {
         return requiredParams;
+    }
+
+    /**
+     * Extends the object with the parameters and keys from requestParameters.
+     * Note: If any existing parameters have the same key as requestParameters they will be overwritten.
+     * @param requestParameters the object to extend from.
+     */
+    public void extend(RequestParameters requestParameters) {
+    	//Extend required keys
+    	if (requestParameters.getRequiredParams() == null) {}
+    	else if (requiredParams == null) {
+    		requiredParams = requestParameters.getRequiredParams();
+    	}
+    	else { //Join keys
+    		if (requiredParams.length > 0 && requestParameters.getRequiredParams().length > 0){
+    			String[] bothArrays = Arrays.copyOf(requiredParams, requiredParams.length + requestParameters.getRequiredParams().length);
+    			System.arraycopy(requestParameters.getRequiredParams(), 0, bothArrays, requiredParams.length, requestParameters.getRequiredParams().length);
+    			requiredParams = bothArrays;
+    		}
+    	}
+    	//Add all params
+    	List<String> keys = requestParameters.getKeys();
+		for (String k: keys) {
+			setParam(k, requestParameters.getParam(k));
+		}
     }
 	
 	public void setParam(String name, ParamType type) {

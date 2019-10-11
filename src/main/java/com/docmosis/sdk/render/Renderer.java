@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.render;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
@@ -21,6 +22,7 @@ import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
 import com.docmosis.sdk.request.RequestBuilder;
 import com.docmosis.sdk.request.param.ParamType;
+import com.docmosis.sdk.request.param.RequestParameters;
 
 /**
  * This class manages the interaction with the Docmosis render service endpoint - producing
@@ -43,6 +45,17 @@ public class Renderer {
     public static RenderRequest render()
     {
     	final RenderRequest req = new RenderRequest();
+
+    	return req;
+    }
+    
+    /**
+	 * Create a Render Form Request. Run .execute() to run the request and return the Rendered File.
+	 * @return RenderFormRequest
+	 */
+    public static RenderFormRequest renderForm()
+    {
+    	final RenderFormRequest req = new RenderFormRequest();
 
     	return req;
     }
@@ -91,6 +104,35 @@ public class Renderer {
             
 
         return response;
+    }
+
+    /**
+     * Render a Docmosis document.
+     * 
+     * @param request the render data.
+     * @return a response object encapsulating the result of the render
+     * 
+     * @throws RendererException if something goes wrong constructing the request
+     */
+    public static RenderResponse executeRenderForm(final RenderFormRequest request) throws RendererException 
+    {
+        RenderResponse response = new RenderResponse();
+
+        try {
+        	//Combine request params with data params
+        	RequestParameters combinedParams = new RequestParameters(request.getParams());
+        	combinedParams.extend(request.getParams().getDataParams());
+        	
+        	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), combinedParams);
+
+	    	//Execute request
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    }
+	    catch (DocmosisException e) {
+	    	throw new RendererException(e);
+	    }
+		return response;
     }
 
     
