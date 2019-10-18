@@ -18,9 +18,9 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.image.Image;
 import com.docmosis.sdk.image.ImageDetails;
+import com.docmosis.sdk.image.ImageException;
 import com.docmosis.sdk.image.UploadImageResponse;
 
 
@@ -47,7 +47,7 @@ public class SimpleUploadImageExample
 	//Full path of File to be uploaded
 	private static final String FILE_TO_UPLOAD = "C:/example/Image1.png";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws ImageException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

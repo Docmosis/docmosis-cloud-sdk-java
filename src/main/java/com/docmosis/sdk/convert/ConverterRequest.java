@@ -93,7 +93,7 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 	}
 
 	/**
-	 * Execute a convert based on contained settings.
+	 * Execute a convert based on contained settings and using the default Environment.
      * 
 	 * @return a response object giving status, possible error messages and optional
 	 * document payload.
@@ -161,7 +161,6 @@ public class ConverterRequest extends DocmosisCloudFileRequest<ConverterRequest>
 		return this;
 	}
 
-	
 	@Override
 	public String toString()
 	{

@@ -64,7 +64,7 @@ public abstract class DocmosisCloudRequest<T> {
 
 
 	/**
-	 * Execute a request to the Docmosis cloud based on contained settings.
+	 * Execute a request to the Docmosis cloud based on contained settings and using the default Environment.
      * 
 	 * @return a response object giving status, possible error messages and optional
 	 * document payload.
@@ -72,9 +72,41 @@ public abstract class DocmosisCloudRequest<T> {
 	 * @throws DocmosisException if a problem occurs invoking the service. 
 	 */
 	public abstract DocmosisCloudResponse execute() throws DocmosisException;
-	public abstract DocmosisCloudResponse execute(String url, String accessKey) throws DocmosisException;
-	public abstract DocmosisCloudResponse execute(String accessKey) throws DocmosisException;
-	public abstract DocmosisCloudResponse execute(Environment env) throws DocmosisException;
-	
 
+	/**
+	 * Execute a request to the Docmosis cloud based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws DocmosisException if a problem occurs invoking the service.
+	 */
+	public abstract DocmosisCloudResponse execute(String url, String accessKey) throws DocmosisException;
+
+	/**
+	 * Execute a request to the Docmosis cloud based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws DocmosisException if a problem occurs invoking the service 
+	 */
+	public abstract DocmosisCloudResponse execute(String accessKey) throws DocmosisException;
+
+	/**
+	 * Execute a request to the Docmosis cloud based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws DocmosisException if a problem occurs invoking the service 
+	 */
+	public abstract DocmosisCloudResponse execute(Environment environment) throws DocmosisException;
 }

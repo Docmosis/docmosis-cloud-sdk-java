@@ -15,7 +15,6 @@
 package com.docmosis.sdk.rendertags;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -118,25 +117,60 @@ public class GetRenderTagsRequest extends DocmosisCloudRequest<GetRenderTagsRequ
 		return this;
 	}
 
+	/**
+	 * Execute a get render tags request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, a list of RenderTag objects and possible error messages.
+	 * 
+	 * @throws RenderTagsException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetRenderTagsResponse execute() throws DocmosisException {
+	public GetRenderTagsResponse execute() throws RenderTagsException {
 		return RenderTags.executeGetRenderTags(this);
 	}
-	
+
+	/**
+	 * Execute a get render tags request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of RenderTag objects and possible error messages.
+	 * 
+	 * @throws RenderTagsException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetRenderTagsResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetRenderTagsResponse execute(String url, String accessKey) throws RenderTagsException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return RenderTags.executeGetRenderTags(this);
 	}
-	
+
+	/**
+	 * Execute a get render tags request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of RenderTag objects and possible error messages.
+	 * 
+	 * @throws RenderTagsException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetRenderTagsResponse execute(String accessKey) throws DocmosisException {
+	public GetRenderTagsResponse execute(String accessKey) throws RenderTagsException {
 		getEnvironment().setAccessKey(accessKey);
 		return RenderTags.executeGetRenderTags(this);
 	}
 
+	/**
+	 * Execute a get render tags request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, a list of RenderTag objects and possible error messages.
+	 * 
+	 * @throws RenderTagsException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetRenderTagsResponse execute(Environment environment) throws DocmosisException {
+	public GetRenderTagsResponse execute(Environment environment) throws RenderTagsException {
 		super.setEnvironment(environment);
 		return RenderTags.executeGetRenderTags(this);
 	}

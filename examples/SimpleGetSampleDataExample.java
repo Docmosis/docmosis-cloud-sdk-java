@@ -17,9 +17,9 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetSampleDataResponse;
 import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateException;
 
 /**
  * 
@@ -44,7 +44,7 @@ public class SimpleGetSampleDataExample
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

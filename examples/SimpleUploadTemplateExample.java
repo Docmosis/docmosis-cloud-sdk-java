@@ -18,9 +18,9 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.Template;
 import com.docmosis.sdk.template.TemplateDetails;
+import com.docmosis.sdk.template.TemplateException;
 import com.docmosis.sdk.template.UploadTemplateResponse;
 
 
@@ -47,7 +47,7 @@ public class SimpleUploadTemplateExample
 	//Full path of File to be uploaded
 	private static final String FILE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

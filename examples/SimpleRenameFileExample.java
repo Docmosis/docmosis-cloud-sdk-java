@@ -17,9 +17,9 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.FileException;
 import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.RenameFilesResponse;
-import com.docmosis.sdk.handlers.DocmosisException;
 
 
 /**
@@ -50,7 +50,7 @@ public class SimpleRenameFileExample
 	//Full path of new name for File/Folder
 	private static final String NEW_NAME = "myOtherFile2.pdf";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws FileException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

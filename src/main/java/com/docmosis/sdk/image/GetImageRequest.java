@@ -17,7 +17,6 @@ package com.docmosis.sdk.image;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
@@ -61,8 +60,9 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
     }
 
 	/**
-	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageNames the image name list.
+	 * Set the names of the Images to get.
+	 * 
+	 * @param imageNames The name of the Image(s) on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 * @return this request for method chaining
 	 */
 	public GetImageRequest imageNames(List<String> imageNames) {
@@ -71,8 +71,9 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 	}
 	
 	/**
-	 * add an image name. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageName the image name.
+	 * Add the name of an Image to get.
+	 * 
+	 * @param imageName The name of the Image on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 * @return this request for method chaining
 	 */
 	public GetImageRequest imageName(String imageName) {
@@ -91,25 +92,60 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 		return this;
 	}
 
+	/**
+	 * Execute a get image request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetImageResponse execute() throws DocmosisException {
+	public GetImageResponse execute() throws ImageException {
 		return Image.executeGetImage(this);
 	}
-	
+
+	/**
+	 * Execute a get image request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetImageResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetImageResponse execute(String url, String accessKey) throws ImageException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Image.executeGetImage(this);
 	}
-	
+
+	/**
+	 * Execute a get image request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetImageResponse execute(String accessKey) throws DocmosisException {
+	public GetImageResponse execute(String accessKey) throws ImageException {
 		getEnvironment().setAccessKey(accessKey);
 		return Image.executeGetImage(this);
 	}
 
+	/**
+	 * Execute a get image request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetImageResponse execute(Environment environment) throws DocmosisException {
+	public GetImageResponse execute(Environment environment) throws ImageException {
 		super.setEnvironment(environment);
 		return Image.executeGetImage(this);
 	}

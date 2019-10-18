@@ -15,7 +15,6 @@
 package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -68,25 +67,60 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 		return this;
 	}
 
+	/**
+	 * Execute a get template structure request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateStructureResponse execute() throws DocmosisException {
+	public GetTemplateStructureResponse execute() throws TemplateException {
 		return Template.executeGetTemplateStructure(this);
 	}
-	
+
+	/**
+	 * Execute a get template structure request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateStructureResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetTemplateStructureResponse execute(String url, String accessKey) throws TemplateException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Template.executeGetTemplateStructure(this);
 	}
-	
+
+	/**
+	 * Execute a get template structure request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateStructureResponse execute(String accessKey) throws DocmosisException {
+	public GetTemplateStructureResponse execute(String accessKey) throws TemplateException {
 		getEnvironment().setAccessKey(accessKey);
 		return Template.executeGetTemplateStructure(this);
 	}
 
+	/**
+	 * Execute a get template structure request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateStructureResponse execute(Environment environment) throws DocmosisException {
+	public GetTemplateStructureResponse execute(Environment environment) throws TemplateException {
 		super.setEnvironment(environment);
 		return Template.executeGetTemplateStructure(this);
 	}

@@ -52,7 +52,7 @@ public class RenderTags {
 	 * @return Response Object
 	 * @throws RenderTagsException if execution fails or cannot extract data from response
 	 */
-	public static GetRenderTagsResponse executeGetRenderTags(GetRenderTagsRequest request) throws RenderTagsException
+	protected static GetRenderTagsResponse executeGetRenderTags(GetRenderTagsRequest request) throws RenderTagsException
 	{
 	    GetRenderTagsResponse response = new GetRenderTagsResponse();
 	    

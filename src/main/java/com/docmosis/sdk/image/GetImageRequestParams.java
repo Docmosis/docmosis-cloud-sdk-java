@@ -45,17 +45,18 @@ public class GetImageRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * Add an Image Name.
+	 * Add the name of an Image to get.
 	 * 
-	 * @param imageName The name of the Image on the docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
+	 * @param imageName The name of the Image on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 */
 	public void setImageName(String imageName) {
 		super.addParam(IMAGE_NAME, imageName);
 	}
 
 	/**
-	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageNames the image name list.
+	 * Set the names of the Images to get.
+	 * 
+	 * @param imageNames The name of the Image(s) on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 */
 	public void setImageNames(List<String> imageNames) {
 		super.setParam(IMAGE_NAME, imageNames);

@@ -18,8 +18,8 @@ import java.io.IOException;
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.file.DeleteFilesResponse;
+import com.docmosis.sdk.file.FileException;
 import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.handlers.DocmosisException;
 
 
 /**
@@ -48,7 +48,7 @@ public class SimpleDeleteFileExample
 	//Full path of File to be deleted
 	private static final String FILE_TO_DELETE = "myFile1.pdf";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws FileException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

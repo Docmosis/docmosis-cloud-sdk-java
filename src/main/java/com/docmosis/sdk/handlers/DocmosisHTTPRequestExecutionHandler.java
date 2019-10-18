@@ -104,6 +104,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 
 	    	//Create HTTP POST method and set data
     		httpPost = new HttpPost(request.getUrl());
+    		//httpPost.setHeader("Accept-Encoding", "UTF-8");
     	    httpPost.setEntity(payLoad);
 
 	    	//Add proxy if one is set

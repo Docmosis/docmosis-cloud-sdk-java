@@ -85,7 +85,7 @@ public class Image {
 	 * @return Response Object
 	 * @throws ImageException if execution fails or cannot extract data from response
 	 */
-	public static ListImagesResponse executelist(ListImagesRequest request) throws ImageException
+	protected static ListImagesResponse executelist(ListImagesRequest request) throws ImageException
 	{
 		ListImagesResponse response = new ListImagesResponse();
 
@@ -123,7 +123,7 @@ public class Image {
 	 * @return Response Object
 	 * @throws ImageException if execution fails or cannot extract data from response
 	 */	
-	public static UploadImageResponse executeUploadImage(UploadImageRequest request) throws ImageException
+	protected static UploadImageResponse executeUploadImage(UploadImageRequest request) throws ImageException
 	{
 	    UploadImageResponse response = new UploadImageResponse();
 	    
@@ -159,7 +159,7 @@ public class Image {
 	 * @return Response Object
 	 * @throws ImageException if execution fails or cannot extract data from response
 	 */
-	public static DeleteImageResponse executeDeleteImage(DeleteImageRequest request) throws ImageException
+	protected static DeleteImageResponse executeDeleteImage(DeleteImageRequest request) throws ImageException
 	{
 	    DeleteImageResponse response = new DeleteImageResponse();
 	    
@@ -194,7 +194,7 @@ public class Image {
 	 * @return Response Object
 	 * @throws ImageException if execution fails or cannot extract data from response
 	 */
-	public static GetImageResponse executeGetImage(GetImageRequest request) throws ImageException
+	protected static GetImageResponse executeGetImage(GetImageRequest request) throws ImageException
 	{
 	    GetImageResponse response = new GetImageResponse();
 

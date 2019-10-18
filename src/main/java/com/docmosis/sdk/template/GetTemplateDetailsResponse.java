@@ -16,6 +16,24 @@ package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a get template details request.
+ * 
+ * Typically you would use this response to check for success, then access the returned 
+ * template details object.  For example:
+ * 
+ * 
+ * <pre>
+ *   GetTemplateDetailsResponse templateDetails = Template
+ *                                                 .getDetails()
+ *                                                 .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                                 .execute();
+ *   if (templateDetails.hasSucceeded()) {
+ *       TemplateDetails td = templateDetails.getTemplateDetails();
+ *       td.toString();
+ *   }
+ * </pre>
+ */
 public class GetTemplateDetailsResponse extends DocmosisCloudResponse {
 
 	private TemplateDetails templateDetails = null;
@@ -25,12 +43,12 @@ public class GetTemplateDetailsResponse extends DocmosisCloudResponse {
 	}
 
 	/**
-	 * The attributes of the template:
+	 * Get the attributes of the template as a TemplateDetails object, including:
 	 * name - the template file name
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemTemplate - whether a system template ("true" or "false")
+	 * isSystemTemplate - whether a system template (true or false)
 	 * templatePlainTextFieldPrefix - the prefix used when it was uploaded
 	 * templatePlainTextFieldSuffix - the suffix used when it was uploaded
 	 * templateDevMode - the dev mode setting used when it was uploaded
@@ -42,7 +60,7 @@ public class GetTemplateDetailsResponse extends DocmosisCloudResponse {
 		return templateDetails;
 	}
 
-	public void setTemplateDetails(TemplateDetails template) {
+	protected void setTemplateDetails(TemplateDetails template) {
 		this.templateDetails = template;
 	}
 	

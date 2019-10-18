@@ -18,6 +18,20 @@ import java.util.List;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a list files request.
+ * 
+ * Typically you would use this response to check for success, then access the returned list of FileDetails objects.  For example:
+ * 
+ * 
+ * <pre>
+ *   ListFilesResponse files = FileStorage.list().execute();
+ *   List&lt;FileDetails&gt; list = files.list();
+ *   for(FileDetails fd : list) {
+ *        ...
+ *   }
+ * </pre>
+ */
 public class ListFilesResponse extends DocmosisCloudResponse {
 	
 	private boolean storedFileListStale;
@@ -25,15 +39,16 @@ public class ListFilesResponse extends DocmosisCloudResponse {
 
 	/**
 	 * If Docmosis detects changes to the stored file list are in progress
-	 * (such as updates or deletions) this flag will be set to "true" to
+	 * (such as updates or deletions) this flag will be set to true to
 	 * indicate the list is not necessarily up to date. This is only ever
-	 * expected to be "true" for a short period after deletes or updates.
+	 * expected to be true for a short period after deletes or updates.
 	 * @return stored file list stale result
 	 */
 	public boolean getStoredFileListStale() {
 		return storedFileListStale;
 	}
-	public void setStoredFileListStale(boolean storedFileListStale) {
+
+	protected void setStoredFileListStale(boolean storedFileListStale) {
 		this.storedFileListStale = storedFileListStale;
 	}
 	/**
@@ -62,7 +77,7 @@ public class ListFilesResponse extends DocmosisCloudResponse {
 		return files;
 	}
 	
-	public void setFiles(List<FileDetails> files) {
+	protected void setFiles(List<FileDetails> files) {
 		this.files = files;
 	}
 	
@@ -78,5 +93,4 @@ public class ListFilesResponse extends DocmosisCloudResponse {
 		}
 		return sb.toString();
 	}
-
 }

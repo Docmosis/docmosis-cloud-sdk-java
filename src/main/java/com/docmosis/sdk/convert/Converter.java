@@ -47,7 +47,7 @@ public class Converter {
      * 
      * @throws ConverterException if something goes wrong executing the request
      */
-    public static ConverterResponse executeConvert(final ConverterRequest request) throws ConverterException 
+    protected static ConverterResponse executeConvert(final ConverterRequest request) throws ConverterException 
     {
         ConverterResponse response = new ConverterResponse();
         

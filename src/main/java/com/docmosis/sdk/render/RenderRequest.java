@@ -74,7 +74,6 @@ public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
 
 	/**
 	 * Execute a render based on current settings in this instance and using the default Environment.
-     * <p>
 	 * 
 	 * @return a response object giving status and possible error messages
 	 * 
@@ -86,12 +85,31 @@ public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
 		return Renderer.executeRender(this);
 	}
 
+    /**
+	 * Execute a render based on contained settings.
+     * 
+     * @param url the service url   
+     * @param accessKey your unique Docmosis accesskey
+	 * 
+	 * @return a response object giving status and possible error messages
+	 * 
+	 * @throws RendererException if a problem occurs invoking the service 
+	 */
     @Override
 	public RenderResponse execute(String url, String accessKey) throws RendererException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Renderer.executeRender(this);
 	}
 
+    /**
+	 * Execute a render based on contained settings.
+     *       
+     * @param accessKey your unique Docmosis accesskey
+	 * 
+	 * @return a response object giving status and possible error messages
+	 * 
+	 * @throws RendererException if a problem occurs invoking the service 
+	 */
     @Override
 	public RenderResponse execute(String accessKey) throws RendererException {
 		getEnvironment().setAccessKey(accessKey);
@@ -100,7 +118,6 @@ public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
 	
 	/**
 	 * Execute a render based on contained settings.
-     * <p>
      *       
      * @param environment the Environment to use instead of the default configured. 
 	 * 
@@ -126,7 +143,6 @@ public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
      *              .execute();
      * </pre>
      * 
-     * <p>
      * 
      * @param templateName
      *            the location and name of the template within the Docmosis

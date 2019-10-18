@@ -22,23 +22,18 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * Typically you would use this response to check for success, then decide what action to take.  For example:
  * 
  * <pre>
- * 
- *   RenderResponse response = rr.execute();
- *   try {  
- *     if (response.hasSucceeded()) {
- *       InputStream doc = response.getDocument();
- *       // do something with the doc
- *     } else {
- *       // read the error messages and status code to 
- *       // decide what to do - check error messages/tell user
- *     }
- *   } finally {
- *     response.cleanup();
- *   }
+ *   RenderResponse response = Renderer
+ *                              .render()
+ *                              .templateName(TemplateName)
+ *                              .outputName(outputFileName)
+ *                              .sendTo(outputFileOrStream)
+ *                              .data(dataString)
+ *                              .execute();
+ *   if (response.hasSucceeded()) {
+ *       //File rendered and saved to outputFileOrStream
+ *	 }
+ *   ...
  * </pre>
- *
- * Since the response may contain an InputStream from the request, it is important that you 
- * have the finally block to cleanup.
  */
 public class RenderResponse extends DocmosisCloudResponse
 {

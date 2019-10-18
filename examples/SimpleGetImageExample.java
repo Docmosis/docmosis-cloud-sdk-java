@@ -18,9 +18,9 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.image.GetImageResponse;
 import com.docmosis.sdk.image.Image;
+import com.docmosis.sdk.image.ImageException;
 
 
 /**
@@ -48,7 +48,7 @@ public class SimpleGetImageExample
 	private static final String FILE_TO_GET = "Image1.png";
 	//private static final String FILE_TO_GET2 = "Image2.jpg";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws ImageException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

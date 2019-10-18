@@ -15,7 +15,6 @@
 package com.docmosis.sdk.file;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -107,8 +106,8 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	}
 	
 	/**
-	 * If "true" meta data for each file will be included in the results.
-	 * Defaults to "false".
+	 * If true meta data for each file will be included in the results.
+	 * Defaults to false.
 	 * @return include meta data setting
 	 */
 	public boolean getIncludeMetaData() {
@@ -116,8 +115,8 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	}
 
 	/**
-	 * If "true" meta data for each file will be included in the results.
-	 * Defaults to "false".
+	 * If true meta data for each file will be included in the results.
+	 * Defaults to false.
 	 * @param includeMetaData value
 	 */
 	public void setIncludeMetaData(boolean includeMetaData) {
@@ -125,8 +124,8 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	}
 	
 	/**
-	 * If "true" meta data for each file will be included in the results.
-	 * Defaults to "false".
+	 * If true meta data for each file will be included in the results.
+	 * Defaults to false.
 	 * @param includeMetaData value
 	 * @return this request for method chaining
 	 */
@@ -135,29 +134,63 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 		return this;
 	}
 
+	/**
+	 * Execute a list files request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, a list of FileDetails objects and possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListFilesResponse execute() throws DocmosisException {
+	public ListFilesResponse execute() throws FileException {
 		return FileStorage.executelist(this);
 	}
-	
+
+	/**
+	 * Execute a list files request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of FileDetails objects and possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListFilesResponse execute(String url, String accessKey) throws DocmosisException {
+	public ListFilesResponse execute(String url, String accessKey) throws FileException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return FileStorage.executelist(this);
 	}
-	
+
+	/**
+	 * Execute a list files request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of FileDetails objects and possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListFilesResponse execute(String accessKey) throws DocmosisException {
+	public ListFilesResponse execute(String accessKey) throws FileException {
 		getEnvironment().setAccessKey(accessKey);
 		return FileStorage.executelist(this);
 	}
 
+	/**
+	 * Execute a list files request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, a list of FileDetails objects and possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListFilesResponse execute(Environment environment) throws DocmosisException {
+	public ListFilesResponse execute(Environment environment) throws FileException {
 		super.setEnvironment(environment);
 		return FileStorage.executelist(this);
 	}
-
 
 	@Override
 	public String toString() {

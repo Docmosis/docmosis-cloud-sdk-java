@@ -18,10 +18,10 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetTemplateDetailsResponse;
 import com.docmosis.sdk.template.Template;
 import com.docmosis.sdk.template.TemplateDetails;
+import com.docmosis.sdk.template.TemplateException;
 
 
 /**
@@ -46,7 +46,7 @@ public class SimpleGetTemplateDetailsExample
 	private static final String ACCESS_KEY = "XXX";
 	private static final String TEMPLATE_FILE = "samples/WelcomeTemplate.docx";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
@@ -67,7 +67,6 @@ public class SimpleGetTemplateDetailsExample
 			System.out.println("Template Name: " + template.getName());
 			System.out.println("Last Modified: " + template.getLastModifiedISO8601());
 			System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
-			//System.out.println(templateDetails.getAsJson());
 		} else {
 			// something went wrong, tell the user
 			System.err.println("Get Template Details failed: status="

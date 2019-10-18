@@ -19,6 +19,23 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+/**
+ * This class encapsulates a response to a get template structure request.
+ * 
+ * Typically you would use this response to check for success, then access the returned template structure.   
+ * For example:
+ * 
+ * 
+ * <pre>
+ *   GetTemplateStructureResponse templateStructure = Template
+ *                                                     .getStructure()
+ *                                                     .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                                     .execute();
+ *   if (templateStructure.hasSucceeded()) {
+ *       JsonObject structure = templateStructure.getTemplateStructure();
+ *   }
+ * </pre>
+ */
 public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 
 	private JsonObject templateStructure = null;
@@ -28,15 +45,23 @@ public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 	}
 
 	/**
-	 * 
-	 * @return Json representation of the templates structure
+	 * Get a json representation of the template's structure
+	 * @return template structure as a JsonObject
 	 */
 	public JsonObject getTemplateStructure() {
 		return templateStructure;
 	}
 
-	public void setTemplateStructure(JsonObject templateStructure) {
+	protected void setTemplateStructure(JsonObject templateStructure) {
 		this.templateStructure = templateStructure;
+	}
+
+	/**
+	 * Get a formatted json String of the template's structure
+	 * @return template structure as a formatted String
+	 */
+	public String getTemplateStructureString() {
+		return toString();
 	}
 	
 	@Override

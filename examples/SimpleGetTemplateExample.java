@@ -18,9 +18,9 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetTemplateResponse;
 import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateException;
 
 
 /**
@@ -49,7 +49,7 @@ public class SimpleGetTemplateExample
 	private static final String FILE_TO_GET = "myTemplateFile.docx";
 	//private static final String FILE_TO_GET2 = "myTemplateFile2.docx";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

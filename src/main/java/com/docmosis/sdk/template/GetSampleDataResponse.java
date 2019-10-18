@@ -21,6 +21,23 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+/**
+ * This class encapsulates a response to a get sample data request.
+ * 
+ * Typically you would use this response to check for success, then access the returned sample data.  For example:
+ * 
+ * 
+ * <pre>
+ *   GetSampleDataResponse templateSampleData = Template
+ *                                               .getSampleData()
+ *                                               .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                               .format("json")
+ *                                               .execute();
+ *   if (templateSampleData.hasSucceeded()) {
+ *       templateSampleData.getSampleDataString();
+ *   }
+ * </pre>
+ */
 public class GetSampleDataResponse extends DocmosisCloudResponse {
 
 	private JsonObject sampleDataJson = null;
@@ -32,34 +49,38 @@ public class GetSampleDataResponse extends DocmosisCloudResponse {
 	}
 
 	/**
-	 * 
+	 * Get the returned sample data as a JsonObject. Will return null if the requested format was xml.
 	 * @return Sample Data in Json format
 	 */
 	public JsonObject getSampleDataJson() {
 		return sampleDataJson;
 	}
 
-	public void setSampleDataJson(JsonObject sampleDataJson) {
+	protected void setSampleDataJson(JsonObject sampleDataJson) {
 		this.sampleDataJson = sampleDataJson;
 	}
 
 	/**
-	 * 
+	 * Get the returned sample data as a Document object. Will return null if the requested format was json.
 	 * @return Sample Data in XML format
 	 */
 	public Document getSampleDataXml() {
 		return sampleDataXml;
 	}
 
-	public void setSampleDataXml(Document sampleDataXml) {
+	protected void setSampleDataXml(Document sampleDataXml) {
 		this.sampleDataXml = sampleDataXml;
 	}
 
+	/**
+	 * Returns true if this object contains json sample data, otherwise xml sample data.
+	 * @return true if json sample data
+	 */
 	public boolean isJson() {
 		return isJson;
 	}
 
-	public void setJson(boolean isJson) {
+	protected void setJson(boolean isJson) {
 		this.isJson = isJson;
 	}
 

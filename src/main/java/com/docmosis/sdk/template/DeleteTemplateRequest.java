@@ -17,7 +17,6 @@ package com.docmosis.sdk.template;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -33,7 +32,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * <pre>
  *   DeleteTemplateResponse deleteTemplate = Template
  *                                            .delete()
- *                                            .addTemplateName(fileToDelete)
+ *                                            .templateName(fileToDelete)
  *                                            .execute();
  *  if (deleteTemplate.hasSucceeded()) {
  *      //Succeeded
@@ -60,7 +59,7 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
     }
 	
 	/**
-	 * Set the Template Names.
+	 * Set the list of Template Names to be deleted.
 	 * 
 	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
@@ -71,7 +70,7 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	}
 
 	/**
-	 * Set the Template Name.
+	 * Add a Template Name to be deleted.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
@@ -92,25 +91,60 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 		return this;
 	}
 
+	/**
+	 * Execute a delete template request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteTemplateResponse execute() throws DocmosisException {
+	public DeleteTemplateResponse execute() throws TemplateException {
 		return Template.executeDeleteTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a delete template request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteTemplateResponse execute(String url, String accessKey) throws DocmosisException {
+	public DeleteTemplateResponse execute(String url, String accessKey) throws TemplateException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Template.executeDeleteTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a delete template request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteTemplateResponse execute(String accessKey) throws DocmosisException {
+	public DeleteTemplateResponse execute(String accessKey) throws TemplateException {
 		getEnvironment().setAccessKey(accessKey);
 		return Template.executeDeleteTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a delete template request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteTemplateResponse execute(Environment environment) throws DocmosisException {
+	public DeleteTemplateResponse execute(Environment environment) throws TemplateException {
 		super.setEnvironment(environment);
 		return Template.executeDeleteTemplate(this);
 	}

@@ -17,7 +17,6 @@ package com.docmosis.sdk.template;
 import java.io.File;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -113,7 +112,8 @@ public class UploadTemplateRequest extends DocmosisCloudRequest<UploadTemplateRe
 	}
 
 	/**
-	 * If set to true the previous template of the same name will be left in place if the uploaded template has errors. If not specified (or "n", "no" or "false") the original template is always removed, even if this uploaded template has errors.
+	 * If set to true the previous template of the same name will be left in place if the uploaded template has errors. If not specified 
+	 * (or false) the original template is always removed, even if this uploaded template has errors.
 	 * This only has effect when devMode is disabled (since devMode is intended to allow templates with errors to be displayed by Docmosis).
 	 * This parameter means that in production mode (non-developer mode) template uploads will not replace a working template with a bad template.
 	 * Defaults to false.
@@ -156,25 +156,60 @@ public class UploadTemplateRequest extends DocmosisCloudRequest<UploadTemplateRe
 		return this;
 	}
 
+	/**
+	 * Execute an upload template request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadTemplateResponse execute() throws DocmosisException {
+	public UploadTemplateResponse execute() throws TemplateException {
 		return Template.executeUploadTemplate(this);
 	}
-	
+
+	/**
+	 * Execute an upload template request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadTemplateResponse execute(String url, String accessKey) throws DocmosisException {
+	public UploadTemplateResponse execute(String url, String accessKey) throws TemplateException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Template.executeUploadTemplate(this);
 	}
-	
+
+	/**
+	 * Execute an upload template request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadTemplateResponse execute(String accessKey) throws DocmosisException {
+	public UploadTemplateResponse execute(String accessKey) throws TemplateException {
 		getEnvironment().setAccessKey(accessKey);
 		return Template.executeUploadTemplate(this);
 	}
-	
+
+	/**
+	 * Execute an upload template request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadTemplateResponse execute(Environment environment) throws DocmosisException {
+	public UploadTemplateResponse execute(Environment environment) throws TemplateException {
 		super.setEnvironment(environment);
 		return Template.executeUploadTemplate(this);
 	}

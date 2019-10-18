@@ -17,7 +17,6 @@ package com.docmosis.sdk.image;
 import java.io.File;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -109,25 +108,60 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 		return this;
 	}
 
+	/**
+	 * Execute an upload image request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute() throws DocmosisException {
+	public UploadImageResponse execute() throws ImageException {
 		return Image.executeUploadImage(this);
 	}
-	
+
+	/**
+	 * Execute an upload image request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute(String url, String accessKey) throws DocmosisException {
+	public UploadImageResponse execute(String url, String accessKey) throws ImageException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Image.executeUploadImage(this);
 	}
-	
+
+	/**
+	 * Execute an upload image request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute(String accessKey) throws DocmosisException {
+	public UploadImageResponse execute(String accessKey) throws ImageException {
 		getEnvironment().setAccessKey(accessKey);
 		return Image.executeUploadImage(this);
 	}
-	
+
+	/**
+	 * Execute an upload image request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute(Environment environment) throws DocmosisException {
+	public UploadImageResponse execute(Environment environment) throws ImageException {
 		super.setEnvironment(environment);
 		return Image.executeUploadImage(this);
 	}

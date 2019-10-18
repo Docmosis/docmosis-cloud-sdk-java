@@ -47,7 +47,7 @@ public class GetTemplateRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * Add a Template Name.
+	 * Add the name of a Template to get.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 */
@@ -56,7 +56,7 @@ public class GetTemplateRequestParams extends RequestParameters {
 	}
 	
 	/**
-	 * Set the Template Names.
+	 * Set the names of the Templates to get.
 	 * 
 	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 */

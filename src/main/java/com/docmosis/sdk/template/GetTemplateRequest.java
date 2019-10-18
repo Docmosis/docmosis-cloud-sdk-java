@@ -17,7 +17,6 @@ package com.docmosis.sdk.template;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
@@ -33,7 +32,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * <pre>
  *   GetTemplateResponse getTemplate = Template
  *                                      .get()
- *                                      .addTemplateName(fileToGet)
+ *                                      .templateName(fileToGet)
  *                                      .sendTo(outputFileOrStream)
  *                                      .execute();
  *  if (getTemplate.hasSucceeded()) {
@@ -61,7 +60,8 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
     }
 
 	/**
-	 * Set the Template Names.
+	 * Set the names of the Templates to get.
+	 * If getting more than one template the templates will be returned in a .zip file.
 	 * 
 	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
@@ -72,7 +72,8 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	}
 	
 	/**
-	 * Set the Template Name.
+	 * Add the name of a Template to get.
+	 * If getting more than one template the templates will be returned in a .zip file.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
@@ -93,25 +94,60 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 		return this;
 	}
 
+	/**
+	 * Execute a get template request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateResponse execute() throws DocmosisException {
+	public GetTemplateResponse execute() throws TemplateException {
 		return Template.executeGetTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a get template request based on contained settings.
+	 *  
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetTemplateResponse execute(String url, String accessKey) throws TemplateException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Template.executeGetTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a get template request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateResponse execute(String accessKey) throws DocmosisException {
+	public GetTemplateResponse execute(String accessKey) throws TemplateException {
 		getEnvironment().setAccessKey(accessKey);
 		return Template.executeGetTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a get template request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateResponse execute(Environment environment) throws DocmosisException {
+	public GetTemplateResponse execute(Environment environment) throws TemplateException {
 		super.setEnvironment(environment);
 		return Template.executeGetTemplate(this);
 	}

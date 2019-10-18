@@ -18,9 +18,9 @@ import java.io.IOException;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.FileException;
 import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.GetFileResponse;
-import com.docmosis.sdk.handlers.DocmosisException;
 
 
 /**
@@ -49,7 +49,7 @@ public class SimpleGetFileExample
 	//Full path of File to get
 	private static final String FILE_TO_GET = "myFile1.pdf";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws FileException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

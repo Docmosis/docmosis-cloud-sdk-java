@@ -15,7 +15,6 @@
 package com.docmosis.sdk.file;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -77,29 +76,63 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 		return this;
 	}
 
+	/**
+	 * Execute a delete files request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteFilesResponse execute() throws DocmosisException {
+	public DeleteFilesResponse execute() throws FileException {
 		return FileStorage.executeDeleteFiles(this);
 	}
-	
+
+	/**
+	 * Execute a delete files request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteFilesResponse execute(String url, String accessKey) throws DocmosisException {
+	public DeleteFilesResponse execute(String url, String accessKey) throws FileException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return FileStorage.executeDeleteFiles(this);
 	}
-	
+
+	/**
+	 * Execute a delete files request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteFilesResponse execute(String accessKey) throws DocmosisException {
+	public DeleteFilesResponse execute(String accessKey) throws FileException {
 		getEnvironment().setAccessKey(accessKey);
 		return FileStorage.executeDeleteFiles(this);
 	}
 
+	/**
+	 * Execute a delete files request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteFilesResponse execute(Environment environment) throws DocmosisException {
+	public DeleteFilesResponse execute(Environment environment) throws FileException {
 		super.setEnvironment(environment);
 		return FileStorage.executeDeleteFiles(this);
 	}
-
 
 	@Override
 	public String toString() {

@@ -3,6 +3,7 @@ package com.docmosis.sdk.request;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.codec.Charsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -18,6 +19,8 @@ import com.docmosis.sdk.request.param.StringListParamType;
  *
  */
 public class RequestBuilder {
+	
+	private static final ContentType TEXT_CONTENT_TYPE = ContentType.create(ContentType.TEXT_PLAIN.getMimeType(), Charsets.UTF_8);
 
 	/**
 	 * Builds a multipart/form-data request.
@@ -80,12 +83,12 @@ public class RequestBuilder {
 	}
 
 	private static void addField(MultipartEntityBuilder builder, String key, String param) {
-		builder.addTextBody(key, param);
+		builder.addTextBody(key, param, TEXT_CONTENT_TYPE);
 	}
 
 	private static void addField(MultipartEntityBuilder builder, String key, List<String> param) {
 		for (String s : param) {
-			builder.addTextBody(key, s);
+			builder.addTextBody(key, s, TEXT_CONTENT_TYPE);
 		}
 	}
 

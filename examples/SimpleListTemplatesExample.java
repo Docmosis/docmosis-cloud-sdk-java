@@ -18,10 +18,10 @@ import java.util.List;
 
 import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.ListTemplatesResponse;
 import com.docmosis.sdk.template.Template;
 import com.docmosis.sdk.template.TemplateDetails;
+import com.docmosis.sdk.template.TemplateException;
 
 
 
@@ -46,7 +46,7 @@ public class SimpleListTemplatesExample
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {

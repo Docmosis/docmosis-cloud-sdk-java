@@ -14,6 +14,7 @@
  */
 package com.docmosis.sdk.render;
 
+import org.apache.commons.codec.Charsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -68,7 +69,7 @@ public class Renderer {
      * 
      * @throws RendererException if something goes wrong constructing the request
      */
-    public static RenderResponse executeRender(final RenderRequest request) throws RendererException 
+    protected static RenderResponse executeRender(final RenderRequest request) throws RendererException 
     {
         RenderResponse response = new RenderResponse();
         
@@ -88,10 +89,10 @@ public class Renderer {
 
         StringEntity se = null;
         if (requestIsJson) {
-        	se = new StringEntity(renderRequest, ContentType.create("application/json"));
+        	se = new StringEntity(renderRequest, ContentType.create(ContentType.APPLICATION_JSON.getMimeType(), Charsets.UTF_8));
         }
         else {
-        	se = new StringEntity(renderRequest, ContentType.create("application/xml"));
+        	se = new StringEntity(renderRequest, ContentType.create(ContentType.APPLICATION_XML.getMimeType(), Charsets.UTF_8));
         }
         
         try {
@@ -114,7 +115,7 @@ public class Renderer {
      * 
      * @throws RendererException if something goes wrong constructing the request
      */
-    public static RenderResponse executeRenderForm(final RenderFormRequest request) throws RendererException 
+    protected static RenderResponse executeRenderForm(final RenderFormRequest request) throws RendererException 
     {
         RenderResponse response = new RenderResponse();
 
@@ -154,7 +155,7 @@ public class Renderer {
      * @param data full data string
      * @return true if it appears to be JSON or is null/blank
      */
-    public static boolean isJson(String data)
+    protected static boolean isJson(String data)
     {
     	boolean isJson = false;
     	

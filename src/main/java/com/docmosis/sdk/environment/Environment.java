@@ -19,6 +19,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+/**
+ * Stores settings for communicating with Docmosis End Points.
+ * 
+ * Typically this class is used to set the default environment:
+ * 
+ * <pre>
+ *   Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+ * </pre>
+ * 
+ * To build a custom environment use the EnvironmentBuilder class.
+ *
+ */
 public class Environment {
 	
 	public static final Endpoint DEFAULT_ENDPOINT = Endpoint.DWS_VERSION_3_AUS; // TODO Switch To USA 

@@ -129,7 +129,7 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static ListTemplatesResponse executelist(ListTemplatesRequest request) throws TemplateException
+	protected static ListTemplatesResponse executelist(ListTemplatesRequest request) throws TemplateException
 	{
 	    ListTemplatesResponse response = new ListTemplatesResponse();
 
@@ -167,7 +167,7 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws TemplateException
+	protected static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws TemplateException
 	{
 	    GetTemplateDetailsResponse response = new GetTemplateDetailsResponse();
 	    
@@ -203,7 +203,7 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws TemplateException
+	protected static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws TemplateException
 	{
 	    GetTemplateStructureResponse response = new GetTemplateStructureResponse();
 	    
@@ -238,7 +238,7 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */	
-	public static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws TemplateException
+	protected static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws TemplateException
 	{
 		UploadTemplateResponse response = new UploadTemplateResponse();
 	    
@@ -274,7 +274,7 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws TemplateException
+	protected static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws TemplateException
 	{
 	    DeleteTemplateResponse response = new DeleteTemplateResponse();
 	    
@@ -309,7 +309,7 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws TemplateException
+	protected static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws TemplateException
 	{
 	    GetTemplateResponse response = new GetTemplateResponse();
 	    
@@ -332,7 +332,7 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws TemplateException
+	protected static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws TemplateException
 	{
 	    GetSampleDataResponse response = new GetSampleDataResponse();
 	    

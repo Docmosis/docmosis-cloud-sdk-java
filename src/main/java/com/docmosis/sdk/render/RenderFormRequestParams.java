@@ -63,6 +63,6 @@ public class RenderFormRequestParams extends AbstractRenderRequestParams {
 	public String toString(boolean includeDataParams)
 	{
 		String dataParamsString = (includeDataParams) ? getDataParams().toString() : "";
-		return super.toString() + ((dataParamsString != "" && dataParamsString != null) ? ", " + dataParamsString : "");
+		return super.toString() + ((dataParamsString != null && !dataParamsString.isEmpty()) ? ", " + dataParamsString : "");
 	}
 }

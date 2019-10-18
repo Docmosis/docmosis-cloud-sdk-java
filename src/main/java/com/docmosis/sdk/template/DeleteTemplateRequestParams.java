@@ -47,7 +47,7 @@ public class DeleteTemplateRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * Add a Template Name.
+	 * Add a Template Name to be deleted.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 */
@@ -56,7 +56,7 @@ public class DeleteTemplateRequestParams extends RequestParameters {
 	}
 	
 	/**
-	 * Set the Template Names.
+	 * Set the list of Template Names to be deleted.
 	 * 
 	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 */

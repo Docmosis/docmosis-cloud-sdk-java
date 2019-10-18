@@ -17,7 +17,6 @@ package com.docmosis.sdk.image;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -60,8 +59,9 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
     }
 
 	/**
-	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageNames the image name list.
+	 * Set the names of the Images to be deleted.
+	 * 
+	 * @param imageNames The name of the Image(s) on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 * @return this request for method chaining
 	 */
 	public DeleteImageRequest imageNames(List<String> imageNames) {
@@ -70,8 +70,9 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 	}
 	
 	/**
-	 * add an image name. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageName the image name.
+	 * Add the name of an Image to be deleted.
+	 *
+	 * @param imageName The name of the Image on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 * @return this request for method chaining
 	 */
 	public DeleteImageRequest imageName(String imageName) {
@@ -90,25 +91,60 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 		return this;
 	}
 
+	/**
+	 * Execute a delete image request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteImageResponse execute() throws DocmosisException {
+	public DeleteImageResponse execute() throws ImageException {
 		return Image.executeDeleteImage(this);
 	}
-	
+
+	/**
+	 * Execute a delete image request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteImageResponse execute(String url, String accessKey) throws DocmosisException {
+	public DeleteImageResponse execute(String url, String accessKey) throws ImageException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return Image.executeDeleteImage(this);
 	}
-	
+
+	/**
+	 * Execute a delete image request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteImageResponse execute(String accessKey) throws DocmosisException {
+	public DeleteImageResponse execute(String accessKey) throws ImageException {
 		getEnvironment().setAccessKey(accessKey);
 		return Image.executeDeleteImage(this);
 	}
 
+	/**
+	 * Execute a delete image request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public DeleteImageResponse execute(Environment environment) throws DocmosisException {
+	public DeleteImageResponse execute(Environment environment) throws ImageException {
 		super.setEnvironment(environment);
 		return Image.executeDeleteImage(this);
 	}

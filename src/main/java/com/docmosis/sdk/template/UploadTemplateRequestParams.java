@@ -130,7 +130,8 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	}
 	
 	/**
-	 * If set to true the previous template of the same name will be left in place if the uploaded template has errors. If not specified (or "n", "no" or "false") the original template is always removed, even if this uploaded template has errors.
+	 * If set to true the previous template of the same name will be left in place if the uploaded template has errors. If not specified 
+	 * (or false) the original template is always removed, even if this uploaded template has errors.
 	 * This only has effect when devMode is disabled (since devMode is intended to allow templates with errors to be displayed by Docmosis).
 	 * This parameter means that in production mode (non-developer mode) template uploads will not replace a working template with a bad template.
 	 * Defaults to false.
@@ -141,7 +142,8 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * If set to true the previous template of the same name will be left in place if the uploaded template has errors. If not specified (or "n", "no" or "false") the original template is always removed, even if this uploaded template has errors.
+	 * If set to true the previous template of the same name will be left in place if the uploaded template has errors. If not specified 
+	 * (or false) the original template is always removed, even if this uploaded template has errors.
 	 * This only has effect when devMode is disabled (since devMode is intended to allow templates with errors to be displayed by Docmosis).
 	 * This parameter means that in production mode (non-developer mode) template uploads will not replace a working template with a bad template.
 	 * Defaults to false.

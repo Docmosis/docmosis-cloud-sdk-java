@@ -89,7 +89,6 @@ public class UploadImageRequestParams extends RequestParameters {
 
 	/**
 	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
 	 * @return isSystemImage flag
 	 */
 	public boolean getIsSystemImage() {
@@ -98,7 +97,6 @@ public class UploadImageRequestParams extends RequestParameters {
 
 	/**
 	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
 	 * @param isSystemImage Is system image flag
 	 */
 	public void setIsSystemImage(boolean isSystemImage) {

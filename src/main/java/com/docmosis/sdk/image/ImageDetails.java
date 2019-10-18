@@ -22,7 +22,7 @@ import java.util.Date;
  * lastModifiedMillisSinceEpoch - last modified in milliseconds
  * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
  * sizeBytes - the size in bytes
- * isSystemTemplate - whether a system template ("true" or "false")
+ * isSystemTemplate - whether a system template (true or false)
  * md5 - the md5 hash code for the image
  *
  */
@@ -54,7 +54,7 @@ public class ImageDetails {
 		return name;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.name = name;
 	}
 
@@ -66,7 +66,7 @@ public class ImageDetails {
 		return lastModifiedMillisSinceEpoch;
 	}
 
-	public void setLastModifiedMillisSinceEpoch(long lastModifiedMillisSinceEpoch) {
+	protected void setLastModifiedMillisSinceEpoch(long lastModifiedMillisSinceEpoch) {
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 	}
 
@@ -78,7 +78,7 @@ public class ImageDetails {
 		return lastModifiedISO8601;
 	}
 
-	public void setLastModifiedISO8601(Date lastModifiedISO8601) {
+	protected void setLastModifiedISO8601(Date lastModifiedISO8601) {
 		this.lastModifiedISO8601 = lastModifiedISO8601;
 	}
 
@@ -90,19 +90,19 @@ public class ImageDetails {
 		return sizeBytes;
 	}
 
-	public void setSizeBytes(long sizeBytes) {
+	protected void setSizeBytes(long sizeBytes) {
 		this.sizeBytes = sizeBytes;
 	}
 
 	/**
 	 * 
-	 * @return whether a system template ("true" or "false")
+	 * @return whether a system template (true or false)
 	 */
 	public boolean getIsSystemImage() {
 		return isSystemImage;
 	}
 
-	public void setSystemImage(boolean isSystemImage) {
+	protected void setSystemImage(boolean isSystemImage) {
 		this.isSystemImage = isSystemImage;
 	}
 
@@ -114,7 +114,7 @@ public class ImageDetails {
 		return md5;
 	}
 
-	public void setMd5(String md5) {
+	protected void setMd5(String md5) {
 		this.md5 = md5;
 	}
 

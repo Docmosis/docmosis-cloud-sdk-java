@@ -96,7 +96,7 @@ public class FileStorage {
 	 * @return Response Object
 	 * @throws FileException if execution fails or cannot extract data from response
 	 */
-	public static ListFilesResponse executelist(ListFilesRequest request) throws FileException
+	protected static ListFilesResponse executelist(ListFilesRequest request) throws FileException
 	{
 		ListFilesResponse response = new ListFilesResponse();
 
@@ -134,7 +134,7 @@ public class FileStorage {
 	 * @return Response Object
 	 * @throws FileException if execution fails or cannot extract data from response
 	 */	
-	public static PutFileResponse executePutFile(PutFileRequest request) throws FileException
+	protected static PutFileResponse executePutFile(PutFileRequest request) throws FileException
 	{
 	    PutFileResponse response = new PutFileResponse();
 
@@ -169,7 +169,7 @@ public class FileStorage {
 	 * @return Response Object
 	 * @throws FileException if execution fails or cannot extract data from response
 	 */	
-	public static DeleteFilesResponse executeDeleteFiles(DeleteFilesRequest request) throws FileException
+	protected static DeleteFilesResponse executeDeleteFiles(DeleteFilesRequest request) throws FileException
 	{
 	    DeleteFilesResponse response = new DeleteFilesResponse();
 	    
@@ -204,7 +204,7 @@ public class FileStorage {
 	 * @return Response Object
 	 * @throws FileException if execution fails or cannot extract data from response
 	 */
-	public static GetFileResponse executeGetFile(GetFileRequest request) throws FileException
+	protected static GetFileResponse executeGetFile(GetFileRequest request) throws FileException
 	{
 	    GetFileResponse response = new GetFileResponse();
 	    
@@ -227,7 +227,7 @@ public class FileStorage {
 	 * @return Response Object
 	 * @throws FileException if execution fails or cannot extract data from response
 	 */	
-	public static RenameFilesResponse executeRenameFiles(RenameFilesRequest request) throws FileException
+	protected static RenameFilesResponse executeRenameFiles(RenameFilesRequest request) throws FileException
 	{
 	    RenameFilesResponse response = new RenameFilesResponse();
 

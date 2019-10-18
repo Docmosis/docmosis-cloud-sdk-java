@@ -16,7 +16,6 @@ package com.docmosis.sdk.file;
 
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
@@ -69,26 +68,60 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 		return this;
 	}
 
+	/**
+	 * Execute a get file request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetFileResponse execute() throws DocmosisException {
+	public GetFileResponse execute() throws FileException {
 		return FileStorage.executeGetFile(this);
 	}
-	
+
+	/**
+	 * Execute a get file request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetFileResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetFileResponse execute(String url, String accessKey) throws FileException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
 		return FileStorage.executeGetFile(this);
 	}
-	
+
+	/**
+	 * Execute a get file request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetFileResponse execute(String accessKey) throws DocmosisException {
+	public GetFileResponse execute(String accessKey) throws FileException {
 		getEnvironment().setAccessKey(accessKey);
 		return FileStorage.executeGetFile(this);
 	}
 
-	
+	/**
+	 * Execute a get file request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetFileResponse execute(Environment environment) throws DocmosisException {
+	public GetFileResponse execute(Environment environment) throws FileException {
 		super.setEnvironment(environment);
 		return FileStorage.executeGetFile(this);
 	}
