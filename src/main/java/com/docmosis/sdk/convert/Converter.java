@@ -49,7 +49,7 @@ public class Converter {
      */
     protected static ConverterResponse executeConvert(final ConverterRequest request) throws ConverterException 
     {
-        ConverterResponse response = new ConverterResponse();
+    	MutableConverterResponse response = new MutableConverterResponse();
         
         try {
         	//Build request
@@ -61,6 +61,6 @@ public class Converter {
 	    catch (DocmosisException e) {
 	    	throw new ConverterException(e);
 	    }
-		return response;
+		return new ConverterResponse(response.build());
     }
 }

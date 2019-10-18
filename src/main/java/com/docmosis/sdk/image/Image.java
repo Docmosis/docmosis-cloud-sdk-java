@@ -22,6 +22,7 @@ import org.apache.http.HttpEntity;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
 import com.docmosis.sdk.request.RequestBuilder;
+import com.docmosis.sdk.response.MutableDocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -87,15 +88,17 @@ public class Image {
 	 */
 	protected static ListImagesResponse executelist(ListImagesRequest request) throws ImageException
 	{
-		ListImagesResponse response = new ListImagesResponse();
+		ListImagesResponse response;
+		MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
 		//Build request
     	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey());
 
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
-	    	
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new ListImagesResponse(mutableResponse.build());
+
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
 			    if (responseString != null && responseString.length() > 0) {
@@ -125,14 +128,16 @@ public class Image {
 	 */	
 	protected static UploadImageResponse executeUploadImage(UploadImageRequest request) throws ImageException
 	{
-	    UploadImageResponse response = new UploadImageResponse();
+	    UploadImageResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
 	    	//Build request
 	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
 
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new UploadImageResponse(mutableResponse.build());
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -161,26 +166,28 @@ public class Image {
 	 */
 	protected static DeleteImageResponse executeDeleteImage(DeleteImageRequest request) throws ImageException
 	{
-	    DeleteImageResponse response = new DeleteImageResponse();
-	    
+	    DeleteImageResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
+
 	    try {
 	    	//Build request
 	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
 
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
 
 	    	//Extract data from Response String
-	    	if (response.hasSucceeded()) {
+	    	if (mutableResponse.hasSucceeded()) {
 			    if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
-					
+
 					JsonElement shortMsg = jsonObject.get("shortMsg");
-					response.setShortMsg(shortMsg.getAsString());
+					mutableResponse.setShortMsg(shortMsg.getAsString());
 			    } else {
 			    	throw new ImageException("Cannot extract data from response.");
 			    }
 	    	}
+	    	response = new DeleteImageResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new ImageException(e);
@@ -196,14 +203,16 @@ public class Image {
 	 */
 	protected static GetImageResponse executeGetImage(GetImageRequest request) throws ImageException
 	{
-	    GetImageResponse response = new GetImageResponse();
+	    GetImageResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
 	    try {
 	    	//Build request
 	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
 
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new GetImageResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new ImageException(e);

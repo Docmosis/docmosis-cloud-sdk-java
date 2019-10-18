@@ -67,7 +67,7 @@ public class SimpleRenameFileExample
 											.execute();
 
 		if (renamedFile.hasSucceeded()) {
-			//System.out.println(renamedFile.getShortMsg());
+			System.out.println(renamedFile.getShortMsg());
 			System.out.println("Successfully renamed \"" + FILE_TO_RENAME + "\" to \"" + NEW_NAME + "\"");
 		} else {
 			// something went wrong, tell the user

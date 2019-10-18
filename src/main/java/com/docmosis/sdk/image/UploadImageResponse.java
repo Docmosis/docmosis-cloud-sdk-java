@@ -36,8 +36,8 @@ public class UploadImageResponse extends DocmosisCloudResponse {
 
 	private ImageDetails imageDetails = null;
 	
-	public UploadImageResponse() {
-		super();
+	protected UploadImageResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

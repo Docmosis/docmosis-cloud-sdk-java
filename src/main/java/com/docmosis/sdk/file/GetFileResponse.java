@@ -22,8 +22,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class GetFileResponse extends DocmosisCloudResponse {
 
-	public GetFileResponse() {
-		super();
+	protected GetFileResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

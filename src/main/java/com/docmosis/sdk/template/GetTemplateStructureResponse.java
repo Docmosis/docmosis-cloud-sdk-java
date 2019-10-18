@@ -40,8 +40,8 @@ public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 
 	private JsonObject templateStructure = null;
 	
-	public GetTemplateStructureResponse() {
-		super();
+	protected GetTemplateStructureResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

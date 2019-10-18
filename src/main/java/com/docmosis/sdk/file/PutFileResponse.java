@@ -34,8 +34,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class PutFileResponse extends DocmosisCloudResponse {
 
-	public PutFileResponse() {
-		super();
+	protected PutFileResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

@@ -44,13 +44,27 @@ import com.google.gson.JsonParser;
  */
 public class DocmosisCloudResponse
 {
-	private int status;
-	private String shortMsg;
-	private String longMsg;
-	private String serverId;
-	private int tries;
-	private PreviousFailureInformation previousFailureInformation;
-	
+	protected int status;
+	protected String shortMsg;
+	protected String longMsg;
+	protected String serverId;
+	protected int tries;
+	protected PreviousFailureInformation previousFailureInformation;
+
+	protected DocmosisCloudResponse() {
+		super();
+	}
+
+	protected DocmosisCloudResponse(DocmosisCloudResponse other) {
+		super();
+		this.status = other.status;
+		this.shortMsg = other.shortMsg;
+		this.longMsg = other.longMsg;
+		this.serverId = other.serverId;
+		this.tries = other.tries;
+		this.previousFailureInformation = other.previousFailureInformation;
+	}
+
 	/**
 	 * Determine if convert request succeeded.
 	 * 
@@ -79,11 +93,6 @@ public class DocmosisCloudResponse
 		return status;
 	}
 	
-	public void setStatus(int status)
-	{
-		this.status = status;
-	}
-	
 	/**
 	 * If an error has occurred (see {@link #hasSucceeded()}) then this will
 	 * give a brief reason.
@@ -93,11 +102,6 @@ public class DocmosisCloudResponse
 	public String getShortMsg()
 	{
 		return shortMsg;
-	}
-	
-	public void setShortMsg(String shortMsg)
-	{
-		this.shortMsg = shortMsg;
 	}
 	
 	/**
@@ -111,11 +115,6 @@ public class DocmosisCloudResponse
 		return longMsg;
 	}
 	
-	public void setLongMsg(String longMsg)
-	{
-		this.longMsg = longMsg;
-	}
-	
 	/** 
 	 * Determine the number of tries done before
 	 * success or failure.
@@ -125,11 +124,6 @@ public class DocmosisCloudResponse
 	public int getTries()
 	{
 		return tries;
-	}
-
-	public void setTries(int tries)
-	{
-		this.tries = tries;
 	}
 
 	/**
@@ -144,16 +138,6 @@ public class DocmosisCloudResponse
 	}
 
 	/**
-	 * Set the previous failure information from the given response.
-	 * 
-	 * @param failureInfo the details of the failure.
-	 */
-	public void setPreviousFailureInformation(PreviousFailureInformation failureInfo)
-	{
-		this.previousFailureInformation = failureInfo;
-	}
-
-	/**
 	 * Get the id of the server used to execute the request.
 	 * 
 	 * @return null if unknown.
@@ -161,11 +145,6 @@ public class DocmosisCloudResponse
 	public String getServerId()
 	{
 		return serverId;
-	}
-
-	public void setServerId(String serverId)
-	{
-		this.serverId = serverId;
 	}
 	
 	/**

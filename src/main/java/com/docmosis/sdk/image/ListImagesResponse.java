@@ -38,8 +38,8 @@ public class ListImagesResponse extends DocmosisCloudResponse {
 	private boolean imageListStale;
 	private List<ImageDetails> images = null;
 	
-	public ListImagesResponse() {
-		super();
+	protected ListImagesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

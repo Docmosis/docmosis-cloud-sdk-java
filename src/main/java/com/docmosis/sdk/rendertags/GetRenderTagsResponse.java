@@ -43,8 +43,8 @@ public class GetRenderTagsResponse extends DocmosisCloudResponse {
 
 	private List<RenderTag> renderTags = null;
 
-	public GetRenderTagsResponse() {
-		super();
+	protected GetRenderTagsResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

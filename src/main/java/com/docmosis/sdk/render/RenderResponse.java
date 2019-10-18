@@ -37,8 +37,18 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class RenderResponse extends DocmosisCloudResponse
 {
-	private String requestId;
-	private int pagesRendered;
+	protected String requestId;
+	protected int pagesRendered;
+	
+	protected RenderResponse() {
+		super();
+	}
+	
+	protected RenderResponse(RenderResponse other) {
+		super(other);
+		this.requestId = other.requestId;
+		this.pagesRendered = other.pagesRendered;
+	}
 
 	/**
 	 * If the requestId was set in the render, it will be returned in this response.
@@ -50,11 +60,6 @@ public class RenderResponse extends DocmosisCloudResponse
 	{
 		return requestId;
 	}
-
-	public void setRequestId(String requestId)
-	{
-		this.requestId = requestId;
-	}
 	
 	/**
 	 * Get the number of pages rendered on success.
@@ -64,10 +69,5 @@ public class RenderResponse extends DocmosisCloudResponse
 	public int getPagesRendered()
 	{
 		return pagesRendered;
-	}
-
-	public void setPagesRendered(int pagesRendered)
-	{
-		this.pagesRendered = pagesRendered;
 	}
 }

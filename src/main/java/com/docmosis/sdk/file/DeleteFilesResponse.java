@@ -34,8 +34,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class DeleteFilesResponse extends DocmosisCloudResponse {
 
-	public DeleteFilesResponse() {
-		super();
+	protected DeleteFilesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

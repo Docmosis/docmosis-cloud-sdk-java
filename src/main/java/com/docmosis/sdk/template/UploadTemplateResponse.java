@@ -36,8 +36,8 @@ public class UploadTemplateResponse extends DocmosisCloudResponse {
 
 	private TemplateDetails templateDetails = null;
 	
-	public UploadTemplateResponse() {
-		super();
+	protected UploadTemplateResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

@@ -35,8 +35,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class GetImageResponse extends DocmosisCloudResponse {
 
-	public GetImageResponse() {
-		super();
+	protected GetImageResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

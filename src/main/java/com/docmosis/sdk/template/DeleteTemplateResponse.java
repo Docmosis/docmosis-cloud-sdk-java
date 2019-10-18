@@ -34,8 +34,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class DeleteTemplateResponse extends DocmosisCloudResponse {
 
-	public DeleteTemplateResponse() {
-		super();
+	protected DeleteTemplateResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

@@ -36,6 +36,10 @@ public class ListFilesResponse extends DocmosisCloudResponse {
 	
 	private boolean storedFileListStale;
 	private List<FileDetails> files = null;
+	
+	protected ListFilesResponse(DocmosisCloudResponse other) {
+		super(other);
+	}
 
 	/**
 	 * If Docmosis detects changes to the stored file list are in progress

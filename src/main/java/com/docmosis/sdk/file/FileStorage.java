@@ -22,6 +22,7 @@ import org.apache.http.HttpEntity;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
 import com.docmosis.sdk.request.RequestBuilder;
+import com.docmosis.sdk.response.MutableDocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -98,14 +99,16 @@ public class FileStorage {
 	 */
 	protected static ListFilesResponse executelist(ListFilesRequest request) throws FileException
 	{
-		ListFilesResponse response = new ListFilesResponse();
+		ListFilesResponse response;
+		MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
 		//Build request
     	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey());
 
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new ListFilesResponse(mutableResponse.build());
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -136,25 +139,27 @@ public class FileStorage {
 	 */	
 	protected static PutFileResponse executePutFile(PutFileRequest request) throws FileException
 	{
-	    PutFileResponse response = new PutFileResponse();
+	    PutFileResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
 	    try {
 	    	//Build request
 	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
 
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
 
-	    	if (response.hasSucceeded()) {
+	    	if (mutableResponse.hasSucceeded()) {
 		    	if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
 					JsonElement shortMsg = jsonObject.get("shortMsg");
-					response.setShortMsg(shortMsg.getAsString());
+					mutableResponse.setShortMsg(shortMsg.getAsString());
 			    } else {
 			    	throw new FileException("Cannot extract data from response.");
 			    }
 		    }
+	    	response = new PutFileResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	//e.printStackTrace();
@@ -171,26 +176,28 @@ public class FileStorage {
 	 */	
 	protected static DeleteFilesResponse executeDeleteFiles(DeleteFilesRequest request) throws FileException
 	{
-	    DeleteFilesResponse response = new DeleteFilesResponse();
+	    DeleteFilesResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
 	    	//Build request
 	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
 
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
 	    	
 	    	//Extract data from Response String
-	    	if (response.hasSucceeded()) {
+	    	if (mutableResponse.hasSucceeded()) {
 			    if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
 					JsonElement shortMsg = jsonObject.get("shortMsg");
-					response.setShortMsg(shortMsg.getAsString());
+					mutableResponse.setShortMsg(shortMsg.getAsString());
 			    } else {
 			    	throw new FileException("Cannot extract data from response.");
 			    }
 		    }
+	    	response = new DeleteFilesResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new FileException(e);
@@ -206,14 +213,16 @@ public class FileStorage {
 	 */
 	protected static GetFileResponse executeGetFile(GetFileRequest request) throws FileException
 	{
-	    GetFileResponse response = new GetFileResponse();
+	    GetFileResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
 	    	//Build request
 	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
 
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new GetFileResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new FileException(e);
@@ -229,26 +238,28 @@ public class FileStorage {
 	 */	
 	protected static RenameFilesResponse executeRenameFiles(RenameFilesRequest request) throws FileException
 	{
-	    RenameFilesResponse response = new RenameFilesResponse();
+	    RenameFilesResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
 	    try {
 	    	//Build request
 	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
 
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
 	    	
 	    	//Extract data from Response String
-	    	if (response.hasSucceeded()) {
+	    	if (mutableResponse.hasSucceeded()) {
 			    if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
 					JsonElement shortMsg = jsonObject.get("shortMsg");
-					response.setShortMsg(shortMsg.getAsString());
+					mutableResponse.setShortMsg(shortMsg.getAsString());
 			    } else {
 			    	throw new FileException("Cannot extract data from response.");
 			    }
 		    }
+	    	response = new RenameFilesResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new FileException(e);

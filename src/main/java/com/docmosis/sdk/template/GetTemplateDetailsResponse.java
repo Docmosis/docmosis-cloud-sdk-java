@@ -38,8 +38,8 @@ public class GetTemplateDetailsResponse extends DocmosisCloudResponse {
 
 	private TemplateDetails templateDetails = null;
 	
-	public GetTemplateDetailsResponse() {
-		super();
+	protected GetTemplateDetailsResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

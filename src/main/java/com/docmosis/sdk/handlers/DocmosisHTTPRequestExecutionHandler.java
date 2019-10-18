@@ -42,15 +42,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.docmosis.sdk.convert.ConverterResponse;
+import com.docmosis.sdk.convert.MutableConverterResponse;
 import com.docmosis.sdk.environment.EnvironmentBuilder;
 import com.docmosis.sdk.environment.InvalidEnvironmentException;
 import com.docmosis.sdk.environment.Proxy;
+import com.docmosis.sdk.render.MutableRenderResponse;
 import com.docmosis.sdk.render.RenderRequest;
-import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
-import com.docmosis.sdk.response.DocmosisCloudResponse;
+import com.docmosis.sdk.response.MutableResponseInterface;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -73,7 +73,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 	 * @return json response as a string object. If a document response then a blank string is returned
 	 * @throws DocmosisException if something goes wrong whilst fulfilling the request
 	 */
-	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad, boolean requestIsJson) throws DocmosisException
+	public static String executeHttpPost(MutableResponseInterface response, DocmosisCloudRequest<?> request, HttpEntity payLoad, boolean requestIsJson) throws DocmosisException
 	{
 		CloseableHttpClient client = null;
 		CloseableHttpResponse chResponse = null;
@@ -199,7 +199,7 @@ public class DocmosisHTTPRequestExecutionHandler {
         return responseString;
 	}
 
-	public static String executeHttpPost(DocmosisCloudResponse response, DocmosisCloudRequest<?> request, HttpEntity payLoad) throws DocmosisException
+	public static String executeHttpPost(MutableResponseInterface response, DocmosisCloudRequest<?> request, HttpEntity payLoad) throws DocmosisException
 	{
 		return executeHttpPost(response, request, payLoad, true);
 	}
@@ -212,7 +212,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 	 * @param requestIsJson requestIsJson true if json, otherwise xml
 	 * @throws IOException if response cannot be extracted
 	 */
-	public static void setResponse(DocmosisCloudResponse response, CloseableHttpResponse chResponse, String url, boolean requestIsJson) throws IOException
+	public static void setResponse(MutableResponseInterface response, CloseableHttpResponse chResponse, String url, boolean requestIsJson) throws IOException
 	{
 		int status = chResponse.getStatusLine().getStatusCode();
 		if (status != 200 && chResponse.getEntity() != null) { //Request Failed and a message was returned
@@ -269,27 +269,33 @@ public class DocmosisHTTPRequestExecutionHandler {
 		if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_SVR)) {
     		response.setServerId(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_SVR).getValue());
     	}
-		if (response instanceof RenderResponse) {
-			RenderResponse RResponse = (RenderResponse) response;
+		if (response instanceof MutableRenderResponse) {
+			//RenderResponse RResponse = (RenderResponse) response;
 			if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED)) {
-	    		RResponse.setPagesRendered(toInt(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED).getValue()));
+				response.setPages(toInt(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED).getValue()));
 	    	}
 			if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_REQUEST_ID)) {
-				RResponse.setRequestId(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_REQUEST_ID).getValue());
+				response.setRequestId(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_REQUEST_ID).getValue());
 	    	}
 		}
-		else if (response instanceof ConverterResponse) {
-			ConverterResponse CResponse = (ConverterResponse) response;
+		else if (response instanceof MutableConverterResponse) {
+			//ConverterResponse CResponse = (ConverterResponse) response;
 	    	if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED)) {
-	    		CResponse.setPagesConverted(toInt(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED).getValue()));
+	    		response.setPages(toInt(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_PAGES_RENDERED).getValue()));
 	    	}
 	    	if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_BYTES_OUTPUT)) {
-	    		CResponse.setLength(toLong(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_BYTES_OUTPUT).getValue()));
+	    		response.setLength(toLong(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_BYTES_OUTPUT).getValue()));
 	    	}
 	    }
+//		
+//		Header[] hdrs = chResponse.getAllHeaders();
+//		for (Header h: hdrs) {
+//			System.out.println(h.getName() + " -> " + h.getValue());
+//		}
+//		
 	}
 	
-    private static void setFailureResponseJson(DocmosisCloudResponse response, CloseableHttpResponse chResponse) throws IOException {
+    private static void setFailureResponseJson(MutableResponseInterface response, CloseableHttpResponse chResponse) throws IOException {
     	String jsonString  = EntityUtils.toString(chResponse.getEntity(), "UTF-8");
 		JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
 		JsonElement shortMsg = null;
@@ -304,7 +310,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 		response.setLongMsg(longMsg == null ? "" : longMsg.toString());
     }
     
-    private static void setFailureResponseXml(DocmosisCloudResponse response, CloseableHttpResponse chResponse) throws IOException {
+    private static void setFailureResponseXml(MutableResponseInterface response, CloseableHttpResponse chResponse) throws IOException {
     	try {
     		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
     		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();

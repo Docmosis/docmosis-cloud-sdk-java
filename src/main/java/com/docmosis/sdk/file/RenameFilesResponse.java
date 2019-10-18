@@ -35,8 +35,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class RenameFilesResponse extends DocmosisCloudResponse {
 
-	public RenameFilesResponse() {
-		super();
+	protected RenameFilesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

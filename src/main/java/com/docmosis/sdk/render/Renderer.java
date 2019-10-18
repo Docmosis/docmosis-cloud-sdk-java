@@ -71,7 +71,7 @@ public class Renderer {
      */
     protected static RenderResponse executeRender(final RenderRequest request) throws RendererException 
     {
-        RenderResponse response = new RenderResponse();
+        MutableRenderResponse response = new MutableRenderResponse();
         
     	final boolean requestIsJson = requestIsJson(request.getParams());
     	
@@ -81,9 +81,8 @@ public class Renderer {
     	catch (DocmosisException e) {
 			throw new RendererException(e);
     	}
-		
 
-		//Build request
+    	//Build request
     	final String accessKey = request.getEnvironment().getAccessKey();
         final String renderRequest = buildRequest(accessKey, request.getParams(), requestIsJson);
 
@@ -103,8 +102,7 @@ public class Renderer {
 	    	throw new RendererException(e);
 	    }
             
-
-        return response;
+        return new RenderResponse(response.build());
     }
 
     /**
@@ -117,7 +115,7 @@ public class Renderer {
      */
     protected static RenderResponse executeRenderForm(final RenderFormRequest request) throws RendererException 
     {
-        RenderResponse response = new RenderResponse();
+    	MutableRenderResponse response = new MutableRenderResponse();
 
         try {
         	//Combine request params with data params
@@ -133,7 +131,7 @@ public class Renderer {
 	    catch (DocmosisException e) {
 	    	throw new RendererException(e);
 	    }
-		return response;
+        return new RenderResponse(response.build());
     }
 
     

@@ -35,8 +35,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class GetTemplateResponse extends DocmosisCloudResponse {
 
-	public GetTemplateResponse() {
-		super();
+	protected GetTemplateResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

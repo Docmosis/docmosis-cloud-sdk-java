@@ -66,16 +66,16 @@ public class SimpleGetFileExample
 								.sendTo(outputFile) //Or OutputStream
 								.execute();
 
-			if (file.hasSucceeded()) {
-				System.out.println("Output File to: " + outputFile.getAbsolutePath());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Get File failed: status="
-						+ file.getStatus()
-						+ " shortMsg="
-						+ file.getShortMsg()
-						+ ((file.getLongMsg() == null) ? "" : " longMsg="
-								+ file.getLongMsg()));
-			}
+		if (file.hasSucceeded()) {
+			System.out.println("Output File to: " + outputFile.getAbsolutePath());
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Get File failed: status="
+					+ file.getStatus()
+					+ " shortMsg="
+					+ file.getShortMsg()
+					+ ((file.getLongMsg() == null) ? "" : " longMsg="
+							+ file.getLongMsg()));
+		}
 	}
 }

@@ -97,7 +97,7 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	/**
 	 * Execute a get template request based on contained settings and using the default Environment.
      * 
-	 * @return a response object giving status, success message or possible error messages.
+	 * @return a response object giving status or possible error messages.
 	 * 
 	 * @throws TemplateException if a problem occurs invoking the service 
 	 */
@@ -112,7 +112,7 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
      * @param url the service url
      * @param accessKey your unique Docmosis accesskey
      * 
-	 * @return a response object giving status, success message or possible error messages.
+	 * @return a response object giving status or possible error messages.
 	 * 
 	 * @throws TemplateException if a problem occurs invoking the service 
 	 */
@@ -127,7 +127,7 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
      * 
      * @param accessKey your unique Docmosis accesskey
      * 
-	 * @return a response object giving status, success message or possible error messages.
+	 * @return a response object giving status or possible error messages.
 	 * 
 	 * @throws TemplateException if a problem occurs invoking the service 
 	 */
@@ -142,7 +142,7 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
      * 
      * @param environment the environment configuration
      * 
-	 * @return a response object giving status, success message or possible error messages.
+	 * @return a response object giving status or possible error messages.
 	 * 
 	 * @throws TemplateException if a problem occurs invoking the service 
 	 */

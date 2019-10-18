@@ -38,8 +38,8 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 	private boolean templateListStale;
 	private List<TemplateDetails> templates = null;
 	
-	public ListTemplatesResponse() {
-		super();
+	protected ListTemplatesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

@@ -44,8 +44,8 @@ public class GetSampleDataResponse extends DocmosisCloudResponse {
 	private Document sampleDataXml = null;
 	private boolean isJson;
 	
-	public GetSampleDataResponse() {
-		super();
+	protected GetSampleDataResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**

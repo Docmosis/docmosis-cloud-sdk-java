@@ -90,7 +90,6 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 
 	/**
 	 * Execute a get sample data request based on contained settings and using the default Environment.
-	 //TODO: Add above line to all
      * 
 	 * @return a response object giving status, sample data and possible error messages.
 	 * 
