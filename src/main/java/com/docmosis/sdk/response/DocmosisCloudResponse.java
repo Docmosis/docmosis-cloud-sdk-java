@@ -172,7 +172,7 @@ public class DocmosisCloudResponse
 		return str;
 	}
 
-	public JsonObject getAsJson()
+	protected JsonObject getAsJson()
 	{
 		return getAsJson(this);
 	}
@@ -181,7 +181,7 @@ public class DocmosisCloudResponse
 	 * Returns this response as a formated Json string.
 	 * @return formatted string of json object
 	 */
-	public String getAsJsonPretty()
+	protected String getAsJsonPretty()
 	{
 		return getAsJsonPretty(this);
 	}
@@ -191,7 +191,7 @@ public class DocmosisCloudResponse
 	 * @param xml unformatted xml string
 	 * @return formatted string of xml object
 	 */
-	public String getAsXMLPretty(String xml)
+	protected String getAsXMLPretty(String xml)
 	{
 		return getAsXMLPretty(xml, 4);
 	}
@@ -201,12 +201,12 @@ public class DocmosisCloudResponse
 	 * @param document xml document object
 	 * @return formatted string of xml object
 	 */
-	public String getAsXMLPretty(Document document)
+	protected String getAsXMLPretty(Document document)
 	{
 		return getAsXMLPretty(document, 4);
 	}
 
-	public String getAsXMLPretty(String xml, int indent)
+	protected String getAsXMLPretty(String xml, int indent)
 	{
 		try {
 	        // Turn xml string into a document
@@ -232,7 +232,7 @@ public class DocmosisCloudResponse
 	    }
 	}
 	
-	public String getAsXMLPretty(Document document, int indent)
+	protected String getAsXMLPretty(Document document, int indent)
 	{
 		try {
 	        // Setup pretty print options

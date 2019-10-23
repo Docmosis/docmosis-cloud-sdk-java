@@ -17,7 +17,7 @@ package com.docmosis.sdk.template;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 /**
  * This class encapsulates a response to a get template structure request.
@@ -32,13 +32,13 @@ import com.google.gson.JsonObject;
  *                                                     .templateName("MasterTemplates/MyMasterTemplate.docx")
  *                                                     .execute();
  *   if (templateStructure.hasSucceeded()) {
- *       JsonObject structure = templateStructure.getTemplateStructure();
+ *       JsonElement structure = templateStructure.getTemplateStructure();
  *   }
  * </pre>
  */
 public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 
-	private JsonObject templateStructure = null;
+	private JsonElement templateStructure = null;
 	
 	protected GetTemplateStructureResponse(DocmosisCloudResponse other) {
 		super(other);
@@ -46,13 +46,13 @@ public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 
 	/**
 	 * Get a json representation of the template's structure
-	 * @return template structure as a JsonObject
+	 * @return template structure as a JsonElement
 	 */
-	public JsonObject getTemplateStructure() {
+	public JsonElement getTemplateStructure() {
 		return templateStructure;
 	}
 
-	protected void setTemplateStructure(JsonObject templateStructure) {
+	protected void setTemplateStructure(JsonElement templateStructure) {
 		this.templateStructure = templateStructure;
 	}
 

@@ -14,6 +14,14 @@
  */
 package com.docmosis.sdk.render;
 
+
+
+//TODO: Load testing. May need a queue around handler.
+//TODO: Review simple examples.
+//TODO: Easier way to build json data?
+
+
+
 import org.apache.commons.codec.Charsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;

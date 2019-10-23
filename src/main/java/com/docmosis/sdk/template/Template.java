@@ -226,7 +226,7 @@ public class Template {
 			    if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
-					JsonObject template = jsonObject.getAsJsonObject("templateStructure");
+					JsonElement template = jsonObject.get("templateStructure");
 					response.setTemplateStructure(template);
 			    } else {
 			    	throw new TemplateException("Cannot extract data from response.");
@@ -369,7 +369,7 @@ public class Template {
 					templateSampleDataStr = templateSampleDataStr.substring(1, templateSampleDataStr.length()-1);
 					
 					if (request.isFormatJson()) { //Convert String to JsonObject
-						JsonObject templateSampleData = new JsonParser().parse(templateSampleDataStr).getAsJsonObject();
+						JsonElement templateSampleData = new JsonParser().parse(templateSampleDataStr);
 						response.setSampleDataJson(templateSampleData);
 					}
 					else { //Convert String to XMLObject

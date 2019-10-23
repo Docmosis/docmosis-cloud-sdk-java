@@ -15,7 +15,6 @@
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.file.FileException;
 import com.docmosis.sdk.file.FileStorage;
@@ -24,7 +23,7 @@ import com.docmosis.sdk.file.ListFilesResponse;
 /**
  * 
  * This example connects to the public Docmosis cloud server and returns 
- * details about files stored on the server. 
+ * a list of files stored on the server including associated meta data.
  * 
  * Note that file storage must be enabled on your account for File services 
  * to work.
@@ -52,23 +51,25 @@ public class SimpleListFilesExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		ListFilesResponse files = FileStorage
-									.list()
-									.execute();
 
-		if (files.hasSucceeded()) {
-			System.out.println(files.toString());
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Create and execute the request
+		ListFilesResponse response = FileStorage.list().execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			System.out.println(response.toString());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Files failed: status="
-					+ files.getStatus()
+			System.err.println("List files failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ files.getShortMsg()
-					+ ((files.getLongMsg() == null) ? "" : " longMsg="
-							+ files.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

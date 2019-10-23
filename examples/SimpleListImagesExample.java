@@ -15,18 +15,15 @@
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.image.Image;
 import com.docmosis.sdk.image.ImageException;
 import com.docmosis.sdk.image.ListImagesResponse;
 
-
-
 /**
  * 
  * This example connects to the public Docmosis cloud server and returns 
- * details about all images stored on the server.
+ * a list of images stored on the server including associated meta data.
  * 
  * How to use:
  * 
@@ -46,33 +43,30 @@ public class SimpleListImagesExample
 
 	public static void main(String args[]) throws ImageException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		ListImagesResponse images = Image
-									.list()
-									.execute();
 
-		if (images.hasSucceeded()) {
-			System.out.println(images.toString());
-//			List<ImageDetails> list = images.list();
-//			for(ImageDetails id : list) {
-//				System.out.println(id.getName());
-//				//System.out.println(id.toString());
-//			}
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Create and execute the request
+		ListImagesResponse response = Image.list().execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			System.out.println(response.toString());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Images failed: status="
-					+ images.getStatus()
+			System.err.println("List images failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ images.getShortMsg()
-					+ ((images.getLongMsg() == null) ? "" : " longMsg="
-							+ images.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

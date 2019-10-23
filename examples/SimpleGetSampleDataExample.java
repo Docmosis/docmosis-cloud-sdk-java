@@ -15,7 +15,6 @@
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.template.GetSampleDataResponse;
 import com.docmosis.sdk.template.Template;
@@ -23,8 +22,8 @@ import com.docmosis.sdk.template.TemplateException;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns the 
- * structure of a template stored on the server.
+ * This example connects to the public Docmosis cloud server and returns sample 
+ * data that suits the template stored on the server.
  * 
  * How to use:
  * 
@@ -41,6 +40,7 @@ public class SimpleGetSampleDataExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
@@ -52,25 +52,28 @@ public class SimpleGetSampleDataExample
 			System.exit(1);
 		}
 
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
-			
-		GetSampleDataResponse sampleData = Template
-				   			.getSampleData()
-							.templateName(TEMPLATE_NAME)
-							.format("json") //"xml" or "json"
-							.execute();
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
 
-		if (sampleData.hasSucceeded()) {
-			System.out.println(sampleData.toString());
+		//Create and execute the request
+		GetSampleDataResponse response = Template
+								   			.getSampleData()
+											.templateName(TEMPLATE_NAME)
+											.format("json") //"xml" or "json"
+											.execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			System.out.println(response.toString());
+
 		} else {
 			// something went wrong, tell the user
 			System.err.println("Get Template Structure failed: status="
-					+ sampleData.getStatus()
+					+ response.getStatus()
 					+ " shortMsg="
-					+ sampleData.getShortMsg()
-					+ ((sampleData.getLongMsg() == null) ? "" : " longMsg="
-							+ sampleData.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
-
 	}
 }

@@ -16,17 +16,15 @@
 import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.file.FileException;
 import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.PutFileResponse;
 
-
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * uploads a file to store on the server.
+ * This example connects to the public Docmosis cloud server and uploads a 
+ * file to store on the server.
  * 
  * Note that file storage must be enabled on your account for File services 
  * to work.
@@ -46,35 +44,42 @@ public class SimplePutFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+
 	//Full path of File to be uploaded
-	private static final String FILE_TO_UPLOAD = "C:/example/myFile1.pdf";
+	private static final String FILE_TO_UPLOAD = "C:/example/myFile.pdf";
 
 	public static void main(String args[]) throws FileException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		File uploadFile = new File(FILE_TO_UPLOAD);
-		PutFileResponse uploadedFile = FileStorage
-										.put()
-										.file(uploadFile)
-										.execute();
 
-		if (uploadedFile.hasSucceeded()) {
-			System.out.println(uploadedFile.getShortMsg());
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Set the file we are going to upload.
+		File uploadFile = new File(FILE_TO_UPLOAD);
+
+		//Create and execute the request
+		PutFileResponse response = FileStorage
+									.put()
+									.file(uploadFile)
+									.execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Put File failed: status="
-					+ uploadedFile.getStatus()
+			System.err.println("Put file failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ uploadedFile.getShortMsg()
-					+ ((uploadedFile.getLongMsg() == null) ? "" : " longMsg="
-							+ uploadedFile.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

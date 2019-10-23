@@ -15,7 +15,6 @@
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.rendertags.GetRenderTagsResponse;
 import com.docmosis.sdk.rendertags.RenderTags;
@@ -50,10 +49,12 @@ public class SimpleGetRenderTagsExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetRenderTagsResponse renderTags = RenderTags
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Create and execute the render request
+		GetRenderTagsResponse response = RenderTags
 											.get()
 											.tags("my;tags;")
 											.year(2019)
@@ -62,16 +63,18 @@ public class SimpleGetRenderTagsExample
 											.padBlanks(true)
 											.execute();
 
-		if (renderTags.hasSucceeded()) {
-			System.out.println(renderTags.toString());
+		if (response.hasSucceeded()) {
+			// great - render succeeded.
+			System.out.println(response.toString());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Render tags failed: status="
-					+ renderTags.getStatus()
+			System.err.println("Get render tags failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ renderTags.getShortMsg()
-					+ ((renderTags.getLongMsg() == null) ? "" : " longMsg="
-							+ renderTags.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

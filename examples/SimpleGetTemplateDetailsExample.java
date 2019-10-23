@@ -1,4 +1,3 @@
-
 /*
  *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
@@ -16,7 +15,6 @@
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.template.GetTemplateDetailsResponse;
 import com.docmosis.sdk.template.Template;
@@ -44,37 +42,43 @@ public class SimpleGetTemplateDetailsExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	private static final String TEMPLATE_FILE = "samples/WelcomeTemplate.docx";
+
+	// the welcome template is available in your cloud account by default
+	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
 	public static void main(String args[]) throws TemplateException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		GetTemplateDetailsResponse templateDetails =  Template
-														.getDetails()
-														.templateName(TEMPLATE_FILE)
-														.execute();
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
 
-		if (templateDetails.hasSucceeded()) {
-			TemplateDetails template = templateDetails.getTemplateDetails();
+		//Create and execute the request
+		GetTemplateDetailsResponse response = Template
+												.getDetails()
+												.templateName(TEMPLATE_NAME)
+												.execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			TemplateDetails templateDetails = response.getTemplateDetails();
 			System.out.println("Template Details:");
-			System.out.println("Template Name: " + template.getName());
-			System.out.println("Last Modified: " + template.getLastModifiedISO8601());
-			System.out.println("Size: " + ((double)template.getSizeBytes() / 1000000.0) + " mb");
+			System.out.println("Template Name: " + templateDetails.getName());
+			System.out.println("Last Modified: " + templateDetails.getLastModifiedISO8601());
+			System.out.println("Size: " + ((double)templateDetails.getSizeBytes() / 1000000.0) + " mb");
+
 		} else {
 			// something went wrong, tell the user
 			System.err.println("Get Template Details failed: status="
-					+ templateDetails.getStatus()
+					+ response.getStatus()
 					+ " shortMsg="
-					+ templateDetails.getShortMsg()
-					+ ((templateDetails.getLongMsg() == null) ? "" : " longMsg="
-							+ templateDetails.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

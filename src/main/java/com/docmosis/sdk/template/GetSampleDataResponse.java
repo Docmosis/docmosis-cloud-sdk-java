@@ -19,7 +19,7 @@ import org.w3c.dom.Document;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 /**
  * This class encapsulates a response to a get sample data request.
@@ -40,7 +40,7 @@ import com.google.gson.JsonObject;
  */
 public class GetSampleDataResponse extends DocmosisCloudResponse {
 
-	private JsonObject sampleDataJson = null;
+	private JsonElement sampleDataJson = null;
 	private Document sampleDataXml = null;
 	private boolean isJson;
 	
@@ -49,14 +49,14 @@ public class GetSampleDataResponse extends DocmosisCloudResponse {
 	}
 
 	/**
-	 * Get the returned sample data as a JsonObject. Will return null if the requested format was xml.
+	 * Get the returned sample data as a JsonElement. Will return null if the requested format was xml.
 	 * @return Sample Data in Json format
 	 */
-	public JsonObject getSampleDataJson() {
+	public JsonElement getSampleDataJson() {
 		return sampleDataJson;
 	}
 
-	protected void setSampleDataJson(JsonObject sampleDataJson) {
+	protected void setSampleDataJson(JsonElement sampleDataJson) {
 		this.sampleDataJson = sampleDataJson;
 	}
 

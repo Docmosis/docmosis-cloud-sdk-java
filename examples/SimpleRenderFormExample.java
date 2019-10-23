@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
@@ -59,27 +58,29 @@ public class SimpleRenderFormExample
 	public static void main(String args[]) throws IOException,
 			RendererException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Set the file we are going to write the returned document to.
 		File outputFile = new File(OUTPUT_FILE);
+
+		//Create and execute the request
 		RenderResponse response = Renderer
 									.renderForm()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile) //Or OutputStream
+									.sendTo(outputFile)
 									.data("title", "This is Docmosis Cloud\n" + new Date())
 									.execute();
-							
 
 		if (response.hasSucceeded()) {
 			// great - render succeeded.
-
 			System.out.println("Written:" + outputFile.getAbsolutePath());
 
 		} else {

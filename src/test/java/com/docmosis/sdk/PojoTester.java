@@ -50,7 +50,7 @@ public class PojoTester {
 	    	if (pojoClass.getName().contains("RenderRequestParams")) {
 	    		validatorRRParams.validate( pojoClass );
 	    	}
-	    	else if (pojoClass.getName().contains("Request") && !(pojoClass.getName().contains("Params"))) {
+	    	else if (pojoClass.getName().contains("Request") && !(pojoClass.getName().contains("Params")) || pojoClass.getName().toLowerCase().contains("response")) {
 	    		validatorRequest.validate( pojoClass );
 	    	}
 	    	else {
@@ -66,7 +66,7 @@ public class PojoTester {
 		      return (pojoClass.getName().toLowerCase().contains("request") || pojoClass.getName().toLowerCase().contains("response") || 
 		    		  pojoClass.getName().toLowerCase().contains("details")  || pojoClass.getName().toLowerCase().contains("rendertag")) && 
 		    		  !(pojoClass.isAbstract() || pojoClass.isNestedClass()  || pojoClass.isInterface() || pojoClass.getName().contains("Parameters") || 
-		    		    pojoClass.getName().contains("handlers") || pojoClass.getName().contains("Exception"));
+		    		    pojoClass.getName().contains("handlers") || pojoClass.getName().contains("Exception") || pojoClass.getName().contains("RenderFormRequestParams"));
 		    }
 		  }
 }

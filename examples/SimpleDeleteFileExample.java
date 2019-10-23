@@ -15,7 +15,6 @@
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.file.DeleteFilesResponse;
 import com.docmosis.sdk.file.FileException;
@@ -45,8 +44,9 @@ public class SimpleDeleteFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+
 	//Full path of File to be deleted
-	private static final String FILE_TO_DELETE = "myFile1.pdf";
+	private static final String FILE_TO_DELETE = "myFile.pdf";
 
 	public static void main(String args[]) throws FileException, IOException
 	{
@@ -55,27 +55,27 @@ public class SimpleDeleteFileExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
 
-		DeleteFilesResponse deletedFile = FileStorage
-											.delete()
-											.path(FILE_TO_DELETE)
-											//.includeSubFolders(true)
-											.execute();
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
 
-		if (deletedFile.hasSucceeded()) {
-			System.out.println(deletedFile.getShortMsg());
+		//Create and execute the request
+		DeleteFilesResponse response = FileStorage
+										.delete()
+										.path(FILE_TO_DELETE)
+										.execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
 			System.out.println("Successfully deleted " + FILE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Delete File failed: status="
-					+ deletedFile.getStatus()
+			System.err.println("Delete file failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ deletedFile.getShortMsg()
-					+ ((deletedFile.getLongMsg() == null) ? "" : " longMsg="
-							+ deletedFile.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
-
 	}
 }

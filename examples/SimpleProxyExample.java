@@ -25,8 +25,7 @@ import com.docmosis.sdk.render.RendererException;
 
 /**
  * 
- * This example shows how to set environmental settings including Proxies,
- * Timeouts and logging.
+ * This example shows how to set environmental settings such as a proxy.
  * 
  * How to use:
  * 
@@ -48,7 +47,7 @@ public class SimpleProxyExample
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
-	// The output format we want to produce (pdf, doc, odt and more exist).
+	// The output format we want to produce (pdf, docx, doc, odt and more exist).
 	private static final String OUTPUT_FORMAT = "pdf";
 
 	// The name of the file we are going to write the document to.
@@ -62,8 +61,10 @@ public class SimpleProxyExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
+
 		EnvironmentBuilder envBldr = new EnvironmentBuilder();
+
+		//Set the access key and the web services url
 		envBldr.setAccessKey(ACCESS_KEY);
 		envBldr.setBaseUrl(Endpoint.DWS_VERSION_3_AUS.getBaseUrl());
 		
@@ -77,21 +78,26 @@ public class SimpleProxyExample
 		envBldr.setRetryDelay(500); //A delay of 0.5 seconds between connection attempts will be used
 
 		//Create data to send
-		final String data = "<title>" + "This is Docmosis Cloud\n" + new Date() + "</title>";
+		final String data = "<title>" + "This is Docmosis Cloud\n" + new Date() + "</title>" +
+				"<messages>" + "<msg>" + "This cloud experience is better than I thought." + "</msg>" + "</messages>" +
+				"<messages>" + "<msg>" + "The sun is shining." + "</msg>" + "</messages>" +
+				"<messages>" + "<msg>" + "Right, now back to work." + "</msg>" + "</messages>";
 
+		//Set the file we are going to write the document to.
 		File outputFile = new File(OUTPUT_FILE);
+
+		//Create and execute the render request
 		RenderResponse response = Renderer
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile) //Or OutputStream
+									.sendTo(outputFile)
 									.data(data)
 									.execute(envBldr.build());
 							
 
 		if (response.hasSucceeded()) {
 			// great - render succeeded.
-
 			System.out.println("Written:" + outputFile.getAbsolutePath());
 
 		} else {
