@@ -61,8 +61,8 @@ required.  For example:
 ```
 	Environment.setDefaults(accessKey);
 	
-	ListTemplatesResponse templates = Template.list().execute();
-	List<TemplateDetails> list = templates.list();
+	ListTemplatesResponse response = Template.list().execute();
+	List<TemplateDetails> list = response.list();
 	for(TemplateDetails td : list) {
 		System.out.println("template: " + td.getName() + " size=" + td.getSizeBytes() + " bytes");
 	}
@@ -115,7 +115,7 @@ will specify an environment explicitly for the list templates request:
 			.setEndpoint(Endpoint.DWS_VERSION_3_USA)
 			.build();
 	
-	ListTemplatesResponse templates = Template.list().execute(env);
+	ListTemplatesResponse response = Template.list().execute(env);
 ```
 
 ## The Docmosis Services
@@ -182,15 +182,15 @@ The template services include:
 - List Templates Service
 
 ```
-	ListTemplatesResponse templates = Template.list().execute();
-	System.out.println(templates.toString());
+	ListTemplatesResponse response = Template.list().execute();
+	System.out.println(response.toString());
 ```
 
 - Upload Template Service
 
 ```
 	File uploadFile = new File(TEMPLATE_TO_UPLOAD);
-	UploadTemplateResponse uploadedTemplate = Template.upload()
+	UploadTemplateResponse response = Template.upload()
 		.templateFile(uploadFile)
 		.execute();
 ```
@@ -199,7 +199,7 @@ The template services include:
 
 ```
 	File outputFile = new File(TEMPLATE_TO_GET);
-	GetTemplateResponse template = Template.get()
+	GetTemplateResponse response = Template.get()
 		.addTemplateName(TEMPLATE_TO_GET)
 		.sendTo(outputFile)
 		.execute();
@@ -208,7 +208,7 @@ The template services include:
 - Delete Template Service
 
 ```
-	DeleteTemplateResponse deleteTemplate = Template.delete()
+	DeleteTemplateResponse response = Template.delete()
 		.addTemplateName(TEMPLATE_TO_DELETE)
 		.execute();
 ```
@@ -216,29 +216,29 @@ The template services include:
 - Get Template Details Service
 
 ```
-	GetTemplateDetailsResponse templateDetails =  Template.getDetails()
+	GetTemplateDetailsResponse response =  Template.getDetails()
 		.templateName(TEMPLATE_NAME)
 		.execute();
-	TemplateDetails template = templateDetails.getDetails();
+	TemplateDetails template = response.getDetails();
 ```
 
 - Get Template Structure Service - Returns a json format description of the template structure.
 
 ```
-	GetTemplateStructureResponse templateStructure = Template.getStructure()
+	GetTemplateStructureResponse response = Template.getStructure()
 		.templateName(TEMPLATE_NAME)
 		.execute();
-	System.out.println(templateStructure.toString());
+	System.out.println(response.toString());
 ```
 
 - Get Sample Data Service - Generates and returns sample data for the template based on its current structures in json or xml format.
 
 ```
-	GetSampleDataResponse sampleData = Template.getSampleData()
+	GetSampleDataResponse response = Template.getSampleData()
 		.templateName(TEMPLATE_NAME)
 		.format("json")
 		.execute();
-	System.out.println(sampleData.toString());
+	System.out.println(response.toString());
 ```
 
 #### The Image Services
@@ -247,15 +247,15 @@ The image services include:
 - List Images Service
 
 ```
-	ListImagesResponse images = Image.list().execute();
-	System.out.println(images.toString());
+	ListImagesResponse response = Image.list().execute();
+	System.out.println(response.toString());
 ```
 
 - Upload Image Service
 
 ```
 	File uploadFile = new File(IMAGE_TO_UPLOAD);
-	UploadImageResponse uploadedImage = Image.upload()
+	UploadImageResponse response = Image.upload()
 		.imageFile(uploadFile)
 		.execute();
 ```
@@ -264,7 +264,7 @@ The image services include:
 
 ```
 	File outputFile = new File(IMAGE_TO_GET);
-	GetImageResponse image = Image.get()
+	GetImageResponse response = Image.get()
 		.addImageName(IMAGE_TO_GET)
 		.sendTo(outputFile)
 		.execute();
@@ -273,7 +273,7 @@ The image services include:
 - Delete Image Service
 
 ```
-	DeleteImageResponse deleteImage = Image.delete()
+	DeleteImageResponse response = Image.delete()
 		.addImageName(IMAGE_TO_DELETE)
 		.execute();
 ```
@@ -286,8 +286,8 @@ The File Storage services include:
 - List Files Service
 
 ```
-	ListFilesResponse files = FileStorage.list().execute();
-	for(FileDetails fDetails : files.getFiles()) {
+	ListFilesResponse response = FileStorage.list().execute();
+	for(FileDetails fDetails : response.getFiles()) {
 		System.out.println(fDetails.getName() + ":" + fDetails.getSizeBytes());
 	}
 ```
@@ -295,7 +295,8 @@ The File Storage services include:
 - Put File Service
 
 ```
-	PutFileResponse uploadedFile = FileStorage.put()
+	File uploadFile = new File(FILE_TO_UPLOAD);
+	PutFileResponse response = FileStorage.put()
 		.file(uploadFile)
       	.execute();
 ```
@@ -303,7 +304,8 @@ The File Storage services include:
 - Get File Service
 
 ```
-	GetFileResponse file = FileStorage.get()
+	File outputFile = new File(FILE_TO_GET);
+	GetFileResponse response = FileStorage.get()
 		.fileName(FILE_TO_GET)
 		.sendTo(outputFile)
 		.execute();
@@ -312,7 +314,7 @@ The File Storage services include:
 - Delete File Service
 
 ```
-	DeleteFilesResponse deletedFile = FileStorage.delete()
+	DeleteFilesResponse response = FileStorage.delete()
 		.path(FILE_TO_DELETE)
 		.execute();
 ```
@@ -320,7 +322,7 @@ The File Storage services include:
 - Rename File Service
 
 ```
-	RenameFilesResponse renamedFile = FileStorage.rename()
+	RenameFilesResponse response = FileStorage.rename()
 		.fromPath(FILE_TO_RENAME)
 		.toPath(NEW_NAME)
 		.execute();
@@ -330,13 +332,13 @@ The File Storage services include:
 The get render tags service allows statistics to be retrieved on renders that were tagged with user-defined phrases (“tags”).
 
 ```
-	GetRenderTagsResponse renderTags = RenderTags.get()
+	GetRenderTagsResponse response = RenderTags.get()
 		.tags("list;of;tags;")
 		.year(2019)
 		.month(1)
 		.nMonths(6)
 		.execute();
-	System.out.println(renderTags.toString());
+	System.out.println(response.toString());
 ```
 
 #### The Ping Service
