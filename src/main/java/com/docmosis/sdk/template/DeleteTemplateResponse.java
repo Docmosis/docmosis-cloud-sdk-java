@@ -16,10 +16,26 @@ package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a delete template request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *   DeleteTemplateResponse deleteTemplate = Template
+ *                                            .delete()
+ *                                            .templateName(fileToDelete)
+ *                                            .execute();
+ *  if (deleteTemplate.hasSucceeded()) {
+ *      //Succeeded
+ *  }
+ * </pre>
+ */
 public class DeleteTemplateResponse extends DocmosisCloudResponse {
 
-	public DeleteTemplateResponse() {
-		super();
+	protected DeleteTemplateResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

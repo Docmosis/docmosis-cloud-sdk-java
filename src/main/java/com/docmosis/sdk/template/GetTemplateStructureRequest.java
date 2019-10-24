@@ -15,7 +15,6 @@
 package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -41,7 +40,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplateStructureRequest> {
 
 	private static final String SERVICE_PATH = "getTemplateStructure";
-	private String templateName;
+
+	private GetTemplateStructureRequestParams params = new GetTemplateStructureRequestParams();
 
 	public GetTemplateStructureRequest() {
 		super(SERVICE_PATH);
@@ -50,25 +50,12 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 	public GetTemplateStructureRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * Get the currently set templateName.
-	 * 
-	 * @return The name of the Template on the docmosis server.
-	 */
-	public String getTemplateName() {
-		return templateName;
-	}
-
-	/**
-	 * Set the Template Name.
-	 * 
-	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
-	}
 	
+	public GetTemplateStructureRequestParams getParams()
+    {
+    	return params;
+    }
+
 	/**
 	 * Set the Template Name.
 	 * 
@@ -76,41 +63,70 @@ public class GetTemplateStructureRequest extends DocmosisCloudRequest<GetTemplat
 	 * @return this request for method chaining
 	 */
 	public GetTemplateStructureRequest templateName(String templateName) {
-		this.templateName = templateName;
-		return getThis();
+		params.setTemplateName(templateName);
+		return this;
 	}
 
+	/**
+	 * Execute a get template structure request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateStructureResponse execute() throws DocmosisException {
-		return Template.executeGetTemplateStructure(getThis());
+	public GetTemplateStructureResponse execute() throws TemplateException {
+		return Template.executeGetTemplateStructure(this);
 	}
-	
+
+	/**
+	 * Execute a get template structure request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateStructureResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetTemplateStructureResponse execute(String url, String accessKey) throws TemplateException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetTemplateStructure(getThis());
-	}
-	
-	@Override
-	public GetTemplateStructureResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetTemplateStructure(getThis());
+		return Template.executeGetTemplateStructure(this);
 	}
 
+	/**
+	 * Execute a get template structure request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateStructureResponse execute(Environment environment) throws DocmosisException {
+	public GetTemplateStructureResponse execute(String accessKey) throws TemplateException {
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeGetTemplateStructure(this);
+	}
+
+	/**
+	 * Execute a get template structure request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, template structure in json format and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetTemplateStructureResponse execute(Environment environment) throws TemplateException {
 		super.setEnvironment(environment);
-		return Template.executeGetTemplateStructure(getThis());
+		return Template.executeGetTemplateStructure(this);
 	}
 
 	@Override
 	public String toString() {
-		return "GetTemplateStructureRequest [templateName=" + templateName + ", " + super.toString() + "]";
-	}
-
-	@Override
-	protected GetTemplateStructureRequest getThis()
-	{
-		return this;
+		return params.toString();
 	}
 }

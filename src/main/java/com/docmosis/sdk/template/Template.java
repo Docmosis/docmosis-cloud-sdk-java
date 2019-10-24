@@ -24,8 +24,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -33,6 +31,8 @@ import org.xml.sax.InputSource;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.RequestBuilder;
+import com.docmosis.sdk.response.MutableDocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -122,27 +122,26 @@ public class Template {
 		
 		return req;
 	}
-
+	
+	
 	/**
 	 * Execute a listTemplates request.
 	 * @param request Object
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static ListTemplatesResponse executelist(ListTemplatesRequest request) throws TemplateException
+	protected static ListTemplatesResponse executelist(ListTemplatesRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
+	    ListTemplatesResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
-		HttpEntity payload = builder.build();
-	    ListTemplatesResponse response = new ListTemplatesResponse();
+	    //Build request
+    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey());
 	    
 	    try {
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new ListTemplatesResponse(mutableResponse.build());
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -171,27 +170,18 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws TemplateException
+	protected static GetTemplateDetailsResponse executeGetTemplateDetails(GetTemplateDetailsRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-
-	    HttpEntity payload = builder.build();
-	    GetTemplateDetailsResponse response = new GetTemplateDetailsResponse();
+	    GetTemplateDetailsResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new GetTemplateDetailsResponse(mutableResponse.build());
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -218,33 +208,25 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws TemplateException
+	protected static GetTemplateStructureResponse executeGetTemplateStructure(GetTemplateStructureRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-
-	    HttpEntity payload = builder.build();
-	    GetTemplateStructureResponse response = new GetTemplateStructureResponse();
+	    GetTemplateStructureResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new GetTemplateStructureResponse(mutableResponse.build());
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
 			    if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
-					JsonObject template = jsonObject.getAsJsonObject("templateStructure");
+					JsonElement template = jsonObject.get("templateStructure");
 					response.setTemplateStructure(template);
 			    } else {
 			    	throw new TemplateException("Cannot extract data from response.");
@@ -263,40 +245,18 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */	
-	public static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws TemplateException
+	protected static UploadTemplateResponse executeUploadTemplate(UploadTemplateRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getTemplateFile() != null) {
-			if (request.getTemplateFile().canRead()) {
-				builder.addBinaryBody("templateFile", request.getTemplateFile(), ContentType.APPLICATION_OCTET_STREAM, request.getTemplateFile().getName());
-			} else {
-				throw new TemplateException("cannot read template: ["
-	                    + request.getTemplateFile() + "]");
-			}
-		} else {
-			throw new TemplateException("No template selected");
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		builder.addTextBody("templateDescription", request.getTemplateDescription());
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-		builder.addTextBody("devMode", String.valueOf(request.getDevMode()));
-		builder.addTextBody("keepPrevOnFail", String.valueOf(request.getKeepPrevOnFail()));
-		builder.addTextBody("fieldDelimPrefix", request.getFieldDelimPrefix());
-		builder.addTextBody("fieldDelimSuffix", request.getFieldDelimSuffix());
-		builder.addTextBody("normalizeTemplateName", String.valueOf(request.getNormalizeTemplateName()));
-
-		HttpEntity payload = builder.build();
-	    UploadTemplateResponse response = new UploadTemplateResponse();
+		UploadTemplateResponse response;
+		MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
-	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
+		    //Execute request
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new UploadTemplateResponse(mutableResponse.build());
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -323,42 +283,30 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws TemplateException
+	protected static DeleteTemplateResponse executeDeleteTemplate(DeleteTemplateRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getTemplateNames() != null) {
-			List<String> templateNames = request.getTemplateNames();
-			for(String templateName : templateNames) {
-				builder.addTextBody("templateName", templateName);
-			}
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-	    
-		HttpEntity payload = builder.build();
-	    DeleteTemplateResponse response = new DeleteTemplateResponse();
+	    DeleteTemplateResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
 	    	
 	    	//Extract data from Response String
-	    	if (response.hasSucceeded()) {
+	    	if (mutableResponse.hasSucceeded()) {
 			    if (responseString != null && responseString.length() > 0) {
 					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
 					JsonElement shortMsg = jsonObject.get("shortMsg");
-					response.setShortMsg(shortMsg.getAsString());
+					mutableResponse.setShortMsg(shortMsg.getAsString());
 			    } else {
 			    	throw new TemplateException("Cannot extract data from response.");
 			    }
 	    	}
+	    	response = new DeleteTemplateResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new TemplateException(e);
@@ -372,30 +320,18 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws TemplateException
+	protected static GetTemplateResponse executeGetTemplate(GetTemplateRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getTemplateNames() != null) {
-			List<String> templateNames = request.getTemplateNames();
-			for(String templateName : templateNames) {
-				builder.addTextBody("templateName", templateName);
-			}
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		builder.addTextBody("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()));
-	    
-		HttpEntity payload = builder.build();
-	    GetTemplateResponse response = new GetTemplateResponse();
+	    GetTemplateResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
-	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new GetTemplateResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new TemplateException(e);
@@ -409,32 +345,18 @@ public class Template {
 	 * @return Response Object
 	 * @throws TemplateException if execution fails or cannot extract data from response
 	 */
-	public static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws TemplateException
+	protected static GetSampleDataResponse executeGetSampleData(GetSampleDataRequest request) throws TemplateException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getTemplateName() != null) {
-			builder.addTextBody("templateName", request.getTemplateName());
-		}
-		else {
-			throw new TemplateException("No Template Name specified.");
-		}
-		if (request.getFormat() != null) {
-			builder.addTextBody("format", request.getFormat());
-		}
-		else {
-			builder.addTextBody("format", "");
-		}
-	    HttpEntity payload = builder.build();
-
-	    GetSampleDataResponse response = new GetSampleDataResponse();
+	    GetSampleDataResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+	    	
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new GetSampleDataResponse(mutableResponse.build());
 	    	
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -447,7 +369,7 @@ public class Template {
 					templateSampleDataStr = templateSampleDataStr.substring(1, templateSampleDataStr.length()-1);
 					
 					if (request.isFormatJson()) { //Convert String to JsonObject
-						JsonObject templateSampleData = new JsonParser().parse(templateSampleDataStr).getAsJsonObject();
+						JsonElement templateSampleData = new JsonParser().parse(templateSampleDataStr);
 						response.setSampleDataJson(templateSampleData);
 					}
 					else { //Convert String to XMLObject

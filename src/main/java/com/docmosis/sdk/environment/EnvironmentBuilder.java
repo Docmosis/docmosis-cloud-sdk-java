@@ -14,10 +14,24 @@
  */
 package com.docmosis.sdk.environment;
 
-
 /**
  * This class helps to build an Environment instance with settings for communicating 
- * with the desired end point.
+ * with the desired end point. For example:
+ * 
+ * <pre>
+ *   EnvironmentBuilder envBldr = new EnvironmentBuilder();
+ *   envBldr.setAccessKey(ACCESS_KEY);
+ *   envBldr.setBaseUrl(Endpoint.DWS_VERSION_3_AUS.getBaseUrl());
+ *   envBldr.setProxy("HostAddress", 8888, "UserName", "Password");
+ *   envBldr.setConnectTimeoutMS(2000); //A maximum of 2 seconds to establish the connection with the remote host.
+ *   envBldr.setReadTimeoutMS(1000); //A maximum of 1 second of inactivity between two data packets.
+ *   envBldr.setMaxTries(5); //A maximum of 5 attempts to connect to the service will be used
+ *   envBldr.setRetryDelay(500); //A delay of 0.5 seconds between connection attempts will be used
+ *   
+ *   ListTemplatesResponse templates = Template.list().execute(envBldr.build());
+ * </pre>
+ * 
+ * Also see the Environment class. 
  */
 public class EnvironmentBuilder
 {

@@ -14,11 +14,9 @@
  */
 package com.docmosis.sdk.template;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
@@ -34,7 +32,7 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * <pre>
  *   GetTemplateResponse getTemplate = Template
  *                                      .get()
- *                                      .addTemplateName(fileToGet)
+ *                                      .templateName(fileToGet)
  *                                      .sendTo(outputFileOrStream)
  *                                      .execute();
  *  if (getTemplate.hasSucceeded()) {
@@ -45,109 +43,113 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequest> {
 	
 	private static final String SERVICE_PATH = "getTemplate";
-	private boolean isSystemTemplate = false;
-	private List<String> templateNames = null;
 	
+	private GetTemplateRequestParams params = new GetTemplateRequestParams();
+
 	public GetTemplateRequest() {
 		super(SERVICE_PATH);
-		templateNames = new ArrayList<String>();
 	}
 	
 	public GetTemplateRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
-		templateNames = new ArrayList<String>();
 	}
+	
+	public GetTemplateRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @return isSystemTemplate flag
-	 */
-	public boolean getIsSystemTemplate() {
-		return isSystemTemplate;
-	}
-
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 */
-	public void setSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-	}
-	
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
-	 */
-	public GetTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-		return getThis();
-	}
-	
-	/**
-	 * Get the currently set templateNames.
-	 * 
-	 * @return List of the name of the Templates on the docmosis server.
-	 */
-	public List<String> getTemplateNames() {
-		return templateNames;
-	}
-	
-	/**
-	 * Set the Template Names.
-	 * 
-	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
-	}
-	
-	/**
-	 * Set the Template Names.
+	 * Set the names of the Templates to get.
+	 * If getting more than one template the templates will be returned in a .zip file.
 	 * 
 	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
 	 */
 	public GetTemplateRequest templateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
-		return getThis();
+		params.setTemplateNames(templateNames);
+		return this;
 	}
-
+	
 	/**
-	 * Add a Template Name.
+	 * Add the name of a Template to get.
+	 * If getting more than one template the templates will be returned in a .zip file.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
 	 */
-	public GetTemplateRequest addTemplateName(String templateName) {
-		this.templateNames.add(templateName);
-		return getThis();
+	public GetTemplateRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
+		return this;
 	}
 	
-	@Override
-	public GetTemplateResponse execute() throws DocmosisException {
-		return Template.executeGetTemplate(getThis());
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
+	 */
+	public GetTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
+		return this;
 	}
-	
+
+	/**
+	 * Execute a get template request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetTemplateResponse execute() throws TemplateException {
+		return Template.executeGetTemplate(this);
+	}
+
+	/**
+	 * Execute a get template request based on contained settings.
+	 *  
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetTemplateResponse execute(String url, String accessKey) throws TemplateException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetTemplate(getThis());
+		return Template.executeGetTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a get template request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateResponse execute(String accessKey) throws DocmosisException {
+	public GetTemplateResponse execute(String accessKey) throws TemplateException {
 		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetTemplate(getThis());
+		return Template.executeGetTemplate(this);
 	}
-	
+
+	/**
+	 * Execute a get template request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetTemplateResponse execute(Environment environment) throws DocmosisException {
+	public GetTemplateResponse execute(Environment environment) throws TemplateException {
 		super.setEnvironment(environment);
-		return Template.executeGetTemplate(getThis());
+		return Template.executeGetTemplate(this);
 	}
 	
 	@Override
@@ -158,13 +160,6 @@ public class GetTemplateRequest extends DocmosisCloudFileRequest<GetTemplateRequ
 	
 	@Override
 	public String toString() {
-		String names = "(";
-		if (templateNames != null) {
-			for (String tn: templateNames) {
-				names += tn + "; ";
-			}
-			names = names.substring(0, names.length()-2) + ")";
-		}
-		return "GetTemplateRequest [isSystemTemplate=" + isSystemTemplate + ", templateNames=" + names +  ", " + super.toString() +  "]";
+		return params.toString();
 	}
 }

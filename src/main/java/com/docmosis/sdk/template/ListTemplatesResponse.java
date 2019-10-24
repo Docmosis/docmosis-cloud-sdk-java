@@ -18,13 +18,28 @@ import java.util.List;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a list templates request.
+ * 
+ * Typically you would use this response to check for success, then access the returned list of 
+ * TemplateDetails objects.  For example:
+ * 
+ * 
+ * <pre>
+ *   ListTemplatesResponse templates = Template.list().execute();
+ *   List&lt;TemplateDetails&gt; list = templates.list();
+ *   for(TemplateDetails td : list) {
+ *       td.toString();
+ *   }
+ * </pre>
+ */
 public class ListTemplatesResponse extends DocmosisCloudResponse {
 
 	private boolean templateListStale;
 	private List<TemplateDetails> templates = null;
 	
-	public ListTemplatesResponse() {
-		super();
+	protected ListTemplatesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**
@@ -33,7 +48,7 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemTemplate - whether a system template ("true" or "false")
+	 * isSystemTemplate - whether a system template (true or false)
 	 * templatePlainTextFieldPrefix - the prefix used when it was uploaded
 	 * templatePlainTextFieldSuffix - the suffix used when it was uploaded
 	 * templateDevMode - the dev mode setting used when it was uploaded
@@ -51,7 +66,7 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemTemplate - whether a system template ("true" or "false")
+	 * isSystemTemplate - whether a system template (true or false)
 	 * templatePlainTextFieldPrefix - the prefix used when it was uploaded
 	 * templatePlainTextFieldSuffix - the suffix used when it was uploaded
 	 * templateDevMode - the dev mode setting used when it was uploaded
@@ -63,22 +78,22 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 		return templates;
 	}
 
-	public void setTemplates(List<TemplateDetails> templates) {
+	protected void setTemplates(List<TemplateDetails> templates) {
 		this.templates = templates;
 	}
 
 	/**
 	 * If Docmosis detects changes to the template list are in progress
-	 * (such as updates or deletions) this flag will be set to "true" to
+	 * (such as updates or deletions) this flag will be set to true to
 	 * indicate the list is not necessarily up to date. This is only ever
-	 * expected to be "true" for a short period after deletes or updates.
+	 * expected to be true for a short period after deletes or updates.
 	 * @return template list stale status
 	 */
 	public boolean getTemplateListStale() {
 		return templateListStale;
 	}
 
-	public void setTemplateListStale(boolean templateListStale) {
+	protected void setTemplateListStale(boolean templateListStale) {
 		this.templateListStale = templateListStale;
 	}
 	

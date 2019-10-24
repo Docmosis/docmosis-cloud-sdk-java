@@ -16,10 +16,27 @@ package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a get template request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *   GetTemplateResponse getTemplate = Template
+ *                                      .get()
+ *                                      .templateName(fileToGet)
+ *                                      .sendTo(outputFileOrStream)
+ *                                      .execute();
+ *  if (getTemplate.hasSucceeded()) {
+ *      //File saved to outputFileOrStream
+ *  }
+ * </pre>
+ */
 public class GetTemplateResponse extends DocmosisCloudResponse {
 
-	public GetTemplateResponse() {
-		super();
+	protected GetTemplateResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

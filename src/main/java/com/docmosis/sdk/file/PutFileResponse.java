@@ -16,10 +16,26 @@ package com.docmosis.sdk.file;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a put file request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *   PutFileResponse uploadedFile = FileStorage
+ *                                    .put()
+ *                                    .file(uploadFile)
+ *                                    .execute();
+ *   if (uploadedFile.hasSucceeded()) {
+ *       uploadedFile.toString();
+ *   }
+ * </pre>
+ */
 public class PutFileResponse extends DocmosisCloudResponse {
 
-	public PutFileResponse() {
-		super();
+	protected PutFileResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

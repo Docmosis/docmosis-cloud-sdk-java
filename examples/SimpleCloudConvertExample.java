@@ -43,8 +43,10 @@ public class SimpleCloudConvertExample
 
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+	
 	// Set the name of the output file to create
 	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
+	
 	// Set the path to the file you want to convert
 	private static final String FILE_TO_CONVERT = "C:/example/myTemplateFile.docx";
 
@@ -56,17 +58,22 @@ public class SimpleCloudConvertExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
+
+		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
 		//Set the file to be converted
 		File convertFile = new File(FILE_TO_CONVERT);
+		
+		//Set the file we are going to write the document to.
 		File outputFile = new File(OUTPUT_FILE_NAME);
+
+		//Create and execute the conversion request
 		ConverterResponse response = Converter
 									.convert()
 									.fileToConvert(convertFile)
 									.outputName(OUTPUT_FILE_NAME)
-									.sendTo(outputFile) //Or OutputStream
+									.sendTo(outputFile)
 									.execute();
 
 		if (response.hasSucceeded()) {

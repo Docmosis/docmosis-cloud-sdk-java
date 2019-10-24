@@ -15,7 +15,7 @@
 package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Template Details service.
@@ -37,9 +37,11 @@ import com.docmosis.sdk.handlers.DocmosisException;
  *   }
  * </pre>
  */
-public class GetTemplateDetailsRequest extends AbstractTemplateRequest<GetTemplateDetailsRequest> {
+public class GetTemplateDetailsRequest extends DocmosisCloudRequest<GetTemplateDetailsRequest> {
 
 	private static final String SERVICE_PATH = "getTemplateDetails";
+	
+	private GetTemplateDetailsRequestParams params = new GetTemplateDetailsRequestParams();
 
 	public GetTemplateDetailsRequest() {
 		super(SERVICE_PATH);
@@ -48,38 +50,94 @@ public class GetTemplateDetailsRequest extends AbstractTemplateRequest<GetTempla
 	public GetTemplateDetailsRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
+	
+	public GetTemplateDetailsRequestParams getParams()
+    {
+    	return params;
+    }
 
-	@Override
-	public GetTemplateDetailsResponse execute() throws DocmosisException {
-		return Template.executeGetTemplateDetails(getThis());
-	}
-	
-	@Override
-	public GetTemplateDetailsResponse execute(String url, String accessKey) throws DocmosisException {
-		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetTemplateDetails(getThis());
-	}
-	
-	@Override
-	public GetTemplateDetailsResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetTemplateDetails(getThis());
-	}
-
-	@Override
-	public GetTemplateDetailsResponse execute(Environment environment) throws DocmosisException {
-		super.setEnvironment(environment);
-		return Template.executeGetTemplateDetails(getThis());
-	}
-	
-	@Override
-	protected GetTemplateDetailsRequest getThis()
-	{
+	/**
+	 * Set the Template Name.
+	 * 
+	 * @param templateName The name of the Template on the Docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
+	 * @return this request for method chaining
+	 */
+	public GetTemplateDetailsRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
 		return this;
+	}
+
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
+	 */
+	public GetTemplateDetailsRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
+		return this;
+	}
+	
+	/**
+	 * Execute a get template details request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, template details object and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetTemplateDetailsResponse execute() throws TemplateException {
+		return Template.executeGetTemplateDetails(this);
+	}
+	
+	/**
+	 * Execute a get template details request based on contained settings.
+	 *  
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, template details object and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetTemplateDetailsResponse execute(String url, String accessKey) throws TemplateException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeGetTemplateDetails(this);
+	}
+	
+	/**
+	 * Execute a get template details request based on contained settings.
+	 *  
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, template details object and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetTemplateDetailsResponse execute(String accessKey) throws TemplateException {
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeGetTemplateDetails(this);
+	}
+
+	/**
+	 * Execute a get template details request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, template details object and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetTemplateDetailsResponse execute(Environment environment) throws TemplateException {
+		super.setEnvironment(environment);
+		return Template.executeGetTemplateDetails(this);
 	}
 
 	@Override
 	public String toString() {
-		return "GetTemplateDetailsRequest [" + super.toString() + "]";
+		return params.toString();
 	}
 }

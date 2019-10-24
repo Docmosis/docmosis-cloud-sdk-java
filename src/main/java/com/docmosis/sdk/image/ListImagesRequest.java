@@ -15,7 +15,6 @@
 package com.docmosis.sdk.image;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -48,33 +47,62 @@ public class ListImagesRequest extends DocmosisCloudRequest<ListImagesRequest> {
 		super(SERVICE_PATH, environment);
 	}
 
+	/**
+	 * Execute a list images request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, a list of ImageDetails objects and possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListImagesResponse execute() throws DocmosisException {
-		return Image.executelist(getThis());
+	public ListImagesResponse execute() throws ImageException {
+		return Image.executelist(this);
 	}
-	
+
+	/**
+	 * Execute a list images request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of ImageDetails objects and possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListImagesResponse execute(String url, String accessKey) throws DocmosisException {
+	public ListImagesResponse execute(String url, String accessKey) throws ImageException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Image.executelist(getThis());
+		return Image.executelist(this);
 	}
-	
+
+	/**
+	 * Execute a list images request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of ImageDetails objects and possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListImagesResponse execute(String accessKey) throws DocmosisException {
+	public ListImagesResponse execute(String accessKey) throws ImageException {
 		getEnvironment().setAccessKey(accessKey);
-		return Image.executelist(getThis());
+		return Image.executelist(this);
 	}
 
+	/**
+	 * Execute a list images request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, a list of ImageDetails objects and possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListImagesResponse execute(Environment environment) throws DocmosisException {
+	public ListImagesResponse execute(Environment environment) throws ImageException {
 		super.setEnvironment(environment);
-		return Image.executelist(getThis());
-	}
-
-	@Override
-	protected ListImagesRequest getThis()
-	{
-		return this;
+		return Image.executelist(this);
 	}
 
 	@Override

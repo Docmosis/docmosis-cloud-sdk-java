@@ -36,9 +36,19 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  */
 public class ConverterResponse extends DocmosisCloudResponse
 {
-	private int pagesConverted;
-	private long length;
+	protected int pagesConverted;
+	protected long length;
+
+	protected ConverterResponse() {
+		super();
+	}
 	
+	protected ConverterResponse(ConverterResponse other) {
+		super(other);
+		this.pagesConverted = other.pagesConverted;
+		this.length = other.length;
+	}
+
 	/**
 	 * Get the number of pages converted on success.
 	 * 
@@ -49,11 +59,6 @@ public class ConverterResponse extends DocmosisCloudResponse
 		return pagesConverted;
 	}
 
-	public void setPagesConverted(int pagesConverted)
-	{
-		this.pagesConverted = pagesConverted;
-	}
-
 	/**
 	 * Get the length of the returned File in bytes
 	 *
@@ -62,11 +67,6 @@ public class ConverterResponse extends DocmosisCloudResponse
 	public long getLength()
 	{
 		return length;
-	}
-
-	public void setLength(long length)
-	{
-		this.length = length;
 	}
 
 	@Override

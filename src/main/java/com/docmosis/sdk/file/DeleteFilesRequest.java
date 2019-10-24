@@ -15,7 +15,6 @@
 package com.docmosis.sdk.file;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -41,8 +40,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>  {
 
 	private static final String SERVICE_PATH = "deleteFiles";
-	private String path;
-	private boolean includeSubFolders = false;
+	
+	private DeleteFilesRequestParams params = new DeleteFilesRequestParams();
 	
 	public DeleteFilesRequest() {
 		super(SERVICE_PATH);
@@ -51,22 +50,11 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	public DeleteFilesRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * The currently set name of the file or folder.
-	 * @return currently set name of the file or folder
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * The name of the file or folder.
-	 * @param path of file/folder
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
+	
+	public DeleteFilesRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
 	 * The name of the file or folder.
@@ -74,67 +62,80 @@ public class DeleteFilesRequest extends DocmosisCloudRequest<DeleteFilesRequest>
 	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest path(String path) {
-		this.path = path;
-		return getThis();
+		params.setPath(path);
+		return this;
 	}
 
 	/**
-	 * If "true" all files within the given path are deleted also.
-	 * @return include sub folders value
-	 */
-	public boolean getIncludeSubFolders() {
-		return includeSubFolders;
-	}
-
-	/**
-	 * If "true" all files within the given path are deleted also.
-	 * @param includeSubFolders value
-	 */
-	public void setIncludeSubFolders(boolean includeSubFolders) {
-		this.includeSubFolders = includeSubFolders;
-	}
-
-	/**
-	 * If "true" all files within the given path are deleted also.
+	 * If true all files within the given path are deleted also.
 	 * @param includeSubFolders value
 	 * @return this request for method chaining
 	 */
 	public DeleteFilesRequest includeSubFolders(boolean includeSubFolders) {
-		this.includeSubFolders = includeSubFolders;
-		return getThis();
-	}
-
-	@Override
-	public DeleteFilesResponse execute() throws DocmosisException {
-		return FileStorage.executeDeleteFiles(getThis());
-	}
-	
-	@Override
-	public DeleteFilesResponse execute(String url, String accessKey) throws DocmosisException {
-		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executeDeleteFiles(getThis());
-	}
-	
-	@Override
-	public DeleteFilesResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executeDeleteFiles(getThis());
-	}
-
-	@Override
-	public DeleteFilesResponse execute(Environment environment) throws DocmosisException {
-		super.setEnvironment(environment);
-		return FileStorage.executeDeleteFiles(getThis());
-	}
-
-	@Override
-	protected DeleteFilesRequest getThis()
-	{
+		params.setIncludeSubFolders(includeSubFolders);
 		return this;
+	}
+
+	/**
+	 * Execute a delete files request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteFilesResponse execute() throws FileException {
+		return FileStorage.executeDeleteFiles(this);
+	}
+
+	/**
+	 * Execute a delete files request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteFilesResponse execute(String url, String accessKey) throws FileException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executeDeleteFiles(this);
+	}
+
+	/**
+	 * Execute a delete files request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteFilesResponse execute(String accessKey) throws FileException {
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executeDeleteFiles(this);
+	}
+
+	/**
+	 * Execute a delete files request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteFilesResponse execute(Environment environment) throws FileException {
+		super.setEnvironment(environment);
+		return FileStorage.executeDeleteFiles(this);
 	}
 
 	@Override
 	public String toString() {
-		return "DeleteFilesRequest [path=" + path + ", includeSubFolders=" + includeSubFolders + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

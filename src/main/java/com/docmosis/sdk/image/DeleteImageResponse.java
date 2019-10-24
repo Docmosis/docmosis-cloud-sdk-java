@@ -16,10 +16,26 @@ package com.docmosis.sdk.image;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a delete image request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *   DeleteImageRequest deleteImage = Image
+ *                                     .delete()
+ *                                     .addImageName(fileToDelete)
+ *                                     .execute();
+ *  if (deleteTemplate.hasSucceeded()) {
+ *      //Succeeded
+ *  }
+ * </pre>
+ */
 public class DeleteImageResponse extends DocmosisCloudResponse {
 
-	public DeleteImageResponse() {
-		super();
+	protected DeleteImageResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

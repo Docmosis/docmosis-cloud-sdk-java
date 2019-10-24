@@ -16,12 +16,28 @@ package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a upload template request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *   UploadTemplateResponse uploadedTemplate = Template
+ *                                              .upload()
+ *                                              .templateFile(uploadFile)
+ *                                              .execute();
+ *   if (uploadedTemplate.hasSucceeded()) {
+ *       uploadedTemplate.toString();
+ *   }
+ * </pre>
+ */
 public class UploadTemplateResponse extends DocmosisCloudResponse {
 
 	private TemplateDetails templateDetails = null;
 	
-	public UploadTemplateResponse() {
-		super();
+	protected UploadTemplateResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**
@@ -30,7 +46,7 @@ public class UploadTemplateResponse extends DocmosisCloudResponse {
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemTemplate - whether a system template ("true" or "false")
+	 * isSystemTemplate - whether a system template (true or false)
 	 * templatePlainTextFieldPrefix - the prefix used when it was uploaded
 	 * templatePlainTextFieldSuffix - the suffix used when it was uploaded
 	 * templateDevMode - the dev mode setting used when it was uploaded
@@ -38,11 +54,11 @@ public class UploadTemplateResponse extends DocmosisCloudResponse {
 	 * templateDescription- the description uploaded with the template
 	 * @return TemplateDetails Object
 	 */
-	public TemplateDetails getDetails() {
+	public TemplateDetails getTemplateDetails() {
 		return templateDetails;
 	}
 
-	public void setTemplateDetails(TemplateDetails template) {
+	protected void setTemplateDetails(TemplateDetails template) {
 		this.templateDetails = template;
 	}
 	

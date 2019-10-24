@@ -16,19 +16,16 @@
 import java.io.IOException;
 import java.util.List;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.ListTemplatesResponse;
 import com.docmosis.sdk.template.Template;
 import com.docmosis.sdk.template.TemplateDetails;
-
-
+import com.docmosis.sdk.template.TemplateException;
 
 /**
  * 
  * This example connects to the public Docmosis cloud server and returns 
- * details about all templates stored on the server. 
+ * a list of the templates stored on the server including associated meta data.
  * 
  * How to use:
  * 
@@ -46,33 +43,35 @@ public class SimpleListTemplatesExample
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
 
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
-		
-		ListTemplatesResponse templates = Template
-				.list()
-				.execute();
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
 
-		if (templates.hasSucceeded()) {
-			List<TemplateDetails> list = templates.list();
-			for(TemplateDetails td : list) {
+		//Create and execute the request
+		ListTemplatesResponse response = Template.list().execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			List<TemplateDetails> templateList = response.list();
+			for(TemplateDetails td : templateList) {
 				System.out.println(td.getName() + " size=" + td.getSizeBytes() + " bytes");
 			}
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List Templates failed: status="
-					+ templates.getStatus()
+			System.err.println("List templates failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ templates.getShortMsg()
-					+ ((templates.getLongMsg() == null) ? "" : " longMsg="
-							+ templates.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

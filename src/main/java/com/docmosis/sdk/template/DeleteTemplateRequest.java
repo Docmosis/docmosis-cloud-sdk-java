@@ -14,11 +14,9 @@
  */
 package com.docmosis.sdk.template;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -34,7 +32,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * <pre>
  *   DeleteTemplateResponse deleteTemplate = Template
  *                                            .delete()
- *                                            .addTemplateName(fileToDelete)
+ *                                            .templateName(fileToDelete)
  *                                            .execute();
  *  if (deleteTemplate.hasSucceeded()) {
  *      //Succeeded
@@ -44,127 +42,115 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRequest> {
 	
 	private static final String SERVICE_PATH = "deleteTemplate";
-	private boolean isSystemTemplate = false;
-	private List<String> templateNames = null;
+
+	private DeleteTemplateRequestParams params = new DeleteTemplateRequestParams();
 
 	public DeleteTemplateRequest() {
 		super(SERVICE_PATH);
-		templateNames = new ArrayList<String>();
 	}
 	
 	public DeleteTemplateRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
-		templateNames = new ArrayList<String>();
 	}
 	
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @return isSystemTemplate flag
-	 */
-	public boolean getIsSystemTemplate() {
-		return isSystemTemplate;
-	}
-
-	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 */
-	public void setSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-	}
+	public DeleteTemplateRequestParams getParams()
+    {
+    	return params;
+    }
 	
 	/**
-	 * If set to "true", templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
-	 */
-	public DeleteTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
-		return getThis();
-	}
-	
-	/**
-	 * Get the currently set templateNames.
-	 * 
-	 * @return List of the name of the Templates on the docmosis server.
-	 */
-	public List<String> getTemplateNames() {
-		return templateNames;
-	}
-	
-	/**
-	 * Set the Template Names.
-	 * 
-	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
-	}
-	
-	/**
-	 * Set the Template Names.
+	 * Set the list of Template Names to be deleted.
 	 * 
 	 * @param templateNames The name(s) of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
 	 */
 	public DeleteTemplateRequest templateNames(List<String> templateNames) {
-		this.templateNames = templateNames;
-		return getThis();
+		params.setTemplateNames(templateNames);
+		return this;
 	}
 
 	/**
-	 * Add a Template Name.
+	 * Add a Template Name to be deleted.
 	 * 
 	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
 	 * @return this request for method chaining
 	 */
-	public DeleteTemplateRequest addTemplateName(String templateName) {
-		this.templateNames.add(templateName);
-		return getThis();
+	public DeleteTemplateRequest templateName(String templateName) {
+		params.setTemplateName(templateName);
+		return this;
 	}
 
-	@Override
-	public DeleteTemplateResponse execute() throws DocmosisException {
-		return Template.executeDeleteTemplate(getThis());
-	}
-	
-	@Override
-	public DeleteTemplateResponse execute(String url, String accessKey) throws DocmosisException {
-		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeDeleteTemplate(getThis());
-	}
-	
-	@Override
-	public DeleteTemplateResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return Template.executeDeleteTemplate(getThis());
-	}
-	
-	@Override
-	public DeleteTemplateResponse execute(Environment environment) throws DocmosisException {
-		super.setEnvironment(environment);
-		return Template.executeDeleteTemplate(getThis());
-	}
-	
-	@Override
-	protected DeleteTemplateRequest getThis()
-	{
+	/**
+	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
+	 * 
+	 * @param isSystemTemplate Is system template flag
+	 * @return this request for method chaining
+	 */
+	public DeleteTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
+		params.setIsSystemTemplate(isSystemTemplate);
 		return this;
+	}
+
+	/**
+	 * Execute a delete template request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteTemplateResponse execute() throws TemplateException {
+		return Template.executeDeleteTemplate(this);
+	}
+
+	/**
+	 * Execute a delete template request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteTemplateResponse execute(String url, String accessKey) throws TemplateException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeDeleteTemplate(this);
+	}
+
+	/**
+	 * Execute a delete template request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteTemplateResponse execute(String accessKey) throws TemplateException {
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeDeleteTemplate(this);
+	}
+
+	/**
+	 * Execute a delete template request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public DeleteTemplateResponse execute(Environment environment) throws TemplateException {
+		super.setEnvironment(environment);
+		return Template.executeDeleteTemplate(this);
 	}
 	
 	@Override
 	public String toString() {
-		String names = "(";
-		if (templateNames != null) {
-			for (String tn: templateNames) {
-				names += tn + "; ";
-			}
-			names = names.substring(0, names.length()-2) + ") ";
-		}
-		return "DeleteTemplateRequest [isSystemTemplate=" + isSystemTemplate + ", templateNames=" + names + ", " + super.toString() + "]";
+		return params.toString();
 	}
-	
 }

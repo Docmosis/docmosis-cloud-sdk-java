@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
@@ -27,8 +26,7 @@ import com.docmosis.sdk.render.RendererException;
  * 
  * This example connects to the public Docmosis cloud server and renders the 
  * built-in WelcomeTemplate.doc template into a PDF which is saved to the 
- * local file system.  The code also populates the "title" field within the 
- * template.
+ * local file system.
  * 
  * How to use:
  * 
@@ -45,12 +43,12 @@ public class SimpleCloudXMLExample
 {
 
 	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX";
+	private static final String ACCESS_KEY = "ZjU4MWZkM2UtYjAzNy00OTg0LTkzNjEtYzJlNTBlZGY2ZDk5OjAwMTAxNTg";
 
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
-	// The output format we want to produce (pdf, doc, odt and more exist).
+	// The output format we want to produce (pdf, docx, doc, odt and more exist).
 	private static final String OUTPUT_FORMAT = "pdf";
 
 	// The name of the file we are going to write the document to.
@@ -64,25 +62,30 @@ public class SimpleCloudXMLExample
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
 
 		//Create data to send
-		final String data = "<title>" + "This is Docmosis Cloud\n" + new Date() + "</title>";
+		final String data = "<title>" + "This is Docmosis Cloud\n" + new Date() + "</title>" +
+							"<messages>" + "<msg>" + "This cloud experience is better than I thought." + "</msg>" + "</messages>" +
+							"<messages>" + "<msg>" + "The sun is shining." + "</msg>" + "</messages>" +
+							"<messages>" + "<msg>" + "Right, now back to work." + "</msg>" + "</messages>";
 
+		//Set the file we are going to write the document to.
 		File outputFile = new File(OUTPUT_FILE);
+
+		//Create and execute the render request
 		RenderResponse response = Renderer
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile) //Or OutputStream
+									.sendTo(outputFile)
 									.data(data)
 									.execute();
-							
 
 		if (response.hasSucceeded()) {
 			// great - render succeeded.
-
 			System.out.println("Written:" + outputFile.getAbsolutePath());
 
 		} else {

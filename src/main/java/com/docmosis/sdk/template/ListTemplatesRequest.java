@@ -15,7 +15,6 @@
 package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -48,33 +47,62 @@ public class ListTemplatesRequest extends DocmosisCloudRequest<ListTemplatesRequ
 		super(SERVICE_PATH, environment);
 	}
 
+	/**
+	 * Execute a list templates request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, a list of TemplateDetails objects and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListTemplatesResponse execute() throws DocmosisException {
+	public ListTemplatesResponse execute() throws TemplateException {
 		return Template.executelist(this);
 	}
-	
+
+	/**
+	 * Execute a list templates request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of TemplateDetails objects and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	public ListTemplatesResponse execute(String url, String accessKey) throws DocmosisException {
+	public ListTemplatesResponse execute(String url, String accessKey) throws TemplateException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executelist(getThis());
-	}
-	
-	@Override
-	public ListTemplatesResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return Template.executelist(getThis());
-	}
-	
-	@Override
-	public ListTemplatesResponse execute(Environment environment) throws DocmosisException {
-		super.setEnvironment(environment);
-		return Template.executelist(getThis());
+		return Template.executelist(this);
 	}
 
+	/**
+	 * Execute a list templates request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, a list of TemplateDetails objects and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
 	@Override
-	protected ListTemplatesRequest getThis()
-	{
-		return this;
+	public ListTemplatesResponse execute(String accessKey) throws TemplateException {
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executelist(this);
+	}
+
+	/**
+	 * Execute a list templates request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, a list of TemplateDetails objects and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public ListTemplatesResponse execute(Environment environment) throws TemplateException {
+		super.setEnvironment(environment);
+		return Template.executelist(this);
 	}
 
 	@Override

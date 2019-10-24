@@ -15,7 +15,6 @@
 package com.docmosis.sdk.template;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -35,15 +34,15 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  *                                               .format("json")
  *                                               .execute();
  *   if (templateSampleData.hasSucceeded()) {
- *       templateSampleData.toString();
+ *       templateSampleData.getSampleDataString();
  *   }
  * </pre>
  */
 public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequest> {
 	
 	private static final String SERVICE_PATH = "getSampleData";
-	private String templateName;
-	private String format = null;
+	
+	private GetSampleDataRequestParams params = new GetSampleDataRequestParams();
 
 	public GetSampleDataRequest() {
 		super(SERVICE_PATH);
@@ -52,25 +51,12 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	public GetSampleDataRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
+	
+	public GetSampleDataRequestParams getParams()
+    {
+    	return params;
+    }
 
-	/**
-	 * Get the currently set templateName.
-	 * 
-	 * @return The name of the Template on the docmosis server.
-	 */
-	public String getTemplateName() {
-		return templateName;
-	}
-	
-	/**
-	 * Set the Template Name.
-	 * 
-	 * @param templateName The name of the Template on the docmosis server. Should include path, eg "samples/WelcomeTemplate.docx"
-	 */
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
-	}
-	
 	/**
 	 * Set the Template Name.
 	 * 
@@ -78,8 +64,8 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * @return this request for method chaining
 	 */
 	public GetSampleDataRequest templateName(String templateName) {
-		this.templateName = templateName;
-		return getThis();
+		params.setTemplateName(templateName);
+		return this;
 	}
 
 	/**
@@ -87,22 +73,10 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * @return true if json sample data, otherwise xml
 	 */
 	public boolean isFormatJson() {
+		String format = params.getFormat();
 		return (format == null || format.isEmpty() || format.equalsIgnoreCase("json"));
 	}
 	
-	public String getFormat() {
-		return format;
-	}
-
-	/**
-	 * Set the format of the Sample Data to be returned.
-	 * 
-	 * @param format format of the response, should be either "json" or "xml". Defaults to json.
-	 */
-	public void setFormat(String format) {
-		this.format = format;
-	}
-
 	/**
 	 * Set the format of the Sample Data to be returned.
 	 * 
@@ -110,41 +84,70 @@ public class GetSampleDataRequest extends DocmosisCloudRequest<GetSampleDataRequ
 	 * @return this request for method chaining
 	 */
 	public GetSampleDataRequest format(String format) {
-		this.format = format;
-		return getThis();
-	}
-	
-	@Override
-	public GetSampleDataResponse execute() throws DocmosisException {
-		return Template.executeGetSampleData(getThis());
-	}
-	
-	@Override
-	public GetSampleDataResponse execute(String url, String accessKey) throws DocmosisException {
-		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Template.executeGetSampleData(getThis());
-	}
-	
-	@Override
-	public GetSampleDataResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return Template.executeGetSampleData(getThis());
-	}
-	
-	@Override
-	public GetSampleDataResponse execute(Environment environment) throws DocmosisException {
-		super.setEnvironment(environment);
-		return Template.executeGetSampleData(getThis());
-	}
-	
-	@Override
-	protected GetSampleDataRequest getThis()
-	{
+		params.setFormat(format);
 		return this;
+	}
+
+	/**
+	 * Execute a get sample data request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, sample data and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetSampleDataResponse execute() throws TemplateException {
+		return Template.executeGetSampleData(this);
+	}
+
+	/**
+	 * Execute a get sample data request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, sample data and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetSampleDataResponse execute(String url, String accessKey) throws TemplateException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return Template.executeGetSampleData(this);
+	}
+
+	/**
+	 * Execute a get sample data request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, sample data and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetSampleDataResponse execute(String accessKey) throws TemplateException {
+		getEnvironment().setAccessKey(accessKey);
+		return Template.executeGetSampleData(this);
+	}
+
+	/**
+	 * Execute a get sample data request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, sample data and possible error messages.
+	 * 
+	 * @throws TemplateException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetSampleDataResponse execute(Environment environment) throws TemplateException {
+		super.setEnvironment(environment);
+		return Template.executeGetSampleData(this);
 	}
 	
 	@Override
 	public String toString() {
-		return "GetSampleDataRequest [templateName=" + templateName + ", format=" + format  + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

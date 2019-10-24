@@ -18,7 +18,6 @@ package com.docmosis.sdk.file;
 import java.io.File;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
@@ -44,10 +43,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 
 	private static final String SERVICE_PATH = "putFile";
-	private File file = null;
-	private String fileName;
-	private String contentType;
-	private String metaData;
+	
+	private PutFileRequestParams params = new PutFileRequestParams();
 
 	public PutFileRequest() {
 		super(SERVICE_PATH);
@@ -56,22 +53,11 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	public PutFileRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * The file stream to upload.
-	 * @return file to upload
-	 */
-	public File getFile() {
-		return file;
-	}
-
-	/**
-	 * Set the file stream to upload.
-	 * @param file to upload
-	 */
-	public void setFile(File file) {
-		this.file = file;
-	}
+	
+	public PutFileRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
 	 * Set the file stream to upload.
@@ -79,24 +65,8 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 * @return this request for method chaining
 	 */
 	public PutFileRequest file(File file) {
-		this.file = file;
-		return getThis();
-	}
-
-	/**
-	 * An optional overriding file name which may also include a path.
-	 * @return file name
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-
-	/**
-	 * Set an optional overriding file name which may also include a path.
-	 * @param fileName value
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+		params.setFile(file);
+		return this;
 	}
 
 	/**
@@ -105,26 +75,8 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 * @return this request for method chaining
 	 */
 	public PutFileRequest fileName(String fileName) {
-		this.fileName = fileName;
-		return getThis();
-	}
-
-	/**
-	 * An optional setting for the content-type of this file. Docmosis will
-	 * attempt to work out the content type if not specified.
-	 * @return content-type of file
-	 */
-	public String getContentType() {
-		return contentType;
-	}
-
-	/**
-	 * Set the content-type of this file. Docmosis will attempt to work out
-     * the content type if not specified.
-	 * @param contentType of file
-	 */
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
+		params.setFileName(fileName);
+		return this;
 	}
 
 	/**
@@ -134,26 +86,8 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 * @return this request for method chaining
 	 */
 	public PutFileRequest contentType(String contentType) {
-		this.contentType = contentType;
-		return getThis();
-	}
-
-	/**
-	 * An optional string of information to store with this file that can be
-	 * retrieved with the file later.
-	 * @return meta data string
-	 */
-	public String getMetaData() {
-		return metaData;
-	}
-
-	/**
-	 * Set an optional string of information to store with this file that can
-	 * be retrieved with the file later.
-	 * @param metaData string
-	 */
-	public void setMetaData(String metaData) {
-		this.metaData = metaData;
+		params.setContentType(contentType);
+		return this;
 	}
 
 	/**
@@ -163,42 +97,70 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
 	 * @return this request for method chaining
 	 */
 	public PutFileRequest metaData(String metaData) {
-		this.metaData = metaData;
-		return getThis();
-	}
-
-	@Override
-	public PutFileResponse execute() throws DocmosisException {
-		return FileStorage.executePutFile(getThis());
-	}
-	
-	@Override
-	public PutFileResponse execute(String url, String accessKey) throws DocmosisException {
-		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executePutFile(getThis());
-	}
-	
-	@Override
-	public PutFileResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executePutFile(getThis());
-	}
-
-	@Override
-	public PutFileResponse execute(Environment environment) throws DocmosisException {
-		super.setEnvironment(environment);
-		return FileStorage.executePutFile(getThis());
-	}
-
-	@Override
-	protected PutFileRequest getThis()
-	{
+		params.setMetaData(metaData);
 		return this;
+	}
+
+	/**
+	 * Execute a put file request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public PutFileResponse execute() throws FileException {
+		return FileStorage.executePutFile(this);
+	}
+
+	/**
+	 * Execute a put file request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public PutFileResponse execute(String url, String accessKey) throws FileException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executePutFile(this);
+	}
+
+	/**
+	 * Execute a put file request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public PutFileResponse execute(String accessKey) throws FileException {
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executePutFile(this);
+	}
+
+	/**
+	 * Execute a put file request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public PutFileResponse execute(Environment environment) throws FileException {
+		super.setEnvironment(environment);
+		return FileStorage.executePutFile(this);
 	}
 
 	@Override
 	public String toString() {
-		return "PutFileRequest [file=" + file + ", fileName=" + fileName + ", contentType=" + contentType
-				+ ", metaData=" + metaData + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

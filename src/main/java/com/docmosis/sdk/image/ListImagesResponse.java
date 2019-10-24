@@ -18,13 +18,28 @@ import java.util.List;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a list images request.
+ * 
+ * Typically you would use this response to check for success, then access the returned list of 
+ * ImageDetails objects.  For example:
+ * 
+ * 
+ * <pre>
+ *   ListImagesRequest images = Image.list().execute();
+ *   List&lt;ImageDetails&gt; list = images.list();
+ *   for(ImageDetails id : list) {
+ *       id.toString();
+ *   }
+ * </pre>
+ */
 public class ListImagesResponse extends DocmosisCloudResponse {
 
 	private boolean imageListStale;
 	private List<ImageDetails> images = null;
 	
-	public ListImagesResponse() {
-		super();
+	protected ListImagesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**
@@ -33,7 +48,7 @@ public class ListImagesResponse extends DocmosisCloudResponse {
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemImage - whether a system image ("true" or "false")
+	 * isSystemImage - whether a system image (true or false)
 	 * md5 - the md5 hash code for the image
 	 * @return List of ImageDetails Objects
 	 */
@@ -47,7 +62,7 @@ public class ListImagesResponse extends DocmosisCloudResponse {
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemImage - whether a system image ("true" or "false")
+	 * isSystemImage - whether a system image (true or false)
 	 * md5 - the md5 hash code for the image
 	 * @return List of ImageDetails Objects
 	 */
@@ -55,22 +70,22 @@ public class ListImagesResponse extends DocmosisCloudResponse {
 		return images;
 	}
 
-	public void setImages(List<ImageDetails> images) {
+	protected void setImages(List<ImageDetails> images) {
 		this.images = images;
 	}
 
 	/**
 	 * If Docmosis detects changes to the image list are in progress (such
-	 * as updates or deletions) this flag will be set to "true" to indicate
+	 * as updates or deletions) this flag will be set to true to indicate
 	 * the list is not necessarily up to date. This is only ever expected
-	 * to be "true" for a short period after deletes or updates.
+	 * to be true for a short period after deletes or updates.
 	 * @return image list stale state
 	 */
 	public boolean getImageListStale() {
 		return imageListStale;
 	}
 
-	public void setImageListStale(boolean imageListStale) {
+	protected void setImageListStale(boolean imageListStale) {
 		this.imageListStale = imageListStale;
 	}
 	
