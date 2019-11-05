@@ -33,7 +33,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  *                                                     .templateName("MasterTemplates/MyMasterTemplate.docx")
  *                                                     .execute();
  *   if (templateStructure.hasSucceeded()) {
- *       templateStructure.toString();
+ *       templateStructure.getTemplateStructureString();
  *   }
  * </pre>
  */

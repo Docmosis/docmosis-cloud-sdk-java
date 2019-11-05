@@ -35,6 +35,7 @@ import com.google.gson.JsonElement;
  *       JsonElement structure = templateStructure.getTemplateStructure();
  *   }
  * </pre>
+ * 
  */
 public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 
@@ -45,7 +46,21 @@ public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 	}
 
 	/**
-	 * Get a json representation of the template's structure
+	 * Get a json representation of the template's structure, eg:
+	 * [
+	 *  {"type":"field", "fieldIdx":0, "text":"name", "dataRefs":["name"]},
+	 *  {"type": "repeat", "repeatIdx": 0, "text": "rs_people", "dataRefs": ["people"],
+	 *  "contains": [
+	 *       {"type": "field", "fieldIdx": 0, "text": "name", "dataRefs": ["name"]}
+	 *    ]
+	 *  }
+	 * ]
+	 * The types reported are: “field”, “repeat”, “condition”, “image”, “templateRef” corresponding 
+	 * to matching structures in the template. Each type has it’s own index which is global to the 
+	 * document. “text” shows the string as presented in the template and dataRefs reports the 
+	 * identified data elements correlated to the template element. The result also indicates the 
+	 * nesting of elements.
+	 * 
 	 * @return template structure as a JsonElement
 	 */
 	public JsonElement getTemplateStructure() {
@@ -57,7 +72,21 @@ public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 	}
 
 	/**
-	 * Get a formatted json String of the template's structure
+	 * Get a formatted json string of the template's structure, eg:
+	 * [
+	 *  {"type":"field", "fieldIdx":0, "text":"name", "dataRefs":["name"]},
+	 *  {"type": "repeat", "repeatIdx": 0, "text": "rs_people", "dataRefs": ["people"],
+	 *  "contains": [
+	 *       {"type": "field", "fieldIdx": 0, "text": "name", "dataRefs": ["name"]}
+	 *    ]
+	 *  }
+	 * ]
+	 * The types reported are: “field”, “repeat”, “condition”, “image”, “templateRef” corresponding 
+	 * to matching structures in the template. Each type has it’s own index which is global to the 
+	 * document. “text” shows the string as presented in the template and dataRefs reports the 
+	 * identified data elements correlated to the template element. The result also indicates the 
+	 * nesting of elements.
+	 * 
 	 * @return template structure as a formatted String
 	 */
 	public String getTemplateStructureString() {
