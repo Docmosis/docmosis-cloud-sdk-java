@@ -22,7 +22,6 @@ import java.util.Date;
  * lastModifiedMillisSinceEpoch - last modified in milliseconds
  * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
  * sizeBytes - the size in bytes
- * isSystemTemplate - whether a system template (true or false)
  * md5 - the md5 hash code for the image
  *
  */
@@ -31,18 +30,16 @@ public class ImageDetails {
 	private String name;
 	private long lastModifiedMillisSinceEpoch;
 	private Date lastModifiedISO8601;
-	private long sizeBytes; //In Bytes
-	private boolean isSystemImage;
+	private long sizeBytes;
 	private String md5;
 
 	public ImageDetails(String name, long lastModifiedMillisSinceEpoch, Date lastModifiedISO8601, long sizeBytes,
-			boolean isSystemImage, String md5) {
+			String md5) {
 		super();
 		this.name = name;
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 		this.lastModifiedISO8601 = lastModifiedISO8601;
 		this.sizeBytes = sizeBytes;
-		this.isSystemImage = isSystemImage;
 		this.md5 = md5;
 	}
 
@@ -96,18 +93,6 @@ public class ImageDetails {
 
 	/**
 	 * 
-	 * @return whether a system template (true or false)
-	 */
-	public boolean getIsSystemImage() {
-		return isSystemImage;
-	}
-
-	protected void setSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
-	}
-
-	/**
-	 * 
 	 * @return the md5 hash code for the image
 	 */
 	public String getMd5() {
@@ -121,7 +106,7 @@ public class ImageDetails {
 	@Override
 	public String toString() {
 		return "ImageDetails [name=" + name + ", lastModifiedMillisSinceEpoch=" + lastModifiedMillisSinceEpoch
-				+ ", lastModifiedISO8601=" + lastModifiedISO8601 + ", sizeBytes=" + sizeBytes + ", isSystemImage="
-				+ isSystemImage + ", md5=" + md5 + "]";
+				+ ", lastModifiedISO8601=" + lastModifiedISO8601 + ", sizeBytes=" + sizeBytes
+				+ ", md5=" + md5 + "]";
 	}
 }

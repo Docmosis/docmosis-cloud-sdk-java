@@ -81,17 +81,6 @@ public class DeleteTemplateRequest extends DocmosisCloudRequest<DeleteTemplateRe
 	}
 
 	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
-	 */
-	public DeleteTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
-		params.setIsSystemTemplate(isSystemTemplate);
-		return this;
-	}
-
-	/**
 	 * Execute a delete template request based on contained settings and using the default Environment.
      * 
 	 * @return a response object giving status, success message or possible error messages.

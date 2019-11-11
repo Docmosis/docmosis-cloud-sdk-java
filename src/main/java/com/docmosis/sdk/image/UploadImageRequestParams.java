@@ -30,7 +30,6 @@ public class UploadImageRequestParams extends RequestParameters {
 	private static final String IMAGE_FILE				= "imageFile";
 	private static final String IMAGE_NAME				= "imageName";
 	private static final String IMAGE_DESCRIPTION		= "imageDescription";
-	private static final String IS_SYSTEM_IMAGE			= "isSystemImage";
 	private static final String NORMALIZE_IMAGE_NAME	= "normalizeImageName";
 	
 	private static final String[] REQUIRED_PARAMS		= {IMAGE_FILE};
@@ -85,22 +84,6 @@ public class UploadImageRequestParams extends RequestParameters {
 	 */
 	public void setImageDescription(String imageDescription) {
 		super.setParam(IMAGE_DESCRIPTION, imageDescription);
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @return isSystemImage flag
-	 */
-	public boolean getIsSystemImage() {
-		return getBooleanParam(IS_SYSTEM_IMAGE);
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @param isSystemImage Is system image flag
-	 */
-	public void setIsSystemImage(boolean isSystemImage) {
-		super.setParam(IS_SYSTEM_IMAGE, isSystemImage);
 	}
 
 	/**

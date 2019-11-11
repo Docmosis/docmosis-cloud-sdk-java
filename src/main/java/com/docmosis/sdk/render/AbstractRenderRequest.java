@@ -325,7 +325,7 @@ public abstract class AbstractRenderRequest<T extends DocmosisCloudFileRequest<?
      * specified that is not expected.
      * Defaults to false.
      * 
-     * @param ignoreUnknownParams true to indicate a ignore unknown parameters.
+     * @param ignoreUnknownParams true to indicate ignore unknown parameters.
      * @return this request for method chaining
      */
     public T ignoreUnknownParams(boolean ignoreUnknownParams) {

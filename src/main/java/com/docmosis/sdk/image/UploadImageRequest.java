@@ -89,16 +89,6 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	}
 
 	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @param isSystemImage Is system image flag
-	 * @return this request for method chaining
-	 */
-	public UploadImageRequest isSystemImage(boolean isSystemImage) {
-		params.setIsSystemImage(isSystemImage);
-		return this;
-	}
-
-	/**
 	 * If set to true the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
 	 * @param normalizeImageName value
 	 * @return this request for method chaining

@@ -46,7 +46,6 @@ public class UploadTemplateResponse extends DocmosisCloudResponse {
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemTemplate - whether a system template (true or false)
 	 * templatePlainTextFieldPrefix - the prefix used when it was uploaded
 	 * templatePlainTextFieldSuffix - the suffix used when it was uploaded
 	 * templateDevMode - the dev mode setting used when it was uploaded

@@ -380,7 +380,7 @@ public abstract class AbstractRenderRequestParams extends RequestParameters {
      * specified that is not expected.
      * Defaults to false.
      * 
-     * @param ignoreUnknownParams true to indicate a system template.
+     * @param ignoreUnknownParams true to indicate ignore unknown parameters.
      */
     public void setIgnoreUnknownParams(Boolean ignoreUnknownParams) {
     	setParam(IGNORE_UNKNOWN_PARAMETERS, ignoreUnknownParams);

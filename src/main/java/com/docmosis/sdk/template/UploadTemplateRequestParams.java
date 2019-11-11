@@ -30,7 +30,6 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	private static final String TEMPLATE_FILE			= "templateFile";
 	private static final String TEMPLATE_NAME			= "templateName";
 	private static final String TEMPLATE_DESCRIPTION	= "templateDescription";
-	private static final String IS_SYSTEM_TEMPLATE		= "isSystemTemplate";
 	private static final String DEV_MODE				= "devMode";
 	private static final String KEEP_PREV_ON_FAIL		= "keepPrevOnFail";
 	private static final String FIELD_DELIM_PREFIX		= "fieldDelimPrefix";
@@ -91,24 +90,6 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	 */
 	public void setTemplateDescription(String templateDescription) {
 		super.setParam(TEMPLATE_DESCRIPTION, templateDescription);
-	}
-
-	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @return isSystemTemplate flag
-	 */
-	public Boolean getIsSystemTemplate() {
-		return getBooleanParam(IS_SYSTEM_TEMPLATE);
-	}
-
-	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 */
-	public void setIsSystemTemplate(boolean isSystemTemplate) {
-		super.setParam(IS_SYSTEM_TEMPLATE, isSystemTemplate);
 	}
 
 	/**

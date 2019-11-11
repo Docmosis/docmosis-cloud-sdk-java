@@ -28,7 +28,6 @@ import com.docmosis.sdk.request.param.RequestParameters;
 public class GetImageRequestParams extends RequestParameters {
 	
 	private static final String IMAGE_NAME			= "imageName";
-	private static final String IS_SYSTEM_IMAGE		= "isSystemImage";
 	
 	private static final String[] REQUIRED_PARAMS	= {IMAGE_NAME};
 
@@ -60,23 +59,5 @@ public class GetImageRequestParams extends RequestParameters {
 	 */
 	public void setImageNames(List<String> imageNames) {
 		super.setParam(IMAGE_NAME, imageNames);
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @return isSystemImage flag
-	 */
-	public boolean getIsSystemImage() {
-		return getBooleanParam(IS_SYSTEM_IMAGE);
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @param isSystemImage Is system image flag
-	 */
-	public void setIsSystemImage(boolean isSystemImage) {
-		super.setParam(IS_SYSTEM_IMAGE, isSystemImage);
 	}
 }

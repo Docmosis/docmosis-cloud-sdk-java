@@ -27,7 +27,6 @@ import com.docmosis.sdk.request.param.RequestParameters;
 public class GetTemplateDetailsRequestParams extends RequestParameters {
 
 	private static final String TEMPLATE_NAME		= "templateName";
-	private static final String IS_SYSTEM_TEMPLATE	= "isSystemTemplate";
 	
 	private static final String[] REQUIRED_PARAMS	= {TEMPLATE_NAME};
 
@@ -51,23 +50,5 @@ public class GetTemplateDetailsRequestParams extends RequestParameters {
 	 */
 	public void setTemplateName(String templateName) {
 		super.setParam(TEMPLATE_NAME, templateName);
-	}
-	
-	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @return isSystemTemplate flag
-	 */
-	public Boolean getIsSystemTemplate() {
-		return getBooleanParam(IS_SYSTEM_TEMPLATE);
-	}
-
-	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 */
-	public void setIsSystemTemplate(boolean isSystemTemplate) {
-		super.setParam(IS_SYSTEM_TEMPLATE, isSystemTemplate);
 	}
 }

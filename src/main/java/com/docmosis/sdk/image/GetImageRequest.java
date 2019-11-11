@@ -80,17 +80,6 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 		params.setImageName(imageName);
 		return this;
 	}
-	
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @param isSystemImage Is system image flag
-	 * @return this request for method chaining
-	 */
-	public GetImageRequest isSystemImage(boolean isSystemImage) {
-		params.setIsSystemImage(isSystemImage);
-		return this;
-	}
 
 	/**
 	 * Execute a get image request based on contained settings and using the default Environment.

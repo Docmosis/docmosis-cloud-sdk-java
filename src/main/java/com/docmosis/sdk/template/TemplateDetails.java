@@ -22,7 +22,6 @@ import java.util.Date;
  * lastModifiedMillisSinceEpoch - last modified in milliseconds
  * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
  * sizeBytes - the size in bytes
- * isSystemTemplate - whether a system template (true or false)
  * templatePlainTextFieldPrefix - the prefix used when it was uploaded
  * templatePlainTextFieldSuffix - the suffix used when it was uploaded
  * templateDevMode - the dev mode setting used when it was uploaded
@@ -36,8 +35,7 @@ public class TemplateDetails {
 	private String name;
 	private long lastModifiedMillisSinceEpoch;
 	private Date lastModifiedISO8601;
-	private long sizeBytes; //In Bytes
-	private boolean isSystemTemplate;
+	private long sizeBytes;
 	private String templatePlainTextFieldPrefix;
 	private String templatePlainTextFieldSuffix;
 	private boolean templateHasErrors;
@@ -45,14 +43,13 @@ public class TemplateDetails {
 	private String description = null;
 	private String md5;
 	
-	public TemplateDetails(String name, long lastModifiedMillisSinceEpoch, Date lastModifiedISO8601, long sizeBytes,
-			boolean isSystemTemplate, String templatePlainTextFieldPrefix, String templatePlainTextFieldSuffix,
-			boolean templateHasErrors, boolean templateDevMode, String description, String md5) {
+	public TemplateDetails(String name, long lastModifiedMillisSinceEpoch, Date lastModifiedISO8601, long sizeBytes, 
+			String templatePlainTextFieldPrefix, String templatePlainTextFieldSuffix, boolean templateHasErrors, 
+			boolean templateDevMode, String description, String md5) {
 		this.name = name;
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 		this.lastModifiedISO8601 = lastModifiedISO8601;
 		this.sizeBytes = sizeBytes;
-		this.isSystemTemplate = isSystemTemplate;
 		this.templatePlainTextFieldPrefix = templatePlainTextFieldPrefix;
 		this.templatePlainTextFieldSuffix = templatePlainTextFieldSuffix;
 		this.templateHasErrors = templateHasErrors;
@@ -107,18 +104,6 @@ public class TemplateDetails {
 
 	protected void setSizeBytes(long sizeBytes) {
 		this.sizeBytes = sizeBytes;
-	}
-
-	/**
-	 * 
-	 * @return whether a system template (true or false)
-	 */
-	public boolean getIsSystemTemplate() {
-		return isSystemTemplate;
-	}
-
-	protected void setSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
 	}
 
 	/**
@@ -197,9 +182,9 @@ public class TemplateDetails {
 	public String toString() {
 		return "TemplateDetails [name=" + name + ", lastModifiedMillisSinceEpoch=" + lastModifiedMillisSinceEpoch
 				+ ", lastModifiedISO8601=" + lastModifiedISO8601 + ", sizeBytes=" + sizeBytes
-				+ ", isSystemTemplate=" + isSystemTemplate + ", templatePlainTextFieldPrefix="
-				+ templatePlainTextFieldPrefix + ", templatePlainTextFieldSuffix=" + templatePlainTextFieldSuffix
-				+ ", templateHasErrors=" + templateHasErrors + ", templateDevMode=" + templateDevMode
-				+ ", description=" + description + ", md5=" + md5 + "]";
+				+ ", templatePlainTextFieldPrefix=" + templatePlainTextFieldPrefix
+				+ ", templatePlainTextFieldSuffix=" + templatePlainTextFieldSuffix + ", templateHasErrors=" 
+				+ templateHasErrors + ", templateDevMode=" + templateDevMode + ", description=" + description
+				+ ", md5=" + md5 + "]";
 	}
 }

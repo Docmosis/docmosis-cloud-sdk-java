@@ -79,17 +79,6 @@ public class DeleteImageRequest extends DocmosisCloudRequest<DeleteImageRequest>
 		params.setImageName(imageName);
 		return this;
 	}
-	
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @param isSystemImage Is system image flag
-	 * @return this request for method chaining
-	 */
-	public DeleteImageRequest isSystemImage(boolean isSystemImage) {
-		params.setIsSystemImage(isSystemImage);
-		return this;
-	}
 
 	/**
 	 * Execute a delete image request based on contained settings and using the default Environment.

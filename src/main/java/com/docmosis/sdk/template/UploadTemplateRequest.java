@@ -88,17 +88,6 @@ public class UploadTemplateRequest extends DocmosisCloudRequest<UploadTemplateRe
 		params.setTemplateDescription(templateDescription);
 		return this;
 	}
-	
-	/**
-	 * If set to true, templateName refers to a System template, as opposed to your own template. System templates are managed by administrators.
-	 * 
-	 * @param isSystemTemplate Is system template flag
-	 * @return this request for method chaining
-	 */
-	public UploadTemplateRequest isSystemTemplate(boolean isSystemTemplate) {
-		params.setIsSystemTemplate(isSystemTemplate);
-		return this;
-	}
 
 	/**
 	 * If set to true the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
