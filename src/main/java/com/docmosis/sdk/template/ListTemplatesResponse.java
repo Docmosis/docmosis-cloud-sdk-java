@@ -98,8 +98,12 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 	}
 	
 	/**
+	 * When paging is true, this token identifies the next page to
+	 * retrieve. The page token is null for the first page. When the
+	 * first page response returns, it contains the token required to
+	 * request the next page.
 	 * 
-	 * @return
+	 * @return The page token for the next page.
 	 */
 	public String getNextPageToken() {
 		return nextPageToken;
@@ -110,8 +114,11 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 	}
 
 	/**
+	 * Whether or not to return results in pages. If
+	 * true, pages of 1000 records are returned.
+	 * Default=false.
 	 * 
-	 * @return
+	 * @return paging flag.
 	 */
 	public Integer getPageSize() {
 		return pageSize;
