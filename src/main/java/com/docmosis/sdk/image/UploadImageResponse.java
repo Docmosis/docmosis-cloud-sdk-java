@@ -16,12 +16,28 @@ package com.docmosis.sdk.image;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a upload image request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *   UploadImageResponse response = Image
+ *                                    .upload()
+ *                                    .imageFile(uploadFile)
+ *                                    .execute();
+ *	 if (response.hasSucceeded()) {
+ *       //Succeeded
+ *   }
+ * </pre>
+ */
 public class UploadImageResponse extends DocmosisCloudResponse {
 
 	private ImageDetails imageDetails = null;
 	
-	public UploadImageResponse() {
-		super();
+	protected UploadImageResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**
@@ -30,15 +46,14 @@ public class UploadImageResponse extends DocmosisCloudResponse {
 	 * lastModifiedMillisSinceEpoch - last modified in milliseconds
 	 * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
 	 * sizeBytes - the size in bytes
-	 * isSystemImage - whether a system image ("true" or "false")
 	 * md5 - the md5 hash code for the image
 	 * @return ImageDetails Object
 	 */
-	public ImageDetails getDetails() {
+	public ImageDetails getImageDetails() {
 		return imageDetails;
 	}
 
-	public void setImageDetails(ImageDetails imageDetails) {
+	protected void setImageDetails(ImageDetails imageDetails) {
 		this.imageDetails = imageDetails;
 	}
 	

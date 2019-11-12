@@ -1,5 +1,5 @@
 /*
- *   Copyright 2012 Docmosis.com or its affiliates.  All Rights Reserved.
+ *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -28,8 +28,7 @@ import com.google.gson.Gson;
  * 
  * This example connects to the public Docmosis cloud server and renders the 
  * built-in WelcomeTemplate.docx template into a PDF which is saved to the 
- * local file system.  The code also populates the "title" field within the 
- * template.
+ * local file system.
  * 
  * How to use:
  * 
@@ -51,12 +50,11 @@ public class SimpleCloudExample
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
-	// The output format we want to produce (pdf, doc, odt and more exist).
+	// The output format we want to produce (pdf, docx, doc, odt and more exist).
 	private static final String OUTPUT_FORMAT = "pdf";
 
 	// The name of the file we are going to write the document to.
 	private static final String OUTPUT_FILE = "output_cloud." + OUTPUT_FORMAT;
-
 
 	public static void main(String args[]) throws IOException,
 			RendererException
@@ -67,9 +65,10 @@ public class SimpleCloudExample
 			System.exit(1);
 		}
 
+		//Set the default environment to use your access key.
 		Environment.setDefaults(ACCESS_KEY);
 
-		//Create data to send
+		//Create data to send using the POJO classes below.
 		final Data data = new Data();
 		data.setTitle("This is Docmosis Cloud\n" + new Date());
 		ArrayList<Message> messages = new ArrayList<Message>();
@@ -78,24 +77,27 @@ public class SimpleCloudExample
 	    messages.add(new Message("Right, now back to work."));
 	    data.setMessages(messages);
 
-		String dataString = new Gson().toJson(data); //Data String to send.
+	    //Build the data String to send.
+		String dataString = new Gson().toJson(data);
 		
+		//Set the file we are going to write the document to.
 		File outputFile = new File(OUTPUT_FILE);
+
+		//Create and execute the render request.
 		RenderResponse response = Renderer
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile) //Or OutputStream
+									.sendTo(outputFile)
 									.data(dataString)
 									.execute();
 						
-
 		if (response.hasSucceeded()) {
 			// great - render succeeded.
 			System.out.println("Written:" + outputFile.getAbsolutePath());
 
 		} else {
-			// something went wrong, tell the user
+			// something went wrong, tell the user.
 			System.err.println("Render failed: status="
 					+ response.getStatus()
 					+ " shortMsg="

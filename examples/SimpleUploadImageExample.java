@@ -16,18 +16,15 @@
 import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.image.Image;
-import com.docmosis.sdk.image.ImageDetails;
+import com.docmosis.sdk.image.ImageException;
 import com.docmosis.sdk.image.UploadImageResponse;
-
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and 
- * uploads an image to store on the server.
+ * This example connects to the public Docmosis cloud server and uploads an 
+ * image to store on the server.
  * 
  * How to use:
  * 
@@ -44,42 +41,42 @@ public class SimpleUploadImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to be uploaded
-	private static final String FILE_TO_UPLOAD = "C:/example/Image1.png";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	//Full path of image to be uploaded
+	private static final String IMAGE_TO_UPLOAD = "C:/example/myImage.png";
+
+	public static void main(String args[]) throws ImageException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
-		
-		File uploadFile = new File(FILE_TO_UPLOAD);
-		UploadImageResponse uploadedImage = Image
-											.upload()
-											.imageFile(uploadFile)
-											.execute();
 
-		if (uploadedImage.hasSucceeded()) {
-			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
-			System.out.println();
-			ImageDetails image = uploadedImage.getDetails();
-			System.out.println("Template Details:");
-			System.out.println("Template Name: " + image.getName());
-			System.out.println("Last Modified: " + image.getLastModifiedISO8601());
-			System.out.println("Size: " + ((double)image.getSizeBytes() / 1000000.0) + " mb");
-			//System.out.println(templateDetails.getAsJson());
+		//Set the default environment to use your access key.
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Set the file we are going to upload.
+		File uploadFile = new File(IMAGE_TO_UPLOAD);
+
+		//Create and execute the request
+		UploadImageResponse response = Image
+										.upload()
+										.imageFile(uploadFile)
+										.execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			System.out.println("Successfully uploaded " + IMAGE_TO_UPLOAD);
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Upload Template failed: status="
-					+ uploadedImage.getStatus()
+			System.err.println("Upload image failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ uploadedImage.getShortMsg()
-					+ ((uploadedImage.getLongMsg() == null) ? "" : " longMsg="
-							+ uploadedImage.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

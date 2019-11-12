@@ -18,10 +18,11 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.RequestBuilder;
+import com.docmosis.sdk.response.MutableDocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -52,36 +53,18 @@ public class RenderTags {
 	 * @return Response Object
 	 * @throws RenderTagsException if execution fails or cannot extract data from response
 	 */
-	public static GetRenderTagsResponse executeGetRenderTags(GetRenderTagsRequest request) throws RenderTagsException
+	protected static GetRenderTagsResponse executeGetRenderTags(GetRenderTagsRequest request) throws RenderTagsException
 	{
-		//Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("tags", request.getTags());
-		}
-		else {
-			throw new RenderTagsException("No Tags Specified.");
-		}
-		if (request.getYear() != 0) {
-			builder.addTextBody("year", String.valueOf(request.getYear()));
-		}
-		if (request.getMonth() != 0) {
-			builder.addTextBody("month", String.valueOf(request.getMonth()));
-		}
-		if (request.getnMonths() != 0) {
-			builder.addTextBody("nMonths", String.valueOf(request.getnMonths()));
-		}
-		builder.addTextBody("padBlanks", String.valueOf(request.getPadBlanks()));
-		
-	    HttpEntity payload = builder.build();
-	    GetRenderTagsResponse response = new GetRenderTagsResponse();
+	    GetRenderTagsResponse response;
+	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 	    
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
-	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new GetRenderTagsResponse(mutableResponse.build());
 
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
@@ -89,7 +72,6 @@ public class RenderTags {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 					
 					Type renderTagsListType = new TypeToken<List<RenderTag>>() {}.getType();
-					//Type listTagType = new TypeToken<List<Tag>>() {}.getType();
 					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					List<RenderTag> renderTags = gson.fromJson(jsonObject.get("renderTags"), renderTagsListType);
 					response.setRenderTags(renderTags);

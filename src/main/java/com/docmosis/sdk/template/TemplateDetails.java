@@ -22,7 +22,6 @@ import java.util.Date;
  * lastModifiedMillisSinceEpoch - last modified in milliseconds
  * lastModifiedISO8601 - last modified yyyy-MM-dd'T'HH:mm:ssZ
  * sizeBytes - the size in bytes
- * isSystemTemplate - whether a system template ("true" or "false")
  * templatePlainTextFieldPrefix - the prefix used when it was uploaded
  * templatePlainTextFieldSuffix - the suffix used when it was uploaded
  * templateDevMode - the dev mode setting used when it was uploaded
@@ -36,8 +35,7 @@ public class TemplateDetails {
 	private String name;
 	private long lastModifiedMillisSinceEpoch;
 	private Date lastModifiedISO8601;
-	private long sizeBytes; //In Bytes
-	private boolean isSystemTemplate;
+	private long sizeBytes;
 	private String templatePlainTextFieldPrefix;
 	private String templatePlainTextFieldSuffix;
 	private boolean templateHasErrors;
@@ -45,14 +43,13 @@ public class TemplateDetails {
 	private String description = null;
 	private String md5;
 	
-	public TemplateDetails(String name, long lastModifiedMillisSinceEpoch, Date lastModifiedISO8601, long sizeBytes,
-			boolean isSystemTemplate, String templatePlainTextFieldPrefix, String templatePlainTextFieldSuffix,
-			boolean templateHasErrors, boolean templateDevMode, String description, String md5) {
+	public TemplateDetails(String name, long lastModifiedMillisSinceEpoch, Date lastModifiedISO8601, long sizeBytes, 
+			String templatePlainTextFieldPrefix, String templatePlainTextFieldSuffix, boolean templateHasErrors, 
+			boolean templateDevMode, String description, String md5) {
 		this.name = name;
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 		this.lastModifiedISO8601 = lastModifiedISO8601;
 		this.sizeBytes = sizeBytes;
-		this.isSystemTemplate = isSystemTemplate;
 		this.templatePlainTextFieldPrefix = templatePlainTextFieldPrefix;
 		this.templatePlainTextFieldSuffix = templatePlainTextFieldSuffix;
 		this.templateHasErrors = templateHasErrors;
@@ -69,7 +66,7 @@ public class TemplateDetails {
 		return name;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.name = name;
 	}
 
@@ -81,7 +78,7 @@ public class TemplateDetails {
 		return lastModifiedMillisSinceEpoch;
 	}
 
-	public void setLastModifiedMillisSinceEpoch(long lastModifiedMillisSinceEpoch) {
+	protected void setLastModifiedMillisSinceEpoch(long lastModifiedMillisSinceEpoch) {
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 	}
 
@@ -93,7 +90,7 @@ public class TemplateDetails {
 		return lastModifiedISO8601;
 	}
 
-	public void setLastModifiedISO8601(Date lastModifiedISO8601) {
+	protected void setLastModifiedISO8601(Date lastModifiedISO8601) {
 		this.lastModifiedISO8601 = lastModifiedISO8601;
 	}
 
@@ -105,20 +102,8 @@ public class TemplateDetails {
 		return sizeBytes;
 	}
 
-	public void setSizeBytes(long sizeBytes) {
+	protected void setSizeBytes(long sizeBytes) {
 		this.sizeBytes = sizeBytes;
-	}
-
-	/**
-	 * 
-	 * @return whether a system template ("true" or "false")
-	 */
-	public boolean getIsSystemTemplate() {
-		return isSystemTemplate;
-	}
-
-	public void setSystemTemplate(boolean isSystemTemplate) {
-		this.isSystemTemplate = isSystemTemplate;
 	}
 
 	/**
@@ -129,7 +114,7 @@ public class TemplateDetails {
 		return templatePlainTextFieldPrefix;
 	}
 
-	public void setTemplatePlainTextFieldPrefix(String templatePlainTextFieldPrefix) {
+	protected void setTemplatePlainTextFieldPrefix(String templatePlainTextFieldPrefix) {
 		this.templatePlainTextFieldPrefix = templatePlainTextFieldPrefix;
 	}
 
@@ -141,7 +126,7 @@ public class TemplateDetails {
 		return templatePlainTextFieldSuffix;
 	}
 
-	public void setTemplatePlainTextFieldSuffix(String templatePlainTextFieldSuffix) {
+	protected void setTemplatePlainTextFieldSuffix(String templatePlainTextFieldSuffix) {
 		this.templatePlainTextFieldSuffix = templatePlainTextFieldSuffix;
 	}
 
@@ -153,7 +138,7 @@ public class TemplateDetails {
 		return templateHasErrors;
 	}
 
-	public void setTemplateHasErrors(boolean templateHasErrors) {
+	protected void setTemplateHasErrors(boolean templateHasErrors) {
 		this.templateHasErrors = templateHasErrors;
 	}
 
@@ -165,7 +150,7 @@ public class TemplateDetails {
 		return templateDevMode;
 	}
 
-	public void setTemplateDevMode(boolean templateDevMode) {
+	protected void setTemplateDevMode(boolean templateDevMode) {
 		this.templateDevMode = templateDevMode;
 	}
 
@@ -177,7 +162,7 @@ public class TemplateDetails {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	protected void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -189,7 +174,7 @@ public class TemplateDetails {
 		return md5;
 	}
 
-	public void setMd5(String md5) {
+	protected void setMd5(String md5) {
 		this.md5 = md5;
 	}
 
@@ -197,9 +182,9 @@ public class TemplateDetails {
 	public String toString() {
 		return "TemplateDetails [name=" + name + ", lastModifiedMillisSinceEpoch=" + lastModifiedMillisSinceEpoch
 				+ ", lastModifiedISO8601=" + lastModifiedISO8601 + ", sizeBytes=" + sizeBytes
-				+ ", isSystemTemplate=" + isSystemTemplate + ", templatePlainTextFieldPrefix="
-				+ templatePlainTextFieldPrefix + ", templatePlainTextFieldSuffix=" + templatePlainTextFieldSuffix
-				+ ", templateHasErrors=" + templateHasErrors + ", templateDevMode=" + templateDevMode
-				+ ", description=" + description + ", md5=" + md5 + "]";
+				+ ", templatePlainTextFieldPrefix=" + templatePlainTextFieldPrefix
+				+ ", templatePlainTextFieldSuffix=" + templatePlainTextFieldSuffix + ", templateHasErrors=" 
+				+ templateHasErrors + ", templateDevMode=" + templateDevMode + ", description=" + description
+				+ ", md5=" + md5 + "]";
 	}
 }

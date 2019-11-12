@@ -15,6 +15,7 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.docmosis.sdk.environment.Environment;
@@ -27,10 +28,9 @@ import com.google.gson.Gson;
 /**
  * This example invokes a render using a local Docmosis Tornado server.
  * The code is the same as for using the public cloud, but has a different URL and
- * doesn't require an access key.
+ * doesn't require an access key (By default).
  * It renders the built-in WelcomeTemplate.doc template into a PDF which is
- * saved to the local file system.  The code also populates the "message" field
- * within the template.
+ * saved to the local file system.
  * 
  * How to use:
  * 
@@ -42,14 +42,17 @@ import com.google.gson.Gson;
  * the Web Services Guide and the Docmosis Template guide in the support area
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
- */public class SimpleTornadoExample 
+ */
+public class SimpleTornadoExample 
 {
-   
+
+	//Your Tornado end point url. This can be found in the Tornado console.
 	private static final String TORNADO_URL = "http://localhost:8080/rs/";	
-	
+
+	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "WelcomeTemplate.doc";
 	
-	// The output format we want to produce (pdf, doc, odt and more exist).
+	// The output format we want to produce (pdf, docx, doc, odt and more exist).
 	private static final String OUTPUT_FORMAT = "pdf";
 
 	// The name of the file we are going to write the document to.
@@ -57,22 +60,32 @@ import com.google.gson.Gson;
 	
 	
 	public static void main(String args[]) throws IOException, RendererException {
-	    
+
+		//Set the default environment to use your tornado url.
 		Environment.setDefaults(TORNADO_URL, "");
 		
-		//Create data to send
+		//Create data to send using the POJO classes below.
 		final Data data = new Data();
-		data.setMessage("Hello at:" + new Date());
+		data.setTitle("This is Docmosis Cloud\n" + new Date());
+		ArrayList<Message> messages = new ArrayList<Message>();
+	    messages.add(new Message("This cloud experience is better than I thought."));
+	    messages.add(new Message("The sun is shining."));
+	    messages.add(new Message("Right, now back to work."));
+	    data.setMessages(messages);
 
+	    //Build the data String to send.
 		String dataString = new Gson().toJson(data); //Data String to send.
 
+		//Set the file we are going to write the document to.
 		File outputFile = new File(OUTPUT_FILE);
+
+		//Create and execute the render request.
 		RenderResponse response = Renderer
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
 									.data(dataString)
-									.sendTo(outputFile) //Or OutputStream
+									.sendTo(outputFile)
 									.execute();
 
 		if (response.hasSucceeded()) {
@@ -80,7 +93,7 @@ import com.google.gson.Gson;
 			System.out.println("Written:" + outputFile.getAbsolutePath());
 
 		} else {
-			// something went wrong, tell the user
+			// something went wrong, tell the user.
 			System.err.println("Render failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
@@ -90,17 +103,55 @@ import com.google.gson.Gson;
 		}
 	}
 	
-	public static class Data {
-		private String message;
+	/**
+	 * This is a sample Data object/POJO. The data can be any typical structure that
+	 * matches your template. You then use a library to convert this object into
+	 * JSON format for rendering.
+	 */
+	public static class Data
+	{
+		private String title;
+		private ArrayList<Message> messages = new ArrayList<Message>();
 		
-		public void setMessage(String msg) 
-		{
-			this.message = msg;
-		}
-		
-		public String getMessage() {
-			return message;
-		}
+		public Data() {}
 
+		public Data(String title, ArrayList<Message> messages)
+		{
+			this.title = title;
+			this.messages = messages;
+		}
+		public String getTitle()
+		{
+			return title;
+		}
+		public void setTitle(String title)
+		{
+			this.title = title;
+		}
+		public ArrayList<Message> getMessages()
+		{
+			return messages;
+		}
+		public void setMessages(ArrayList<Message> messages)
+		{
+			this.messages = messages;
+		}
+	}
+	public static class Message
+	{
+		private String msg;
+		
+		public Message(String msg)
+		{
+			this.msg = msg;
+		}
+		public String getMsg()
+		{
+			return msg;
+		}
+		public void setMsg(String msg)
+		{
+			this.msg = msg;
+		}
 	}
 }

@@ -16,12 +16,10 @@
 import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.file.FileException;
 import com.docmosis.sdk.file.FileStorage;
 import com.docmosis.sdk.file.GetFileResponse;
-import com.docmosis.sdk.handlers.DocmosisException;
-
 
 /**
  * 
@@ -46,36 +44,43 @@ public class SimpleGetFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to get
-	private static final String FILE_TO_GET = "myFile1.pdf";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	// Full path of File to get
+	private static final String FILE_TO_GET = "myFile.pdf";
+
+	public static void main(String args[]) throws FileException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Set the file we are going to write the returned document to.
 		File outputFile = new File(FILE_TO_GET);
-		GetFileResponse file = FileStorage
-								.get()
-								.fileName(FILE_TO_GET)
-								.sendTo(outputFile) //Or OutputStream
-								.execute();
 
-			if (file.hasSucceeded()) {
-				System.out.println("Output File to: " + outputFile.getAbsolutePath());
-			} else {
-				// something went wrong, tell the user
-				System.err.println("Get File failed: status="
-						+ file.getStatus()
-						+ " shortMsg="
-						+ file.getShortMsg()
-						+ ((file.getLongMsg() == null) ? "" : " longMsg="
-								+ file.getLongMsg()));
-			}
+		//Create and execute the request
+		GetFileResponse response = FileStorage
+									.get()
+									.fileName(FILE_TO_GET)
+									.sendTo(outputFile)
+									.execute();
+
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			System.out.println("File written to: " + outputFile.getAbsolutePath());
+
+		} else {
+			// something went wrong, tell the user
+			System.err.println("Get file failed: status="
+					+ response.getStatus()
+					+ " shortMsg="
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
+		}
 	}
 }

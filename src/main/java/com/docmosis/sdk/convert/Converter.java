@@ -15,11 +15,10 @@
 package com.docmosis.sdk.convert;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.RequestBuilder;
 
 /**
  * This class manages the interaction with the Docmosis convert service endpoint - converting
@@ -48,35 +47,20 @@ public class Converter {
      * 
      * @throws ConverterException if something goes wrong executing the request
      */
-    public static ConverterResponse executeConvert(final ConverterRequest request) throws ConverterException 
+    protected static ConverterResponse executeConvert(final ConverterRequest request) throws ConverterException 
     {
-
-    	if (request.getFileToConvert() == null) {
-    		throw new ConverterException("No conversion file specified");
-    	}
-        if (!request.getFileToConvert().canRead()) {
-            throw new ConverterException("cannot read file to convert: ["
-                            + request.getFileToConvert() + "]");
-        }
-        
-        //Build request
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-		if (request.getAccessKey() != null) {
-			builder.addTextBody("accessKey", request.getAccessKey());
-		}
-	    builder.addBinaryBody("file", request.getFileToConvert(), ContentType.APPLICATION_OCTET_STREAM, request.getFileToConvert().getName());
-	    builder.addTextBody("outputName", request.getOutputName());
-
-	    HttpEntity payload = builder.build();
-        ConverterResponse response = new ConverterResponse();
+    	MutableConverterResponse response = new MutableConverterResponse();
         
         try {
+        	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
 	    }
 	    catch (DocmosisException e) {
 	    	throw new ConverterException(e);
 	    }
-		return response;
+		return new ConverterResponse(response.build());
     }
 }

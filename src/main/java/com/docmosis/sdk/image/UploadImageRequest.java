@@ -17,12 +17,11 @@ package com.docmosis.sdk.image;
 import java.io.File;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Upload Image service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Upload Image request.
  * 
@@ -31,22 +30,20 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   UploadImageResponse uploadedImage = Image.upload()
- *											.imageFile(uploadFile)
- *											.execute();
- *	 if (getImage.hasSucceeded()) {
- *   	uploadedImage.toString();
+ *   UploadImageResponse response = Image
+ *                                    .upload()
+ *                                    .imageFile(uploadFile)
+ *                                    .execute();
+ *	 if (response.hasSucceeded()) {
+ *       //Succeeded
  *   }
  * </pre>
  */
 public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest> {
 	
 	private static final String SERVICE_PATH = "uploadImage";
-	private String imageName;
-	private boolean isSystemImage = false;
-	private File imageFile = null;
-	private String imageDescription = "";
-	private boolean normalizeImageName = false;
+	
+	private UploadImageRequestParams params = new UploadImageRequestParams();
 
 	public UploadImageRequest() {
 		super(SERVICE_PATH);
@@ -55,170 +52,112 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
 	public UploadImageRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
+	
+	public UploadImageRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
-	 * The name of the image on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @return The image name.
+	 * Set the file stream to upload.
+	 * @param imageFile The file to upload
+	 * @return this request for method chaining
 	 */
-	public String getImageName() {
-		return imageName;
+	public UploadImageRequest imageFile(File imageFile) {
+		params.setImageFile(imageFile);
+		return this;
 	}
-
-	/**
-	 * Set the name of the image on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageName the image name.
-	 */
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
-	}
-
+	
 	/**
 	 * Set the name of the image on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
 	 * @param imageName the image name.
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest imageName(String imageName) {
-		this.imageName = imageName;
-		return getThis();
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @return isSystemImage flag
-	 */
-	public boolean getIsSystemImage() {
-		return isSystemImage;
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @param isSystemImage Is system image flag
-	 */
-	public void setSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
+		params.setImageName(imageName);
+		return this;
 	}
 	
 	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * @param isSystemImage Is system image flag
-	 * @return this request for method chaining
-	 */
-	public UploadImageRequest isSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
-		return getThis();
-	}
-
-	/**
-	 * The file stream of the image.
-	 * @return imageFile File Object
-	 */
-	public File getImageFile() {
-		return imageFile;
-	}
-
-	/**
-	 * The file stream of the image.
-	 * @param imageFile The file to upload
-	 */
-	public void setImageFile(File imageFile) {
-		this.imageFile = imageFile;
-	}
-	
-	/**
-	 * The file stream of the image.
-	 * @param imageFile The file to upload
-	 * @return this request for method chaining
-	 */
-	public UploadImageRequest imageFile(File imageFile) {
-		this.imageFile = imageFile;
-		return getThis();
-	}
-
-	/**
-	 * A short description for the image.
-	 * @return image description String
-	 */
-	public String getImageDescription() {
-		return imageDescription;
-	}
-
-	/**
-	 * A short description for the image.
-	 * @param imageDescription the image description
-	 */
-	public void setImageDescription(String imageDescription) {
-		this.imageDescription = imageDescription;
-	}
-
-	/**
-	 * A short description for the image.
+	 * Set a short description for the image.
 	 * @param imageDescription the image description
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest imageDescription(String imageDescription) {
-		this.imageDescription = imageDescription;
-		return getThis();
+		params.setImageDescription(imageDescription);
+		return this;
 	}
 
 	/**
-	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
-	 * @return normalizeImageName flag
-	 */
-	public boolean getNormalizeImageName() {
-		return normalizeImageName;
-	}
-
-	/**
-	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
-	 * @param normalizeImageName value
-	 */
-	public void setNormalizeImageName(boolean normalizeImageName) {
-		this.normalizeImageName = normalizeImageName;
-	}
-
-	/**
-	 * If set to "true" the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
+	 * If set to true the image name given will be NFC normalized (Unicode NFC normalization). The default is false.
 	 * @param normalizeImageName value
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest normalizeImageName(boolean normalizeImageName) {
-		this.normalizeImageName = normalizeImageName;
-		return getThis();
+		params.setNormalizeImageName(normalizeImageName);
+		return this;
 	}
 
+	/**
+	 * Execute an upload image request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute() throws DocmosisException {
-		return Image.executeUploadImage(getThis());
+	public UploadImageResponse execute() throws ImageException {
+		return Image.executeUploadImage(this);
 	}
-	
+
+	/**
+	 * Execute an upload image request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute(String url, String accessKey) throws DocmosisException {
+	public UploadImageResponse execute(String url, String accessKey) throws ImageException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Image.executeUploadImage(getThis());
+		return Image.executeUploadImage(this);
 	}
-	
+
+	/**
+	 * Execute an upload image request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute(String accessKey) throws DocmosisException {
+	public UploadImageResponse execute(String accessKey) throws ImageException {
 		getEnvironment().setAccessKey(accessKey);
-		return Image.executeUploadImage(getThis());
+		return Image.executeUploadImage(this);
 	}
-	
+
+	/**
+	 * Execute an upload image request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public UploadImageResponse execute(Environment environment) throws DocmosisException {
+	public UploadImageResponse execute(Environment environment) throws ImageException {
 		super.setEnvironment(environment);
-		return Image.executeUploadImage(getThis());
+		return Image.executeUploadImage(this);
 	}
 
 	@Override
 	public String toString() {
-		return "UploadImageRequest [imageName=" + imageName + ", isSystemImage=" + isSystemImage
-				+ ", imageFile=" + imageFile + ", imageDescription=" + imageDescription
-				+ ", normalizeImageName=" + normalizeImageName + ", " + super.toString() + "]";
-	}
-
-	@Override
-	protected UploadImageRequest getThis()
-	{
-		return this;
+		return params.toString();
 	}
 }

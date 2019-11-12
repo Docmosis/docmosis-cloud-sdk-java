@@ -32,7 +32,7 @@ public class RenderTag {
 		return year;
 	}
 
-	public void setYear(int year) {
+	protected void setYear(int year) {
 		this.year = year;
 	}
 
@@ -44,7 +44,7 @@ public class RenderTag {
 		return month;
 	}
 
-	public void setMonth(int month) {
+	protected void setMonth(int month) {
 		this.month = month;
 	}
 
@@ -56,7 +56,7 @@ public class RenderTag {
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags) {
+	protected void setTags(List<Tag> tags) {
 		this.tags = tags;
 	}
 	
@@ -103,7 +103,7 @@ public class RenderTag {
 			return name;
 		}
 
-		public void setName(String name) {
+		protected void setName(String name) {
 			this.name = name;
 		}
 
@@ -115,7 +115,7 @@ public class RenderTag {
 			return countPages;
 		}
 
-		public void setCountPages(int countPages) {
+		protected void setCountPages(int countPages) {
 			this.countPages = countPages;
 		}
 
@@ -127,7 +127,7 @@ public class RenderTag {
 			return countDocuments;
 		}
 
-		public void setCountDocuments(int countDocuments) {
+		protected void setCountDocuments(int countDocuments) {
 			this.countDocuments = countDocuments;
 		}
 

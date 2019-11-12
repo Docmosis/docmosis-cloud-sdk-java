@@ -14,11 +14,16 @@
  */
 package com.docmosis.sdk.render;
 
+import org.apache.commons.codec.Charsets;
+import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.handlers.DocmosisHTTPRequestExecutionHandler;
+import com.docmosis.sdk.request.RequestBuilder;
+import com.docmosis.sdk.request.param.ParamType;
+import com.docmosis.sdk.request.param.RequestParameters;
 
 /**
  * This class manages the interaction with the Docmosis render service endpoint - producing
@@ -44,6 +49,17 @@ public class Renderer {
 
     	return req;
     }
+    
+    /**
+	 * Create a Render Form Request. Run .execute() to run the request and return the Rendered File.
+	 * @return RenderFormRequest
+	 */
+    public static RenderFormRequest renderForm()
+    {
+    	final RenderFormRequest req = new RenderFormRequest();
+
+    	return req;
+    }
 
     /**
      * Render a Docmosis document.
@@ -53,22 +69,29 @@ public class Renderer {
      * 
      * @throws RendererException if something goes wrong constructing the request
      */
-    public static RenderResponse executeRender(final RenderRequest request) throws RendererException 
+    protected static RenderResponse executeRender(final RenderRequest request) throws RendererException 
     {
-        RenderResponse response = new RenderResponse();
+        MutableRenderResponse response = new MutableRenderResponse();
         
-    	final boolean requestIsJson = requestIsJson(request);
+    	final boolean requestIsJson = requestIsJson(request.getParams());
+    	
+    	try {
+    		RequestBuilder.testRequiredParams(request.getParams());
+    	}
+    	catch (DocmosisException e) {
+			throw new RendererException(e);
+    	}
 
-		//Build request
-    	final String accessKey = request.getAccessKey();
-        final String renderRequest = buildRequest(accessKey, request, requestIsJson);
+    	//Build request
+    	final String accessKey = request.getEnvironment().getAccessKey();
+        final String renderRequest = buildRequest(accessKey, request.getParams(), requestIsJson);
 
         StringEntity se = null;
         if (requestIsJson) {
-        	se = new StringEntity(renderRequest, ContentType.create("application/json"));
+        	se = new StringEntity(renderRequest, ContentType.create(ContentType.APPLICATION_JSON.getMimeType(), Charsets.UTF_8));
         }
         else {
-        	se = new StringEntity(renderRequest, ContentType.create("application/xml"));
+        	se = new StringEntity(renderRequest, ContentType.create(ContentType.APPLICATION_XML.getMimeType(), Charsets.UTF_8));
         }
         
         try {
@@ -79,8 +102,36 @@ public class Renderer {
 	    	throw new RendererException(e);
 	    }
             
+        return new RenderResponse(response.build());
+    }
 
-        return response;
+    /**
+     * Render a Docmosis document.
+     * 
+     * @param request the render data.
+     * @return a response object encapsulating the result of the render
+     * 
+     * @throws RendererException if something goes wrong constructing the request
+     */
+    protected static RenderResponse executeRenderForm(final RenderFormRequest request) throws RendererException 
+    {
+    	MutableRenderResponse response = new MutableRenderResponse();
+
+        try {
+        	//Combine request params with data params
+        	RequestParameters combinedParams = new RequestParameters(request.getParams());
+        	combinedParams.extend(request.getParams().getDataParams());
+        	
+        	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), combinedParams);
+
+	    	//Execute request
+	    	DocmosisHTTPRequestExecutionHandler.executeHttpPost(response, request, payload);
+	    }
+	    catch (DocmosisException e) {
+	    	throw new RendererException(e);
+	    }
+        return new RenderResponse(response.build());
     }
 
     
@@ -91,7 +142,7 @@ public class Renderer {
      * @param req
      * @return
      */
-    private static boolean requestIsJson(RenderRequest req)
+    private static boolean requestIsJson(RenderRequestParams req)
     {
     	return req == null || isJson(req.getData());
     }
@@ -102,7 +153,7 @@ public class Renderer {
      * @param data full data string
      * @return true if it appears to be JSON or is null/blank
      */
-    public static boolean isJson(String data)
+    protected static boolean isJson(String data)
     {
     	boolean isJson = false;
     	
@@ -127,34 +178,23 @@ public class Renderer {
     	return isJson;
     }
     
-    private static String buildRequest(final String accessKey, final RenderRequest request, 
+    private static String buildRequest(final String accessKey, final RenderRequestParams request, 
     		final boolean jsonFormat) {
         StringBuilder buffer = new StringBuilder();
 
+        
         // Start building the instruction.
         addField("accessKey", accessKey, buffer, true, jsonFormat);
-        addField("templateName", request.getTemplateName(), buffer, true, jsonFormat);
-        addField("isSystemTemplate", String.valueOf(request.getIsSystemTemplate()), buffer, true, jsonFormat);
-        addField("outputName", request.getOutputName(), buffer, true, jsonFormat);
-        addField("outputFormat", request.getOutputFormat(), buffer, true, jsonFormat);
-        addField("compressSingleFormat", String.valueOf(request.getCompressSingleFormat()), buffer, true, jsonFormat);
-        addField("storeTo", request.getStoreTo(), buffer, true, jsonFormat);
-        addField("billingKey", request.getBillingKey(), buffer, true, jsonFormat); //Still used??
-        addField("devMode", String.valueOf(request.getDevMode()), buffer, true, jsonFormat);
-        addField("requestId", request.getRequestId(), buffer, true, jsonFormat);
-        addField("mailSubject", request.getMailSubject(), buffer, true, jsonFormat);
-        addField("mailBodyHtml", request.getMailBodyHtml(), buffer, true, jsonFormat);
-        addField("mailBodyText", request.getMailBodyText(), buffer, true, jsonFormat);
-        addField("mailNoZipAttachments", String.valueOf(request.getMailNoZipAttachments()), buffer, true, jsonFormat);
-        addField("sourceId", request.getSourceId(), buffer, true, jsonFormat);
-        addField("stylesInText", String.valueOf(request.getStylesInText()), buffer, true, jsonFormat);
-        addField("passwordProtect", request.getPasswordProtect(), buffer, true, jsonFormat);
-        addField("pdfArchiveMode", String.valueOf(request.getPdfArchiveMode()), buffer, true, jsonFormat);
-        addField("pdfWatermark", request.getPdfWatermark(), buffer, true, jsonFormat);
-        addField("pdfTagged", String.valueOf(request.getPdfTagged()), buffer, true, jsonFormat);
-        addField("ignoreUnknownParams", String.valueOf(request.getIgnoreUnknownParams()), buffer, true, jsonFormat);
-        addField("tags", request.getTags(), buffer, true, jsonFormat);
         
+        // add all parameters except for the DATA which we'll put last
+        for(String paramName : request.getKeys()) {
+        	if (!RenderRequestParams.DATA.equals(paramName)) {
+        		ParamType value = request.getParam(paramName);
+        		addField(paramName, value, buffer, true, jsonFormat);
+        	}
+        }
+
+        // add the data formatted as required
         if (jsonFormat) {
         	String json = request.getData();
         	json = (json == null || "".equals(json.trim())) ? null : json;
@@ -175,8 +215,17 @@ public class Renderer {
         	buffer.append("</render>");
         }
 
+       
         return buffer.toString();
     }
+
+    private static void addField(final String key, final ParamType value, final StringBuilder buffer,
+            final boolean quoteValue, final boolean jsonFormat) 
+	{
+    	if (value != null) {
+    		addField(key, value.stringValue(), buffer, quoteValue, jsonFormat);
+    	}
+	}
 
 
     private static void addField(final String key, final String value, final StringBuilder buffer,

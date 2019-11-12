@@ -15,11 +15,10 @@
 
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.template.GetTemplateStructureResponse;
 import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateException;
 
 /**
  * 
@@ -41,11 +40,12 @@ public class SimpleGetTemplateStructureExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
+
 	// the welcome template is available in your cloud account by default
 	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
@@ -53,23 +53,27 @@ public class SimpleGetTemplateStructureExample
 			System.exit(1);
 		}
 
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
 
-		GetTemplateStructureResponse templateStructure = Template
-															.getStructure()
-															.templateName(TEMPLATE_NAME)
-															.execute();
+		//Create and execute the request
+		GetTemplateStructureResponse response = Template
+												.getStructure()
+												.templateName(TEMPLATE_NAME)
+												.execute();
 
-		if (templateStructure.hasSucceeded()) {
-			System.out.println(templateStructure.toString());
+		if (response.hasSucceeded()) {
+			// great - request succeeded.
+			System.out.println(response.toString());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Template Structure failed: status="
-					+ templateStructure.getStatus()
+			System.err.println("Get template structure failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ templateStructure.getShortMsg()
-					+ ((templateStructure.getLongMsg() == null) ? "" : " longMsg="
-							+ templateStructure.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

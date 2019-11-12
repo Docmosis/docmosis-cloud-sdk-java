@@ -44,13 +44,27 @@ import com.google.gson.JsonParser;
  */
 public class DocmosisCloudResponse
 {
-	private int status;
-	private String shortMsg;
-	private String longMsg;
-	private String serverId;
-	private int tries;
-	private PreviousFailureInformation prevFailureInfo;
-	
+	protected int status;
+	protected String shortMsg;
+	protected String longMsg;
+	protected String serverId;
+	protected int tries;
+	protected PreviousFailureInformation previousFailureInformation;
+
+	protected DocmosisCloudResponse() {
+		super();
+	}
+
+	protected DocmosisCloudResponse(DocmosisCloudResponse other) {
+		super();
+		this.status = other.status;
+		this.shortMsg = other.shortMsg;
+		this.longMsg = other.longMsg;
+		this.serverId = other.serverId;
+		this.tries = other.tries;
+		this.previousFailureInformation = other.previousFailureInformation;
+	}
+
 	/**
 	 * Determine if convert request succeeded.
 	 * 
@@ -79,11 +93,6 @@ public class DocmosisCloudResponse
 		return status;
 	}
 	
-	public void setStatus(int status)
-	{
-		this.status = status;
-	}
-	
 	/**
 	 * If an error has occurred (see {@link #hasSucceeded()}) then this will
 	 * give a brief reason.
@@ -93,11 +102,6 @@ public class DocmosisCloudResponse
 	public String getShortMsg()
 	{
 		return shortMsg;
-	}
-	
-	public void setShortMsg(String shortMsg)
-	{
-		this.shortMsg = shortMsg;
 	}
 	
 	/**
@@ -111,11 +115,6 @@ public class DocmosisCloudResponse
 		return longMsg;
 	}
 	
-	public void setLongMsg(String longMsg)
-	{
-		this.longMsg = longMsg;
-	}
-	
 	/** 
 	 * Determine the number of tries done before
 	 * success or failure.
@@ -127,11 +126,6 @@ public class DocmosisCloudResponse
 		return tries;
 	}
 
-	public void setTries(int tries)
-	{
-		this.tries = tries;
-	}
-
 	/**
 	 * Get details of the previous failure.  This is only available when
 	 * getTries() returns &gt; 1
@@ -140,17 +134,7 @@ public class DocmosisCloudResponse
 	 */
 	public PreviousFailureInformation getPreviousFailureInformation()
 	{
-		return prevFailureInfo;
-	}
-
-	/**
-	 * Set the previous failure information from the given response.
-	 * 
-	 * @param failureInfo the details of the failure.
-	 */
-	public void setPreviousFailureInformation(PreviousFailureInformation failureInfo)
-	{
-		this.prevFailureInfo = failureInfo;
+		return previousFailureInformation;
 	}
 
 	/**
@@ -161,11 +145,6 @@ public class DocmosisCloudResponse
 	public String getServerId()
 	{
 		return serverId;
-	}
-
-	public void setServerId(String serverId)
-	{
-		this.serverId = serverId;
 	}
 	
 	/**
@@ -193,7 +172,7 @@ public class DocmosisCloudResponse
 		return str;
 	}
 
-	public JsonObject getAsJson()
+	protected JsonObject getAsJson()
 	{
 		return getAsJson(this);
 	}
@@ -202,7 +181,7 @@ public class DocmosisCloudResponse
 	 * Returns this response as a formated Json string.
 	 * @return formatted string of json object
 	 */
-	public String getAsJsonPretty()
+	protected String getAsJsonPretty()
 	{
 		return getAsJsonPretty(this);
 	}
@@ -212,7 +191,7 @@ public class DocmosisCloudResponse
 	 * @param xml unformatted xml string
 	 * @return formatted string of xml object
 	 */
-	public String getAsXMLPretty(String xml)
+	protected String getAsXMLPretty(String xml)
 	{
 		return getAsXMLPretty(xml, 4);
 	}
@@ -222,12 +201,12 @@ public class DocmosisCloudResponse
 	 * @param document xml document object
 	 * @return formatted string of xml object
 	 */
-	public String getAsXMLPretty(Document document)
+	protected String getAsXMLPretty(Document document)
 	{
 		return getAsXMLPretty(document, 4);
 	}
 
-	public String getAsXMLPretty(String xml, int indent)
+	protected String getAsXMLPretty(String xml, int indent)
 	{
 		try {
 	        // Turn xml string into a document
@@ -253,7 +232,7 @@ public class DocmosisCloudResponse
 	    }
 	}
 	
-	public String getAsXMLPretty(Document document, int indent)
+	protected String getAsXMLPretty(Document document, int indent)
 	{
 		try {
 	        // Setup pretty print options

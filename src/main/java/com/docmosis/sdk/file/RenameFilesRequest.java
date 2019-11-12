@@ -15,12 +15,11 @@
 package com.docmosis.sdk.file;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
 
 /**
  * The object holds the instructions and data for a request to the Rename Files service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the List request.
  * 
@@ -29,21 +28,21 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *  RenameFileResponse renameFile = FileStorage
- *   								.rename()
- *   								.fromPath(oldName)
- *   								.toPath(newName)
- *   								.execute();
- *   if (renameFile.hasSucceeded()) {
- *  	System.out.println(oldName + " renamed to " + newName);
+ *  RenameFileResponse response = FileStorage
+ *                                  .rename()
+ *                                  .fromPath(oldName)
+ *                                  .toPath(newName)
+ *                                  .execute();
+ *   if (response.hasSucceeded()) {
+ *       System.out.println(oldName + " renamed to " + newName);
  *  }
  * </pre>
  */
 public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest> {
 
 	private static final String SERVICE_PATH = "renameFiles";
-	private String fromPath;
-	private String toPath;
+	
+	private RenameFilesRequestParams params = new RenameFilesRequestParams();
 
 	public RenameFilesRequest() {
 		super(SERVICE_PATH);
@@ -52,22 +51,11 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	public RenameFilesRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * The original name of the file or folder.
-	 * @return original file name
-	 */
-	public String getFromPath() {
-		return fromPath;
-	}
-
-	/**
-	 * Set the original name of the file or folder.
-	 * @param fromPath original file name
-	 */
-	public void setFromPath(String fromPath) {
-		this.fromPath = fromPath;
-	}
+	
+	public RenameFilesRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
 	 * Set the original name of the file or folder.
@@ -75,24 +63,8 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 * @return this request for method chaining
 	 */
 	public RenameFilesRequest fromPath(String fromPath) {
-		this.fromPath = fromPath;
-		return getThis();
-	}
-
-	/**
-	 * The new name for the file or folder.
-	 * @return new file name
-	 */
-	public String getToPath() {
-		return toPath;
-	}
-
-	/**
-	 * Set the new name for the file or folder.
-	 * @param toPath new file name
-	 */
-	public void setToPath(String toPath) {
-		this.toPath = toPath;
+		params.setFromPath(fromPath);
+		return this;
 	}
 
 	/**
@@ -101,41 +73,70 @@ public class RenameFilesRequest extends DocmosisCloudRequest<RenameFilesRequest>
 	 * @return this request for method chaining
 	 */
 	public RenameFilesRequest toPath(String toPath) {
-		this.toPath = toPath;
-		return getThis();
-	}
-
-	@Override
-	public RenameFilesResponse execute() throws DocmosisException {
-		return FileStorage.executeRenameFiles(getThis());
-	}
-	
-	@Override
-	public RenameFilesResponse execute(String url, String accessKey) throws DocmosisException {
-		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executeRenameFiles(getThis());
-	}
-	
-	@Override
-	public RenameFilesResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executeRenameFiles(getThis());
-	}
-
-	@Override
-	public RenameFilesResponse execute(Environment environment) throws DocmosisException {
-		super.setEnvironment(environment);
-		return FileStorage.executeRenameFiles(getThis());
-	}
-
-	@Override
-	protected RenameFilesRequest getThis()
-	{
+		params.setToPath(toPath);
 		return this;
+	}
+
+	/**
+	 * Execute a rename files request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public RenameFilesResponse execute() throws FileException {
+		return FileStorage.executeRenameFiles(this);
+	}
+
+	/**
+	 * Execute a rename files request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public RenameFilesResponse execute(String url, String accessKey) throws FileException {
+		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
+		return FileStorage.executeRenameFiles(this);
+	}
+
+	/**
+	 * Execute a rename files request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public RenameFilesResponse execute(String accessKey) throws FileException {
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executeRenameFiles(this);
+	}
+
+	/**
+	 * Execute a rename files request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public RenameFilesResponse execute(Environment environment) throws FileException {
+		super.setEnvironment(environment);
+		return FileStorage.executeRenameFiles(this);
 	}
 
 	@Override
 	public String toString() {
-		return "RenameFileRequest [fromPath=" + fromPath + ", toPath=" + toPath + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

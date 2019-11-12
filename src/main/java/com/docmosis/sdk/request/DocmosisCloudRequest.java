@@ -16,7 +16,6 @@ package com.docmosis.sdk.request;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.environment.EnvironmentBuilder;
-import com.docmosis.sdk.environment.Proxy;
 import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
@@ -25,7 +24,7 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * This is an abstract super object with the minimum requirements to make a request.
  * @param <T> Request class
  */
-public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
+public abstract class DocmosisCloudRequest<T> {
 	
 	private final String servicePath;
 	private EnvironmentBuilder environmentBuilder;
@@ -57,68 +56,6 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	public String getUrl() {
 		return environmentBuilder.getUrl(servicePath);
 	}
-
-	/**
-	 * The access key for using the end point.
-	 * 
-	 * @return access key of docmosis cloud or tornado endpoint.
-	 */
-	public String getAccessKey()
-	{
-		return environmentBuilder.getAccessKey();
-	}
-
-	/**
-	 * Get the maximum number of tries that should be attempted to service
-	 * this request when a server/network error occurs.
-	 * 
-	 * @return the maximum number of tries configured.
-	 */
-	public int getMaxTries()
-	{
-		return environmentBuilder.getMaxTries();
-	}
-
-	/**
-	 * Get the retry delay (milliseconds) to apply when
-	 * a retry is required.
-	 * 
-	 * @return the configured retry delay
-	 */
-	public long getRetryDelay()
-	{
-		return environmentBuilder.getRetryDelayMS();
-	}
-	
-	/**
-	 * Get the client connection timeout (milliseconds) to establish 
-	 * the connection with the remote host.
-	 * 
-	 * @return the configured client connection timeout
-	 */
-	public long getConnectTimeout()
-	{
-		return environmentBuilder.getConnectTimeoutMS();
-	}
-
-	/**
-	 * Get the read timeout (milliseconds) between packets.
-	 * 
-	 * @return the configured read timeout
-	 */
-	public long getReadTimeout()
-	{
-		return environmentBuilder.getReadTimeoutMS();
-	}
-
-	/**
-	 * Get the Proxy object containing proxy host, port and user credentials.
-	 * 
-	 * @return EnvironmentConfiguration.Proxy object
-	 */
-	public Proxy getProxy() {
-		return environmentBuilder.getProxy();
-	}
 	
 	@Override
 	public String toString() {
@@ -127,7 +64,7 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 
 
 	/**
-	 * Execute a request to the Docmosis cloud based on contained settings.
+	 * Execute a request to the Docmosis cloud based on contained settings and using the default Environment.
      * 
 	 * @return a response object giving status, possible error messages and optional
 	 * document payload.
@@ -135,10 +72,41 @@ public abstract class DocmosisCloudRequest<T extends DocmosisCloudRequest<?>> {
 	 * @throws DocmosisException if a problem occurs invoking the service. 
 	 */
 	public abstract DocmosisCloudResponse execute() throws DocmosisException;
-	public abstract DocmosisCloudResponse execute(String url, String accessKey) throws DocmosisException;
-	public abstract DocmosisCloudResponse execute(String accessKey) throws DocmosisException;
-	public abstract DocmosisCloudResponse execute(Environment env) throws DocmosisException;
-	
-	protected abstract T getThis();	
 
+	/**
+	 * Execute a request to the Docmosis cloud based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws DocmosisException if a problem occurs invoking the service.
+	 */
+	public abstract DocmosisCloudResponse execute(String url, String accessKey) throws DocmosisException;
+
+	/**
+	 * Execute a request to the Docmosis cloud based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws DocmosisException if a problem occurs invoking the service 
+	 */
+	public abstract DocmosisCloudResponse execute(String accessKey) throws DocmosisException;
+
+	/**
+	 * Execute a request to the Docmosis cloud based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, possible error messages and optional
+	 * document payload.
+	 * 
+	 * @throws DocmosisException if a problem occurs invoking the service 
+	 */
+	public abstract DocmosisCloudResponse execute(Environment environment) throws DocmosisException;
 }

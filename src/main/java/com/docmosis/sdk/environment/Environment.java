@@ -14,7 +14,23 @@
  */
 package com.docmosis.sdk.environment;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Properties;
 
+/**
+ * Stores settings for communicating with Docmosis End Points.
+ * 
+ * Typically this class is used to set the default environment:
+ * 
+ * <pre>
+ *   Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS, ACCESS_KEY);
+ * </pre>
+ * 
+ * To build a custom environment use the EnvironmentBuilder class.
+ *
+ */
 public class Environment {
 	
 	public static final Endpoint DEFAULT_ENDPOINT = Endpoint.DWS_VERSION_3_USA;
@@ -30,6 +46,8 @@ public class Environment {
 	protected Proxy proxy;
 	protected long connectTimeoutMS = DEFAULT_CONNECT_TIMEOUT;
 	protected long readTimeoutMS = DEFAULT_READ_TIMEOUT;
+	protected String sdkVersion = getVersion();
+	protected String osVersion = getOSVersion();
 
 	private static Environment DEFAULT_ENVIRONMENT = null;
 
@@ -225,6 +243,16 @@ public class Environment {
 	{
 		return proxy;
 	}
+	
+	public String getSdkVersion()
+	{
+		return sdkVersion;
+	}
+	
+	public String getOS()
+	{
+		return osVersion;
+	}
 
 	@Override
 	public String toString() {
@@ -273,5 +301,71 @@ public class Environment {
 		} else {
 			env.validate(accessKeyMandatory);
 		}
+	}
+	
+	private synchronized String getVersion()
+	{
+        String version = null;
+
+        // try to load from maven properties first
+        try {
+            Properties p = new Properties();
+            InputStream is = getClass().getResourceAsStream("/META-INF/maven/com.docmosis/docmosis-cloud-sdk-java/pom.properties");
+            if (is != null) {
+                p.load(is);
+                version = p.getProperty("version", "");
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+
+        // fallback to using Java API
+        if (version == null) {
+            Package aPackage = getClass().getPackage();
+            if (aPackage != null) {
+                version = aPackage.getImplementationVersion();
+                if (version == null) {
+                    version = aPackage.getSpecificationVersion();
+                }
+            }
+        }
+
+        if (version == null) {
+            // we could not compute the version so use a blank.
+            version = "";
+        }
+
+        return version;
+    }
+	
+	private synchronized String getOSVersion()
+	{
+		String os = System.getProperty("os.name") + " " + System.getProperty("os.version");
+    	
+		if (os.toLowerCase().contains("windows")) {
+			//System.getProperty("os.name") & System.getProperty("os.version") returns incorrect for Windows 10, so try to get Windows version from cmd.
+			try {
+				String line = null;
+				os = "";
+		    	Runtime rt = Runtime.getRuntime();
+		    	Process pr = rt.exec("cmd.exe /c ver");
+		    	BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+		    	while((line=in.readLine()) != null) {
+		    		os+=line;
+		    	}
+		    	if (!os.toLowerCase().contains("windows")) {
+		    		//Unexpected output.
+		    		os = "Windows";
+		    	}
+			} catch (Exception e) {
+		        // ignore
+		    }
+		}
+		
+		if (os.isEmpty()) {
+			// we could not determine the os version so use a blank.
+			os = "";
+		}
+		return os;
 	}
 }

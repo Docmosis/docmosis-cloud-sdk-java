@@ -14,16 +14,14 @@
  */
 package com.docmosis.sdk.image;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get Image service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get Image request.
  * 
@@ -32,120 +30,113 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * 
  * <pre>
- *  GetImageResponse getImage = Image
- *   							.get()
- *								.addImageName(imageToGet)
- *								.sendTo(outputFileOrStream)
- *								.execute();
- *  if (getImage.hasSucceeded()) {
- *  	//File saved to outputFileOrStream
+ *  GetImageResponse response = Image
+ *                                .get()
+ *                                .addImageName(imageToGet)
+ *                                .sendTo(outputFileOrStream)
+ *                                .execute();
+ *  if (response.hasSucceeded()) {
+ *      //File saved to outputFileOrStream
  *  }
  * </pre>
  */
 public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 
 	private static final String SERVICE_PATH = "getImage";
-	private boolean isSystemImage = false;
-	private List<String> imageNames = null;
-
+	
+	private GetImageRequestParams params = new GetImageRequestParams();
 
 	public GetImageRequest() {
 		super(SERVICE_PATH);
-		imageNames = new ArrayList<String>();
 	}
 	
 	public GetImageRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
-		imageNames = new ArrayList<String>();
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @return isSystemImage flag
-	 */
-	public boolean getIsSystemImage() {
-		return isSystemImage;
-	}
-
-	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
-	 * 
-	 * @param isSystemImage Is system image flag
-	 */
-	public void setSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
 	}
 	
+	public GetImageRequestParams getParams()
+    {
+    	return params;
+    }
+
 	/**
-	 * Indicator as to whether the image is a system image or not (optional) - defaults to false.
+	 * Set the names of the Images to get.
 	 * 
-	 * @param isSystemImage Is system image flag
-	 * @return this request for method chaining
-	 */
-	public GetImageRequest isSystemImage(boolean isSystemImage) {
-		this.isSystemImage = isSystemImage;
-		return getThis();
-	}
-	
-	/**
-	 * The names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @return The image names list.
-	 */
-	public List<String> getImageNames() {
-		return imageNames;
-	}
-
-	/**
-	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageNames the image name list.
-	 */
-	public void setImageNames(List<String> imageNames) {
-		this.imageNames = imageNames;
-	}
-
-	/**
-	 * Set the names of the images on the Docmosis Server. Should include path, eg "HeaderImages/companyLogo.png".
-	 * @param imageNames the image name list.
+	 * @param imageNames The name of the Image(s) on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
 	 * @return this request for method chaining
 	 */
 	public GetImageRequest imageNames(List<String> imageNames) {
-		this.imageNames = imageNames;
-		return getThis();
+		params.setImageNames(imageNames);
+		return this;
+	}
+	
+	/**
+	 * Add the name of an Image to get.
+	 * 
+	 * @param imageName The name of the Image on the Docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
+	 * @return this request for method chaining
+	 */
+	public GetImageRequest imageName(String imageName) {
+		params.setImageName(imageName);
+		return this;
 	}
 
 	/**
-	 * Add a Image Name.
+	 * Execute a get image request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
 	 * 
-	 * @param imageName The name of the Image on the docmosis server. Should include path, eg "HeaderImages/companyLogo.png"
-	 * @return this request for method chaining
+	 * @throws ImageException if a problem occurs invoking the service 
 	 */
-	public GetImageRequest addImageName(String imageName) {
-		this.imageNames.add(imageName);
-		return getThis();
+	@Override
+	public GetImageResponse execute() throws ImageException {
+		return Image.executeGetImage(this);
 	}
 
+	/**
+	 * Execute a get image request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetImageResponse execute() throws DocmosisException {
-		return Image.executeGetImage(getThis());
-	}
-	
-	@Override
-	public GetImageResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetImageResponse execute(String url, String accessKey) throws ImageException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return Image.executeGetImage(getThis());
-	}
-	
-	@Override
-	public GetImageResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return Image.executeGetImage(getThis());
+		return Image.executeGetImage(this);
 	}
 
+	/**
+	 * Execute a get image request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetImageResponse execute(Environment environment) throws DocmosisException {
+	public GetImageResponse execute(String accessKey) throws ImageException {
+		getEnvironment().setAccessKey(accessKey);
+		return Image.executeGetImage(this);
+	}
+
+	/**
+	 * Execute a get image request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws ImageException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetImageResponse execute(Environment environment) throws ImageException {
 		super.setEnvironment(environment);
-		return Image.executeGetImage(getThis());
+		return Image.executeGetImage(this);
 	}
 
 	@Override
@@ -156,13 +147,6 @@ public class GetImageRequest extends DocmosisCloudFileRequest<GetImageRequest> {
 
 	@Override
 	public String toString() {
-		String rtn = "isSystemImage=" + isSystemImage + ", imageNames=(";
-		if (imageNames != null) {
-			for (String in: imageNames) {
-				rtn += in + "; ";
-			}
-			rtn = rtn.substring(0, rtn.length()-2) + "), " + super.toString();
-		}
-		return "GetImageRequest [" + rtn + "]";
+		return params.toString();
 	}
 }

@@ -22,28 +22,33 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * Typically you would use this response to check for success, then decide what action to take.  For example:
  * 
  * <pre>
- * 
- *   RenderResponse response = rr.execute();
- *   try {  
- *     if (response.hasSucceeded()) {
- *       InputStream doc = response.getDocument();
- *       // do something with the doc
- *     } else {
- *       // read the error messages and status code to 
- *       // decide what to do - check error messages/tell user
- *     }
- *   } finally {
- *     response.cleanup();
- *   }
+ *   RenderResponse response = Renderer
+ *                              .render()
+ *                              .templateName(TemplateName)
+ *                              .outputName(outputFileName)
+ *                              .sendTo(outputFileOrStream)
+ *                              .data(dataString)
+ *                              .execute();
+ *   if (response.hasSucceeded()) {
+ *       //File rendered and saved to outputFileOrStream
+ *	 }
+ *   ...
  * </pre>
- *
- * Since the response may contain an InputStream from the request, it is important that you 
- * have the finally block to cleanup.
  */
 public class RenderResponse extends DocmosisCloudResponse
 {
-	private String requestId;
-	private int pagesRendered;
+	protected String requestId;
+	protected int pagesRendered;
+	
+	protected RenderResponse() {
+		super();
+	}
+	
+	protected RenderResponse(RenderResponse other) {
+		super(other);
+		this.requestId = other.requestId;
+		this.pagesRendered = other.pagesRendered;
+	}
 
 	/**
 	 * If the requestId was set in the render, it will be returned in this response.
@@ -55,11 +60,6 @@ public class RenderResponse extends DocmosisCloudResponse
 	{
 		return requestId;
 	}
-
-	public void setRequestId(String requestId)
-	{
-		this.requestId = requestId;
-	}
 	
 	/**
 	 * Get the number of pages rendered on success.
@@ -69,10 +69,5 @@ public class RenderResponse extends DocmosisCloudResponse
 	public int getPagesRendered()
 	{
 		return pagesRendered;
-	}
-
-	public void setPagesRendered(int pagesRendered)
-	{
-		this.pagesRendered = pagesRendered;
 	}
 }

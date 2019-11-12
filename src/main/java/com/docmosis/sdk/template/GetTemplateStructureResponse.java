@@ -17,26 +17,80 @@ package com.docmosis.sdk.template;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
+/**
+ * This class encapsulates a response to a get template structure request.
+ * 
+ * Typically you would use this response to check for success, then access the returned template structure.   
+ * For example:
+ * 
+ * 
+ * <pre>
+ *   GetTemplateStructureResponse response = Template
+ *                                             .getStructure()
+ *                                             .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                             .execute();
+ *   if (response.hasSucceeded()) {
+ *       response.getTemplateStructureString();
+ *   }
+ * </pre>
+ * 
+ */
 public class GetTemplateStructureResponse extends DocmosisCloudResponse {
 
-	private JsonObject templateStructure = null;
+	private JsonElement templateStructure = null;
 	
-	public GetTemplateStructureResponse() {
-		super();
+	protected GetTemplateStructureResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**
+	 * Get a json representation of the template's structure, eg:
+	 * [
+	 *  {"type":"field", "fieldIdx":0, "text":"name", "dataRefs":["name"]},
+	 *  {"type": "repeat", "repeatIdx": 0, "text": "rs_people", "dataRefs": ["people"],
+	 *  "contains": [
+	 *       {"type": "field", "fieldIdx": 0, "text": "name", "dataRefs": ["name"]}
+	 *    ]
+	 *  }
+	 * ]
+	 * The types reported are: “field”, “repeat”, “condition”, “image”, “templateRef” corresponding 
+	 * to matching structures in the template. Each type has it’s own index which is global to the 
+	 * document. “text” shows the string as presented in the template and dataRefs reports the 
+	 * identified data elements correlated to the template element. The result also indicates the 
+	 * nesting of elements.
 	 * 
-	 * @return Json representation of the templates structure
+	 * @return template structure as a JsonElement
 	 */
-	public JsonObject getStructure() {
+	public JsonElement getTemplateStructure() {
 		return templateStructure;
 	}
 
-	public void setTemplateStructure(JsonObject templateStructure) {
+	protected void setTemplateStructure(JsonElement templateStructure) {
 		this.templateStructure = templateStructure;
+	}
+
+	/**
+	 * Get a formatted json string of the template's structure, eg:
+	 * [
+	 *  {"type":"field", "fieldIdx":0, "text":"name", "dataRefs":["name"]},
+	 *  {"type": "repeat", "repeatIdx": 0, "text": "rs_people", "dataRefs": ["people"],
+	 *  "contains": [
+	 *       {"type": "field", "fieldIdx": 0, "text": "name", "dataRefs": ["name"]}
+	 *    ]
+	 *  }
+	 * ]
+	 * The types reported are: “field”, “repeat”, “condition”, “image”, “templateRef” corresponding 
+	 * to matching structures in the template. Each type has it’s own index which is global to the 
+	 * document. “text” shows the string as presented in the template and dataRefs reports the 
+	 * identified data elements correlated to the template element. The result also indicates the 
+	 * nesting of elements.
+	 * 
+	 * @return template structure as a formatted String
+	 */
+	public String getTemplateStructureString() {
+		return toString();
 	}
 	
 	@Override

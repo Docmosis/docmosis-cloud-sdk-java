@@ -16,10 +16,27 @@ package com.docmosis.sdk.file;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a rename files request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *  RenameFileResponse response = FileStorage
+ *                                  .rename()
+ *                                  .fromPath(oldName)
+ *                                  .toPath(newName)
+ *                                  .execute();
+ *   if (response.hasSucceeded()) {
+ *       System.out.println(oldName + " renamed to " + newName);
+ *  }
+ * </pre>
+ */
 public class RenameFilesResponse extends DocmosisCloudResponse {
 
-	public RenameFilesResponse() {
-		super();
+	protected RenameFilesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

@@ -16,12 +16,11 @@ package com.docmosis.sdk.file;
 
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.request.DocmosisCloudFileRequest;
 
 /**
  * The object holds the instructions and data for a request to the Get File service.
- * See the Web Services Developer guide at @see <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Get File request.
  * 
@@ -30,20 +29,21 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * 
  * <pre>
- *  GetFileResponse getFile = FileStorage
- *  							.get()
- *  							.fileName(fileToGet)
- *  							.sendTo(outputFileOrStream)
- *   							.execute();
- *  if (getFile.hasSucceeded()) {
- *  	//File saved to outputFileOrStream
+ *  GetFileResponse response = FileStorage
+ *                               .get()
+ *                               .fileName(fileToGet)
+ *                               .sendTo(outputFileOrStream)
+ *                               .execute();
+ *  if (response.hasSucceeded()) {
+ *      //File saved to outputFileOrStream
  *  }
  * </pre>
  */
 public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	
 	private static final String SERVICE_PATH = "getFile";
-	private String fileName;
+
+	private GetFileRequestParams params = new GetFileRequestParams();
 
 	public GetFileRequest() {
 		super(SERVICE_PATH);
@@ -52,22 +52,11 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	public GetFileRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * The name of the file, optionally including its path.
-	 * @return file name
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-
-	/**
-	 * Set the name of the file, optionally including its path.
-	 * @param fileName name and path of the file
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+	
+	public GetFileRequestParams getParams()
+    {
+    	return params;
+    }
 
 	/**
 	 * Set the name of the file, optionally including its path.
@@ -75,32 +64,66 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 	 * @return this request for method chaining
 	 */
 	public GetFileRequest fileName(String fileName) {
-		this.fileName = fileName;
-		return getThis();
+		params.setFileName(fileName);
+		return this;
 	}
 
+	/**
+	 * Execute a get file request based on contained settings and using the default Environment.
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetFileResponse execute() throws DocmosisException {
-		return FileStorage.executeGetFile(getThis());
+	public GetFileResponse execute() throws FileException {
+		return FileStorage.executeGetFile(this);
 	}
-	
+
+	/**
+	 * Execute a get file request based on contained settings.
+     * 
+     * @param url the service url
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetFileResponse execute(String url, String accessKey) throws DocmosisException {
+	public GetFileResponse execute(String url, String accessKey) throws FileException {
 		getEnvironment().setBaseUrl(url).setAccessKey(accessKey);
-		return FileStorage.executeGetFile(getThis());
-	}
-	
-	@Override
-	public GetFileResponse execute(String accessKey) throws DocmosisException {
-		getEnvironment().setAccessKey(accessKey);
-		return FileStorage.executeGetFile(getThis());
+		return FileStorage.executeGetFile(this);
 	}
 
-	
+	/**
+	 * Execute a get file request based on contained settings.
+     * 
+     * @param accessKey your unique Docmosis accesskey
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
 	@Override
-	public GetFileResponse execute(Environment environment) throws DocmosisException {
+	public GetFileResponse execute(String accessKey) throws FileException {
+		getEnvironment().setAccessKey(accessKey);
+		return FileStorage.executeGetFile(this);
+	}
+
+	/**
+	 * Execute a get file request based on contained settings.
+     * 
+     * @param environment the environment configuration
+     * 
+	 * @return a response object giving status, success message or possible error messages.
+	 * 
+	 * @throws FileException if a problem occurs invoking the service 
+	 */
+	@Override
+	public GetFileResponse execute(Environment environment) throws FileException {
 		super.setEnvironment(environment);
-		return FileStorage.executeGetFile(getThis());
+		return FileStorage.executeGetFile(this);
 	}
 
 	@Override
@@ -111,6 +134,6 @@ public class GetFileRequest extends DocmosisCloudFileRequest<GetFileRequest> {
 
 	@Override
 	public String toString() {
-		return "GetFileRequest [fileName=" + fileName + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }

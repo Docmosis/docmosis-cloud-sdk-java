@@ -19,47 +19,68 @@ import org.w3c.dom.Document;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
+/**
+ * This class encapsulates a response to a get sample data request.
+ * 
+ * Typically you would use this response to check for success, then access the returned sample data.  For example:
+ * 
+ * 
+ * <pre>
+ *   GetSampleDataResponse response = Template
+ *                                      .getSampleData()
+ *                                      .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                      .format("json")
+ *                                      .execute();
+ *   if (response.hasSucceeded()) {
+ *       response.getSampleDataString();
+ *   }
+ * </pre>
+ */
 public class GetSampleDataResponse extends DocmosisCloudResponse {
 
-	private JsonObject sampleDataJson = null;
+	private JsonElement sampleDataJson = null;
 	private Document sampleDataXml = null;
 	private boolean isJson;
 	
-	public GetSampleDataResponse() {
-		super();
+	protected GetSampleDataResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**
-	 * 
+	 * Get the returned sample data as a JsonElement. Will return null if the requested format was xml.
 	 * @return Sample Data in Json format
 	 */
-	public JsonObject getSampleDataJson() {
+	public JsonElement getSampleDataJson() {
 		return sampleDataJson;
 	}
 
-	public void setSampleDataJson(JsonObject sampleDataJson) {
+	protected void setSampleDataJson(JsonElement sampleDataJson) {
 		this.sampleDataJson = sampleDataJson;
 	}
 
 	/**
-	 * 
+	 * Get the returned sample data as a Document object. Will return null if the requested format was json.
 	 * @return Sample Data in XML format
 	 */
 	public Document getSampleDataXml() {
 		return sampleDataXml;
 	}
 
-	public void setSampleDataXml(Document sampleDataXml) {
+	protected void setSampleDataXml(Document sampleDataXml) {
 		this.sampleDataXml = sampleDataXml;
 	}
 
+	/**
+	 * Returns true if this object contains json sample data, otherwise xml sample data.
+	 * @return true if json sample data
+	 */
 	public boolean isJson() {
 		return isJson;
 	}
 
-	public void setJson(boolean isJson) {
+	protected void setJson(boolean isJson) {
 		this.isJson = isJson;
 	}
 

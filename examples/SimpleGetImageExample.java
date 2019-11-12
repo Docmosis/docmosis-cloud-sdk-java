@@ -16,11 +16,10 @@
 import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.environment.Endpoint;
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.handlers.DocmosisException;
 import com.docmosis.sdk.image.GetImageResponse;
 import com.docmosis.sdk.image.Image;
+import com.docmosis.sdk.image.ImageException;
 
 
 /**
@@ -44,39 +43,43 @@ public class SimpleGetImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	//Full path of File to be uploaded
-	private static final String FILE_TO_GET = "Image1.png";
-	//private static final String FILE_TO_GET2 = "Image2.jpg";
 
-	public static void main(String args[]) throws DocmosisException, IOException
+	//Full path of image to get
+	private static final String IMAGE_TO_GET = "myImage.png";
+
+	public static void main(String args[]) throws ImageException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
-		
-		Environment.setDefaults(Endpoint.DWS_VERSION_3_AUS.getBaseUrl(), ACCESS_KEY);
 
-		File outputFile = new File(FILE_TO_GET);
-		//File outputFile = new File("out.zip"); // If getting multiple templates they will be returned as a zip file.
-		GetImageResponse image = Image
+		//Set the default environment to use your access key
+		Environment.setDefaults(ACCESS_KEY);
+
+		//Set the file we are going to write the document to.
+		File outputFile = new File(IMAGE_TO_GET);
+
+		//Create and execute the render request
+		GetImageResponse response = Image
 								.get()
-								.addImageName(FILE_TO_GET)
-								//.addImageName(FILE_TO_GET2) // Can specify more than one file
-								.sendTo(outputFile) //Or OutputStream
+								.imageName(IMAGE_TO_GET)
+								.sendTo(outputFile)
 								.execute();
 
-		if (image.hasSucceeded()) {
-			System.out.println("Output Image to: " + outputFile.getAbsolutePath());
+		if (response.hasSucceeded()) {
+			// great - render succeeded.
+			System.out.println("Output image to: " + outputFile.getAbsolutePath());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Image(s) failed: status="
-					+ image.getStatus()
+			System.err.println("Get image failed: status="
+					+ response.getStatus()
 					+ " shortMsg="
-					+ image.getShortMsg()
-					+ ((image.getLongMsg() == null) ? "" : " longMsg="
-							+ image.getLongMsg()));
+					+ response.getShortMsg()
+					+ ((response.getLongMsg() == null) ? "" : " longMsg="
+							+ response.getLongMsg()));
 		}
 	}
 }

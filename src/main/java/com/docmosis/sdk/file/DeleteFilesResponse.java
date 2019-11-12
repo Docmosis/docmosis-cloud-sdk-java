@@ -16,10 +16,26 @@ package com.docmosis.sdk.file;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a delete files request.
+ * 
+ * Typically you would use this response to check for success, then decide what action to take.  For example:
+ * 
+ * 
+ * <pre>
+ *   DeleteFileResponse response = FileStorage
+ *                                   .delete()
+ *                                   .path(fileName)
+ *                                   .execute();
+ *   if (response.hasSucceeded()) {
+ *       //File deleted
+ *   }
+ * </pre>
+ */
 public class DeleteFilesResponse extends DocmosisCloudResponse {
 
-	public DeleteFilesResponse() {
-		super();
+	protected DeleteFilesResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	@Override

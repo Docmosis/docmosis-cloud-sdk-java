@@ -18,12 +18,33 @@ import java.util.List;
 
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
+/**
+ * This class encapsulates a response to a get render tags request.
+ * 
+ * Typically you would use this response to check for success, then access the 
+ * returned list of RenderTag objects.  For example:
+ * 
+ * 
+ * <pre>
+ *   GetRenderTagsResponse response = RenderTags
+ *                                      .get()
+ *                                      .tags("list;of;tags;")
+ *                                      .year(2019)
+ *                                      .month(6)
+ *                                      .nMonths(2)
+ *                                      .execute();
+ *   List&lt;RenderTags&gt; list = response.list();
+ *   for(RenderTags rt : list) {
+ *       ...
+ *   }
+ * </pre>
+ */
 public class GetRenderTagsResponse extends DocmosisCloudResponse {
 
 	private List<RenderTag> renderTags = null;
 
-	public GetRenderTagsResponse() {
-		super();
+	protected GetRenderTagsResponse(DocmosisCloudResponse other) {
+		super(other);
 	}
 
 	/**
@@ -70,7 +91,7 @@ public class GetRenderTagsResponse extends DocmosisCloudResponse {
 		return renderTags;
 	}
 
-	public void setRenderTags(List<RenderTag> renderTags) {
+	protected void setRenderTags(List<RenderTag> renderTags) {
 		this.renderTags = renderTags;
 	}
 	
@@ -84,5 +105,4 @@ public class GetRenderTagsResponse extends DocmosisCloudResponse {
 		}
 		return sb.toString();
 	}
-	
 }

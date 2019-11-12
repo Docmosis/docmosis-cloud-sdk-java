@@ -37,19 +37,19 @@ public class FileDetails {
 		return name;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.name = name;
 	}
 
 	/**
 	 * 
-	 * @return ast modified in milliseconds
+	 * @return last modified in milliseconds
 	 */
 	public long getLastModifiedMillisSinceEpoch() {
 		return lastModifiedMillisSinceEpoch;
 	}
 
-	public void setLastModifiedMillisSinceEpoch(long lastModifiedMillisSinceEpoch) {
+	protected void setLastModifiedMillisSinceEpoch(long lastModifiedMillisSinceEpoch) {
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 	}
 
@@ -61,7 +61,7 @@ public class FileDetails {
 		return lastModifiedISO8601;
 	}
 
-	public void setLastModifiedISO8601(Date lastModifiedISO8601) {
+	protected void setLastModifiedISO8601(Date lastModifiedISO8601) {
 		this.lastModifiedISO8601 = lastModifiedISO8601;
 	}
 
@@ -73,7 +73,7 @@ public class FileDetails {
 		return sizeBytes;
 	}
 
-	public void setSizeBytes(long sizeBytes) {
+	protected void setSizeBytes(long sizeBytes) {
 		this.sizeBytes = sizeBytes;
 	}
 
@@ -85,7 +85,7 @@ public class FileDetails {
 		return metaData;
 	}
 
-	public void setMetaData(String metaData) {
+	protected void setMetaData(String metaData) {
 		this.metaData = metaData;
 	}
 

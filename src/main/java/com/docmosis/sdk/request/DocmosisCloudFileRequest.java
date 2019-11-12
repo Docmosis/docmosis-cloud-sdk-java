@@ -166,6 +166,9 @@ import com.docmosis.sdk.environment.Environment;
 				if (inputStream != null) {
 					if (isFileOutput()) {
 						if (getOutputFile() != null) {
+							if (getOutputFile().getParentFile() != null) {
+								getOutputFile().getParentFile().mkdirs();
+							}
 							FileOutputStream fout = new FileOutputStream(getOutputFile());
 							try {
 								sendDocumentTo(inputStream, fout);
@@ -221,4 +224,8 @@ import com.docmosis.sdk.environment.Environment;
 				return "OutputManager [" + ((isFileOutput) ? "outputFile=" + getOutputName() : "outputStream=" + getOutputName()) + "]";
 			}
 		}
+		
+		protected abstract T getThis();
+	
+
 	}
