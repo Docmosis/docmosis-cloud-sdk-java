@@ -1,7 +1,1 @@
-readme.md merge=ours
 pom.xml merge=ours
-src/main/java/com/docmosis/sdk/template/GetTemplateStructureResponse.java merge=ours
-src/main/java/com/docmosis/sdk/template/ListTemplatesRequest.java merge=ours
-src/main/java/com/docmosis/sdk/template/ListTemplatesResponse.java merge=ours
-src/main/java/com/docmosis/sdk/template/ListTemplatesRequestParams.java merge=ours
-src/main/java/com/docmosis/sdk/template/Template.java merge=ours
