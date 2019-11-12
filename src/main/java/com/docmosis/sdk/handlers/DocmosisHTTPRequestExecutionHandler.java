@@ -72,8 +72,6 @@ public class DocmosisHTTPRequestExecutionHandler {
 	private static final String FIELD_NAME_SHORT_MSG = "shortMsg";
 	private static final String FIELD_NAME_LONG_MSG = "longMsg";
 	
-	private static final String FIELD_USER_AGENT_BASE_VALUE = "DocmosisCloudSDKJava/";
-	
 	public static DocmosisHTTPRequestRetryHandler retryHandler;
 	public static DocmosisServiceUnavailableRetryStrategy retryStrategy;
 
@@ -151,7 +149,7 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    	httpPost.setConfig(config);
 	    	
 	    	//Set user agent header
-	    	httpPost.addHeader(HttpHeaders.USER_AGENT, FIELD_USER_AGENT_BASE_VALUE + request.getEnvironment().getSdkVersion() + " (" + request.getEnvironment().getOS() + ")");
+	    	httpPost.addHeader(HttpHeaders.USER_AGENT, request.getEnvironment().getUserAgent());
 	    	
     	    //Execute the request and populate the response object with common settings
     	    chResponse = client.execute(httpPost);

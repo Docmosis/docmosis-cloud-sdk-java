@@ -14,9 +14,7 @@
  */
 package com.docmosis.sdk.environment;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
@@ -36,8 +34,9 @@ public class Environment {
 	public static final Endpoint DEFAULT_ENDPOINT = Endpoint.DWS_VERSION_3_USA;
 	public static final int      DEFAULT_MAX_TRIES = 3;
 	public static final long     DEFAULT_RETRY_DELAY = 1000L;
-	public static final long     DEFAULT_CONNECT_TIMEOUT = -1L;
-	public static final long     DEFAULT_READ_TIMEOUT = -1L;
+	public static final long     DEFAULT_CONNECT_TIMEOUT = 20000L;
+	public static final long     DEFAULT_READ_TIMEOUT = 240000L;
+	private static final String	 FIELD_USER_AGENT_BASE_VALUE = "DocmosisCloudSDKJava/";
 
 	protected String accessKey;
 	protected String baseUrl = DEFAULT_ENDPOINT.getBaseUrl();
@@ -46,8 +45,7 @@ public class Environment {
 	protected Proxy proxy;
 	protected long connectTimeoutMS = DEFAULT_CONNECT_TIMEOUT;
 	protected long readTimeoutMS = DEFAULT_READ_TIMEOUT;
-	protected String sdkVersion = getVersion();
-	protected String osVersion = getOSVersion();
+	protected String userAgent = buildUserAgentString();
 
 	private static Environment DEFAULT_ENVIRONMENT = null;
 
@@ -64,7 +62,7 @@ public class Environment {
 			this.retryDelayMS = other.retryDelayMS;
 			this.proxy = other.proxy;
 			this.connectTimeoutMS = other.connectTimeoutMS;
-			this.readTimeoutMS = other.connectTimeoutMS;
+			this.readTimeoutMS = other.readTimeoutMS;
 		}
 	}
 	
@@ -243,17 +241,17 @@ public class Environment {
 	{
 		return proxy;
 	}
-	
-	public String getSdkVersion()
-	{
-		return sdkVersion;
-	}
-	
-	public String getOS()
-	{
-		return osVersion;
-	}
 
+	/**
+	 * Get the user agent header value.
+	 * 
+	 * @return user agent header value
+	 */
+	public String getUserAgent()
+	{
+		return userAgent;
+	}
+	
 	@Override
 	public String toString() {
 		return "Environment [accessKey=" + accessKey + ", baseUrl=" + baseUrl + ", maxTries=" + maxTries
@@ -303,7 +301,7 @@ public class Environment {
 		}
 	}
 	
-	private synchronized String getVersion()
+	private String buildUserAgentString()
 	{
         String version = null;
 
@@ -319,53 +317,11 @@ public class Environment {
             // ignore
         }
 
-        // fallback to using Java API
-        if (version == null) {
-            Package aPackage = getClass().getPackage();
-            if (aPackage != null) {
-                version = aPackage.getImplementationVersion();
-                if (version == null) {
-                    version = aPackage.getSpecificationVersion();
-                }
-            }
-        }
-
         if (version == null) {
             // we could not compute the version so use a blank.
             version = "";
+            System.err.println("Could not determine SDK version number");
         }
-
-        return version;
+        return FIELD_USER_AGENT_BASE_VALUE + version + " " + System.getProperty("os.name") + " java/" + System.getProperty("java.version");
     }
-	
-	private synchronized String getOSVersion()
-	{
-		String os = System.getProperty("os.name") + " " + System.getProperty("os.version");
-    	
-		if (os.toLowerCase().contains("windows")) {
-			//System.getProperty("os.name") & System.getProperty("os.version") returns incorrect for Windows 10, so try to get Windows version from cmd.
-			try {
-				String line = null;
-				os = "";
-		    	Runtime rt = Runtime.getRuntime();
-		    	Process pr = rt.exec("cmd.exe /c ver");
-		    	BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		    	while((line=in.readLine()) != null) {
-		    		os+=line;
-		    	}
-		    	if (!os.toLowerCase().contains("windows")) {
-		    		//Unexpected output.
-		    		os = "Windows";
-		    	}
-			} catch (Exception e) {
-		        // ignore
-		    }
-		}
-		
-		if (os.isEmpty()) {
-			// we could not determine the os version so use a blank.
-			os = "";
-		}
-		return os;
-	}
 }
