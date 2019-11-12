@@ -223,17 +223,17 @@ public class EnvironmentBuilder
 	public Proxy getProxy() {
 		return env.getProxy();
 	}
-	
-	public String getSdkVersion()
-	{
-		return env.getSdkVersion();
-	}
-	
-	public String getOS()
-	{
-		return env.getOS();
-	}
 
+	/**
+	 * Get the user agent header value.
+	 * 
+	 * @return user agent header value
+	 */
+	public String getUserAgent()
+	{
+		return env.getUserAgent();
+	}
+	
 	public static void validate(EnvironmentBuilder env) throws InvalidEnvironmentException {
 		validate(env, true);
 	}
