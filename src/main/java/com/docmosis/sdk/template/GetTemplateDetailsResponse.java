@@ -24,12 +24,12 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *   GetTemplateDetailsResponse templateDetails = Template
- *                                                 .getDetails()
- *                                                 .templateName("MasterTemplates/MyMasterTemplate.docx")
- *                                                 .execute();
- *   if (templateDetails.hasSucceeded()) {
- *       TemplateDetails td = templateDetails.getTemplateDetails();
+ *   GetTemplateDetailsResponse response = Template
+ *                                           .getDetails()
+ *                                           .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                           .execute();
+ *   if (response.hasSucceeded()) {
+ *       TemplateDetails td = response.getTemplateDetails();
  *       td.toString();
  *   }
  * </pre>

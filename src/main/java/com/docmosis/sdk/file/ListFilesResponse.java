@@ -25,8 +25,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *   ListFilesResponse files = FileStorage.list().execute();
- *   List&lt;FileDetails&gt; list = files.list();
+ *   ListFilesResponse response = FileStorage.list().execute();
+ *   List&lt;FileDetails&gt; list = response.list();
  *   for(FileDetails fd : list) {
  *        ...
  *   }

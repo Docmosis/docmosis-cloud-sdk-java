@@ -26,8 +26,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *   ListTemplatesResponse templates = Template.list().execute();
- *   List&lt;TemplateDetails&gt; list = templates.list();
+ *   ListTemplatesResponse response = Template.list().execute();
+ *   List&lt;TemplateDetails&gt; list = response.list();
  *   for(TemplateDetails td : list) {
  *       td.toString();
  *   }
@@ -37,6 +37,8 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 
 	private boolean templateListStale;
 	private List<TemplateDetails> templates = null;
+	private String nextPageToken;
+	private Integer pageSize;
 	
 	protected ListTemplatesResponse(DocmosisCloudResponse other) {
 		super(other);
@@ -95,11 +97,44 @@ public class ListTemplatesResponse extends DocmosisCloudResponse {
 		this.templateListStale = templateListStale;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getNextPageToken() {
+		return nextPageToken;
+	}
+
+	protected void setNextPageToken(String nextPageToken) {
+		this.nextPageToken = nextPageToken;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	protected void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
 		sb.append("templateListStale: " + getTemplateListStale());
+		if (nextPageToken != null) {
+			sb.append(System.getProperty("line.separator"));
+			sb.append("nextPageToken: " + getNextPageToken());
+		}
+		if (pageSize != null) {
+			sb.append(System.getProperty("line.separator"));
+			sb.append("pageSize: " + getPageSize());
+		}
 		if (templates != null) { //Build formatted String to return.
+			sb.append(System.getProperty("line.separator"));
 			for(TemplateDetails td : templates) {
 				sb.append(td.toString());
 				sb.append(System.getProperty("line.separator"));

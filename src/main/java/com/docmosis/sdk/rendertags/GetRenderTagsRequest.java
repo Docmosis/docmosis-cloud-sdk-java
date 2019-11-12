@@ -28,14 +28,14 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   GetRenderTagsResponse renderTags = RenderTags
- *                                       .get()
- *                                       .tags("list;of;tags;")
- *                                       .year(2019)
- *                                       .month(6)
- *                                       .nMonths(2)
- *                                       .execute();
- *   List&lt;RenderTags&gt; list = renderTags.list();
+ *   GetRenderTagsResponse response = RenderTags
+ *                                      .get()
+ *                                      .tags("list;of;tags;")
+ *                                      .year(2019)
+ *                                      .month(6)
+ *                                      .nMonths(2)
+ *                                      .execute();
+ *   List&lt;RenderTags&gt; list = response.list();
  *   for(RenderTags rt : list) {
  *       ...
  *   }

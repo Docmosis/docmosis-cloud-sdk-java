@@ -23,11 +23,11 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *   DeleteTemplateResponse deleteTemplate = Template
- *                                            .delete()
- *                                            .templateName(fileToDelete)
- *                                            .execute();
- *  if (deleteTemplate.hasSucceeded()) {
+ *   DeleteTemplateResponse response = Template
+ *                                       .delete()
+ *                                       .templateName(fileToDelete)
+ *                                       .execute();
+ *  if (response.hasSucceeded()) {
  *      //Succeeded
  *  }
  * </pre>

@@ -30,12 +30,12 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * 
  * <pre>
- *   GetTemplateResponse getTemplate = Template
- *                                      .get()
- *                                      .templateName(fileToGet)
- *                                      .sendTo(outputFileOrStream)
- *                                      .execute();
- *  if (getTemplate.hasSucceeded()) {
+ *   GetTemplateResponse response = Template
+ *                                    .get()
+ *                                    .templateName(fileToGet)
+ *                                    .sendTo(outputFileOrStream)
+ *                                    .execute();
+ *  if (response.hasSucceeded()) {
  *      //File saved to outputFileOrStream
  *  }
  * </pre>

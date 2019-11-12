@@ -30,11 +30,11 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   DeleteTemplateResponse deleteTemplate = Template
- *                                            .delete()
- *                                            .templateName(fileToDelete)
- *                                            .execute();
- *  if (deleteTemplate.hasSucceeded()) {
+ *   DeleteTemplateResponse response = Template
+ *                                       .delete()
+ *                                       .templateName(fileToDelete)
+ *                                       .execute();
+ *  if (response.hasSucceeded()) {
  *      //Succeeded
  *  }
  * </pre>

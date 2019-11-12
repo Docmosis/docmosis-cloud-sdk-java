@@ -28,8 +28,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   ListImagesRequest images = Image.list().execute();
- *   List&lt;ImageDetails&gt; list = images.list();
+ *   ListImagesRequest response = Image.list().execute();
+ *   List&lt;ImageDetails&gt; list = response.list();
  *   for(ImageDetails id : list) {
  *       id.toString();
  *   }

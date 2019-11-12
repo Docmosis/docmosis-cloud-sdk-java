@@ -26,8 +26,8 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *   ListImagesRequest images = Image.list().execute();
- *   List&lt;ImageDetails&gt; list = images.list();
+ *   ListImagesRequest response = Image.list().execute();
+ *   List&lt;ImageDetails&gt; list = response.list();
  *   for(ImageDetails id : list) {
  *       id.toString();
  *   }

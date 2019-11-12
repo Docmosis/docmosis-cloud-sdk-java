@@ -28,12 +28,12 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   DeleteFileResponse deletedFile = FileStorage
- *                                      .delete()
- *                                      .path(fileName)
- *                                      .execute();
- *   if (deletedFile.hasSucceeded()) {
- *       deletedFile.toString();
+ *   DeleteFileResponse response = FileStorage
+ *                                   .delete()
+ *                                   .path(fileName)
+ *                                   .execute();
+ *   if (response.hasSucceeded()) {
+ *       //File deleted
  *   }
  * </pre>
  */

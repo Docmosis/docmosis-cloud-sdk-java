@@ -29,12 +29,12 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * 
  * <pre>
- *  GetFileResponse getFile = FileStorage
- *                              .get()
- *                              .fileName(fileToGet)
- *                              .sendTo(outputFileOrStream)
- *                              .execute();
- *  if (getFile.hasSucceeded()) {
+ *  GetFileResponse response = FileStorage
+ *                               .get()
+ *                               .fileName(fileToGet)
+ *                               .sendTo(outputFileOrStream)
+ *                               .execute();
+ *  if (response.hasSucceeded()) {
  *      //File saved to outputFileOrStream
  *  }
  * </pre>

@@ -66,7 +66,8 @@ public class PojoTester {
 		      return (pojoClass.getName().toLowerCase().contains("request") || pojoClass.getName().toLowerCase().contains("response") || 
 		    		  pojoClass.getName().toLowerCase().contains("details")  || pojoClass.getName().toLowerCase().contains("rendertag")) && 
 		    		  !(pojoClass.isAbstract() || pojoClass.isNestedClass()  || pojoClass.isInterface() || pojoClass.getName().contains("Parameters") || 
-		    		    pojoClass.getName().contains("handlers") || pojoClass.getName().contains("Exception") || pojoClass.getName().contains("RenderFormRequestParams"));
+		    		    pojoClass.getName().contains("handlers") || pojoClass.getName().contains("Exception") || pojoClass.getName().contains("RenderFormRequestParams") || 
+		    		    pojoClass.getName().contains("GetSampleDataResponse") || pojoClass.getName().contains("GetTemplateStructureResponse"));
 		    }
 		  }
 }

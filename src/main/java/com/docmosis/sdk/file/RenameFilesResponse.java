@@ -23,12 +23,12 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *  RenameFileResponse renameFile = FileStorage
- *                                   .rename()
- *                                   .fromPath(oldName)
- *                                   .toPath(newName)
- *                                   .execute();
- *   if (renameFile.hasSucceeded()) {
+ *  RenameFileResponse response = FileStorage
+ *                                  .rename()
+ *                                  .fromPath(oldName)
+ *                                  .toPath(newName)
+ *                                  .execute();
+ *   if (response.hasSucceeded()) {
  *       System.out.println(oldName + " renamed to " + newName);
  *  }
  * </pre>

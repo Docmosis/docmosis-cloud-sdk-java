@@ -28,12 +28,13 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   GetTemplateDetailsResponse templateDetails = Template
- *                                                 .getDetails()
- *                                                 .templateName("MasterTemplates/MyMasterTemplate.docx")
- *                                                 .execute();
- *   if (templateDetails.hasSucceeded()) {
- *       templateDetails.toString();
+ *   GetTemplateDetailsResponse response = Template
+ *                                           .getDetails()
+ *                                           .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                           .execute();
+ *   if (response.hasSucceeded()) {
+ *       TemplateDetails td = response.getTemplateDetails();
+ *       td.toString();
  *   }
  * </pre>
  */

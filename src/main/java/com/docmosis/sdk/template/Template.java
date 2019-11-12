@@ -123,7 +123,6 @@ public class Template {
 		return req;
 	}
 	
-	
 	/**
 	 * Execute a listTemplates request.
 	 * @param request Object
@@ -135,20 +134,28 @@ public class Template {
 	    ListTemplatesResponse response;
 	    MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
-	    //Build request
-    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey());
-	    
 	    try {
+	    	//Build request
+		    HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
 	    	response = new ListTemplatesResponse(mutableResponse.build());
-	    	
+
 	    	//Extract data from Response String
 	    	if (response.hasSucceeded()) {
 			    if (responseString != null && responseString.length() > 0) {
 			    	JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
 	
-			    	response.setTemplateListStale(Boolean.parseBoolean(jsonObject.get("templateListStale").getAsString()));
+			    	if (jsonObject.has("templateListStale")) {
+			    		response.setTemplateListStale(Boolean.parseBoolean(jsonObject.get("templateListStale").getAsString()));
+			    	}
+			    	if (jsonObject.has("nextPageToken")) {
+			    		response.setNextPageToken(jsonObject.get("nextPageToken").getAsString());
+			    	}
+			    	if (jsonObject.has("pageSize")) {
+			    		response.setPageSize(jsonObject.get("pageSize").getAsInt());
+			    	}
 					Type listType = new TypeToken<List<TemplateDetails>>() {}.getType();
 					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 					List<TemplateDetails> templates = gson.fromJson(jsonObject.get("templateList"), listType);

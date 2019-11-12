@@ -23,12 +23,12 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *   UploadImageResponse uploadedImage = Image
- *                                        .upload()
- *                                        .imageFile(uploadFile)
- *                                        .execute();
- *	 if (getImage.hasSucceeded()) {
- *       uploadedImage.toString();
+ *   UploadImageResponse response = Image
+ *                                    .upload()
+ *                                    .imageFile(uploadFile)
+ *                                    .execute();
+ *	 if (response.hasSucceeded()) {
+ *       //Succeeded
  *   }
  * </pre>
  */

@@ -30,12 +30,12 @@ import com.docmosis.sdk.request.DocmosisCloudFileRequest;
  * 
  * 
  * <pre>
- *  GetImageResponse getImage = Image
- *                               .get()
- *                               .addImageName(imageToGet)
- *                               .sendTo(outputFileOrStream)
- *                               .execute();
- *  if (getImage.hasSucceeded()) {
+ *  GetImageResponse response = Image
+ *                                .get()
+ *                                .addImageName(imageToGet)
+ *                                .sendTo(outputFileOrStream)
+ *                                .execute();
+ *  if (response.hasSucceeded()) {
  *      //File saved to outputFileOrStream
  *  }
  * </pre>

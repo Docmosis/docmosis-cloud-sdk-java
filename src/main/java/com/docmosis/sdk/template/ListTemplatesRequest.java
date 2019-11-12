@@ -28,8 +28,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   ListTemplatesResponse templates = Template.list().execute();
- *   List&lt;TemplateDetails&gt; list = templates.list();
+ *   ListTemplatesResponse response = Template.list().execute();
+ *   List&lt;TemplateDetails&gt; list = response.list();
  *   for(TemplateDetails td : list) {
  *       td.toString();
  *   }
@@ -39,12 +39,58 @@ public class ListTemplatesRequest extends DocmosisCloudRequest<ListTemplatesRequ
 	
 	private static final String SERVICE_PATH = "listTemplates";
 	
+	private ListTemplatesRequestParams params = new ListTemplatesRequestParams();
+	
 	public ListTemplatesRequest() {
 		super(SERVICE_PATH);
 	}
 	
 	public ListTemplatesRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
+	}
+	
+	public ListTemplatesRequestParams getParams()
+    {
+    	return params;
+    }
+
+	/**
+	 * If set to true, Include extra detail about parameters.
+	 * Default=true.
+	 * 
+	 * @param includeDetail flag
+	 * @return this request for method chaining
+	 */
+	public ListTemplatesRequest includeDetail(boolean includeDetail) {
+		params.setIncludeDetail(includeDetail);
+		return this;
+	}
+
+	/**
+	 * Whether or not to return results in pages. If
+	 * true, pages of 1000 records are returned.
+	 * Default=false.
+	 * 
+	 * @param paging flag.
+	 * @return this request for method chaining
+	 */
+	public ListTemplatesRequest paging(boolean paging) {
+		params.setPaging(paging);
+		return this;
+	}
+	
+	/**
+	 * When paging is true, this token identifies the next page to
+	 * retrieve. The page token is null for the first page. When the
+	 * first page response returns, it contains the token required to
+	 * request the next page.
+	 * 
+	 * @param pageToken The page token for the next page.
+	 * @return this request for method chaining
+	 */
+	public ListTemplatesRequest pageToken(String pageToken) {
+		params.setPageToken(pageToken);
+		return this;
 	}
 
 	/**

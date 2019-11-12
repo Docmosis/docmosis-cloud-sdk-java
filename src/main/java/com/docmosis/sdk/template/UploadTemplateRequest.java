@@ -30,12 +30,12 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * 
  * 
  * <pre>
- *   UploadTemplateResponse uploadedTemplate = Template
- *                                              .upload()
- *                                              .templateFile(uploadFile)
- *                                              .execute();
- *   if (uploadedTemplate.hasSucceeded()) {
- *       uploadedTemplate.toString();
+ *   UploadTemplateResponse response = Template
+ *                                       .upload()
+ *                                       .templateFile(uploadFile)
+ *                                       .execute();
+ *   if (response.hasSucceeded()) {
+ *       //File uploaded
  *   }
  * </pre>
  */

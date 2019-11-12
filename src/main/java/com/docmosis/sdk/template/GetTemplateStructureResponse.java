@@ -27,12 +27,12 @@ import com.google.gson.JsonElement;
  * 
  * 
  * <pre>
- *   GetTemplateStructureResponse templateStructure = Template
- *                                                     .getStructure()
- *                                                     .templateName("MasterTemplates/MyMasterTemplate.docx")
- *                                                     .execute();
- *   if (templateStructure.hasSucceeded()) {
- *       JsonElement structure = templateStructure.getTemplateStructure();
+ *   GetTemplateStructureResponse response = Template
+ *                                             .getStructure()
+ *                                             .templateName("MasterTemplates/MyMasterTemplate.docx")
+ *                                             .execute();
+ *   if (response.hasSucceeded()) {
+ *       response.getTemplateStructureString();
  *   }
  * </pre>
  * 

@@ -23,12 +23,12 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * 
  * 
  * <pre>
- *   PutFileResponse uploadedFile = FileStorage
- *                                    .put()
- *                                    .file(uploadFile)
- *                                    .execute();
- *   if (uploadedFile.hasSucceeded()) {
- *       uploadedFile.toString();
+ *   PutFileResponse response = FileStorage
+ *                                .put()
+ *                                .file(uploadFile)
+ *                                .execute();
+ *   if (response.hasSucceeded()) {
+ *       //Succeeded
  *   }
  * </pre>
  */
