@@ -56,7 +56,7 @@ public class SimpleGetRenderTagsExample
 		//Create and execute the render request
 		GetRenderTagsResponse response = RenderTags
 											.get()
-											.tags("my;tags;")
+											.tags("my;tags")
 											.year(2019)
 											.nMonths(2)
 											.month(10)

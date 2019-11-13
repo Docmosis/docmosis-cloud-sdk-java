@@ -266,12 +266,4 @@ public class FileStorage {
 	    }
 		return response;
 	}
-	
-//	private static void setEnvironment(DocmosisCloudRequest<?> request) throws FileException {
-//		try {
-//    		EnvironmentBuilder.validate(request.getEnvironment());
-//		} catch (InvalidEnvironmentException e1) {
-//			throw new FileException(e1);
-//		}
-//	}
 }

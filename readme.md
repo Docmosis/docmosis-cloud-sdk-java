@@ -333,7 +333,7 @@ The get render tags service allows statistics to be retrieved on renders that we
 
 ```
 	GetRenderTagsResponse response = RenderTags.get()
-		.tags("list;of;tags;")
+		.tags("list;of;tags")
 		.year(2019)
 		.month(1)
 		.nMonths(6)

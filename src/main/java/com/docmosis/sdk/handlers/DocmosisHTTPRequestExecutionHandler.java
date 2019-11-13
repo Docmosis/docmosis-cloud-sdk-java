@@ -308,10 +308,6 @@ public class DocmosisHTTPRequestExecutionHandler {
     	if (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_BYTES_OUTPUT)) {
     		response.setLength(toLong(chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_BYTES_OUTPUT).getValue()));
     	}
-//		Header[] hdrs = chResponse.getAllHeaders();
-//		for (Header h: hdrs) {
-//			System.out.println(h.getName() + " -> " + h.getValue());
-//		}
 	}
 	
     private static void setFailureResponseJson(MutableResponseInterface response, CloseableHttpResponse chResponse) throws IOException {

@@ -28,7 +28,7 @@ import com.docmosis.sdk.response.DocmosisCloudResponse;
  * <pre>
  *   GetRenderTagsResponse response = RenderTags
  *                                      .get()
- *                                      .tags("list;of;tags;")
+ *                                      .tags("list;of;tags")
  *                                      .year(2019)
  *                                      .month(6)
  *                                      .nMonths(2)
