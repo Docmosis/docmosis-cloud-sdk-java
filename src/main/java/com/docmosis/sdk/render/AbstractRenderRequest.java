@@ -339,7 +339,7 @@ public abstract class AbstractRenderRequest<T extends DocmosisCloudFileRequest<?
      * to retrieve stats such as page-counts and document-counts related to 
      * the tags.
      * 
-     * @param tags "list;of;tags;".
+     * @param tags "list;of;tags".
      * @return this request for method chaining
      */
     public T tags(String tags) {

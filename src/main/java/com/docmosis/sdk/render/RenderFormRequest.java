@@ -17,12 +17,13 @@ package com.docmosis.sdk.render;
 import com.docmosis.sdk.environment.Environment;
 
 /**
- * This object holds the instructions and data for the render form request.
- * 
+ * This object holds the instructions and data for the render form request.  This class is helpful for templates with simple/flat
+ * data which can be added as key/pair values.  See also {@link RenderRequest} which is suitable for structured JSON or XML data.
+ * <p/>
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the Render Form request.  The properties set in this class 
  * are parameters for the Render Form request.
- * 
+ * <p/>
  * Typically, you would use the Renderer class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
@@ -60,7 +61,9 @@ public class RenderFormRequest extends AbstractRenderRequest<RenderFormRequest> 
     }
 
 	/**
-	 * Add a data value in the form of a name/value pair.
+	 * Add a data value in the form of a name/value pair.<br/>
+	 * If your data is hierarchical/structured use a {@link RenderRequest} instead.
+	 *  
 	 * @param name or key of the data pair
 	 * @param value of the data pair
 	 * @return this request for method chaining

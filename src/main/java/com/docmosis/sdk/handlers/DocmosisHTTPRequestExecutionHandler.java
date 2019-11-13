@@ -71,9 +71,6 @@ public class DocmosisHTTPRequestExecutionHandler {
 	
 	private static final String FIELD_NAME_SHORT_MSG = "shortMsg";
 	private static final String FIELD_NAME_LONG_MSG = "longMsg";
-	
-	public static DocmosisHTTPRequestRetryHandler retryHandler;
-	public static DocmosisServiceUnavailableRetryStrategy retryStrategy;
 
 	/**
 	 * Method executes the http POST via the apache http library.
@@ -100,9 +97,9 @@ public class DocmosisHTTPRequestExecutionHandler {
 	    
 	    try {
 	    	//Create retry handlers
-	    	retryHandler = new DocmosisHTTPRequestRetryHandler(
+	    	final DocmosisHTTPRequestRetryHandler retryHandler = new DocmosisHTTPRequestRetryHandler(
 	    			request.getEnvironment().getMaxTries());
-	    	retryStrategy = new DocmosisServiceUnavailableRetryStrategy(
+	    	final DocmosisServiceUnavailableRetryStrategy retryStrategy = new DocmosisServiceUnavailableRetryStrategy(
 	    			request.getEnvironment().getMaxTries(), request.getEnvironment().getRetryDelayMS());
 
 	    	//Create HTTP Client
@@ -158,7 +155,7 @@ public class DocmosisHTTPRequestExecutionHandler {
     	    String server = (chResponse.containsHeader(FIELD_HEADER_SERVER)) ? chResponse.getFirstHeader(FIELD_HEADER_SERVER).getValue() : "";
     	    String xServer = (chResponse.containsHeader(FIELD_HEADER_X_DOCMOSIS_SVR)) ? chResponse.getFirstHeader(FIELD_HEADER_X_DOCMOSIS_SVR).getValue() : "";
     		if (server.contains(FIELD_VALUE_DOCMOSIS) || xServer.contains(FIELD_VALUE_TORNADO)) { //Response is from Docmosis.
-    			setResponse(response, chResponse, request.getUrl(), requestIsJson); //Set common response values
+    			setResponse(response, chResponse, request.getUrl(), requestIsJson, retryStrategy); //Set common response values
 	    	    if (chResponse.getStatusLine().getStatusCode() == 200) {
 	    	    	if (chResponse.getEntity() != null) {
 			    	    try {
@@ -241,7 +238,8 @@ public class DocmosisHTTPRequestExecutionHandler {
 	 * @param requestIsJson requestIsJson true if json, otherwise xml
 	 * @throws IOException if response cannot be extracted
 	 */
-	public static void setResponse(MutableResponseInterface response, CloseableHttpResponse chResponse, String url, boolean requestIsJson) throws IOException
+	private static void setResponse(MutableResponseInterface response, CloseableHttpResponse chResponse, String url, 
+			boolean requestIsJson, DocmosisServiceUnavailableRetryStrategy retryStrategy) throws IOException
 	{
 		int status = chResponse.getStatusLine().getStatusCode();
 		if (status != 200 && chResponse.getEntity() != null) { //Request Failed and a message was returned
@@ -365,13 +363,6 @@ public class DocmosisHTTPRequestExecutionHandler {
     	return result;
     }
 
-	public static DocmosisHTTPRequestRetryHandler getRetryHandler() {
-		return retryHandler;
-	}
-
-	public static DocmosisServiceUnavailableRetryStrategy getRetryStrategy() {
-		return retryStrategy;
-	}
 	
     private static int toInt(String val)
     {

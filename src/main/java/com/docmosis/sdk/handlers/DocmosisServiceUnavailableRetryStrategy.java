@@ -52,8 +52,8 @@ public class DocmosisServiceUnavailableRetryStrategy implements ServiceUnavailab
 	private static final String FIELD_NAME_LONG_MSG = "longMsg";
 	
 	
-	private int maxRetrys;
-	private long retryDelay;
+	private final int maxRetrys;
+	private final long retryDelay;
 	private PreviousFailureInformation prevFailure;
 	private int tries;
 	

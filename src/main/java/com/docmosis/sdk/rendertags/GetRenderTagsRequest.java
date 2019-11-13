@@ -26,17 +26,16 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * Typically, you would use the Template class to get an instance of this class, then
  * set the specifics you require using method chaining:
  * 
- * 
  * <pre>
  *   GetRenderTagsResponse response = RenderTags
  *                                      .get()
- *                                      .tags("list;of;tags;")
+ *                                      .tags("list;of;tags")
  *                                      .year(2019)
  *                                      .month(6)
  *                                      .nMonths(2)
  *                                      .execute();
- *   List&lt;RenderTags&gt; list = response.list();
- *   for(RenderTags rt : list) {
+ *   List&lt;RenderTag&gt; list = response.list();
+ *   for(RenderTag rt : list) {
  *       ...
  *   }
  * </pre>
