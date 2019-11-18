@@ -219,12 +219,4 @@ public class Image {
 	    }
 		return response;
 	}
-
-//	private static void setEnvironment(DocmosisCloudRequest<?> request) throws ImageException {
-//		try {
-//    		EnvironmentBuilder.validate(request.getEnvironment());
-//		} catch (InvalidEnvironmentException e1) {
-//			throw new ImageException(e1);
-//		}
-//	}
 }

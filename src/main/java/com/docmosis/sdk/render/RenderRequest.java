@@ -17,8 +17,9 @@ package com.docmosis.sdk.render;
 import com.docmosis.sdk.environment.Environment;
 
 /**
- * This object holds the instructions and data for the render request.
- * 
+ * This object holds the instructions and data for the render request.  The data is provided as a bulk structured
+ * string in JSON or XML format.  See also {@link RenderFormRequest} which is simpler for flat key-pair types of data.
+ * <p/>
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the Render request.  The properties set in this class 
  * are parameters for the Render request.
@@ -39,6 +40,8 @@ import com.docmosis.sdk.environment.Environment;
  *	 }
  *   ...
  * </pre>
+ * 
+ * @see RenderFormRequest
  */
 public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
 
@@ -62,6 +65,23 @@ public class RenderRequest extends AbstractRenderRequest<RenderRequest> {
     /**
      * Set the data for the render. The format of the string is either JSON 
      * and the structure of your data should match the template you are using.
+     * <p/>
+     * If your data and template are simple (flat structure) the {@link RenderFormRequest} 
+     * class is more suitable.
+     * <p/>
+     * A JSON data string would typically look like:
+     * <pre><code> {
+     *   "name":"User 1",
+     *   "address":"192.168.0.1", 
+     * }</code></pre>
+     * and an XML data string would look like:
+     * <pre>
+     * {@code
+     *   <data>
+     *     <name>User 1</name>
+     *     <address>192.168.0.1</address>
+     * </data>
+     * }</pre>   
      * 
      * @param data JSON or XML data.
      * @return this request for method chaining
