@@ -2,12 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.docmosis</groupId>
-  <artifactId>docmosis-cloud-sdk-java</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <artifactId>docmosis-cloud-dws3-sdk-java</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
-  <url>https://www.docmosis.com/products/cloud.html</url>
+  <url>http://github.com/docmosis/docmosis-cloud-sdk-java</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
