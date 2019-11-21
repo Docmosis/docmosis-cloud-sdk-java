@@ -1,0 +1,10 @@
+target/
+**.classpath
+**.project
+**.pdf
+**.zip
+pom.xml.releaseBackup
+release.properties
+dependency-reduced-pom.xml
+.settings/
+src/test/
