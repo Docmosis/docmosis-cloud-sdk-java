@@ -29,11 +29,11 @@ Add the following dependency to your `pom.xml` file:
 <dependency>
   <groupId>com.docmosis</groupId>
   <artifactId>docmosis-cloud-dws2-sdk-java</artifactId>
-  <version>2.X.X</version>
+  <version>1.X.X</version>
 </dependency>
 ```
 
-Please be sure to replace `2.X.X` with the latest version number of the DWS2 SDK.
+Please be sure to replace `1.X.X` with the latest version number of the DWS2 SDK.
 
 #### JAR file
 
