@@ -1,5 +1,5 @@
-Docmosis Cloud SDK Java (DWS3) - Readme
-=======================================
+Docmosis Cloud SDK DWS3 Java - Readme
+=====================================
 
 Welcome to the Docmosis Web Services SDK (Java Edition). This SDK makes it easy 
 to invoke API calls on Docmosis web service end points (such as the public 
@@ -10,13 +10,13 @@ This version is intended for users of Docmosis Web Services 3 (DWS3).
 To run this SDK you require Java 1.6 or later and a Docmosis DWS3 Cloud account.
 
 If you don't already have a Docmosis account you can sign up for a free trial
-at: [https://www.docmosis.com/try](https://www.docmosis.com/try).
+at: [docmosis.com/products/cloud/try.html](https://www.docmosis.com/products/cloud/try.html).
 
-Please look at the [examples](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3/examples) 
-on our [github project page](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3) 
+Please look at the [examples](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/DWS3/examples) 
+on our [github project page](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/DWS3) 
 for some sample code to get started.  More information about rendering documents 
 can be found in the Web Services Guide and the Template Guide at the Docmosis 
-support site: [docmosis.com](http://www.docmosis.com)
+support site: [resources.docmosis.com](https://resources.docmosis.com/)
 
 ## Installation
 
@@ -27,19 +27,19 @@ Add the following dependency to your `pom.xml` file:
 ```
 <dependency>
   <groupId>com.docmosis</groupId>
-  <artifactId>docmosis-cloud-sdk-java</artifactId>
-  <version>3.X.X</version>
+  <artifactId>docmosis-cloud-dws3-sdk-java</artifactId>
+  <version>1.X.X</version>
 </dependency>
 ```
 
-Please be sure to replace `3.X.X` with the latest version number of the DWS3 SDK.
+Please be sure to replace `1.X.X` with the latest version number of the DWS3 SDK.
 
 #### JAR file
 
-The current release of the jar can be found under [dist](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3/dist), or you can 
+The current release of the jar can be found under [dist](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/DWS3/dist), or you can 
 build the jar yourself with the following steps:
 
-1. Download the [Docmosis Cloud SDK Java (DWS3) project](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/master/dws3)
+1. Download the [Docmosis Cloud SDK Java (DWS3) project](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/DWS3)
 2. Unzip the package
 3. Build the jar using:
 

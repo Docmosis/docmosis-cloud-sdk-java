@@ -308,7 +308,7 @@ public class Environment {
         // try to load from maven properties first
         try {
             Properties p = new Properties();
-            InputStream is = getClass().getResourceAsStream("/META-INF/maven/com.docmosis/docmosis-cloud-sdk-java/pom.properties");
+            InputStream is = getClass().getResourceAsStream("/META-INF/maven/com.docmosis/docmosis-cloud-dws3-sdk-java/pom.properties");
             if (is != null) {
                 p.load(is);
                 version = p.getProperty("version", "");
