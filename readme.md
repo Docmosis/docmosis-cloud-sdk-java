@@ -28,11 +28,11 @@ Add the following dependency to your `pom.xml` file:
 <dependency>
   <groupId>com.docmosis</groupId>
   <artifactId>docmosis-cloud-dws3-sdk-java</artifactId>
-  <version>3.X.X</version>
+  <version>1.X.X</version>
 </dependency>
 ```
 
-Please be sure to replace `3.X.X` with the latest version number of the DWS3 SDK.
+Please be sure to replace `1.X.X` with the latest version number of the DWS3 SDK.
 
 #### JAR file
 
