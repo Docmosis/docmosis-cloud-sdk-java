@@ -1,6 +1,8 @@
 Docmosis Cloud DWS2 SDK Java - Readme
 =====================================
 
+Please note that Docmosis Web Services 3 (DWS3) has been released and supersedes DWS2. The DWS3 SDK can be found [here](https://github.com/Docmosis/docmosis-cloud-sdk-java/tree/DWS3)
+
 Welcome to the Docmosis Web Services SDK (Java Edition). This SDK makes it easy 
 to invoke API calls on Docmosis web service end points (such as the public 
 Docmosis Cloud Services).
@@ -33,7 +35,7 @@ Add the following dependency to your `pom.xml` file:
 </dependency>
 ```
 
-Please be sure to replace `1.X.X` with the latest version number of the DWS2 SDK.
+Please be sure to replace `1.X.X` with the latest version number of the DWS2 SDK which can be found at [The Central Repository](https://search.maven.org/artifact/com.docmosis/docmosis-cloud-dws2-sdk-java/).
 
 #### JAR file
 
