@@ -5,17 +5,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+import com.docmosis.sdk.convert.ConverterException;
 import com.docmosis.sdk.convert.MutableConverterResponse;
 import com.docmosis.sdk.render.MutableRenderResponse;
 import com.docmosis.sdk.response.DocmosisCloudResponse.PreviousFailureInformation;
@@ -24,16 +22,71 @@ import junit.framework.TestCase;
 
 @RunWith(Parameterized.class)
 public class TestInstancesParameterized extends TestCase {
-
-	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	
-	@Parameters(name = "{0}")
-    public static Object[] data() {
-    	return new Object[] {MutableConverterResponse.class, MutableRenderResponse.class};
-    }
-
-    @Parameter(0)
+	@Parameter(0)
     public Class<?> clss;
+    
+    @Parameter(1)
+    public List<Field> fields;
+    
+    @Parameter(2)
+    public List<Method> methods;
+    
+    @Parameter(3)
+    public List<Constructor<?>> constructors;
+    
+    @Parameter(4)
+    public List<Method> setterNames;
+    
+    @Parameter(5)
+    public List<Method> getterNames;
+
+	@Parameters(name = "{0},{1},{2},{3},{4},{5}")
+    public static Object[][] data() {
+    	
+		Class<?>[] classList = {MutableConverterResponse.class, MutableRenderResponse.class, ConverterException.class, PreviousFailureInformation.class};
+		Object[][] data = new Object[classList.length][];
+		
+		for (int i = 0; i < classList.length ; i++) {
+			List<Field> fields = SDKObjectFactory.getFields(classList[i]);
+			List<Method> methods = SDKObjectFactory.getMethods(classList[i]);
+			List<Constructor<?>> constructors = SDKObjectFactory.getConstructors(classList[i]);
+
+			List<Method> setterNames = new ArrayList<Method>();
+			List<Method> getterNames = new ArrayList<Method>();
+			
+			String fieldName;
+			String fieldSetter;
+			String fieldGetter;
+			Method setterMethod;
+			Method getterMethod;
+
+			for (Field f : fields) {
+				//Determine likely getter and setter names
+				fieldName = f.getName();
+				fieldSetter = "set".concat(fieldName.substring(0, 1).toUpperCase().concat(fieldName.substring(1, fieldName.length())));
+				fieldGetter = "get".concat(fieldName.substring(0, 1).toUpperCase().concat(fieldName.substring(1, fieldName.length())));
+				
+				setterMethod = null;
+				getterMethod = null;
+
+				//Check if getter / setter exists
+				for (Method m : methods) {
+					if (m.getName().contentEquals(fieldSetter)) {
+						setterMethod = m;
+					}
+					else if (m.getName().contentEquals(fieldGetter)) {
+						getterMethod = m;
+					}
+				}
+				setterNames.add(setterMethod);
+				getterNames.add(getterMethod);
+			}
+		
+			data[i] = new Object[] { classList[i], fields, methods, constructors, setterNames, getterNames };
+		}
+		return data;
+    }
 
 //	@Test
 //	public void testPOJO() {
@@ -59,124 +112,96 @@ public class TestInstancesParameterized extends TestCase {
 //	}
 
     @Test
-	public void testGettersSetters() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		//List<Field> privateFields = new ArrayList<Field>();
-		List<Field> fields = getFields(clss);
-		//List<Constructor> constructors = getConstructors(clss);
-		List<Method> methods = getMethods(clss);
-		List<Constructor<?>> constructors = getConstructors(clss);
-		Constructor<?> mainConstructor = null;
-		
-		for (Constructor<?> c : constructors) {
-			if (c.getParameterCount() == 0) {
-				mainConstructor = c;
+	public void testSetters() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+		for (int i = 0; i < fields.size(); i++) {
+			if (setterNames.get(i) != null) {
+				setterTest(fields.get(i), setterNames.get(i));
+			}
+			else {
+				System.err.println("No setter for: " + clss.getName() + "." + fields.get(i).getName());
 			}
 		}
-		
-		if (mainConstructor != null) {
-			String fieldName;
-			String fieldSetter;
-			String fieldGetter;
-			
-			System.out.print("");
+	}
+    
+    @Test
+	public void testGetters() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+		for (int i = 0; i < fields.size(); i++) {
+			if (getterNames.get(i) != null) {
+				getterTest(fields.get(i), getterNames.get(i));
+			}
+			else {
+				System.err.println("No getter for: " + clss.getName() + "." + fields.get(i).getName());
+			}
+		}
+	}
+    
+    @Test
+	public void testConstructors() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+    	for (Constructor<?> c : constructors) {
+			if (c.getParameterCount() > 0) {
+				constructorTest(c);
+			}
+		}
+	}
 	
+	public void setterTest(Field field, Method method) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		final Object obj = SDKObjectFactory.getInstance(constructors, clss);
+		System.out.println(method.getName());
+		assertTrue(method.getParameterCount() == 1); //Assume 1 parameter per setter.
+		assertTrue(method.getParameters()[0].getType().equals(field.getType())); //Assume Field type and parameter type are equal.
+		
+		final Object param = SDKObjectFactory.getRandomObject(method.getParameters()[0].getType());
+		method.invoke(obj, param);
+		assertTrue(param.equals(field.get(obj)));
+	}
+	
+
+	public void getterTest(Field field, Method method) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		final Object obj = SDKObjectFactory.getInstance(constructors, clss);
+		System.out.println(method.getName());
+		assertTrue(method.getParameterCount() == 0); //Assume 0 parameters per getter.
+		assertTrue(method.getReturnType().equals(field.getType())); //Assume Field type and return type are equal.
+		
+		final Object param = SDKObjectFactory.getRandomObject(method.getReturnType());
+		field.set(obj, param);
+		assertTrue(param.equals(method.invoke(obj)));
+	}
+	
+	public void constructorTest(Constructor<?> constructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (constructor.getParameterCount() == 1 && constructor.getParameters()[0].getType().equals(clss)) { //Copy constructor
+			System.out.println(clss.getName() + " has a copy constructor");
+			//Invoke and compare all fields
+			final Object param = SDKObjectFactory.getRandomObject(constructor.getParameters()[0].getType());
+			final Object obj = constructor.newInstance(param);
 			for (Field f : fields) {
-				//Determine likely getter and setter names
-				fieldName = f.getName();
-				fieldSetter = "set".concat(fieldName.substring(0, 1).toUpperCase().concat(fieldName.substring(1, fieldName.length())));
-				fieldGetter = "get".concat(fieldName.substring(0, 1).toUpperCase().concat(fieldName.substring(1, fieldName.length())));
-				//System.out.println(fieldName + " " + fieldSetter + " " + fieldGetter);
-				//Check if getter / setter exists
-				for (Method m : methods) {
-					if (m.getName().contentEquals(fieldSetter)) {
-						setterTest(f, m, mainConstructor);
+				assertTrue(f.get(obj).equals(f.get(param)));
+			}
+		}
+		else if (constructor.getParameterCount() != 0) {  //Other constructor
+			Object[] params = new Object[constructor.getParameterCount()];
+			for (int i = 0; i < constructor.getParameterCount(); i++) {
+				params[i] = SDKObjectFactory.getRandomObject(constructor.getParameters()[i].getType());
+			}
+			//Invoke and compare on parameter names
+			final Object obj = constructor.newInstance(params);
+			for (java.lang.reflect.Parameter p : constructor.getParameters()) {
+				boolean found = false;
+				for (Field f : fields) {
+					if (p.getName().equals(f.getName())) {
+						assertTrue(f.get(obj).equals(f.get(p)));
+						found = true;
 					}
-					else if (m.getName().contentEquals(fieldGetter)) {
-						//getterTest(f, m, mainConstructor);
-					}
+				}
+				if (!found) {
+					System.err.println("No matching field for constructor param: " + p.getName() + " of class: " + clss.getName());
 				}
 			}
 		}
-		else {
-			System.err.println("No zero argument constructor defined");
-		}
-	}
-	
-	public void setterTest(Field field, Method method, Constructor<?> mainConstructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		final Object obj = mainConstructor.newInstance();
-		Random rand = new Random();
-		final int num = rand.nextInt(100);
-		System.out.println(method.getName());
-		assertTrue(method.getParameterCount() == 1); //Assume 1 parameter per setter.
-		if (method.getParameters()[0].getType().equals(String.class)) {
-			final String s = randomString(num);
-			method.invoke(obj, s);
-			assertTrue(s.equals(field.get(obj)));
-			//System.out.println(s + " : " + field.get(obj));
-		}
-		else if (method.getParameters()[0].getType().equals(int.class)) {
-			method.invoke(obj, num);
-			assertTrue(num == (int) field.get(obj));
-		}
-		else if (method.getParameters()[0].getType().equals(long.class)) {
-			method.invoke(obj, num);
-			assertTrue(num == (long) field.get(obj));
-		}
-		else if (method.getParameters()[0].getType().equals(PreviousFailureInformation.class)) {
+		else { //Default constructor
 			
 		}
-		else {
-			System.err.println(method.getParameters()[0].getType() + " Not yet defined");
-		}
-	}
-	
-
-	public void getterTest(Field field, Method method, Constructor<?> mainConstructor) {
-		final MutableConverterResponse cr = new MutableConverterResponse();
-	}
-	
-	public List<Field> getFields(Class<?> clss) {
-		Class<?> current = clss;
-		List<Field> fields = new ArrayList<Field>();
-		while(current.getSuperclass()!=null){ // we don't want to process Object.class
-			fields.addAll(Arrays.asList(current.getDeclaredFields()));
-		    current = current.getSuperclass();
-		}
-		for (Field f: fields) {
-			f.setAccessible(true);
-		}
-		return fields;
-	}
-	
-	public List<Method> getMethods(Class<?> clss) {
-		Class<?> current = clss;
-		List<Method> methods = new ArrayList<Method>();
-		while(current.getSuperclass()!=null){ // we don't want to process Object.class
-			methods.addAll(Arrays.asList(current.getDeclaredMethods()));
-		    current = current.getSuperclass();
-		}
-		for (Method m: methods) {
-			m.setAccessible(true);
-		}
-		return methods;
-	}
-
-	public List<Constructor<?>> getConstructors(Class<?> clss) {
-		Class<?> current = clss;
-		List<Constructor<?>> constructors = new ArrayList<Constructor<?>>();
-		constructors.addAll(Arrays.asList(current.getDeclaredConstructors()));
-		for (Constructor<?> c: constructors) {
-			c.setAccessible(true);
-		}
-		return constructors;
-	}
-	
-	public static String randomString(int count) {
-		StringBuilder sb = new StringBuilder();
-		while (count-- != 0) {
-			int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
-			sb.append(ALPHA_NUMERIC_STRING.charAt(character));
-		}
-		return sb.toString();
 	}
 }
