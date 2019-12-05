@@ -44,7 +44,7 @@ public class TestInstancesParameterized extends TestCase {
 	@Parameters(name = "{0},{1},{2},{3},{4},{5}")
     public static Object[][] data() {
     	
-		Class<?>[] classList = {MutableConverterResponse.class, MutableRenderResponse.class, ConverterException.class, PreviousFailureInformation.class};
+		Class<?>[] classList = {MutableConverterResponse.class, MutableRenderResponse.class, PreviousFailureInformation.class};
 		Object[][] data = new Object[classList.length][];
 		
 		for (int i = 0; i < classList.length ; i++) {
@@ -181,6 +181,7 @@ public class TestInstancesParameterized extends TestCase {
 			}
 		}
 		else if (constructor.getParameterCount() != 0) {  //Other constructor
+			//Problem with missing param names
 			Object[] params = new Object[constructor.getParameterCount()];
 			for (int i = 0; i < constructor.getParameterCount(); i++) {
 				params[i] = SDKObjectFactory.getRandomObject(constructor.getParameters()[i].getType());

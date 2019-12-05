@@ -12,7 +12,9 @@ import java.util.Random;
 import com.docmosis.sdk.response.DocmosisCloudResponse.PreviousFailureInformation;
 
 public class SDKObjectFactory {
-	
+
+	private final static int MAX_RECURSION_DEPTH = 10;
+
 	/**********************
 	 * Reflection Getters *
 	 **********************/
@@ -103,24 +105,50 @@ public class SDKObjectFactory {
 	/******************
 	 * Random Getters *
 	 ******************/
-	
+
 	public static Object getRandomObject(Class<?> type) {
+		return getRandomObject(type, 0);
+	}
+
+	public static Object getRandomObject(Class<?> type, int depth) {
 		Object obj = null;
-		if (type.equals(String.class)) {
-			obj = getRandomString();
-		}
-		else if (type.equals(int.class)) {
-			obj = getRandomInt();
-		}
-		else if (type.equals(long.class)) {
-			obj = getRandomLong();
-		}
-		else if (type.equals(PreviousFailureInformation.class)) {
-			obj = getRandomPreviousFailureInformation();
+		
+		if (depth != MAX_RECURSION_DEPTH) {
+			if (type.equals(String.class)) {
+				obj = getRandomString();
+			}
+			else if (type.equals(boolean.class)) {
+				obj = getRandomBoolean();
+			}
+			else if (type.equals(int.class)) {
+				obj = getRandomInt();
+			}
+			else if (type.equals(long.class)) {
+				obj = getRandomLong();
+			}
+			else if (type.equals(double.class)) {
+				obj = getRandomDouble();
+			}
+			else if (type.equals(float.class)) {
+				obj = getRandomFloat();
+			}
+			else if (type.equals(char.class)) {
+				obj = getRandomChar();
+			}
+//			else { //Not a primitive
+//				
+//			}
+			else if (type.equals(PreviousFailureInformation.class)) {
+				obj = getRandomPreviousFailureInformation();
+			}
+			else {
+				System.err.println(type.getName() + " not yet defined");
+			}
 		}
 		else {
-			System.err.println(type.getName() + " not yet defined");
+			System.err.println("Recursion limit reached in getRandomObject for class: " + type.getName());
 		}
+		depth++;
 		return obj;
 	}
 	
@@ -129,11 +157,9 @@ public class SDKObjectFactory {
 	}
 	
 	public static String getRandomString(int count) {
-		final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		StringBuilder sb = new StringBuilder();
 		while (count-- != 0) {
-			int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
-			sb.append(ALPHA_NUMERIC_STRING.charAt(character));
+			sb.append(getRandomChar());
 		}
 		return sb.toString();
 	}
@@ -159,5 +185,31 @@ public class SDKObjectFactory {
 	public static long getRandomLong(int upperLimit) {
 		Random rand = new Random();
 		return (long) rand.nextInt(upperLimit);
+	}
+	
+	public static boolean getRandomBoolean() {
+		return (getRandomInt(2) == 0) ? false : true;
+	}
+
+	public static double getRandomDouble() {
+		return getRandomDouble(0.0, (double) getRandomInt(1000000));
+	}
+
+	public static double getRandomDouble(double min, double max) {
+		return (Math.random()*(max-min))+min;
+	}
+	
+	public static float getRandomFloat() {
+		return getRandomFloat(0.0f, (float) getRandomInt(1000000));
+	}
+
+	public static float getRandomFloat(float min, float max) {
+		Random rand = new Random();
+		return (rand.nextFloat()*(max-min))+min;
+	}
+	
+	public static char getRandomChar() {
+		final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		return ALPHA_NUMERIC_STRING.charAt((int)(Math.random()*ALPHA_NUMERIC_STRING.length()));
 	}
 }
