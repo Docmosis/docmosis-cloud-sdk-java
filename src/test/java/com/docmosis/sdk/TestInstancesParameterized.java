@@ -1,10 +1,14 @@
 package com.docmosis.sdk;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import org.junit.Test;
@@ -13,10 +17,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.docmosis.sdk.convert.ConverterException;
-import com.docmosis.sdk.convert.MutableConverterResponse;
-import com.docmosis.sdk.render.MutableRenderResponse;
-import com.docmosis.sdk.response.DocmosisCloudResponse.PreviousFailureInformation;
+import com.docmosis.sdk.convert.ConverterResponse;
 
 import junit.framework.TestCase;
 
@@ -44,9 +45,19 @@ public class TestInstancesParameterized extends TestCase {
 	@Parameters(name = "{0},{1},{2},{3},{4},{5}")
     public static Object[][] data() {
     	
-		Class<?>[] classList = {MutableConverterResponse.class, MutableRenderResponse.class, PreviousFailureInformation.class};
+		Class<?>[] classList = {/*ConverterRequestParams.class, MutableRenderResponse.class, PreviousFailureInformation.class, Proxy.class, DocmosisException.class*/ ConverterResponse.class};
+//		try {
+//			classList = getClasses("com.docmosis.sdk");
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			System.exit(-1);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			System.exit(-1);
+//		}
 		Object[][] data = new Object[classList.length][];
-		
 		for (int i = 0; i < classList.length ; i++) {
 			List<Field> fields = SDKObjectFactory.getFields(classList[i]);
 			List<Method> methods = SDKObjectFactory.getMethods(classList[i]);
@@ -87,29 +98,6 @@ public class TestInstancesParameterized extends TestCase {
 		}
 		return data;
     }
-
-//	@Test
-//	public void testPOJO() {
-//		Class<?>[] clsses = {MutableConverterResponse.class};
-//		for (Class<?> c : clsses) {
-//			try {
-//				testGettersSetters(c);
-//			} catch (IllegalArgumentException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (InvocationTargetException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (InstantiationException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IllegalAccessException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//	}
 
     @Test
 	public void testSetters() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -172,37 +160,129 @@ public class TestInstancesParameterized extends TestCase {
 	
 	public void constructorTest(Constructor<?> constructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (constructor.getParameterCount() == 1 && constructor.getParameters()[0].getType().equals(clss)) { //Copy constructor
-			System.out.println(clss.getName() + " has a copy constructor");
 			//Invoke and compare all fields
 			final Object param = SDKObjectFactory.getRandomObject(constructor.getParameters()[0].getType());
 			final Object obj = constructor.newInstance(param);
-			for (Field f : fields) {
-				assertTrue(f.get(obj).equals(f.get(param)));
-			}
+			assertTrue(equalByValue(obj, param));
 		}
 		else if (constructor.getParameterCount() != 0) {  //Other constructor
 			//Problem with missing param names
-			Object[] params = new Object[constructor.getParameterCount()];
+			Object[] paramValues = new Object[constructor.getParameterCount()];
+			java.lang.reflect.Parameter[] params = constructor.getParameters();
+			//Build random parameters to use for initialisation.
 			for (int i = 0; i < constructor.getParameterCount(); i++) {
-				params[i] = SDKObjectFactory.getRandomObject(constructor.getParameters()[i].getType());
+				paramValues[i] = SDKObjectFactory.getRandomObject(params[i].getType());
 			}
 			//Invoke and compare on parameter names
-			final Object obj = constructor.newInstance(params);
-			for (java.lang.reflect.Parameter p : constructor.getParameters()) {
+			final Object obj = constructor.newInstance(paramValues);
+			for (int j = 0; j < constructor.getParameterCount(); j++) {
 				boolean found = false;
 				for (Field f : fields) {
-					if (p.getName().equals(f.getName())) {
-						assertTrue(f.get(obj).equals(f.get(p)));
+					if (params[j].getName().equals(f.getName())) {
+						Object fObj = f.get(obj);
+						Class<?> pType = paramValues[j].getClass();
+						Class<?> fType = fObj.getClass();
+						assertTrue(pType.equals(fType)); //Types should be equal
+						assertTrue(equalByValue(fObj, paramValues[j])); //Values should be equal
 						found = true;
 					}
 				}
 				if (!found) {
-					System.err.println("No matching field for constructor param: " + p.getName() + " of class: " + clss.getName());
+					System.err.println("No matching field for constructor param: " + params[j].getName() + " of class: " + clss.getName());
 				}
+				assertTrue(found); //param names should match field names.
 			}
 		}
 		else { //Default constructor
 			
 		}
+	}
+	
+	@Test
+	public void testEquality() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+		assertTrue(equalByValue(new String("ab"), new String("ab")));
+		assertFalse(equalByValue(new String("aba"), new String("abb")));
+	}
+	
+	private boolean equalByValue(Object o1, Object o2) throws IllegalArgumentException, IllegalAccessException {
+        if ((o1 == null && o2 != null) || (o1 != null && o2 == null)) {
+        	return false;
+        }
+        if (o1 == null && o2 == null) {
+        	return true;
+        }
+        if (o1.getClass() != o2.getClass()) {
+        	return false;
+        }
+        if (o1.equals(o2)) {
+        	return true;
+        }
+        //Check equality by value
+        List<Field> fields = SDKObjectFactory.getFields(o1.getClass());
+        for (Field f : fields) {
+        	if (f.getType().isPrimitive()/* || f.getType().equals(String.class)*/) {
+//        		Object fo1 = f.get(o1);
+//        		Object fo2 = f.get(o2);
+        		if (!f.get(o1).equals(f.get(o2))) {
+        			return false;
+        		}
+        	}
+        	else if(f.getType().equals(java.lang.String.class)) {
+        		String so1 = (String)f.get(o1);
+        		String so2 = (String)f.get(o2);
+        		if ((so1 == null && so2 != null) || (so1 != null && so2 == null)) {
+                	return false;
+                }
+                if (so1 == null && so2 == null) {
+                	return true;
+                }
+                return so1.equals(so2);
+        	}
+    		else {
+    			if (!equalByValue(f.get(o1), f.get(o2))){
+    				return false;
+    			}
+    		}
+        }
+        return true;
+	}
+	
+	private static Class<?>[] getClasses(String packageName)
+	        throws ClassNotFoundException, IOException {
+	    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+	    assert classLoader != null;
+	    String path = packageName.replace('.', '/');
+	    Enumeration<URL> resources = classLoader.getResources(path);
+	    List<File> dirs = new ArrayList<File>();
+	    while (resources.hasMoreElements()) {
+	        URL resource = resources.nextElement();
+	        dirs.add(new File(resource.getFile()));
+	    }
+	    ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+	    for (File directory : dirs) {
+	        classes.addAll(findClasses(directory, packageName));
+	    }
+	    for (Class<?> c : classes) {
+	        System.out.println(c.getName());
+	    }
+	    return classes.toArray(new Class[classes.size()]);
+	}
+	
+	private static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
+	    List<Class<?>> classes = new ArrayList<Class<?>>();
+	    if (!directory.exists()) {
+	        return classes;
+	    }
+	    File[] files = directory.listFiles();
+	    for (File file : files) {
+	        if (file.isDirectory()) {
+	            assert !file.getName().contains(".");
+	            classes.addAll(findClasses(file, packageName + "." + file.getName()));
+	        } else if (file.getName().endsWith(".class")) {
+	            classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+	        }
+	    }
+	    return classes;
 	}
 }

@@ -1,5 +1,6 @@
 package com.docmosis.sdk;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,11 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import com.docmosis.sdk.response.DocmosisCloudResponse.PreviousFailureInformation;
-
 public class SDKObjectFactory {
-
-	private final static int MAX_RECURSION_DEPTH = 10;
 
 	/**********************
 	 * Reflection Getters *
@@ -106,51 +103,78 @@ public class SDKObjectFactory {
 	 * Random Getters *
 	 ******************/
 
-	public static Object getRandomObject(Class<?> type) {
-		return getRandomObject(type, 0);
-	}
-
-	public static Object getRandomObject(Class<?> type, int depth) {
+	public static Object getRandomObject(Class<?> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Object obj = null;
 		
-		if (depth != MAX_RECURSION_DEPTH) {
-			if (type.equals(String.class)) {
-				obj = getRandomString();
-			}
-			else if (type.equals(boolean.class)) {
-				obj = getRandomBoolean();
-			}
-			else if (type.equals(int.class)) {
-				obj = getRandomInt();
-			}
-			else if (type.equals(long.class)) {
-				obj = getRandomLong();
-			}
-			else if (type.equals(double.class)) {
-				obj = getRandomDouble();
-			}
-			else if (type.equals(float.class)) {
-				obj = getRandomFloat();
-			}
-			else if (type.equals(char.class)) {
-				obj = getRandomChar();
-			}
-//			else { //Not a primitive
-//				
-//			}
-			else if (type.equals(PreviousFailureInformation.class)) {
-				obj = getRandomPreviousFailureInformation();
-			}
-			else {
-				System.err.println(type.getName() + " not yet defined");
-			}
+		if (type.equals(String.class)) {
+			obj = getRandomString();
 		}
-		else {
-			System.err.println("Recursion limit reached in getRandomObject for class: " + type.getName());
+		else if (type.equals(boolean.class)) {
+			obj = getRandomBoolean();
 		}
-		depth++;
+		else if (type.equals(int.class)) {
+			obj = getRandomInt();
+		}
+		else if (type.equals(long.class)) {
+			obj = getRandomLong();
+		}
+		else if (type.equals(double.class)) {
+			obj = getRandomDouble();
+		}
+		else if (type.equals(float.class)) {
+			obj = getRandomFloat();
+		}
+		else if (type.equals(char.class)) {
+			obj = getRandomChar();
+		}
+		else if (type.isEnum()) {
+			obj = type.getEnumConstants()[(int)(Math.random()*type.getEnumConstants().length)];
+		}
+		else if (type.isArray()) {
+			Class<?> arrayType = type.getComponentType();
+			int arraySize = getRandomInt();
+			//Object array = java.lang.reflect.Array.newInstance(type, arraySize);
+			//Object[] array = new Object[arraySize];
+			//return (T[]) Array.newInstance(type2, length);
+			List<Object> list = new ArrayList<Object>();
+			for (int i = 0; i < arraySize; i++) {
+				list.add(getRandomObject(arrayType));
+			}
+			obj = convertToArray(list, arrayType);
+		}
+		else { //Not a primitive
+			List<Constructor<?>> constructors = getConstructors(type);
+			if (constructors.size() > 1) {
+				//Remove default constructor
+				for (int i = constructors.size()-1; i >= 0; i--) {
+					if (constructors.get(i).getParameterCount() == 0) {
+						constructors.remove(i);
+					}
+				}
+				//Ensure if there is only one constructor left it is not a copy constructor
+				if (constructors.size() == 1 && constructors.get(0).getParameterCount() == 1 && constructors.get(0).getParameters()[0].getType() == type) {
+					constructors = getConstructors(type);
+				}
+			}
+			
+			obj = getInstance(constructors, type);
+		}
+//		else if (type.equals(PreviousFailureInformation.class)) {
+//			obj = getRandomPreviousFailureInformation();
+//		}
+//		else {
+//				System.err.println(type.getName() + " not yet defined");
+//		}
 		return obj;
 	}
+	
+	public static <T> T[] convertToArray(List<?> list, Class<T> c) {
+	    //@SuppressWarnings("unchecked")
+	    T[] result = (T[]) Array.newInstance(c, list.size());
+	    result = list.toArray(result);
+	    return (T[]) result;
+	}
+
 	
 	public static String getRandomString() {
 		return getRandomString(100);
@@ -164,10 +188,10 @@ public class SDKObjectFactory {
 		return sb.toString();
 	}
 
-	public static PreviousFailureInformation getRandomPreviousFailureInformation() {
-		return new PreviousFailureInformation(getRandomInt(1000), getRandomString(getRandomInt()),
-				getRandomString(getRandomInt()), getRandomString(getRandomInt()));
-	}
+//	public static PreviousFailureInformation getRandomPreviousFailureInformation() {
+//		return new PreviousFailureInformation(getRandomInt(1000), getRandomString(getRandomInt()),
+//				getRandomString(getRandomInt()), getRandomString(getRandomInt()));
+//	}
 	
 	public static int getRandomInt() {
 		return getRandomInt(100);
