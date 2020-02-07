@@ -40,12 +40,12 @@ public class TemplateDetails {
 	private String templatePlainTextFieldSuffix;
 	private boolean templateHasErrors;
 	private boolean templateDevMode;
-	private String description = null;
+	private String templateDescription = null;
 	private String md5;
 	
 	public TemplateDetails(String name, long lastModifiedMillisSinceEpoch, Date lastModifiedISO8601, long sizeBytes, 
 			String templatePlainTextFieldPrefix, String templatePlainTextFieldSuffix, boolean templateHasErrors, 
-			boolean templateDevMode, String description, String md5) {
+			boolean templateDevMode, String templateDescription, String md5) {
 		this.name = name;
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 		this.lastModifiedISO8601 = lastModifiedISO8601;
@@ -54,7 +54,7 @@ public class TemplateDetails {
 		this.templatePlainTextFieldSuffix = templatePlainTextFieldSuffix;
 		this.templateHasErrors = templateHasErrors;
 		this.templateDevMode = templateDevMode;
-		this.description = description;
+		this.templateDescription = templateDescription;
 		this.md5 = md5;
 	}
 
@@ -158,12 +158,12 @@ public class TemplateDetails {
 	 * 
 	 * @return the description uploaded with the template if any
 	 */
-	public String getDescription() {
-		return description;
+	public String getTemplateDescription() {
+		return templateDescription;
 	}
 
-	protected void setDescription(String description) {
-		this.description = description;
+	protected void setTemplateDescription(String templateDescription) {
+		this.templateDescription = templateDescription;
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class TemplateDetails {
 				+ ", lastModifiedISO8601=" + lastModifiedISO8601 + ", sizeBytes=" + sizeBytes
 				+ ", templatePlainTextFieldPrefix=" + templatePlainTextFieldPrefix
 				+ ", templatePlainTextFieldSuffix=" + templatePlainTextFieldSuffix + ", templateHasErrors=" 
-				+ templateHasErrors + ", templateDevMode=" + templateDevMode + ", description=" + description
+				+ templateHasErrors + ", templateDevMode=" + templateDevMode + ", templateDescription=" + templateDescription
 				+ ", md5=" + md5 + "]";
 	}
 }

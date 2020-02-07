@@ -14,18 +14,17 @@
  */
 
 import java.io.IOException;
-import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.template.ListTemplatesResponse;
+import com.docmosis.sdk.template.DeleteTemplateResponse;
 import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateDetails;
 import com.docmosis.sdk.template.TemplateException;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * a list of the templates stored on the server including associated meta data.
+ * This example connects to the public Docmosis cloud server and deletes a 
+ * template stored on the server. Note that multiple templates can be specified 
+ * and deleted in one call.
  * 
  * How to use:
  * 
@@ -38,14 +37,17 @@ import com.docmosis.sdk.template.TemplateException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListTemplatesExample
+public class DeleteTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
+	//Full path of template to be deleted
+	private static final String TEMPLATE_TO_DELETE = "myTemplate.docx";
+
 	public static void main(String args[]) throws TemplateException, IOException
 	{
-
+		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -55,23 +57,23 @@ public class SimpleListTemplatesExample
 		Environment.setDefaults(ACCESS_KEY);
 
 		//Create and execute the request
-		ListTemplatesResponse response = Template.list().execute();
+		DeleteTemplateResponse response = Template
+											.delete()
+											.templateName(TEMPLATE_TO_DELETE)
+											.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			List<TemplateDetails> templateList = response.list();
-			for(TemplateDetails td : templateList) {
-				System.out.println(td.getName() + " size=" + td.getSizeBytes() + " bytes");
-			}
-
+			System.out.println("Successfully deleted " + TEMPLATE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List templates failed: status="
+			System.err.println("Delete template failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()
 					+ ((response.getLongMsg() == null) ? "" : " longMsg="
 							+ response.getLongMsg()));
 		}
+
 	}
 }

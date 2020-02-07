@@ -20,7 +20,7 @@ import com.docmosis.sdk.ping.Ping;
  * This example shows how to use the Docmosis Ping service.
  *
  */
-public class SimplePingExample {
+public class PingExample {
 
 	public static void main(String args[]) throws InvalidEnvironmentException
 	{		

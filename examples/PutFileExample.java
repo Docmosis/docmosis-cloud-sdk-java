@@ -13,18 +13,18 @@
  *   limitations under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.DeleteFilesResponse;
 import com.docmosis.sdk.file.FileException;
 import com.docmosis.sdk.file.FileStorage;
-
+import com.docmosis.sdk.file.PutFileResponse;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and deletes a 
- * file stored on the server.
+ * This example connects to the public Docmosis cloud server and uploads a 
+ * file to store on the server.
  * 
  * Note that file storage must be enabled on your account for File services 
  * to work.
@@ -40,17 +40,17 @@ import com.docmosis.sdk.file.FileStorage;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleDeleteFileExample
+public class PutFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	//Full path of File to be deleted
-	private static final String FILE_TO_DELETE = "myFile.pdf";
+	//Full path of File to be uploaded
+	private static final String FILE_TO_UPLOAD = "C:/example/myFile.pdf";
 
 	public static void main(String args[]) throws FileException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -59,18 +59,22 @@ public class SimpleDeleteFileExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
+		//Set the file we are going to upload.
+		File uploadFile = new File(FILE_TO_UPLOAD);
+
 		//Create and execute the request
-		DeleteFilesResponse response = FileStorage
-										.delete()
-										.path(FILE_TO_DELETE)
-										.execute();
+		PutFileResponse response = FileStorage
+									.put()
+									.file(uploadFile)
+									.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			System.out.println("Successfully deleted " + FILE_TO_DELETE);
+			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Delete file failed: status="
+			System.err.println("Put file failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

@@ -13,19 +13,21 @@
  *   limitations under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.image.DeleteImageResponse;
-import com.docmosis.sdk.image.Image;
-import com.docmosis.sdk.image.ImageException;
-
+import com.docmosis.sdk.file.FileException;
+import com.docmosis.sdk.file.FileStorage;
+import com.docmosis.sdk.file.GetFileResponse;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and deletes an 
- * image stored on the server. Note that multiple images can be specified and
- * deleted in one call.
+ * This example connects to the public Docmosis cloud server and returns a 
+ * file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -38,15 +40,15 @@ import com.docmosis.sdk.image.ImageException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleDeleteImageExample
+public class GetFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	//Full path of image to be deleted
-	private static final String IMAGE_TO_DELETE = "myImage.png";
+	// Full path of File to get
+	private static final String FILE_TO_GET = "myFile.pdf";
 
-	public static void main(String args[]) throws ImageException, IOException
+	public static void main(String args[]) throws FileException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
@@ -57,18 +59,23 @@ public class SimpleDeleteImageExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
+		//Set the file we are going to write the returned document to.
+		File outputFile = new File(FILE_TO_GET);
+
 		//Create and execute the request
-		DeleteImageResponse response = Image
-										.delete()
-										.imageName(IMAGE_TO_DELETE)
-										.execute();
+		GetFileResponse response = FileStorage
+									.get()
+									.fileName(FILE_TO_GET)
+									.sendTo(outputFile)
+									.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			System.out.println("Successfully deleted " + IMAGE_TO_DELETE);
+			System.out.println("File written to: " + outputFile.getAbsolutePath());
+
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Delete image failed: status="
+			System.err.println("Get file failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

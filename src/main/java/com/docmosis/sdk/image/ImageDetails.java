@@ -32,15 +32,17 @@ public class ImageDetails {
 	private Date lastModifiedISO8601;
 	private long sizeBytes;
 	private String md5;
+	private String imagedescription;
 
 	public ImageDetails(String name, long lastModifiedMillisSinceEpoch, Date lastModifiedISO8601, long sizeBytes,
-			String md5) {
+			String md5, String imagedescription) {
 		super();
 		this.name = name;
 		this.lastModifiedMillisSinceEpoch = lastModifiedMillisSinceEpoch;
 		this.lastModifiedISO8601 = lastModifiedISO8601;
 		this.sizeBytes = sizeBytes;
 		this.md5 = md5;
+		this.imagedescription = imagedescription;
 	}
 
 	/**
@@ -102,11 +104,24 @@ public class ImageDetails {
 	protected void setMd5(String md5) {
 		this.md5 = md5;
 	}
+	
+	
+	/**
+	 * 
+	 * @return the description of the image (if one exists)
+	 */
+	public String getImagedescription() {
+		return imagedescription;
+	}
+
+	protected void setImagedescription(String imagedescription) {
+		this.imagedescription = imagedescription;
+	}
 
 	@Override
 	public String toString() {
 		return "ImageDetails [name=" + name + ", lastModifiedMillisSinceEpoch=" + lastModifiedMillisSinceEpoch
 				+ ", lastModifiedISO8601=" + lastModifiedISO8601 + ", sizeBytes=" + sizeBytes
-				+ ", md5=" + md5 + "]";
+				+ ", md5=" + md5 +  ", imagedescription=" + imagedescription + "]";
 	}
 }

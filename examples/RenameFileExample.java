@@ -39,7 +39,7 @@ import com.docmosis.sdk.file.RenameFilesResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleRenameFileExample
+public class RenameFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";

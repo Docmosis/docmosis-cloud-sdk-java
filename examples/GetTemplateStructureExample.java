@@ -16,14 +16,14 @@
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.image.Image;
-import com.docmosis.sdk.image.ImageException;
-import com.docmosis.sdk.image.ListImagesResponse;
+import com.docmosis.sdk.template.GetTemplateStructureResponse;
+import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateException;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * a list of images stored on the server including associated meta data.
+ * This example connects to the public Docmosis cloud server and returns the 
+ * structure of a template stored on the server.
  * 
  * How to use:
  * 
@@ -36,14 +36,18 @@ import com.docmosis.sdk.image.ListImagesResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListImagesExample
+public class GetTemplateStructureExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	public static void main(String args[]) throws ImageException, IOException
-	{
+	// the welcome template is available in your cloud account by default
+	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
+
+	public static void main(String args[]) throws TemplateException, IOException
+	{
+		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -53,7 +57,10 @@ public class SimpleListImagesExample
 		Environment.setDefaults(ACCESS_KEY);
 
 		//Create and execute the request
-		ListImagesResponse response = Image.list().execute();
+		GetTemplateStructureResponse response = Template
+												.getStructure()
+												.templateName(TEMPLATE_NAME)
+												.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
@@ -61,7 +68,7 @@ public class SimpleListImagesExample
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List images failed: status="
+			System.err.println("Get template structure failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

@@ -13,20 +13,18 @@
  *   limitations under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.FileException;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.file.ListFilesResponse;
+import com.docmosis.sdk.image.Image;
+import com.docmosis.sdk.image.ImageException;
+import com.docmosis.sdk.image.UploadImageResponse;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * a list of files stored on the server including associated meta data.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and uploads an 
+ * image to store on the server.
  * 
  * How to use:
  * 
@@ -39,32 +37,41 @@ import com.docmosis.sdk.file.ListFilesResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleListFilesExample
+public class UploadImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	public static void main(String args[]) throws FileException, IOException
+	//Full path of image to be uploaded
+	private static final String IMAGE_TO_UPLOAD = "C:/example/myImage.png";
+
+	public static void main(String args[]) throws ImageException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
 		}
 
-		//Set the default environment to use your access key
+		//Set the default environment to use your access key.
 		Environment.setDefaults(ACCESS_KEY);
 
+		//Set the file we are going to upload.
+		File uploadFile = new File(IMAGE_TO_UPLOAD);
+
 		//Create and execute the request
-		ListFilesResponse response = FileStorage.list().execute();
+		UploadImageResponse response = Image
+										.upload()
+										.imageFile(uploadFile)
+										.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			System.out.println(response.toString());
+			System.out.println("Successfully uploaded " + IMAGE_TO_UPLOAD);
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("List files failed: status="
+			System.err.println("Upload image failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

@@ -13,19 +13,17 @@
  *   limitations under the License.
  */
 
-import java.io.File;
 import java.io.IOException;
 
-import com.docmosis.sdk.convert.Converter;
-import com.docmosis.sdk.convert.ConverterException;
-import com.docmosis.sdk.convert.ConverterResponse;
 import com.docmosis.sdk.environment.Environment;
-
+import com.docmosis.sdk.image.Image;
+import com.docmosis.sdk.image.ImageException;
+import com.docmosis.sdk.image.ListImagesResponse;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and converts the 
- * given document into a PDF which is then saved to the local file system.  
+ * This example connects to the public Docmosis cloud server and returns 
+ * a list of images stored on the server including associated meta data.
  * 
  * How to use:
  * 
@@ -38,22 +36,14 @@ import com.docmosis.sdk.environment.Environment;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleCloudConvertExample
+public class ListImagesExample
 {
-
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-	
-	// Set the name of the output file to create
-	private static final String OUTPUT_FILE_NAME = "myResult.pdf";
-	
-	// Set the path to the file you want to convert
-	private static final String FILE_TO_CONVERT = "C:/example/myTemplateFile.docx";
 
-	public static void main(String args[]) throws ConverterException,
-			IOException
+	public static void main(String args[]) throws ImageException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -62,27 +52,16 @@ public class SimpleCloudConvertExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
-		//Set the file to be converted
-		File convertFile = new File(FILE_TO_CONVERT);
-		
-		//Set the file we are going to write the document to.
-		File outputFile = new File(OUTPUT_FILE_NAME);
-
-		//Create and execute the conversion request
-		ConverterResponse response = Converter
-									.convert()
-									.fileToConvert(convertFile)
-									.outputName(OUTPUT_FILE_NAME)
-									.sendTo(outputFile)
-									.execute();
+		//Create and execute the request
+		ListImagesResponse response = Image.list().execute();
 
 		if (response.hasSucceeded()) {
-			// great - convert succeeded.
-			System.out.println("Written:" + outputFile.getAbsolutePath());
+			// great - request succeeded.
+			System.out.println(response.toString());
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Convert failed: status="
+			System.err.println("List images failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

@@ -43,7 +43,7 @@ import com.google.gson.Gson;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleTornadoExample 
+public class TornadoRenderExample 
 {
 
 	//Your Tornado end point url. This can be found in the Tornado console.

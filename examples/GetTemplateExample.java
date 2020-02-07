@@ -1,4 +1,4 @@
- /*
+/*
  *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,18 +13,20 @@
  *   limitations under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.rendertags.GetRenderTagsResponse;
-import com.docmosis.sdk.rendertags.RenderTags;
-import com.docmosis.sdk.rendertags.RenderTagsException;
+import com.docmosis.sdk.template.GetTemplateResponse;
+import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateException;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns 
- * statistics on renders that were tagged with user-defined phrases (“tags”).
+ * This example connects to the public Docmosis cloud server and returns a 
+ * template stored on the server. Note that multiple templates can be requested
+ * and returned in a zip file.
  * 
  * How to use:
  * 
@@ -37,14 +39,17 @@ import com.docmosis.sdk.rendertags.RenderTagsException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetRenderTagsExample
+public class GetTemplateExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	public static void main(String args[]) throws RenderTagsException, IOException
+	// Full path of Template to get
+	private static final String TEMPLATE_TO_GET = "myTemplate.docx";
+
+	public static void main(String args[]) throws TemplateException, IOException
 	{
-		
+
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -53,23 +58,23 @@ public class SimpleGetRenderTagsExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
-		//Create and execute the render request
-		GetRenderTagsResponse response = RenderTags
-											.get()
-											.tags("my;tags")
-											.year(2019)
-											.nMonths(2)
-											.month(10)
-											.padBlanks(true)
-											.execute();
+		//Set the file we are going to write the returned document to.
+		File outputFile = new File(TEMPLATE_TO_GET);
+
+		//Create and execute the request
+		GetTemplateResponse response = Template
+										.get()
+										.templateName(TEMPLATE_TO_GET)
+										.sendTo(outputFile)
+										.execute();
 
 		if (response.hasSucceeded()) {
-			// great - render succeeded.
-			System.out.println(response.toString());
+			// great - request succeeded.
+			System.out.println("Template written to: " + outputFile.getAbsolutePath());
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get render tags failed: status="
+			System.err.println("Get template failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

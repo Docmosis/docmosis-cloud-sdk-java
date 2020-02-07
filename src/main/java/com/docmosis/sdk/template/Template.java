@@ -124,6 +124,40 @@ public class Template {
 	}
 	
 	/**
+	 * Create an Upload Template Batch Request. Run .execute() to run the request and return an Upload Template Batch Response.
+	 * You can use uploadBatchStatus() to check the job status and uploadBatchCancel() to cancel the job.
+	 * @return UploadTemplateBatchRequest
+	 */
+	public static UploadTemplateBatchRequest uploadBatch()
+	{
+		final UploadTemplateBatchRequest req = new UploadTemplateBatchRequest();
+		
+		return req;
+	}
+	
+	/**
+	 * Create an Upload Template Batch Status Request. Run .execute() to run the request and return an Upload Template Batch Status Response.
+	 * @return UploadTemplateBatchStatusRequest
+	 */
+	public static UploadTemplateBatchStatusRequest uploadBatchStatus()
+	{
+		final UploadTemplateBatchStatusRequest req = new UploadTemplateBatchStatusRequest();
+		
+		return req;
+	}
+	
+	/**
+	 * Create an Upload Template Batch Cancel Request. Run .execute() to run the request and return an Upload Template Batch Cancel Response.
+	 * @return UploadTemplateBatchCancelRequest
+	 */
+	public static UploadTemplateBatchCancelRequest uploadBatchCancel()
+	{
+		final UploadTemplateBatchCancelRequest req = new UploadTemplateBatchCancelRequest();
+		
+		return req;
+	}
+	
+	/**
 	 * Execute a listTemplates request.
 	 * @param request Object
 	 * @return Response Object
@@ -407,6 +441,119 @@ public class Template {
 			    	throw new TemplateException("Cannot extract data from response.");
 			    }
 	    	}
+	    }
+	    catch (DocmosisException e) {
+	    	throw new TemplateException(e);
+	    }
+		return response;
+	}
+	
+	/**
+	 * Execute an uploadTemplateBatch request.
+	 * @param request Object
+	 * @return Response Object
+	 * @throws TemplateException if execution fails or cannot extract data from response
+	 */	
+	protected static UploadTemplateBatchResponse executeUploadTemplateBatch(UploadTemplateBatchRequest request) throws TemplateException
+	{
+		UploadTemplateBatchResponse response;
+		MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
+	    
+	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
+		    //Execute request
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new UploadTemplateBatchResponse(mutableResponse.build());
+	    	
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+					JobStatus jobStatus = gson.fromJson(jsonObject.get("jobStatus"), JobStatus.class);
+					response.setJobStatus(jobStatus);
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+		    }
+	    }
+	    catch (DocmosisException e) {
+	    	throw new TemplateException(e);
+	    }
+		return response;
+	}
+	
+	/**
+	 * Execute an uploadTemplateBatchStatus request.
+	 * @param request Object
+	 * @return Response Object
+	 * @throws TemplateException if execution fails or cannot extract data from response
+	 */	
+	protected static UploadTemplateBatchStatusResponse executeUploadTemplateBatchStatus(UploadTemplateBatchStatusRequest request) throws TemplateException
+	{
+		UploadTemplateBatchStatusResponse response;
+		MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
+	    
+	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
+		    //Execute request
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	response = new UploadTemplateBatchStatusResponse(mutableResponse.build());
+	    	
+	    	//Extract data from Response String
+	    	if (response.hasSucceeded()) {
+			    if (responseString != null && responseString.length() > 0) {
+					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+					JobStatus jobStatus = gson.fromJson(jsonObject.get("jobStatus"), JobStatus.class);
+					response.setJobStatus(jobStatus);
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+		    }
+	    }
+	    catch (DocmosisException e) {
+	    	throw new TemplateException(e);
+	    }
+		return response;
+	}
+	
+	/**
+	 * Execute an uploadTemplateBatchCancel request.
+	 * @param request Object
+	 * @return Response Object
+	 * @throws TemplateException if execution fails or cannot extract data from response
+	 */	
+	protected static UploadTemplateBatchCancelResponse executeUploadTemplateBatchCancel(UploadTemplateBatchCancelRequest request) throws TemplateException
+	{
+		UploadTemplateBatchCancelResponse response;
+		MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
+	    
+	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
+		    //Execute request
+	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
+	    	
+	    	//Extract data from Response String
+	    	if (mutableResponse.hasSucceeded()) {
+	    		if (responseString != null && responseString.length() > 0) {
+					JsonObject jsonObject = new JsonParser().parse(responseString).getAsJsonObject();
+					
+					JsonElement shortMsg = jsonObject.get("shortMsg");
+					mutableResponse.setShortMsg(shortMsg.getAsString());
+			    } else {
+			    	throw new TemplateException("Cannot extract data from response.");
+			    }
+		    }
+	    	response = new UploadTemplateBatchCancelResponse(mutableResponse.build());
 	    }
 	    catch (DocmosisException e) {
 	    	throw new TemplateException(e);
