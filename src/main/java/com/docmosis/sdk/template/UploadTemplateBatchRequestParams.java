@@ -19,10 +19,10 @@ import java.io.File;
 import com.docmosis.sdk.request.param.RequestParameters;
 
 /**
- * The object holds the parameters for a request to the Upload Template Batch service.
+ * The object holds the parameters for a request to the Batch Upload Template service.
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Upload Template request.
+ * are parameters for the Batch Upload Template request.
  * 
  */
 public class UploadTemplateBatchRequestParams extends RequestParameters {
@@ -67,7 +67,7 @@ public class UploadTemplateBatchRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * Set the userJobId. This id can be used to check the job status and to cancel the job.
+	 * Set the userJobId. This id can be used to check the job status and to cancel the job. If no value is set then an ID will be auto generated and returned in the response.
 	 * @param userJobId The id to use for the template upload job.
 	 */
 	public void setUserJobId(String userJobId) {
@@ -92,7 +92,7 @@ public class UploadTemplateBatchRequestParams extends RequestParameters {
 
 	/**
 	 * If set to true the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
-	 * Defaults to true.
+	 * Defaults to false.
 	 * @return value of development mode
 	 */
 	public Boolean getDevMode() {
@@ -101,7 +101,7 @@ public class UploadTemplateBatchRequestParams extends RequestParameters {
 
 	/**
 	 * If set to true the upload is run in developer mode - meaning that Docmosis will do it's best to handle errors and report them within a rendered document to ease development.
-	 * Defaults to true.
+	 * Defaults to false.
 	 * @param devMode true if you want Docmosis to handle errors and report them in the rendered document.
 	 */
 	public void setDevMode(boolean devMode) {

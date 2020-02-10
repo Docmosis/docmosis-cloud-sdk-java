@@ -17,7 +17,7 @@ package com.docmosis.sdk.template;
 import com.docmosis.sdk.response.DocmosisCloudResponse;
 
 /**
- * This class encapsulates a response to a upload template batch status request.
+ * This class encapsulates a response to a batch upload template status request.
  * 
  * Typically you would use this response to check for success, then decide what action to take.  For example:
  * 

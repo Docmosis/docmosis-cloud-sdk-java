@@ -21,10 +21,9 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * The object holds the instructions and data for a request to the Batch Upload Template Status service.
  * See the Web Services Developer guide at <a href="https://resources.docmosis.com/">https://resources.docmosis.com/</a>
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Upload Template request.
+ * are parameters for the Batch Upload Template Status request.
  * 
- * Typically, you would use the Template class to get an instance of this class, then
- * set the specifics you require using method chaining:
+ * Typically, you would use the UploadTemplateBatchResponse object to get an instance of this class and execute:
  * 
  * 
  * <pre>

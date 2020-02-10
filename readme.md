@@ -194,6 +194,22 @@ The template services include:
 		.templateFile(uploadFile)
 		.execute();
 ```
+- Batch Upload Template Service
+
+```
+	File uploadFile = new File(TEMPLATES_TO_UPLOAD_ZIP_FILE);
+	UploadTemplateBatchResponse response = Template.uploadBatch()
+		.templateZip(uploadFile)
+		.execute();
+
+	//Check Status
+	UploadTemplateBatchStatusResponse statusResponse = response.statusRequest()
+		.execute();
+
+	//Cancel
+	UploadTemplateBatchCancelResponse cancelResponse = response.cancelRequest()
+		.execute();
+```
 
 - Get Template Service
 

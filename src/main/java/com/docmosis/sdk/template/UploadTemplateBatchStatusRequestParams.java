@@ -17,10 +17,10 @@ package com.docmosis.sdk.template;
 import com.docmosis.sdk.request.param.RequestParameters;
 
 /**
- * The object holds the parameters for a request to the Upload Template Batch Status service.
+ * The object holds the parameters for a request to the Batch Upload Template Status service.
  * See the Web Services Developer guide at <a href="https://resources.docmosis.com/">https://resources.docmosis.com/</a>
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the Upload Template request.
+ * are parameters for the Batch Upload Template Status request.
  * 
  */
 public class UploadTemplateBatchStatusRequestParams extends RequestParameters {
