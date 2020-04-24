@@ -60,7 +60,7 @@ public class ConverterRequestParams extends RequestParameters {
      * Set the name to give the output document.  The format of the resulting document 
      * is derived from the extension of this name. For example "resume1.pdf" implies a PDF format document. 
      * 
-     * @param outputName the name of the result
+     * @param outputName The name and extension format of the result
      */
     public void setOutputName(String outputName)
     {

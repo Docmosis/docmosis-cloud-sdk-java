@@ -63,7 +63,7 @@ public class GetRenderTagsResponse extends DocmosisCloudResponse {
 	 * stats that match all of the tags specified in the call to the
 	 * getRenderTags request (that is, it will the stats only for renders that
 	 * included all the tags).
-	 * @return list RenderTag objects
+	 * @return list of RenderTag objects
 	 */
 	public List<RenderTag> getRenderTags() {
 		return renderTags;
