@@ -102,10 +102,10 @@ public class FileStorage {
 		ListFilesResponse response;
 		MutableDocmosisCloudResponse mutableResponse = new MutableDocmosisCloudResponse();
 
-		//Build request
-    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey());
-
 	    try {
+	    	//Build request
+	    	HttpEntity payload = RequestBuilder.buildMultiPartRequest(request.getEnvironment().getAccessKey(), request.getParams());
+
 	    	//Execute request
 	    	String responseString = DocmosisHTTPRequestExecutionHandler.executeHttpPost(mutableResponse, request, payload);
 	    	response = new ListFilesResponse(mutableResponse.build());

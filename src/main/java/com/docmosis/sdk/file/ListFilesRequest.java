@@ -38,9 +38,8 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
 public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	
 	private static final String SERVICE_PATH = "listFiles";
-	private String folder = null;
-	private boolean includeSubFolders = false;
-	private boolean includeMetaData = false;
+	
+	private ListFilesRequestParams params = new ListFilesRequestParams();
 	
 	public ListFilesRequest() {
 		super(SERVICE_PATH);
@@ -49,22 +48,11 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	public ListFilesRequest(final Environment environment) {
 		super(SERVICE_PATH, environment);
 	}
-
-	/**
-	 * Get the currently set starting folder (path). If not specified all files in your storage will be listed.
-	 * @return path of starting folder
-	 */
-	public String getFolder() {
-		return folder;
-	}
 	
-	/**
-	 * Set a starting folder (path). If not specified all files in your storage will be listed.
-	 * @param folder path of starting folder
-	 */
-	public void setFolder(String folder) {
-		this.folder = folder;
-	}
+	public ListFilesRequestParams getParams()
+    {
+    	return params;
+    }
 	
 	/**
 	 * Set a starting folder (path). If not specified all files in your storage will be listed.
@@ -72,26 +60,8 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 * @return this request for method chaining
 	 */
 	public ListFilesRequest folder(String folder) {
-		this.folder = folder;
+		params.setFolder(folder);
 		return this;
-	}
-	
-	/**
-	 * An optional specification as to whether you would like the list to include items within sub-folders.
-	 * Defaults to false.
-	 * @return include sub folders setting
-	 */
-	public boolean getIncludeSubFolders() {
-		return includeSubFolders;
-	}
-	
-	/**
-	 * An optional specification as to whether you would like the list to include items within sub-folders.
-	 * Defaults to false.
-	 * @param includeSubFolders value
-	 */
-	public void setIncludeSubFolders(boolean includeSubFolders) {
-		this.includeSubFolders = includeSubFolders;
 	}
 	
 	/**
@@ -101,26 +71,8 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 * @return this request for method chaining
 	 */
 	public ListFilesRequest includeSubFolders(boolean includeSubFolders) {
-		this.includeSubFolders = includeSubFolders;
+		params.setIncludeSubFolders(includeSubFolders);
 		return this;
-	}
-	
-	/**
-	 * If true meta data for each file will be included in the results.
-	 * Defaults to false.
-	 * @return include meta data setting
-	 */
-	public boolean getIncludeMetaData() {
-		return includeMetaData;
-	}
-
-	/**
-	 * If true meta data for each file will be included in the results.
-	 * Defaults to false.
-	 * @param includeMetaData value
-	 */
-	public void setIncludeMetaData(boolean includeMetaData) {
-		this.includeMetaData = includeMetaData;
 	}
 	
 	/**
@@ -130,7 +82,7 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 	 * @return this request for method chaining
 	 */
 	public ListFilesRequest includeMetaData(boolean includeMetaData) {
-		this.includeMetaData = includeMetaData;
+		params.setIncludeMetaData(includeMetaData);
 		return this;
 	}
 
@@ -194,7 +146,6 @@ public class ListFilesRequest extends DocmosisCloudRequest<ListFilesRequest> {
 
 	@Override
 	public String toString() {
-		return "ListFilesRequest [folder=" + folder + ", includeSubFolders=" + includeSubFolders + ", includeMetaData="
-				+ includeMetaData + ", " + super.toString() + "]";
+		return params.toString();
 	}
 }
