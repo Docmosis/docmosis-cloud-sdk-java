@@ -21,7 +21,7 @@ import com.docmosis.sdk.request.DocmosisCloudRequest;
  * The object holds the instructions and data for a request to the Rename Files service.
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the List request.
+ * are parameters for the Rename Files request.
  * 
  * Typically, you would use the FileStorage class to get an instance of this class, 
  * then set the specifics you require using method chaining:

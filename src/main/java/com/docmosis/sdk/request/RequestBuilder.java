@@ -1,6 +1,7 @@
 package com.docmosis.sdk.request;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.codec.Charsets;
@@ -9,7 +10,9 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import com.docmosis.sdk.handlers.DocmosisException;
+import com.docmosis.sdk.request.param.ByteArrayParamType;
 import com.docmosis.sdk.request.param.FileParamType;
+import com.docmosis.sdk.request.param.InputStreamParamType;
 import com.docmosis.sdk.request.param.ParamType;
 import com.docmosis.sdk.request.param.RequestParameters;
 import com.docmosis.sdk.request.param.StringListParamType;
@@ -73,6 +76,12 @@ public class RequestBuilder {
 			if (param instanceof FileParamType) {
 				addField(builder, key, ((FileParamType) param).getValue());
 			}
+			else if (param instanceof InputStreamParamType) { //Upload file requires file name
+				addField(builder, key, ((InputStreamParamType) param).getValue());
+			}
+			else if (param instanceof ByteArrayParamType) { //Upload file requires file name
+				addField(builder, key, ((ByteArrayParamType) param).getValue());
+			}
 			else if (param instanceof StringListParamType) {
 				addField(builder, key, ((StringListParamType) param).getValue());
 			}
@@ -98,6 +107,14 @@ public class RequestBuilder {
 		} else {
 			throw new DocmosisException("cannot read " + key + ": [" + param + "]");
 		}
+	}
+	
+	private static void addField(MultipartEntityBuilder builder, String key, InputStream param) throws DocmosisException {
+		builder.addBinaryBody(key, param, ContentType.APPLICATION_OCTET_STREAM, "");
+	}
+	
+	private static void addField(MultipartEntityBuilder builder, String key, byte[] param) throws DocmosisException {
+		builder.addBinaryBody(key, param, ContentType.APPLICATION_OCTET_STREAM, "");
 	}
 
 	/**

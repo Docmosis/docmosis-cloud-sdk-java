@@ -17,17 +17,16 @@ import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.file.FileException;
-import com.docmosis.sdk.file.FileStorage;
-import com.docmosis.sdk.file.PutFileResponse;
+import com.docmosis.sdk.template.Template;
+import com.docmosis.sdk.template.TemplateException;
+import com.docmosis.sdk.template.UploadTemplateBatchCancelResponse;
+import com.docmosis.sdk.template.UploadTemplateBatchResponse;
+import com.docmosis.sdk.template.UploadTemplateBatchStatusResponse;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and uploads a 
- * file to store on the server.
- * 
- * Note that file storage must be enabled on your account for File services 
- * to work.
+ * This example connects to the public Docmosis cloud server and uploads multiple 
+ * templates to store on the server.
  * 
  * How to use:
  * 
@@ -40,15 +39,15 @@ import com.docmosis.sdk.file.PutFileResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimplePutFileExample
+public class UploadTemplatesExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	//Full path of File to be uploaded
-	private static final String FILE_TO_UPLOAD = "C:/example/myFile.pdf";
+	//Full path of template to be uploaded
+	private static final String TEMPLATES_TO_UPLOAD = "C:/example/myTemplateFiles.zip";
 
-	public static void main(String args[]) throws FileException, IOException
+	public static void main(String args[]) throws TemplateException, IOException
 	{
 
 		if (ACCESS_KEY.equals("XXX")) {
@@ -60,21 +59,45 @@ public class SimplePutFileExample
 		Environment.setDefaults(ACCESS_KEY);
 
 		//Set the file we are going to upload.
-		File uploadFile = new File(FILE_TO_UPLOAD);
+		File uploadFile = new File(TEMPLATES_TO_UPLOAD);
 
 		//Create and execute the request
-		PutFileResponse response = FileStorage
-									.put()
-									.file(uploadFile)
-									.execute();
+		UploadTemplateBatchResponse response = Template
+												.uploadBatch()
+												.templateZip(uploadFile)
+												.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			System.out.println("Successfully uploaded " + FILE_TO_UPLOAD);
+			System.out.println("Successfully uploaded " + TEMPLATES_TO_UPLOAD);
+			
+			//Check the job status
+			UploadTemplateBatchStatusResponse statusResponse = response
+																.statusRequest()
+																.execute();
+
+			while (statusResponse.hasSucceeded() && statusResponse.getJobStatus().getIsEnded() == false) {
+				System.out.println("Percentage Complete: " + statusResponse.getJobStatus().getPctComplete() + "%");
+				statusResponse = response
+						.statusRequest()
+						.execute();
+			}
+			if(statusResponse.hasSucceeded()) {
+				System.out.println("Percentage Complete: " + statusResponse.getJobStatus().getPctComplete() + "%");
+			}
+			
+			//Cancel the job
+			UploadTemplateBatchCancelResponse cancelResponse = response
+																.cancelRequest()
+																.execute();
+
+			if (cancelResponse.hasSucceeded()) {
+				System.out.println("Job Cancelled. Message: " + cancelResponse.getShortMsg());
+			}
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Put file failed: status="
+			System.err.println("Upload templates failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

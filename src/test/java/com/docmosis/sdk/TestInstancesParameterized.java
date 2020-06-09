@@ -17,7 +17,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.docmosis.sdk.convert.ConverterResponse;
+import com.docmosis.sdk.template.JobStatus;
 
 import junit.framework.TestCase;
 
@@ -45,7 +45,7 @@ public class TestInstancesParameterized extends TestCase {
 	@Parameters(name = "{0},{1},{2},{3},{4},{5}")
     public static Object[][] data() {
     	
-		Class<?>[] classList = {/*ConverterRequestParams.class, MutableRenderResponse.class, PreviousFailureInformation.class, Proxy.class, DocmosisException.class*/ ConverterResponse.class};
+		Class<?>[] classList = {/*ConverterRequestParams.class, MutableRenderResponse.class, PreviousFailureInformation.class, Proxy.class, DocmosisException.class*/ JobStatus.class};
 //		try {
 //			classList = getClasses("com.docmosis.sdk");
 //		} catch (ClassNotFoundException e) {
@@ -198,12 +198,12 @@ public class TestInstancesParameterized extends TestCase {
 		}
 	}
 	
-	@Test
-	public void testEquality() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-
-		assertTrue(equalByValue(new String("ab"), new String("ab")));
-		assertFalse(equalByValue(new String("aba"), new String("abb")));
-	}
+//	@Test
+//	public void testEquality() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+//
+//		assertTrue(equalByValue(new String("ab"), new String("ab")));
+//		assertFalse(equalByValue(new String("aba"), new String("abb")));
+//	}
 	
 	private boolean equalByValue(Object o1, Object o2) throws IllegalArgumentException, IllegalAccessException {
         if ((o1 == null && o2 != null) || (o1 != null && o2 == null)) {

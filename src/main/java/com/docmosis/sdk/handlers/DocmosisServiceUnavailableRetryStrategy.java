@@ -54,7 +54,7 @@ public class DocmosisServiceUnavailableRetryStrategy implements ServiceUnavailab
 	
 	private final int maxRetrys;
 	private final long retryDelay;
-	private PreviousFailureInformation prevFailure;
+	private static PreviousFailureInformation prevFailure;
 	private int tries;
 	
 	public DocmosisServiceUnavailableRetryStrategy(int maxRetrys, long retryDelay)

@@ -15,12 +15,13 @@
 package com.docmosis.sdk.template;
 
 import java.io.File;
+import java.io.InputStream;
 
 import com.docmosis.sdk.request.param.RequestParameters;
 
 /**
  * The object holds the parameters for a request to the Upload Template service.
- * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
+ * See the Web Services Developer guide at <a href="https://resources.docmosis.com/">https://resources.docmosis.com/</a>
  * for details about the settings for the request.  The properties set in this class 
  * are parameters for the Upload Template request.
  * 
@@ -56,6 +57,22 @@ public class UploadTemplateRequestParams extends RequestParameters {
 	 */
 	public void setTemplateFile(File templateFile) {
 		super.setParam(TEMPLATE_FILE, templateFile);
+	}
+	
+	/**
+	 * Set the Template input stream to be uploaded.
+	 * @param templateFile InputStream object of the template to be uploaded.
+	 */
+	public void setTemplateFile(InputStream templateStream) {
+		super.setParam(TEMPLATE_FILE, templateStream);
+	}
+	
+	/**
+	 * Set the Template byte array to be uploaded.
+	 * @param templateFile byte[] object of the template to be uploaded.
+	 */
+	public void setTemplateFile(byte[] templateBytes) {
+		super.setParam(TEMPLATE_FILE, templateBytes);
 	}
 
 	/**

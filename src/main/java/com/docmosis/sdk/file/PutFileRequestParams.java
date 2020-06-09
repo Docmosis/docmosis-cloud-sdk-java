@@ -15,6 +15,7 @@
 package com.docmosis.sdk.file;
 
 import java.io.File;
+import java.io.InputStream;
 
 import com.docmosis.sdk.request.param.RequestParameters;
 
@@ -47,10 +48,26 @@ public class PutFileRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * Set the file stream to upload.
+	 * Set the file to upload.
 	 * @param file to upload
 	 */
 	public void setFile(File file) {
+		super.setParam(FILE, file);
+	}
+	
+	/**
+	 * Set the file input stream to upload.
+	 * @param file InputStream to upload
+	 */
+	public void setFile(InputStream file) {
+		super.setParam(FILE, file);
+	}
+	
+	/**
+	 * Set the file byte array to upload.
+	 * @param file byte[] to upload
+	 */
+	public void setFile(byte[] file) {
 		super.setParam(FILE, file);
 	}
 

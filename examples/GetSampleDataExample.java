@@ -13,18 +13,17 @@
  *   limitations under the License.
  */
 
-import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
+import com.docmosis.sdk.template.GetSampleDataResponse;
 import com.docmosis.sdk.template.Template;
 import com.docmosis.sdk.template.TemplateException;
-import com.docmosis.sdk.template.UploadTemplateResponse;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and uploads a 
- * template to store on the server.
+ * This example connects to the public Docmosis cloud server and returns sample 
+ * data that suits the template stored on the server.
  * 
  * How to use:
  * 
@@ -37,17 +36,17 @@ import com.docmosis.sdk.template.UploadTemplateResponse;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleUploadTemplateExample
+public class GetSampleDataExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	//Full path of template to be uploaded
-	private static final String TEMPLATE_TO_UPLOAD = "C:/example/myTemplateFile.docx";
+	// the welcome template is available in your cloud account by default
+	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
 	public static void main(String args[]) throws TemplateException, IOException
 	{
-
+		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -56,22 +55,20 @@ public class SimpleUploadTemplateExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
-		//Set the file we are going to upload.
-		File uploadFile = new File(TEMPLATE_TO_UPLOAD);
-
 		//Create and execute the request
-		UploadTemplateResponse response = Template
-											.upload()
-											.templateFile(uploadFile)
+		GetSampleDataResponse response = Template
+								   			.getSampleData()
+											.templateName(TEMPLATE_NAME)
+											.format("json") //"xml" or "json"
 											.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			System.out.println("Successfully uploaded " + TEMPLATE_TO_UPLOAD);
+			System.out.println(response.toString());
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Upload template failed: status="
+			System.err.println("Get Template Structure failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

@@ -1,4 +1,4 @@
-/*
+ /*
  *   Copyright 2019 Docmosis.com or its affiliates.  All Rights Reserved.
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,14 +16,15 @@
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.template.GetTemplateStructureResponse;
-import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateException;
+import com.docmosis.sdk.rendertags.GetRenderTagsResponse;
+import com.docmosis.sdk.rendertags.RenderTags;
+import com.docmosis.sdk.rendertags.RenderTagsException;
+
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns the 
- * structure of a template stored on the server.
+ * This example connects to the public Docmosis cloud server and returns 
+ * statistics on renders that were tagged with user-defined phrases (“tags”).
  * 
  * How to use:
  * 
@@ -36,16 +37,12 @@ import com.docmosis.sdk.template.TemplateException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetTemplateStructureExample
+public class GetRenderTagsExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	// the welcome template is available in your cloud account by default
-	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-
-
-	public static void main(String args[]) throws TemplateException, IOException
+	public static void main(String args[]) throws RenderTagsException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
@@ -56,19 +53,23 @@ public class SimpleGetTemplateStructureExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
-		//Create and execute the request
-		GetTemplateStructureResponse response = Template
-												.getStructure()
-												.templateName(TEMPLATE_NAME)
-												.execute();
+		//Create and execute the render request
+		GetRenderTagsResponse response = RenderTags
+											.get()
+											.tags("my;tags")
+											.year(2019)
+											.nMonths(2)
+											.month(10)
+											.padBlanks(true)
+											.execute();
 
 		if (response.hasSucceeded()) {
-			// great - request succeeded.
+			// great - render succeeded.
 			System.out.println(response.toString());
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get template structure failed: status="
+			System.err.println("Get render tags failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

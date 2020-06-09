@@ -20,7 +20,7 @@ import com.docmosis.sdk.request.param.RequestParameters;
  * The object holds the parameters for a request to the Rename Files service.
  * See the Web Services Developer guide at <a href="https://www.docmosis.com/support">https://www.docmosis.com/support</a>
  * for details about the settings for the request.  The properties set in this class 
- * are parameters for the List request.
+ * are parameters for the Rename Files request.
  *
  */
 public class RenameFilesRequestParams extends RequestParameters {

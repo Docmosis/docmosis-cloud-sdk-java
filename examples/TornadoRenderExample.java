@@ -43,14 +43,14 @@ import com.google.gson.Gson;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleTornadoExample 
+public class TornadoRenderExample 
 {
 
 	//Your Tornado end point url. This can be found in the Tornado console.
-	private static final String TORNADO_URL = "http://localhost:8080/rs/";	
+	private static final String TORNADO_URL = "http://localhost:8080/api/";	
 
 	// the welcome template is available in your cloud account by default
-	private static final String TEMPLATE_NAME = "WelcomeTemplate.doc";
+	private static final String TEMPLATE_NAME = "Samples/WelcomeTemplate.doc";
 	
 	// The output format we want to produce (pdf, docx, doc, odt and more exist).
 	private static final String OUTPUT_FORMAT = "pdf";
