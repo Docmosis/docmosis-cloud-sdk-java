@@ -187,6 +187,7 @@ The template services include:
 ```
 
 - Upload Template Service
+Upload template from a file, input stream or byte array.
 
 ```
 	File uploadFile = new File(TEMPLATE_TO_UPLOAD);
@@ -268,6 +269,7 @@ The image services include:
 ```
 
 - Upload Image Service
+Upload image from a file, input stream or byte array.
 
 ```
 	File uploadFile = new File(IMAGE_TO_UPLOAD);
@@ -309,6 +311,7 @@ The File Storage services include:
 ```
 
 - Put File Service
+Upload file from a file, input stream or byte array.
 
 ```
 	File uploadFile = new File(FILE_TO_UPLOAD);
@@ -350,8 +353,8 @@ The get render tags service allows statistics to be retrieved on renders that we
 ```
 	GetRenderTagsResponse response = RenderTags.get()
 		.tags("list;of;tags")
-		.year(2019)
-		.month(1)
+		.year(2020)
+		.month(6)
 		.nMonths(6)
 		.execute();
 	System.out.println(response.toString());

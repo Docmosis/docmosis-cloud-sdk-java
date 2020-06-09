@@ -15,9 +15,11 @@
 package com.docmosis.sdk.image;
 
 import java.io.File;
+import java.io.InputStream;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
+import com.docmosis.sdk.template.UploadTemplateRequest;
 
 /**
  * The object holds the instructions and data for a request to the Upload Image service.
@@ -59,12 +61,34 @@ public class UploadImageRequest extends DocmosisCloudRequest<UploadImageRequest>
     }
 
 	/**
-	 * Set the file stream to upload.
+	 * Set the image to upload.
 	 * @param imageFile The file to upload
 	 * @return this request for method chaining
 	 */
 	public UploadImageRequest imageFile(File imageFile) {
 		params.setImageFile(imageFile);
+		return this;
+	}
+	
+	/**
+	 * Set the image input stream to upload.
+	 * Note you must also set the image name parameter.
+	 * @param imageStream InputStream to be uploaded.
+	 * @return this request for method chaining
+	 */
+	public UploadImageRequest imageFile(InputStream imageStream) {
+		params.setImageFile(imageStream);
+		return this;
+	}
+	
+	/**
+	 * Set the image byte array to upload.
+	 * Note you must also set the image name parameter.
+	 * @param imageBytes byte[] to be uploaded.
+	 * @return this request for method chaining
+	 */
+	public UploadImageRequest imageFile(byte[] imageBytes) {
+		params.setImageFile(imageBytes);
 		return this;
 	}
 	

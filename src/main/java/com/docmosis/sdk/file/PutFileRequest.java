@@ -16,6 +16,7 @@ package com.docmosis.sdk.file;
 
 
 import java.io.File;
+import java.io.InputStream;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
@@ -60,11 +61,33 @@ public class PutFileRequest extends DocmosisCloudRequest<PutFileRequest> {
     }
 
 	/**
-	 * Set the file stream to upload.
+	 * Set the file to upload.
 	 * @param file to upload
 	 * @return this request for method chaining
 	 */
 	public PutFileRequest file(File file) {
+		params.setFile(file);
+		return this;
+	}
+	
+	/**
+	 * Set the file input stream to upload.
+	 * Note you must also set the file name parameter.
+	 * @param file InputStream to upload
+	 * @return this request for method chaining
+	 */
+	public PutFileRequest file(InputStream file) {
+		params.setFile(file);
+		return this;
+	}
+	
+	/**
+	 * Set the file byte array to upload.
+	 * Note you must also set the file name parameter.
+	 * @param file byte[] to upload
+	 * @return this request for method chaining
+	 */
+	public PutFileRequest file(byte[] file) {
 		params.setFile(file);
 		return this;
 	}

@@ -15,6 +15,7 @@
 package com.docmosis.sdk.template;
 
 import java.io.File;
+import java.io.InputStream;
 
 import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.request.DocmosisCloudRequest;
@@ -65,6 +66,28 @@ public class UploadTemplateRequest extends DocmosisCloudRequest<UploadTemplateRe
 	 */
 	public UploadTemplateRequest templateFile(File templateFile) {
 		params.setTemplateFile(templateFile);
+		return this;
+	}
+	
+	/**
+	 * Set the Template input stream to be uploaded.
+	 * Note you must also set the template name parameter.
+	 * @param templateStream InputStream object of the template to be uploaded.
+	 * @return this request for method chaining
+	 */
+	public UploadTemplateRequest templateFile(InputStream templateStream) {
+		params.setTemplateFile(templateStream);
+		return this;
+	}
+	
+	/**
+	 * Set the Template byte array to be uploaded.
+	 * Note you must also set the template name parameter.
+	 * @param templateBytes byte[] object of the template to be uploaded.
+	 * @return this request for method chaining
+	 */
+	public UploadTemplateRequest templateFile(byte[] templateBytes) {
+		params.setTemplateFile(templateBytes);
 		return this;
 	}
 
