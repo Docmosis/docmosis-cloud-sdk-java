@@ -14,18 +14,18 @@
  */
 
 import java.io.IOException;
+import java.util.List;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.template.GetTemplateDetailsResponse;
+import com.docmosis.sdk.template.ListTemplatesResponse;
 import com.docmosis.sdk.template.Template;
 import com.docmosis.sdk.template.TemplateDetails;
 import com.docmosis.sdk.template.TemplateException;
 
-
 /**
  * 
  * This example connects to the public Docmosis cloud server and returns 
- * details about a template stored on the server.
+ * a list of the templates stored on the server including associated meta data.
  * 
  * How to use:
  * 
@@ -38,13 +38,10 @@ import com.docmosis.sdk.template.TemplateException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetTemplateDetailsExample
+public class ListTemplatesExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
-
-	// the welcome template is available in your cloud account by default
-	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
 
 	public static void main(String args[]) throws TemplateException, IOException
 	{
@@ -58,22 +55,18 @@ public class SimpleGetTemplateDetailsExample
 		Environment.setDefaults(ACCESS_KEY);
 
 		//Create and execute the request
-		GetTemplateDetailsResponse response = Template
-												.getDetails()
-												.templateName(TEMPLATE_NAME)
-												.execute();
+		ListTemplatesResponse response = Template.list().execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			TemplateDetails templateDetails = response.getTemplateDetails();
-			System.out.println("Template Details:");
-			System.out.println("Template Name: " + templateDetails.getName());
-			System.out.println("Last Modified: " + templateDetails.getLastModifiedISO8601());
-			System.out.println("Size: " + ((double)templateDetails.getSizeBytes() / 1000000.0) + " mb");
+			List<TemplateDetails> templateList = response.list();
+			for(TemplateDetails td : templateList) {
+				System.out.println(td.getName() + " size=" + td.getSizeBytes() + " bytes");
+			}
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get Template Details failed: status="
+			System.err.println("List templates failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

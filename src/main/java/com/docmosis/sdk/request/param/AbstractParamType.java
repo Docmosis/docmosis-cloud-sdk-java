@@ -1,6 +1,7 @@
 package com.docmosis.sdk.request.param;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 public class AbstractParamType implements ParamType {
@@ -27,6 +28,16 @@ public class AbstractParamType implements ParamType {
 	
 	@Override
 	public Integer integerValue() {
+		throw new IllegalStateException("Not implemented");
+	}
+	
+	@Override
+	public InputStream inputStreamValue() {
+		throw new IllegalStateException("Not implemented");
+	}
+	
+	@Override
+	public byte[] byteArrayValue() {
 		throw new IllegalStateException("Not implemented");
 	}
 

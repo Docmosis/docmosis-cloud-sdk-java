@@ -24,16 +24,18 @@ import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;
 import com.google.gson.Gson;
 
+
 /**
- * 
- * This example connects to the public Docmosis cloud server and renders the 
- * built-in WelcomeTemplate.docx template into a PDF which is saved to the 
- * local file system.
+ * This example invokes a render using a local Docmosis Tornado server.
+ * The code is the same as for using the public cloud, but has a different URL and
+ * doesn't require an access key (By default).
+ * It renders the built-in WelcomeTemplate.doc template into a PDF which is
+ * saved to the local file system.
  * 
  * How to use:
  * 
- *  1) sign up to the Docmosis Cloud Services
- *  2) plug your ACCESS_KEY into this class
+ *  1) Install, configure and run Docmosis Tornado
+ *  2) set/confirm the TORNADO_RENDER_URL setting is correct
  *  3) run the class and see the result
  *  
  * You can find a lot more about the Docmosis rendering capability by reading
@@ -41,33 +43,27 @@ import com.google.gson.Gson;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleCloudExample
+public class TornadoRenderExample 
 {
 
-	// you get an access key when you sign up to the Docmosis cloud service
-	private static final String ACCESS_KEY = "XXX";
+	//Your Tornado end point url. This can be found in the Tornado console.
+	private static final String TORNADO_URL = "http://localhost:8080/api/";	
 
 	// the welcome template is available in your cloud account by default
-	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-
+	private static final String TEMPLATE_NAME = "Samples/WelcomeTemplate.doc";
+	
 	// The output format we want to produce (pdf, docx, doc, odt and more exist).
 	private static final String OUTPUT_FORMAT = "pdf";
 
 	// The name of the file we are going to write the document to.
-	private static final String OUTPUT_FILE = "output_cloud." + OUTPUT_FORMAT;
+	private static final String OUTPUT_FILE = "output." + OUTPUT_FORMAT;
+	
+	
+	public static void main(String args[]) throws IOException, RendererException {
 
-	public static void main(String args[]) throws IOException,
-			RendererException
-	{
+		//Set the default environment to use your tornado url.
+		Environment.setDefaults(TORNADO_URL, "");
 		
-		if (ACCESS_KEY.equals("XXX")) {
-			System.err.println("Please set your ACCESS_KEY");
-			System.exit(1);
-		}
-
-		//Set the default environment to use your access key.
-		Environment.setDefaults(ACCESS_KEY);
-
 		//Create data to send using the POJO classes below.
 		final Data data = new Data();
 		data.setTitle("This is Docmosis Cloud\n" + new Date());
@@ -78,8 +74,8 @@ public class SimpleCloudExample
 	    data.setMessages(messages);
 
 	    //Build the data String to send.
-		String dataString = new Gson().toJson(data);
-		
+		String dataString = new Gson().toJson(data); //Data String to send.
+
 		//Set the file we are going to write the document to.
 		File outputFile = new File(OUTPUT_FILE);
 
@@ -88,10 +84,10 @@ public class SimpleCloudExample
 									.render()
 									.templateName(TEMPLATE_NAME)
 									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile)
 									.data(dataString)
+									.sendTo(outputFile)
 									.execute();
-						
+
 		if (response.hasSucceeded()) {
 			// great - render succeeded.
 			System.out.println("Written:" + outputFile.getAbsolutePath());
@@ -106,7 +102,7 @@ public class SimpleCloudExample
 							+ response.getLongMsg()));
 		}
 	}
-
+	
 	/**
 	 * This is a sample Data object/POJO. The data can be any typical structure that
 	 * matches your template. You then use a library to convert this object into

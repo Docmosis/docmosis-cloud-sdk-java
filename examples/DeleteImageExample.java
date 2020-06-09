@@ -13,20 +13,19 @@
  *   limitations under the License.
  */
 
-import java.io.File;
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.template.GetTemplateResponse;
-import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateException;
+import com.docmosis.sdk.image.DeleteImageResponse;
+import com.docmosis.sdk.image.Image;
+import com.docmosis.sdk.image.ImageException;
 
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and returns a 
- * template stored on the server. Note that multiple templates can be requested
- * and returned in a zip file.
+ * This example connects to the public Docmosis cloud server and deletes an 
+ * image stored on the server. Note that multiple images can be specified and
+ * deleted in one call.
  * 
  * How to use:
  * 
@@ -39,17 +38,17 @@ import com.docmosis.sdk.template.TemplateException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleGetTemplateExample
+public class DeleteImageExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	// Full path of Template to get
-	private static final String TEMPLATE_TO_GET = "myTemplate.docx";
+	//Full path of image to be deleted
+	private static final String IMAGE_TO_DELETE = "myImage.png";
 
-	public static void main(String args[]) throws TemplateException, IOException
+	public static void main(String args[]) throws ImageException, IOException
 	{
-
+		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -58,23 +57,18 @@ public class SimpleGetTemplateExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
-		//Set the file we are going to write the returned document to.
-		File outputFile = new File(TEMPLATE_TO_GET);
-
 		//Create and execute the request
-		GetTemplateResponse response = Template
-										.get()
-										.templateName(TEMPLATE_TO_GET)
-										.sendTo(outputFile)
+		DeleteImageResponse response = Image
+										.delete()
+										.imageName(IMAGE_TO_DELETE)
 										.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			System.out.println("Template written to: " + outputFile.getAbsolutePath());
-
+			System.out.println("Successfully deleted " + IMAGE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Get template failed: status="
+			System.err.println("Delete image failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

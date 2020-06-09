@@ -15,6 +15,7 @@
 package com.docmosis.sdk.image;
 
 import java.io.File;
+import java.io.InputStream;
 
 import com.docmosis.sdk.request.param.RequestParameters;
 
@@ -39,7 +40,7 @@ public class UploadImageRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * The file stream of the image.
+	 * The file object of the image.
 	 * @return imageFile File Object
 	 */
 	public File getImageFile() {
@@ -47,11 +48,27 @@ public class UploadImageRequestParams extends RequestParameters {
 	}
 
 	/**
-	 * Set the file stream to upload.
+	 * Set the image to upload.
 	 * @param imageFile The file to upload
 	 */
 	public void setImageFile(File imageFile) {
 		super.setParam(IMAGE_FILE, imageFile);
+	}
+	
+	/**
+	 * Set the image input stream to upload.
+	 * @param imageStream The file stream to upload
+	 */
+	public void setImageFile(InputStream imageStream) {
+		super.setParam(IMAGE_FILE, imageStream);
+	}
+	
+	/**
+	 * Set the image byte array to upload.
+	 * @param imageBytes The file byte[] to upload
+	 */
+	public void setImageFile(byte[] imageBytes) {
+		super.setParam(IMAGE_FILE, imageBytes);
 	}
 
 	/**

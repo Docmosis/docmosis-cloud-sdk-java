@@ -282,11 +282,11 @@ public abstract class AbstractRenderRequestParams extends RequestParameters {
      * If set to true, your data will be parsed looking for html-like mark-up. The following mark-up is supported:
      * <ul>
      * <li>
-     * Bold eg "this is <b>bold</b>"
+     * Bold eg "this is &lt;b&gt;bold&lt;/b&gt;"
      * </li><li>
-     * Italics eg "this is <i>italics</i>"
+     * Italics eg "this is &lt;i&gt;italics&lt;/i&gt;"
      * </li><li>
-     * Underline eg "this is <i>underline</i>"
+     * Underline eg "this is &lt;i&gt;underline&lt;/i&gt;"
      * </li><li>
      * Cell Colouring eg "&lt;bgcolor="#ff0000"/&gt;This cell is now red.
      * </li></ul>

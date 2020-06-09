@@ -13,21 +13,20 @@
  *   limitations under the License.
  */
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.render.RenderResponse;
-import com.docmosis.sdk.render.Renderer;
-import com.docmosis.sdk.render.RendererException;
+import com.docmosis.sdk.file.FileException;
+import com.docmosis.sdk.file.FileStorage;
+import com.docmosis.sdk.file.ListFilesResponse;
 
 /**
  * 
- * This example connects to the public Docmosis cloud server and renders the 
- * built-in WelcomeTemplate.doc template into a PDF which is saved to the 
- * local file system.  This example use the renderForm endpoint which is 
- * useful for data in simple name/value pair format such as html forms.
+ * This example connects to the public Docmosis cloud server and returns 
+ * a list of files stored on the server including associated meta data.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -35,30 +34,19 @@ import com.docmosis.sdk.render.RendererException;
  *  2) plug your ACCESS_KEY into this class
  *  3) run the class and see the result
  *  
- * You can find a lot more about the Docmosis rendering capability by reading
+ * You can find a lot more about the Docmosis conversion capability by reading
  * the Web Services Guide and the Docmosis Template guide in the support area
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleRenderFormExample
+public class ListFilesExample
 {
-
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	// the welcome template is available in your cloud account by default
-	private static final String TEMPLATE_NAME = "samples/WelcomeTemplate.docx";
-
-	// The output format we want to produce (pdf, doc, odt and more exist).
-	private static final String OUTPUT_FORMAT = "pdf";
-
-	// The name of the file we are going to write the document to.
-	private static final String OUTPUT_FILE = "output_cloud." + OUTPUT_FORMAT;
-
-	public static void main(String args[]) throws IOException,
-			RendererException
+	public static void main(String args[]) throws FileException, IOException
 	{
-
+		
 		if (ACCESS_KEY.equals("XXX")) {
 			System.err.println("Please set your ACCESS_KEY");
 			System.exit(1);
@@ -67,25 +55,16 @@ public class SimpleRenderFormExample
 		//Set the default environment to use your access key
 		Environment.setDefaults(ACCESS_KEY);
 
-		//Set the file we are going to write the returned document to.
-		File outputFile = new File(OUTPUT_FILE);
-
 		//Create and execute the request
-		RenderResponse response = Renderer
-									.renderForm()
-									.templateName(TEMPLATE_NAME)
-									.outputName(OUTPUT_FILE)
-									.sendTo(outputFile)
-									.data("title", "This is Docmosis Cloud\n" + new Date())
-									.execute();
+		ListFilesResponse response = FileStorage.list().execute();
 
 		if (response.hasSucceeded()) {
-			// great - render succeeded.
-			System.out.println("Written:" + outputFile.getAbsolutePath());
+			// great - request succeeded.
+			System.out.println(response.toString());
 
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Render failed: status="
+			System.err.println("List files failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()

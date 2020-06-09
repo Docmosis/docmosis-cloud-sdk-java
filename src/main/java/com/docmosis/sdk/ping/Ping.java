@@ -61,7 +61,7 @@ public class Ping {
     public static boolean execute(Environment environment) throws InvalidEnvironmentException
     {
     	EnvironmentBuilder.validate(new EnvironmentBuilder(environment));
-    	return execute(Environment.getDefaultEnvironment().getUrl("ping"));
+    	return execute(environment.getUrl("ping"));
     }
 
     /**

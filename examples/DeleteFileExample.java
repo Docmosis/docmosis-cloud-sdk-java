@@ -16,15 +16,18 @@
 import java.io.IOException;
 
 import com.docmosis.sdk.environment.Environment;
-import com.docmosis.sdk.template.DeleteTemplateResponse;
-import com.docmosis.sdk.template.Template;
-import com.docmosis.sdk.template.TemplateException;
+import com.docmosis.sdk.file.DeleteFilesResponse;
+import com.docmosis.sdk.file.FileException;
+import com.docmosis.sdk.file.FileStorage;
+
 
 /**
  * 
  * This example connects to the public Docmosis cloud server and deletes a 
- * template stored on the server. Note that multiple templates can be specified 
- * and deleted in one call.
+ * file stored on the server.
+ * 
+ * Note that file storage must be enabled on your account for File services 
+ * to work.
  * 
  * How to use:
  * 
@@ -37,15 +40,15 @@ import com.docmosis.sdk.template.TemplateException;
  * of the Docmosis web site (http://www.docmosis.com/support) 
  *  
  */
-public class SimpleDeleteTemplateExample
+public class DeleteFileExample
 {
 	// you get an access key when you sign up to the Docmosis cloud service
 	private static final String ACCESS_KEY = "XXX";
 
-	//Full path of template to be deleted
-	private static final String TEMPLATE_TO_DELETE = "myTemplate.docx";
+	//Full path of File to be deleted
+	private static final String FILE_TO_DELETE = "myFile.pdf";
 
-	public static void main(String args[]) throws TemplateException, IOException
+	public static void main(String args[]) throws FileException, IOException
 	{
 		
 		if (ACCESS_KEY.equals("XXX")) {
@@ -57,23 +60,22 @@ public class SimpleDeleteTemplateExample
 		Environment.setDefaults(ACCESS_KEY);
 
 		//Create and execute the request
-		DeleteTemplateResponse response = Template
-											.delete()
-											.templateName(TEMPLATE_TO_DELETE)
-											.execute();
+		DeleteFilesResponse response = FileStorage
+										.delete()
+										.path(FILE_TO_DELETE)
+										.execute();
 
 		if (response.hasSucceeded()) {
 			// great - request succeeded.
-			System.out.println("Successfully deleted " + TEMPLATE_TO_DELETE);
+			System.out.println("Successfully deleted " + FILE_TO_DELETE);
 		} else {
 			// something went wrong, tell the user
-			System.err.println("Delete template failed: status="
+			System.err.println("Delete file failed: status="
 					+ response.getStatus()
 					+ " shortMsg="
 					+ response.getShortMsg()
 					+ ((response.getLongMsg() == null) ? "" : " longMsg="
 							+ response.getLongMsg()));
 		}
-
 	}
 }

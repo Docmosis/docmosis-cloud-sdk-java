@@ -35,7 +35,7 @@ public class RenderRequestParams extends AbstractRenderRequestParams {
     }
 
     /**
-     * Set the data for the render. The format of the string is either JSON 
+     * Set the data for the render. The format of the string is either JSON or XML 
      * and the structure of your data should match the template you are using.
      * 
      * @param data JSON or XML data.

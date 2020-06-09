@@ -1,6 +1,7 @@
 package com.docmosis.sdk.request.param;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -94,7 +95,15 @@ public class RequestParameters {
 	public void setParam(String name, File value) {
 		params.put(name, new FileParamType(value));
 	}
-	
+
+	public void setParam(String name, InputStream value) {
+		params.put(name, new InputStreamParamType(value));
+	}
+
+	public void setParam(String name, byte[] value) {
+		params.put(name, new ByteArrayParamType(value));
+	}
+
 	public void setParam(String name, List<String> value) {
 		if (params.containsKey(name)) {
 			List<String> al = ((StringListParamType) params.get(name)).getValue();
