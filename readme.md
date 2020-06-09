@@ -186,8 +186,7 @@ The template services include:
 	System.out.println(response.toString());
 ```
 
-- Upload Template Service
-Upload template from a file, input stream or byte array.
+- Upload Template Service - Upload template from a file, input stream or byte array.
 
 ```
 	File uploadFile = new File(TEMPLATE_TO_UPLOAD);
@@ -268,8 +267,7 @@ The image services include:
 	System.out.println(response.toString());
 ```
 
-- Upload Image Service
-Upload image from a file, input stream or byte array.
+- Upload Image Service - Upload image from a file, input stream or byte array.
 
 ```
 	File uploadFile = new File(IMAGE_TO_UPLOAD);
@@ -310,8 +308,7 @@ The File Storage services include:
 	}
 ```
 
-- Put File Service
-Upload file from a file, input stream or byte array.
+- Put File Service - Upload file from a file, input stream or byte array.
 
 ```
 	File uploadFile = new File(FILE_TO_UPLOAD);
