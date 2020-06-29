@@ -22,7 +22,8 @@ import com.docmosis.sdk.environment.Environment;
 import com.docmosis.sdk.render.RenderResponse;
 import com.docmosis.sdk.render.Renderer;
 import com.docmosis.sdk.render.RendererException;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
+import com.docmosis.com.google.gson.Gson;
 
 /**
  * 
